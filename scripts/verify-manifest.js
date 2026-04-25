@@ -8,13 +8,7 @@ const modeASummaryPath = path.join(rootDir, "web", "data", "mode-a", "summary.js
 const modeA = JSON.parse(fs.readFileSync(modeASummaryPath, "utf8"));
 
 const failures = [];
-const requiredModeAMetrics = [
-  "population_pressure",
-  "mobility_strain",
-  "economic_opportunity",
-  "environmental_exposure",
-  "fairness_score"
-];
+const requiredModeAMetrics = ["traffic", "jobs", "electricity", "buildings", "services"];
 
 function fail(message) {
   failures.push(message);
@@ -96,7 +90,7 @@ assert([...artifactPaths].some((item) => item.includes("belfast_air_quality.csv"
 assert(modeA.kind === "belfast.modeA.summary", "Mode A summary kind is incorrect.");
 assert(modeA.years?.[0] === 2016 && modeA.years?.at(-1) === 2026, "Mode A summary must cover 2016-2026.");
 assert(modeA.cellCount >= 100, "Mode A grid should have enough cells for a city replay.");
-assert(JSON.stringify((modeA.coreMetrics || []).map((metric) => metric.id)) === JSON.stringify(requiredModeAMetrics), "Mode A core metrics must match the five-lens product brief.");
+assert(JSON.stringify((modeA.coreMetrics || []).map((metric) => metric.id)) === JSON.stringify(requiredModeAMetrics), "Mode A core metrics must match the requested five-signal product brief.");
 for (const year of modeA.years) {
   const gridPath = `web/data/mode-a/grid_${year}.geojson`;
   const electricityPath = `web/data/mode-a/electricity_${year}.geojson`;
@@ -115,7 +109,15 @@ for (const year of modeA.years) {
   assert(electricity.features.length >= 100, `Mode A electricity ${year} needs Belfast power assets.`);
   assert(Number.isFinite(electricity.features[0]?.properties?.grid_load_pct), `Mode A electricity ${year} missing grid_load_pct.`);
   const metricCards = modeA.metricsByYear[String(year)] || [];
-  assert(Array.isArray(modeA.commitsByYear[String(year)]) && modeA.commitsByYear[String(year)].length === 5, `Mode A commits must include exactly five lenses for ${year}.`);
+  const commits = modeA.commitsByYear[String(year)] || [];
+  assert(Array.isArray(commits) && commits.length === 5, `Mode A commits must include exactly five signals for ${year}.`);
+  assert(JSON.stringify(commits.map((commit) => commit.type)) === JSON.stringify(requiredModeAMetrics), `Mode A commit order is incorrect for ${year}.`);
+  for (const commit of commits) {
+    assert(commit.title && commit.subtitle && commit.explanation, `Commit ${commit.id} needs planning copy.`);
+    assert(Array.isArray(commit.cellIds) && commit.cellIds.length >= 5, `Commit ${commit.id} must carry affected replay cell ids.`);
+    assert(Array.isArray(commit.affectedSignals) && commit.affectedSignals.length >= 3, `Commit ${commit.id} must explain affected signals.`);
+    assert(Array.isArray(commit.auditTrail) && commit.auditTrail.length >= 2, `Commit ${commit.id} must include an audit trail.`);
+  }
   assert(Array.isArray(metricCards) && metricCards.length === 5, `Mode A metric cards must include exactly five lenses for ${year}.`);
   assert(JSON.stringify(metricCards.map((card) => card.metric)) === JSON.stringify(requiredModeAMetrics), `Mode A metric card order is incorrect for ${year}.`);
 }
