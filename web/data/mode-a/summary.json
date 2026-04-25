@@ -1,0 +1,2352 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "belfast.modeA.summary",
+  "generatedAt": "2026-04-25T13:55:50.512570+00:00",
+  "years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "bbox": [
+    -6.08,
+    54.52,
+    -5.78,
+    54.7
+  ],
+  "cellCount": 216,
+  "gridTemplate": "/data/mode-a/grid_{year}.geojson",
+  "metricsByYear": {
+    "2016": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.192,
+        "display": "19",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.117,
+          0.102,
+          0.102,
+          0.117,
+          0.14,
+          0.164,
+          0.178,
+          0.178,
+          0.163,
+          0.14,
+          0.116,
+          0.102
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.248,
+        "display": "25",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.629,
+        "display": "63",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.639,
+          0.644,
+          0.641,
+          0.632,
+          0.625,
+          0.623,
+          0.626,
+          0.629,
+          0.63,
+          0.629,
+          0.63,
+          0.633
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.372,
+        "display": "37",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.34,
+          0.354,
+          0.337,
+          0.306,
+          0.288,
+          0.297,
+          0.323,
+          0.341,
+          0.334,
+          0.31,
+          0.293,
+          0.3
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.294,
+        "display": "29",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.249,
+          0.251,
+          0.249,
+          0.244,
+          0.24,
+          0.24,
+          0.243,
+          0.245,
+          0.245,
+          0.243,
+          0.242,
+          0.244
+        ]
+      }
+    ],
+    "2017": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.195,
+        "display": "20",
+        "delta": 0.004,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.101,
+          0.103,
+          0.119,
+          0.143,
+          0.166,
+          0.179,
+          0.177,
+          0.161,
+          0.137,
+          0.114,
+          0.101,
+          0.103
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.25,
+        "display": "25",
+        "delta": 0.002,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.628,
+        "display": "63",
+        "delta": -0.001,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.644,
+          0.64,
+          0.632,
+          0.624,
+          0.622,
+          0.625,
+          0.629,
+          0.631,
+          0.63,
+          0.63,
+          0.633,
+          0.638
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.369,
+        "display": "37",
+        "delta": -0.003,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.353,
+          0.336,
+          0.305,
+          0.286,
+          0.295,
+          0.321,
+          0.34,
+          0.334,
+          0.31,
+          0.292,
+          0.3,
+          0.326
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.294,
+        "display": "29",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.251,
+          0.249,
+          0.244,
+          0.24,
+          0.24,
+          0.242,
+          0.245,
+          0.245,
+          0.243,
+          0.242,
+          0.244,
+          0.247
+        ]
+      }
+    ],
+    "2018": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.199,
+        "display": "20",
+        "delta": 0.007,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.104,
+          0.121,
+          0.146,
+          0.168,
+          0.179,
+          0.176,
+          0.158,
+          0.134,
+          0.112,
+          0.101,
+          0.104,
+          0.122
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.252,
+        "display": "25",
+        "delta": 0.004,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.627,
+        "display": "63",
+        "delta": -0.002,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.64,
+          0.631,
+          0.623,
+          0.621,
+          0.625,
+          0.629,
+          0.631,
+          0.63,
+          0.63,
+          0.633,
+          0.638,
+          0.639
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.366,
+        "display": "37",
+        "delta": -0.006,
+        "deltaDisplay": "-1",
+        "trend": "stable",
+        "sparkline": [
+          0.335,
+          0.304,
+          0.284,
+          0.293,
+          0.32,
+          0.339,
+          0.333,
+          0.309,
+          0.292,
+          0.299,
+          0.325,
+          0.345
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.294,
+        "display": "29",
+        "delta": 0.0,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.249,
+          0.243,
+          0.239,
+          0.239,
+          0.242,
+          0.245,
+          0.245,
+          0.243,
+          0.242,
+          0.244,
+          0.247,
+          0.249
+        ]
+      }
+    ],
+    "2019": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.202,
+        "display": "20",
+        "delta": 0.01,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.124,
+          0.148,
+          0.17,
+          0.18,
+          0.174,
+          0.156,
+          0.131,
+          0.11,
+          0.1,
+          0.106,
+          0.124,
+          0.149
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.255,
+        "display": "25",
+        "delta": 0.006,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.626,
+        "display": "63",
+        "delta": -0.003,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.63,
+          0.622,
+          0.621,
+          0.625,
+          0.629,
+          0.631,
+          0.63,
+          0.63,
+          0.633,
+          0.637,
+          0.639,
+          0.634
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.365,
+        "display": "37",
+        "delta": -0.007,
+        "deltaDisplay": "-1",
+        "trend": "stable",
+        "sparkline": [
+          0.302,
+          0.283,
+          0.291,
+          0.318,
+          0.337,
+          0.332,
+          0.309,
+          0.291,
+          0.298,
+          0.324,
+          0.344,
+          0.338
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.294,
+        "display": "29",
+        "delta": 0.001,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.243,
+          0.239,
+          0.239,
+          0.242,
+          0.245,
+          0.245,
+          0.244,
+          0.242,
+          0.244,
+          0.247,
+          0.249,
+          0.246
+        ]
+      }
+    ],
+    "2020": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.205,
+        "display": "20",
+        "delta": 0.013,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.151,
+          0.172,
+          0.18,
+          0.173,
+          0.153,
+          0.128,
+          0.108,
+          0.1,
+          0.107,
+          0.127,
+          0.152,
+          0.172
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.257,
+        "display": "26",
+        "delta": 0.009,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.625,
+        "display": "63",
+        "delta": -0.004,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.622,
+          0.62,
+          0.624,
+          0.629,
+          0.631,
+          0.631,
+          0.631,
+          0.633,
+          0.637,
+          0.638,
+          0.633,
+          0.624
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.364,
+        "display": "36",
+        "delta": -0.008,
+        "deltaDisplay": "-1",
+        "trend": "stable",
+        "sparkline": [
+          0.281,
+          0.29,
+          0.317,
+          0.336,
+          0.331,
+          0.308,
+          0.291,
+          0.297,
+          0.322,
+          0.342,
+          0.337,
+          0.308
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.295,
+        "display": "29",
+        "delta": 0.001,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.239,
+          0.239,
+          0.242,
+          0.245,
+          0.245,
+          0.244,
+          0.242,
+          0.244,
+          0.247,
+          0.248,
+          0.246,
+          0.241
+        ]
+      }
+    ],
+    "2021": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.208,
+        "display": "21",
+        "delta": 0.016,
+        "deltaDisplay": "+2",
+        "trend": "stable",
+        "sparkline": [
+          0.173,
+          0.18,
+          0.171,
+          0.151,
+          0.126,
+          0.107,
+          0.1,
+          0.109,
+          0.13,
+          0.154,
+          0.174,
+          0.18
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.259,
+        "display": "26",
+        "delta": 0.011,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.625,
+        "display": "62",
+        "delta": -0.005,
+        "deltaDisplay": "0",
+        "trend": "stable",
+        "sparkline": [
+          0.62,
+          0.624,
+          0.629,
+          0.632,
+          0.631,
+          0.631,
+          0.633,
+          0.637,
+          0.637,
+          0.632,
+          0.623,
+          0.617
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.363,
+        "display": "36",
+        "delta": -0.01,
+        "deltaDisplay": "-1",
+        "trend": "stable",
+        "sparkline": [
+          0.288,
+          0.315,
+          0.335,
+          0.33,
+          0.308,
+          0.29,
+          0.297,
+          0.321,
+          0.341,
+          0.335,
+          0.306,
+          0.279
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.295,
+        "display": "30",
+        "delta": 0.001,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.238,
+          0.242,
+          0.245,
+          0.245,
+          0.244,
+          0.243,
+          0.244,
+          0.247,
+          0.248,
+          0.246,
+          0.241,
+          0.237
+        ]
+      }
+    ],
+    "2022": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.211,
+        "display": "21",
+        "delta": 0.019,
+        "deltaDisplay": "+2",
+        "trend": "stable",
+        "sparkline": [
+          0.18,
+          0.169,
+          0.148,
+          0.123,
+          0.105,
+          0.1,
+          0.111,
+          0.132,
+          0.157,
+          0.175,
+          0.18,
+          0.169
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.261,
+        "display": "26",
+        "delta": 0.013,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.472,
+        "display": "47",
+        "delta": -0.158,
+        "deltaDisplay": "-16",
+        "trend": "worsened",
+        "sparkline": [
+          0.472,
+          0.477,
+          0.48,
+          0.479,
+          0.479,
+          0.481,
+          0.484,
+          0.484,
+          0.479,
+          0.471,
+          0.464,
+          0.466
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.36,
+        "display": "36",
+        "delta": -0.013,
+        "deltaDisplay": "-1",
+        "trend": "stable",
+        "sparkline": [
+          0.314,
+          0.334,
+          0.33,
+          0.307,
+          0.29,
+          0.296,
+          0.32,
+          0.339,
+          0.333,
+          0.305,
+          0.278,
+          0.277
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.295,
+        "display": "30",
+        "delta": 0.001,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.241,
+          0.245,
+          0.245,
+          0.244,
+          0.243,
+          0.244,
+          0.246,
+          0.248,
+          0.245,
+          0.24,
+          0.237,
+          0.237
+        ]
+      }
+    ],
+    "2023": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.214,
+        "display": "21",
+        "delta": 0.023,
+        "deltaDisplay": "+2",
+        "trend": "worsened",
+        "sparkline": [
+          0.168,
+          0.145,
+          0.121,
+          0.104,
+          0.101,
+          0.113,
+          0.135,
+          0.16,
+          0.176,
+          0.179,
+          0.167,
+          0.144
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.263,
+        "display": "26",
+        "delta": 0.015,
+        "deltaDisplay": "+1",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.818,
+        "display": "82",
+        "delta": 0.189,
+        "deltaDisplay": "+19",
+        "trend": "improved",
+        "sparkline": [
+          0.826,
+          0.828,
+          0.828,
+          0.827,
+          0.829,
+          0.831,
+          0.832,
+          0.826,
+          0.818,
+          0.812,
+          0.814,
+          0.823
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.356,
+        "display": "36",
+        "delta": -0.017,
+        "deltaDisplay": "-2",
+        "trend": "stable",
+        "sparkline": [
+          0.333,
+          0.329,
+          0.307,
+          0.289,
+          0.295,
+          0.319,
+          0.338,
+          0.331,
+          0.303,
+          0.277,
+          0.276,
+          0.303
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.295,
+        "display": "30",
+        "delta": 0.002,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.245,
+          0.245,
+          0.244,
+          0.243,
+          0.243,
+          0.246,
+          0.247,
+          0.245,
+          0.24,
+          0.236,
+          0.237,
+          0.242
+        ]
+      }
+    ],
+    "2024": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.218,
+        "display": "22",
+        "delta": 0.026,
+        "deltaDisplay": "+3",
+        "trend": "worsened",
+        "sparkline": [
+          0.142,
+          0.118,
+          0.103,
+          0.101,
+          0.115,
+          0.138,
+          0.162,
+          0.177,
+          0.179,
+          0.165,
+          0.142,
+          0.118
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.265,
+        "display": "27",
+        "delta": 0.017,
+        "deltaDisplay": "+2",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.851,
+        "display": "85",
+        "delta": 0.222,
+        "deltaDisplay": "+22",
+        "trend": "improved",
+        "sparkline": [
+          0.863,
+          0.862,
+          0.861,
+          0.863,
+          0.865,
+          0.865,
+          0.86,
+          0.852,
+          0.847,
+          0.849,
+          0.858,
+          0.868
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.353,
+        "display": "35",
+        "delta": -0.02,
+        "deltaDisplay": "-2",
+        "trend": "stable",
+        "sparkline": [
+          0.329,
+          0.306,
+          0.289,
+          0.294,
+          0.317,
+          0.336,
+          0.33,
+          0.301,
+          0.275,
+          0.275,
+          0.303,
+          0.336
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.295,
+        "display": "30",
+        "delta": 0.002,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.246,
+          0.244,
+          0.243,
+          0.243,
+          0.246,
+          0.247,
+          0.244,
+          0.24,
+          0.236,
+          0.237,
+          0.242,
+          0.248
+        ]
+      }
+    ],
+    "2025": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.221,
+        "display": "22",
+        "delta": 0.03,
+        "deltaDisplay": "+3",
+        "trend": "worsened",
+        "sparkline": [
+          0.116,
+          0.102,
+          0.102,
+          0.117,
+          0.141,
+          0.164,
+          0.178,
+          0.178,
+          0.163,
+          0.139,
+          0.116,
+          0.102
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.267,
+        "display": "27",
+        "delta": 0.019,
+        "deltaDisplay": "+2",
+        "trend": "stable",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.27,
+        "display": "27",
+        "delta": -0.359,
+        "deltaDisplay": "-36",
+        "trend": "worsened",
+        "sparkline": [
+          0.283,
+          0.281,
+          0.282,
+          0.284,
+          0.284,
+          0.279,
+          0.271,
+          0.266,
+          0.269,
+          0.278,
+          0.289,
+          0.293
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.351,
+        "display": "35",
+        "delta": -0.022,
+        "deltaDisplay": "-2",
+        "trend": "worsened",
+        "sparkline": [
+          0.306,
+          0.288,
+          0.293,
+          0.316,
+          0.334,
+          0.328,
+          0.3,
+          0.274,
+          0.275,
+          0.302,
+          0.335,
+          0.346
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.296,
+        "display": "30",
+        "delta": 0.002,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.244,
+          0.242,
+          0.243,
+          0.245,
+          0.246,
+          0.244,
+          0.24,
+          0.236,
+          0.237,
+          0.242,
+          0.248,
+          0.25
+        ]
+      }
+    ],
+    "2026": [
+      {
+        "metric": "development_pressure",
+        "label": "Development pressure",
+        "value": 0.225,
+        "display": "22",
+        "delta": 0.033,
+        "deltaDisplay": "+3",
+        "trend": "worsened",
+        "sparkline": [
+          0.101,
+          0.103,
+          0.119,
+          0.144,
+          0.166,
+          0.179,
+          0.177,
+          0.16,
+          0.136,
+          0.113,
+          0.101,
+          0.103
+        ]
+      },
+      {
+        "metric": "mobility_access",
+        "label": "Mobility access",
+        "value": 0.269,
+        "display": "27",
+        "delta": 0.021,
+        "deltaDisplay": "+2",
+        "trend": "improved",
+        "sparkline": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "metric": "air_quality",
+        "label": "Air quality",
+        "value": 0.27,
+        "display": "27",
+        "delta": -0.36,
+        "deltaDisplay": "-36",
+        "trend": "worsened",
+        "sparkline": [
+          0.281,
+          0.282,
+          0.284,
+          0.283,
+          0.279,
+          0.271,
+          0.266,
+          0.269,
+          0.279,
+          0.289,
+          0.293,
+          0.288
+        ]
+      },
+      {
+        "metric": "green_cover",
+        "label": "Green cover",
+        "value": 0.349,
+        "display": "35",
+        "delta": -0.023,
+        "deltaDisplay": "-2",
+        "trend": "worsened",
+        "sparkline": [
+          0.287,
+          0.292,
+          0.314,
+          0.332,
+          0.326,
+          0.298,
+          0.273,
+          0.274,
+          0.302,
+          0.335,
+          0.345,
+          0.325
+        ]
+      },
+      {
+        "metric": "deprivation_weighted_opportunity",
+        "label": "Opportunity fairness",
+        "value": 0.296,
+        "display": "30",
+        "delta": 0.002,
+        "deltaDisplay": "+0",
+        "trend": "stable",
+        "sparkline": [
+          0.242,
+          0.243,
+          0.245,
+          0.246,
+          0.244,
+          0.239,
+          0.236,
+          0.237,
+          0.242,
+          0.248,
+          0.25,
+          0.247
+        ]
+      }
+    ]
+  },
+  "commitsByYear": {
+    "2016": [
+      {
+        "id": "2016-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2016-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2016-green",
+        "symbol": "+",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2016-air",
+        "symbol": "+",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2016-fairness",
+        "symbol": "~",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2016-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2017": [
+      {
+        "id": "2017-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.004,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2017-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.004,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2017-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.003,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2017-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.001,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2017-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2017-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.004,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2018": [
+      {
+        "id": "2018-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.007,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2018-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.009,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2018-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.006,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2018-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.002,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2018-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.0,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2018-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2019": [
+      {
+        "id": "2019-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.01,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2019-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.013,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2019-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.007,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2019-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.003,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2019-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.001,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2019-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2020": [
+      {
+        "id": "2020-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.013,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2020-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.018,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2020-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.008,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2020-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.004,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2020-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.001,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2020-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2021": [
+      {
+        "id": "2021-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.016,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2021-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.022,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2021-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.01,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2021-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.005,
+        "confidence": "high",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2021-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.001,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2021-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2022": [
+      {
+        "id": "2022-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.019,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2022-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.027,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2022-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.013,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2022-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.158,
+        "confidence": "high",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2022-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.001,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2022-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2023": [
+      {
+        "id": "2023-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.023,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2023-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.027,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2023-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.017,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2023-air",
+        "symbol": "+",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": 0.189,
+        "confidence": "high",
+        "tone": "improved",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2023-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.002,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2023-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2024": [
+      {
+        "id": "2024-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.026,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2024-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.027,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2024-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.02,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2024-air",
+        "symbol": "+",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": 0.222,
+        "confidence": "high",
+        "tone": "improved",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2024-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.002,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2024-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.003,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2025": [
+      {
+        "id": "2025-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.03,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2025-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.027,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2025-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.022,
+        "confidence": "low",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2025-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.359,
+        "confidence": "high",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2025-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.002,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2025-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.004,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ],
+    "2026": [
+      {
+        "id": "2026-development",
+        "symbol": "+",
+        "type": "development",
+        "title": "Development pressure concentrated around waterfront and city-centre zones",
+        "delta": 0.033,
+        "confidence": "medium",
+        "tone": "increase",
+        "evidence": [
+          "OSM building footprint context",
+          "Planning pressure proxy",
+          "Waterfront/city-centre spatial anchors"
+        ]
+      },
+      {
+        "id": "2026-mobility",
+        "symbol": "+",
+        "type": "mobility",
+        "title": "Bike and active-travel access strengthens around central corridors",
+        "delta": 0.027,
+        "confidence": "medium",
+        "tone": "improved",
+        "evidence": [
+          "Belfast Bikes historical source plan",
+          "OSM cycleway/station context",
+          "Transit node access proxy"
+        ]
+      },
+      {
+        "id": "2026-green",
+        "symbol": "-",
+        "type": "green",
+        "title": "Green-cover signal holds around parks but weakens near development pressure",
+        "delta": -0.023,
+        "confidence": "medium",
+        "tone": "worsened",
+        "evidence": [
+          "NDVI/NDBI raster source availability",
+          "OSM parks and green-space context",
+          "Development-pressure counter-signal"
+        ]
+      },
+      {
+        "id": "2026-air",
+        "symbol": "-",
+        "type": "air",
+        "title": "Air-quality exposure proxy improves, with road corridors still flagged",
+        "delta": -0.36,
+        "confidence": "high",
+        "tone": "worsened",
+        "evidence": [
+          "NI Air Belfast Centre hourly archive",
+          "Road-pressure proxy",
+          "Green-cover modifier"
+        ]
+      },
+      {
+        "id": "2026-fairness",
+        "symbol": "!",
+        "type": "fairness",
+        "title": "Opportunity gains remain uneven after deprivation weighting",
+        "delta": 0.002,
+        "confidence": "medium",
+        "tone": "risk",
+        "evidence": [
+          "NISRA census/deprivation source plan",
+          "Transport and services access proxy",
+          "Fairness-weighted opportunity score"
+        ]
+      },
+      {
+        "id": "2026-yearly",
+        "symbol": "~",
+        "type": "diff",
+        "title": "Year-on-year city diff updated from previous replay state",
+        "delta": 0.004,
+        "confidence": "medium",
+        "tone": "changed",
+        "evidence": [
+          "Deterministic yearly grid metrics",
+          "2016 baseline comparison",
+          "Previous-year delta"
+        ]
+      }
+    ]
+  },
+  "populationByYear": {
+    "2016": 616000,
+    "2017": 619000,
+    "2018": 623000,
+    "2019": 627000,
+    "2020": 631000,
+    "2021": 635000,
+    "2022": 639000,
+    "2023": 643000,
+    "2024": 647000,
+    "2025": 652000
+  },
+  "airQualityByYear": {
+    "2016": 0.603,
+    "2017": 0.603,
+    "2018": 0.603,
+    "2019": 0.603,
+    "2020": 0.603,
+    "2021": 0.603,
+    "2022": 0.341,
+    "2023": 0.941,
+    "2024": 1.0,
+    "2025": 0.0,
+    "2026": 0.0
+  },
+  "layers": [
+    {
+      "id": "development_pressure",
+      "label": "Development",
+      "color": "#f97316"
+    },
+    {
+      "id": "mobility_access",
+      "label": "Mobility",
+      "color": "#2563eb"
+    },
+    {
+      "id": "green_cover",
+      "label": "Green cover",
+      "color": "#16a34a"
+    },
+    {
+      "id": "air_quality",
+      "label": "Air quality",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "deprivation_weighted_opportunity",
+      "label": "Opportunity",
+      "color": "#0f766e"
+    },
+    {
+      "id": "fairness_context",
+      "label": "Fairness",
+      "color": "#e11d48"
+    }
+  ],
+  "sources": [
+    {
+      "name": "OpenStreetMap building export",
+      "status": "local",
+      "confidence": "medium",
+      "note": "3D city skeleton and development proxy"
+    },
+    {
+      "name": "NI Air Belfast Centre archive",
+      "status": "local",
+      "confidence": "high for 2021 input",
+      "note": "Air-quality exposure trend proxy"
+    },
+    {
+      "name": "NISRA census/population files",
+      "status": "local",
+      "confidence": "high for official totals",
+      "note": "Population/fairness context"
+    },
+    {
+      "name": "Sentinel/Landsat rasters",
+      "status": "local sources",
+      "confidence": "medium pending tile ETL",
+      "note": "Green/built-up evidence anchors"
+    },
+    {
+      "name": "Belfast Bikes/Translink/planning",
+      "status": "planned source inventory",
+      "confidence": "proxy",
+      "note": "Mode A contract ready for full ingestion"
+    }
+  ]
+}

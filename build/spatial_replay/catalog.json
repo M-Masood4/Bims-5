@@ -4,7 +4,7 @@
     "source_manifest_schema": "schemas/source_manifest.schema.json",
     "sql_model": "schemas/replay_spatial_model.sql"
   },
-  "dataset_count": 22,
+  "dataset_count": 26,
   "datasets": [
     {
       "dataset_id": "belfast_ndbi_2016",
@@ -22,6 +22,24 @@
       },
       "size_bytes": 41994015,
       "source_path": "2016/belfast_ndbi_2016.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_ndvi_2016",
+      "format": "tif",
+      "layer_kind": "raster_indicator_ndvi",
+      "raster_summary": {
+        "file_name": "belfast_ndvi_2016.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 41061924,
+      "source_path": "2016/belfast_ndvi_2016.tif",
       "source_year": 2016
     },
     {
@@ -58,6 +76,42 @@
       },
       "size_bytes": 67838658,
       "source_path": "2016/belfast_rgb_2016.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_rgb_2018",
+      "format": "tif",
+      "layer_kind": "raster_basemap_rgb",
+      "raster_summary": {
+        "file_name": "belfast_rgb_2018.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 74901629,
+      "source_path": "2016/belfast_rgb_2018.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_rgb_2020",
+      "format": "tif",
+      "layer_kind": "raster_basemap_rgb",
+      "raster_summary": {
+        "file_name": "belfast_rgb_2020.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 74314279,
+      "source_path": "2016/belfast_rgb_2020.tif",
       "source_year": 2016
     },
     {
@@ -3042,6 +3096,77 @@
           "relation/2119642"
         ],
         "timestamp": "2026-04-25T11:36:22Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_ni_buildings_3d_core",
+      "format": "geojson",
+      "layer_kind": "building_footprint",
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 20564986,
+      "source_path": "derived/2026/belfast_ni_buildings_3d_core.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -6.0009,
+          54.57429,
+          -5.87931,
+          54.61626
+        ],
+        "feature_count": 22000,
+        "geometry_types": [
+          {
+            "count": 21991,
+            "name": "Polygon"
+          },
+          {
+            "count": 9,
+            "name": "MultiPolygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "belfast_ni_buildings_3d_core_2026",
+        "osm_id_count": 0,
+        "property_keys_top": [
+          {
+            "count": 22000,
+            "name": "building"
+          },
+          {
+            "count": 22000,
+            "name": "footprint_area_m2"
+          },
+          {
+            "count": 22000,
+            "name": "replay_height_m"
+          },
+          {
+            "count": 22000,
+            "name": "replay_year"
+          },
+          {
+            "count": 22000,
+            "name": "source_id"
+          },
+          {
+            "count": 1568,
+            "name": "levels"
+          },
+          {
+            "count": 1082,
+            "name": "name"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/134752205",
+          "way/189332192",
+          "way/148543735",
+          "way/128380340",
+          "way/152348579"
+        ]
       }
     }
   ],

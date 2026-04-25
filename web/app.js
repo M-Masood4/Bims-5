@@ -1,93 +1,81 @@
 const state = {
   manifest: null,
+  modeA: null,
   map: null,
-  loadedLayers: new Map(),
-  activeLayerIds: new Set()
-};
-
-const elements = {
-  manifestStatus: document.querySelector("#manifestStatus"),
-  yearSelect: document.querySelector("#yearSelect"),
-  yearSummary: document.querySelector("#yearSummary"),
-  layerToggles: document.querySelector("#layerToggles"),
-  summaryStats: document.querySelector("#summaryStats"),
-  provenanceList: document.querySelector("#provenanceList"),
-  resetView: document.querySelector("#resetView"),
-  mapNotice: document.querySelector("#mapNotice")
-};
-
-const statusLabels = {
-  ready: "ready",
-  "pending-etl": "pending",
-  "source-available": "source",
-  "source-available-heavy": "heavy"
-};
-
-function formatBytes(bytes) {
-  if (!Number.isFinite(bytes)) return "n/a";
-  const units = ["B", "KB", "MB", "GB"];
-  let value = bytes;
-  let unitIndex = 0;
-  while (value >= 1024 && unitIndex < units.length - 1) {
-    value /= 1024;
-    unitIndex += 1;
+  year: 2026,
+  metric: "development_pressure",
+  playing: false,
+  timer: null,
+  pitch3d: false,
+  layers: {
+    buildings: true,
+    development_pressure: true,
+    mobility_access: true,
+    green_cover: true,
+    air_quality: true,
+    deprivation_weighted_opportunity: true,
+    fairness_context: false
   }
-  return `${value >= 10 ? value.toFixed(0) : value.toFixed(1)} ${units[unitIndex]}`;
-}
+};
+
+const els = {
+  layerToggles: document.querySelector("#layerToggles"),
+  sourceTotal: document.querySelector("#sourceTotal"),
+  lightMap: document.querySelector("#lightMap"),
+  darkMap: document.querySelector("#darkMap"),
+  toggle3d: document.querySelector("#toggle3d"),
+  fitTool: document.querySelector("#fitTool"),
+  yearSlider: document.querySelector("#yearSlider"),
+  yearTicks: document.querySelector("#yearTicks"),
+  currentYearLabel: document.querySelector("#currentYearLabel"),
+  playButton: document.querySelector("#playButton"),
+  presentButton: document.querySelector("#presentButton"),
+  manifestStatus: document.querySelector("#manifestStatus"),
+  metricCards: document.querySelector("#metricCards"),
+  cityCommits: document.querySelector("#cityCommits"),
+  evidencePanel: document.querySelector("#evidencePanel"),
+  evidencePopover: document.querySelector("#evidencePopover"),
+  legendMetric: document.querySelector("#legendMetric")
+};
+
+const LAYER_REGISTRY = [
+  { id: "buildings", label: "Buildings", icon: "▥", metric: null },
+  { id: "development_pressure", label: "Development", icon: "▦", metric: "development_pressure" },
+  { id: "mobility_access", label: "Mobility", icon: "⌁", metric: "mobility_access" },
+  { id: "green_cover", label: "Green cover", icon: "♧", metric: "green_cover" },
+  { id: "air_quality", label: "Air quality", icon: "☁", metric: "air_quality" },
+  { id: "deprivation_weighted_opportunity", label: "Opportunity", icon: "★", metric: "deprivation_weighted_opportunity" },
+  { id: "fairness_context", label: "Fairness", icon: "⚖", metric: "fairness_context" }
+];
+
+const METRIC_LABELS = {
+  development_pressure: "Development pressure",
+  mobility_access: "Mobility access",
+  green_cover: "Green cover",
+  air_quality: "Air quality",
+  deprivation_weighted_opportunity: "Opportunity fairness",
+  fairness_context: "Fairness context"
+};
+
+const METRIC_COLOURS = {
+  development_pressure: ["#2166ac", "#f7f7f7", "#b2182b"],
+  mobility_access: ["#f97316", "#f7f7f7", "#2563eb"],
+  green_cover: ["#b45309", "#f7f7f7", "#16a34a"],
+  air_quality: ["#7c2d12", "#f7f7f7", "#7c3aed"],
+  deprivation_weighted_opportunity: ["#9f1239", "#f7f7f7", "#0f766e"],
+  fairness_context: ["#334155", "#f7f7f7", "#e11d48"]
+};
 
 function formatNumber(value) {
-  return Number.isFinite(value) ? value.toLocaleString() : "n/a";
+  return Number.isFinite(value) ? value.toLocaleString() : "0";
 }
 
-function layerColor(layer) {
-  return layer.render?.color || "#4b5563";
-}
-
-function apiUrlForLayer(layer) {
-  return layer.apiPath || `/${layer.path}`;
-}
-
-function initMap(manifest) {
-  const [lat, lng] = manifest.viewport.center;
-  state.map = L.map("map", {
-    zoomControl: true,
-    preferCanvas: true
-  }).setView([lat, lng], manifest.viewport.zoom);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(state.map);
-
-  fitFocusBounds();
-}
-
-function fitFocusBounds() {
-  const bbox = state.manifest?.viewport?.focusBbox;
-  if (!bbox || !state.map) return;
-  state.map.fitBounds(
-    [
-      [bbox[1], bbox[0]],
-      [bbox[3], bbox[2]]
-    ],
-    { padding: [24, 24] }
-  );
-}
-
-function buildPopup(layer, feature) {
-  const props = feature.properties || {};
-  const title = props.name || props["@id"] || layer.label;
-  const type = props.amenity || props.highway || props.building || props.landuse || props.natural || props.tourism || layer.category;
-  const sourceId = props["@id"] ? `<div class="popup-line">${props["@id"]}</div>` : "";
-  return `
-    <div class="popup-title">${escapeHtml(title)}</div>
-    <div class="popup-line">${escapeHtml(layer.label)} - ${escapeHtml(type || "feature")}</div>
-    ${sourceId}
-  `;
+function pct(value) {
+  return `${Math.round(value * 100)}%`;
 }
 
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -95,243 +83,345 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-function createGeoJsonLayer(layer, data) {
-  const color = layerColor(layer);
-  return L.geoJSON(data, {
-    style: () => ({
-      color,
-      weight: layer.render?.weight ?? 2,
-      opacity: layer.render?.opacity ?? 0.78,
-      fillColor: color,
-      fillOpacity: layer.render?.fillOpacity ?? 0.12
-    }),
-    pointToLayer: (_feature, latlng) =>
-      L.circleMarker(latlng, {
-        radius: 5,
-        color,
-        weight: 2,
-        fillColor: "#fff",
-        fillOpacity: 0.92
-      }),
-    onEachFeature: (feature, leafletLayer) => {
-      leafletLayer.bindPopup(buildPopup(layer, feature));
-    }
+async function json(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+  return response.json();
+}
+
+async function loadData() {
+  const [manifest, modeA] = await Promise.all([
+    json("/api/manifest"),
+    json("/data/mode-a/summary.json")
+  ]);
+  state.manifest = manifest;
+  state.modeA = modeA;
+  state.year = modeA.years.at(-1);
+  els.yearSlider.min = modeA.years[0];
+  els.yearSlider.max = modeA.years.at(-1);
+  els.yearSlider.value = state.year;
+  els.sourceTotal.textContent = `${modeA.sources.length} active`;
+  els.manifestStatus.textContent = `${modeA.cellCount} grid cells · ${manifest.sourceArtifacts.length} source artifacts`;
+}
+
+function initMap() {
+  mapboxgl.accessToken = state.manifest.mapbox.token;
+  state.map = new mapboxgl.Map({
+    container: "map",
+    style: "mapbox://styles/mapbox/light-v11",
+    center: state.manifest.viewport.center,
+    zoom: 11.8,
+    pitch: 24,
+    bearing: -16,
+    antialias: true
+  });
+  state.map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "bottom-right");
+  state.map.on("load", () => {
+    addModeALayers();
+    renderAll();
+  });
+  state.map.on("click", "mode-a-grid-fill", (event) => {
+    const feature = event.features?.[0];
+    if (feature) showCellEvidence(feature, event.lngLat);
+  });
+  state.map.on("mouseenter", "mode-a-grid-fill", () => {
+    state.map.getCanvas().style.cursor = "pointer";
+  });
+  state.map.on("mouseleave", "mode-a-grid-fill", () => {
+    state.map.getCanvas().style.cursor = "";
   });
 }
 
-async function toggleLayer(layer, enabled) {
-  if (!state.map || layer.metadataOnly) return;
-
-  if (!enabled) {
-    const existing = state.loadedLayers.get(layer.id);
-    if (existing) {
-      state.map.removeLayer(existing.leafletLayer);
+function addModeALayers() {
+  state.map.addSource("mode-a-grid", {
+    type: "geojson",
+    data: `/data/mode-a/grid_${state.year}.geojson`,
+    promoteId: "cell_id"
+  });
+  state.map.addLayer({
+    id: "mode-a-grid-fill",
+    type: "fill",
+    source: "mode-a-grid",
+    paint: gridPaint()
+  });
+  state.map.addLayer({
+    id: "mode-a-grid-line",
+    type: "line",
+    source: "mode-a-grid",
+    paint: {
+      "line-color": "rgba(15,23,42,0.24)",
+      "line-width": 0.45
     }
-    state.activeLayerIds.delete(layer.id);
-    updateSummary();
-    return;
-  }
+  });
 
-  state.activeLayerIds.add(layer.id);
-  const cached = state.loadedLayers.get(layer.id);
-  if (cached) {
-    cached.leafletLayer.addTo(state.map);
-    updateSummary();
-    return;
-  }
-
-  setNotice(`Loading ${layer.label}...`);
-  try {
-    const response = await fetch(apiUrlForLayer(layer));
-    if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
-    }
-    const data = await response.json();
-    const leafletLayer = createGeoJsonLayer(layer, data).addTo(state.map);
-    state.loadedLayers.set(layer.id, {
-      layer,
-      leafletLayer,
-      featureCount: Array.isArray(data.features) ? data.features.length : layer.featureCount || 0
+  const buildingLayer = state.manifest.layers.find((layer) => layer.id === "belfast-ni-buildings-3d");
+  if (buildingLayer) {
+    state.map.addSource("replay-buildings", {
+      type: "geojson",
+      data: buildingLayer.apiPath
     });
-    setNotice(`Loaded ${layer.label}`);
-  } catch (error) {
-    state.activeLayerIds.delete(layer.id);
-    setNotice(`Could not load ${layer.label}: ${error.message}`);
-    const checkbox = document.querySelector(`[data-layer-id="${layer.id}"]`);
-    if (checkbox) checkbox.checked = false;
-  }
-  updateSummary();
-}
-
-function setNotice(message) {
-  elements.mapNotice.textContent = message;
-  if (message) {
-    window.clearTimeout(setNotice.timer);
-    setNotice.timer = window.setTimeout(() => {
-      elements.mapNotice.textContent = "";
-    }, 3600);
+    state.map.addLayer({
+      id: "replay-buildings",
+      type: "fill-extrusion",
+      source: "replay-buildings",
+      minzoom: 10,
+      paint: {
+        "fill-extrusion-color": "#0f766e",
+        "fill-extrusion-height": ["*", ["coalesce", ["to-number", ["get", "replay_height_m"]], 8], 0.72],
+        "fill-extrusion-opacity": 0.36
+      }
+    });
   }
 }
 
-function timelineForYear(year) {
-  return state.manifest.timeline.find((item) => item.year === year);
+function gridPaint() {
+  const [low, mid, high] = METRIC_COLOURS[state.metric] || METRIC_COLOURS.development_pressure;
+  return {
+    "fill-color": [
+      "interpolate",
+      ["linear"],
+      ["coalesce", ["to-number", ["get", state.metric]], 0.5],
+      0,
+      low,
+      0.5,
+      mid,
+      1,
+      high
+    ],
+    "fill-opacity": [
+      "case",
+      ["boolean", ["feature-state", "hover"], false],
+      0.72,
+      state.layers[state.metric] === false ? 0 : 0.54
+    ]
+  };
 }
 
-function layersForYear(year) {
-  return state.manifest.layers.filter((layer) => layer.year === year);
+function renderAll() {
+  renderToggles();
+  renderTimeline();
+  renderYear();
 }
 
-function renderYearOptions() {
-  elements.yearSelect.innerHTML = "";
-  for (const year of state.manifest.years) {
-    const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
-    if (year === 2026) option.selected = true;
-    elements.yearSelect.append(option);
-  }
-}
-
-function renderYear(year) {
-  const timeline = timelineForYear(year);
-  const layers = layersForYear(year);
-
-  elements.yearSummary.textContent = timeline?.summary || "No timeline metadata is available for this year.";
-  renderLayerToggles(layers);
-  renderProvenance(year, layers);
-  updateSummary();
-
-  const visibleLayers = layers.filter((layer) => layer.defaultVisible && !layer.metadataOnly && layer.status === "ready");
-  for (const layer of visibleLayers) {
-    const checkbox = document.querySelector(`[data-layer-id="${layer.id}"]`);
-    if (checkbox) checkbox.checked = true;
-    toggleLayer(layer, true);
-  }
-
-  if (!visibleLayers.length) {
-    setNotice(timeline?.status === "pending-etl" ? "No renderable layers for this year yet." : "");
-  }
-}
-
-function renderLayerToggles(layers) {
-  elements.layerToggles.innerHTML = "";
-  if (!layers.length) {
-    elements.layerToggles.innerHTML = '<div class="empty-state">No layers have been registered for this year.</div>';
-    return;
-  }
-
-  for (const layer of layers) {
-    const row = document.createElement("label");
-    row.className = "layer-row";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.dataset.layerId = layer.id;
-    checkbox.disabled = layer.metadataOnly || layer.status !== "ready";
-    checkbox.addEventListener("change", () => toggleLayer(layer, checkbox.checked));
-
-    const swatch = document.createElement("span");
-    swatch.className = "swatch";
-    swatch.style.background = layer.metadataOnly ? "#f3f4f6" : layerColor(layer);
-
-    const content = document.createElement("span");
-    const status = statusLabels[layer.status] || layer.status;
-    content.innerHTML = `
-      <span class="layer-label">
-        <span>${escapeHtml(layer.label)}</span>
-        <span class="badge ${escapeHtml(layer.status)}">${escapeHtml(status)}</span>
-      </span>
-      <span class="layer-meta">${escapeHtml(layer.type)} - ${formatNumber(layer.featureCount)} features - ${formatBytes(layer.byteSize)}</span>
+function renderToggles() {
+  els.layerToggles.innerHTML = "";
+  for (const layer of LAYER_REGISTRY) {
+    const enabled = state.layers[layer.id] !== false;
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = `switch-row${enabled ? " active" : ""}`;
+    row.innerHTML = `
+      <span class="switch-icon">${escapeHtml(layer.icon)}</span>
+      <span class="switch-copy"><strong>${escapeHtml(layer.label)}</strong><small>${layer.metric ? "grid diff overlay" : "3D context"}</small></span>
+      <span class="switch-knob"></span>
     `;
-
-    row.append(checkbox, swatch, content);
-    elements.layerToggles.append(row);
+    row.addEventListener("click", () => {
+      state.layers[layer.id] = !enabled;
+      if (layer.metric && state.layers[layer.id]) state.metric = layer.metric;
+      updateMapStyles();
+      renderToggles();
+      renderMetrics();
+    });
+    els.layerToggles.append(row);
   }
 }
 
-function renderProvenance(year, layers) {
-  const artifacts = state.manifest.sourceArtifacts.filter((artifact) => artifact.year === year);
-  const items = [...layers, ...artifacts];
-  elements.provenanceList.innerHTML = "";
-
-  if (!items.length) {
-    elements.provenanceList.innerHTML = '<div class="empty-state">No source artifacts are registered for this year.</div>';
-    return;
+function renderTimeline() {
+  els.yearTicks.innerHTML = "";
+  for (const year of state.modeA.years) {
+    const tick = document.createElement("button");
+    tick.type = "button";
+    tick.textContent = year;
+    tick.className = year === state.year ? "active" : "";
+    tick.addEventListener("click", () => {
+      state.year = year;
+      renderYear();
+    });
+    els.yearTicks.append(tick);
   }
+}
 
-  for (const item of items) {
-    const provenance = item.provenance || {};
-    const node = document.createElement("div");
-    node.className = "provenance-item";
+function renderYear() {
+  els.currentYearLabel.textContent = state.year;
+  els.yearSlider.value = state.year;
+  document.querySelectorAll("#yearTicks button").forEach((button) => {
+    button.classList.toggle("active", Number(button.textContent) === state.year);
+  });
+  const source = state.map?.getSource("mode-a-grid");
+  if (source) source.setData(`/data/mode-a/grid_${state.year}.geojson`);
+  updateMapStyles();
+  renderMetrics();
+  renderCommits();
+}
+
+function updateMapStyles() {
+  if (!state.map?.getLayer("mode-a-grid-fill")) return;
+  els.legendMetric.textContent = METRIC_LABELS[state.metric] || state.metric;
+  state.map.setPaintProperty("mode-a-grid-fill", "fill-color", gridPaint()["fill-color"]);
+  state.map.setPaintProperty("mode-a-grid-fill", "fill-opacity", gridPaint()["fill-opacity"]);
+  if (state.map.getLayer("replay-buildings")) {
+    state.map.setLayoutProperty("replay-buildings", "visibility", state.layers.buildings ? "visible" : "none");
+    state.map.setPaintProperty("replay-buildings", "fill-extrusion-height", [
+      "*",
+      ["coalesce", ["to-number", ["get", "replay_height_m"]], 8],
+      state.pitch3d ? 1.0 : 0.28
+    ]);
+    state.map.easeTo({ pitch: state.pitch3d ? 58 : 24, bearing: state.pitch3d ? -24 : -12, duration: 550 });
+  }
+}
+
+function renderMetrics() {
+  const cards = state.modeA.metricsByYear[String(state.year)] || [];
+  els.metricCards.innerHTML = "";
+  for (const card of cards) {
+    const node = document.createElement("article");
+    node.className = `metric-card ${card.trend}`;
+    const series = card.sparkline.map((point, index) => `${index * 12},${42 - point * 34}`).join(" ");
     node.innerHTML = `
-      <div class="provenance-name">${escapeHtml(item.label)}</div>
-      <div class="provenance-meta">${escapeHtml(item.path || "no path")} - ${formatBytes(item.byteSize)}</div>
-      <div class="provenance-meta">${escapeHtml(provenance.sourceName || item.status)} - ${escapeHtml(provenance.license || "license pending")}</div>
+      <div class="metric-icon">${iconForMetric(card.metric)}</div>
+      <div class="metric-copy">
+        <strong>${escapeHtml(card.label)}</strong>
+        <span class="metric-value">${escapeHtml(card.display)}</span>
+        <small>${escapeHtml(card.deltaDisplay)} vs 2016 · ${escapeHtml(card.trend)}</small>
+      </div>
+      <svg viewBox="0 0 120 44" aria-hidden="true"><polyline points="${series}" /></svg>
     `;
-    elements.provenanceList.append(node);
+    els.metricCards.append(node);
   }
 }
 
-function updateSummary() {
-  const year = Number(elements.yearSelect.value);
-  const layers = layersForYear(year);
-  const timeline = timelineForYear(year);
-  const renderable = layers.filter((layer) => !layer.metadataOnly && layer.status === "ready");
-  const declaredFeatures = renderable.reduce((sum, layer) => sum + (layer.featureCount || 0), 0);
-  const activeFeatures = [...state.activeLayerIds].reduce((sum, id) => {
-    const cached = state.loadedLayers.get(id);
-    return sum + (cached?.featureCount || 0);
-  }, 0);
+function iconForMetric(metric) {
+  if (metric.includes("development")) return "▦";
+  if (metric.includes("mobility")) return "⌁";
+  if (metric.includes("air")) return "☁";
+  if (metric.includes("green")) return "♧";
+  return "★";
+}
 
-  elements.summaryStats.innerHTML = `
-    <dt>Status</dt><dd>${escapeHtml(timeline?.status || "unknown")}</dd>
-    <dt>Registered layers</dt><dd>${formatNumber(layers.length)}</dd>
-    <dt>Renderable layers</dt><dd>${formatNumber(renderable.length)}</dd>
-    <dt>Declared features</dt><dd>${formatNumber(declaredFeatures)}</dd>
-    <dt>Visible features</dt><dd>${formatNumber(activeFeatures)}</dd>
+function renderCommits() {
+  const commits = state.modeA.commitsByYear[String(state.year)] || [];
+  els.cityCommits.innerHTML = "";
+  for (const commit of commits) {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = `commit ${commit.tone}`;
+    row.innerHTML = `
+      <span class="commit-symbol">${escapeHtml(commit.symbol)}</span>
+      <span><strong>${escapeHtml(commit.title)}</strong><small>${escapeHtml(commit.type)} · ${escapeHtml(commit.confidence)} confidence · Δ ${escapeHtml(commit.delta)}</small></span>
+    `;
+    row.addEventListener("click", () => showCommitEvidence(commit));
+    els.cityCommits.append(row);
+  }
+}
+
+function showCommitEvidence(commit) {
+  els.evidencePanel.innerHTML = `
+    <strong>${escapeHtml(commit.title)}</strong>
+    <dl>
+      <dt>Diff</dt><dd>${escapeHtml(commit.symbol)} ${escapeHtml(commit.tone)} · Δ ${escapeHtml(commit.delta)}</dd>
+      <dt>Confidence</dt><dd>${escapeHtml(commit.confidence)}</dd>
+      <dt>Evidence</dt><dd>${commit.evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
+    </dl>
   `;
 }
 
-function clearMapLayers() {
-  for (const { leafletLayer } of state.loadedLayers.values()) {
-    state.map.removeLayer(leafletLayer);
-  }
-  state.activeLayerIds.clear();
+function showCellEvidence(feature, lngLat) {
+  const props = feature.properties;
+  const evidence = JSON.parse(props.evidence || "[]");
+  els.evidencePanel.innerHTML = `
+    <strong>Grid cell ${escapeHtml(props.cell_id)}</strong>
+    <dl>
+      <dt>Dominant change</dt><dd>${escapeHtml(props.dominant_change)}</dd>
+      <dt>Confidence</dt><dd>${escapeHtml(props.confidence)}</dd>
+      <dt>${escapeHtml(METRIC_LABELS[state.metric])}</dt><dd>${pct(Number(props[state.metric]))} · Δ ${escapeHtml(props[`${state.metric}_delta_2016`])}</dd>
+      <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
+    </dl>
+  `;
+  els.evidencePopover.hidden = false;
+  els.evidencePopover.innerHTML = `<strong>${escapeHtml(props.dominant_change)}</strong><span>${escapeHtml(props.confidence)} confidence</span>`;
+  const point = state.map.project(lngLat);
+  els.evidencePopover.style.left = `${Math.min(point.x + 12, window.innerWidth - 260)}px`;
+  els.evidencePopover.style.top = `${Math.max(point.y - 24, 80)}px`;
+  window.clearTimeout(showCellEvidence.timer);
+  showCellEvidence.timer = window.setTimeout(() => {
+    els.evidencePopover.hidden = true;
+  }, 2800);
 }
 
-async function loadManifest() {
-  const candidates = ["/api/manifest", "/api/replay-manifest.json", "../api/replay-manifest.json"];
-  let lastError;
-  for (const candidate of candidates) {
-    try {
-      const response = await fetch(candidate);
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-      return response.json();
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError;
+function fitBelfast() {
+  state.map.fitBounds(state.modeA.bbox, { padding: 60, pitch: state.pitch3d ? 58 : 24, bearing: state.pitch3d ? -24 : -12, duration: 800 });
 }
 
-async function start() {
-  try {
-    state.manifest = await loadManifest();
-    elements.manifestStatus.textContent = `${state.manifest.layers.length} layers registered - schema ${state.manifest.schemaVersion}`;
-    initMap(state.manifest);
-    renderYearOptions();
-    renderYear(Number(elements.yearSelect.value));
-  } catch (error) {
-    elements.manifestStatus.textContent = `Manifest load failed: ${error.message}`;
-    elements.mapNotice.textContent = "Start the local server with node server.js and reload.";
-  }
+function setStyle(style) {
+  const center = state.map.getCenter();
+  const zoom = state.map.getZoom();
+  const pitch = state.map.getPitch();
+  const bearing = state.map.getBearing();
+  state.map.setStyle(style);
+  state.map.once("style.load", () => {
+    state.map.jumpTo({ center, zoom, pitch, bearing });
+    addModeALayers();
+    renderYear();
+  });
 }
 
-elements.yearSelect.addEventListener("change", () => {
-  clearMapLayers();
-  renderYear(Number(elements.yearSelect.value));
+function togglePlay() {
+  state.playing = !state.playing;
+  els.playButton.textContent = state.playing ? "Ⅱ" : "▶";
+  clearInterval(state.timer);
+  if (!state.playing) return;
+  state.timer = setInterval(() => {
+    const index = state.modeA.years.indexOf(state.year);
+    state.year = state.modeA.years[(index + 1) % state.modeA.years.length];
+    renderYear();
+  }, 1050);
+}
+
+els.yearSlider.addEventListener("input", (event) => {
+  state.year = Number(event.target.value);
+  renderYear();
+});
+els.playButton.addEventListener("click", togglePlay);
+els.presentButton.addEventListener("click", () => {
+  state.year = 2026;
+  renderYear();
+});
+els.fitTool.addEventListener("click", fitBelfast);
+els.lightMap.addEventListener("click", () => {
+  els.lightMap.classList.add("active");
+  els.darkMap.classList.remove("active");
+  setStyle("mapbox://styles/mapbox/light-v11");
+});
+els.darkMap.addEventListener("click", () => {
+  els.darkMap.classList.add("active");
+  els.lightMap.classList.remove("active");
+  setStyle("mapbox://styles/mapbox/dark-v11");
+});
+els.toggle3d.addEventListener("click", () => {
+  state.pitch3d = !state.pitch3d;
+  els.toggle3d.classList.toggle("active", state.pitch3d);
+  updateMapStyles();
 });
 
-elements.resetView.addEventListener("click", fitFocusBounds);
+loadData()
+  .then(() => {
+    initMap();
+  })
+  .catch((error) => {
+    els.manifestStatus.textContent = `Load failed: ${error.message}`;
+  });
 
-start();
+window.BelfastGitModeA = {
+  state,
+  setYear: (year) => {
+    state.year = Number(year);
+    renderYear();
+  },
+  setMetric: (metric) => {
+    state.metric = metric;
+    state.layers[metric] = true;
+    updateMapStyles();
+    renderToggles();
+    renderMetrics();
+  }
+};

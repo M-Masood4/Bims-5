@@ -14,6 +14,10 @@ const mimeTypes = {
   ".js": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".md": "text/markdown; charset=utf-8",
+  ".png": "image/png",
+  ".webp": "image/webp",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
   ".tif": "image/tiff"
 };
 
@@ -73,6 +77,15 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === "/api/health") {
+    sendJson(res, 200, {
+      ok: true,
+      branch: "2016to2026",
+      manifest: fs.existsSync(manifestPath)
+    });
+    return;
+  }
+
   const layerMatch = pathname.match(/^\/api\/layers\/(\d{4})\/([a-z0-9_-]+)$/i);
   if (layerMatch) {
     try {
@@ -92,6 +105,16 @@ const server = http.createServer((req, res) => {
     } catch (error) {
       sendJson(res, 500, { error: "Could not load layer", detail: error.message });
     }
+    return;
+  }
+
+  if (pathname.startsWith("/data/mode-a/")) {
+    const modeAPath = safeResolve(webDir, pathname);
+    if (!modeAPath) {
+      sendJson(res, 400, { error: "Invalid Mode A data path" });
+      return;
+    }
+    streamFile(res, modeAPath);
     return;
   }
 

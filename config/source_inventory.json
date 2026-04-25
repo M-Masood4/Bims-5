@@ -375,6 +375,29 @@
         "refresh_method": "Store STAC/catalog metadata first; download scenes only when explicitly needed and keep checksums outside git if large.",
         "notes": "Prefer cloud-optimized metadata workflows and derived small rasters for committed fixtures."
       }
+    },
+    {
+      "id": "huggingface_optional_geospatial",
+      "name": "Hugging Face optional geospatial datasets and models",
+      "category": "external_research",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Use only when a HF-hosted dataset/model has clear Belfast relevance, licence, and source provenance.",
+      "access_pattern": "huggingface_hub_search_then_dataset_download",
+      "automation": "manual_review_required",
+      "ingestion_status": "searched_no_direct_belfast_dataset",
+      "local_paths": ["data/manual_drops/hugging_face/"],
+      "expected_formats": ["CSV", "GeoJSON", "Parquet", "JSON", "model output"],
+      "license": {
+        "status": "verify_per_repo",
+        "name": "Hugging Face repo-specific licence",
+        "url": "https://huggingface.co/datasets",
+        "attribution": "Record dataset repo ID, revision, card metadata, licence, and any upstream data attribution."
+      },
+      "provenance": {
+        "primary_url": "https://huggingface.co/datasets",
+        "refresh_method": "Search, inspect repo card, verify licence and geography, then download only the Belfast subset or small metadata fixture.",
+        "notes": "Initial plugin search did not find a direct Belfast geospatial dataset; see docs/huggingface_sources.md."
+      }
     }
   ],
   "status_values": {

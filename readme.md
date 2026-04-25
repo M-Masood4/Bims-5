@@ -1,14 +1,14 @@
-# Belfast Historical Replay 2016-2026
+# BelfastGit Mode A: Replay Belfast 2016-2026
 
-This branch combines the data-source, spatial ETL, and replay UI/API work for an end-to-end Belfast historical replay.
+This branch implements Mode A: a 2016-2026 city changelog for Belfast. It combines a Mapbox replay map, deterministic grid metrics, Git-style city commits, evidence/confidence panels, data provenance, and the current local source files.
 
 ## What It Does
 
-- Shows Belfast source data through a 2016-2026 timeline.
-- Uses the current 2026 OpenStreetMap/OpenData GeoJSON layers immediately.
-- Catalogues the 2016/2018/2020 raster assets, 2021 census input, population CSV, and air-quality CSV for ETL.
-- Separates layers into practical categories such as buildings, roads, transit, water, green space, landmarks, civic services, and environment.
-- Keeps provenance visible so future Google Earth/manual drops and external sources can be added safely.
+- Scrub a timeline from `2016` to `2026`.
+- See a 2D/2.5D time-lapse city diff across development, mobility, green cover, air quality, opportunity, and fairness.
+- Read deterministic “City commits” such as `+`, `-`, `~`, and `!` changes.
+- Click a grid cell or commit to inspect evidence and confidence.
+- Use local OSM, raster, census, population, air-quality, and source-inventory data without needing a remote database.
 
 ## Run The Product
 
@@ -25,6 +25,8 @@ Open `http://localhost:5173`.
 ```powershell
 python .\scripts\index_sources.py --output .\manifests\provenance_manifest.json
 python .\scripts\spatial_replay_etl.py --input data --output build\spatial_replay --pretty
+python .\scripts\build_ui_manifest.py
+python .\scripts\build_mode_a_replay.py
 ```
 
 ## Verify
