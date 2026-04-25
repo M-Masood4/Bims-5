@@ -1,0 +1,823 @@
+{
+  "entries": [
+    {
+      "file_extension": "tif",
+      "filename_year": 2016,
+      "folder_year": 2016,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndbi_2016.tif",
+      "primary_year": 2016,
+      "quality_flags": [],
+      "sha256": "2d2dd06502b2e9217d4087447eb54dee4f4d7fc0cbf02be90ae01a888744d929",
+      "size_bytes": 41994015,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2018,
+      "folder_year": 2016,
+      "layer": "ndvi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndvi_2018.tif",
+      "primary_year": 2018,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "404eb0e2e0f276c63a248668d0f8d884670230a3ab05e0c59f2ff1e76b557262",
+      "size_bytes": 47378843,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2018
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2016,
+      "folder_year": 2016,
+      "layer": "rgb",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_rgb_2016.tif",
+      "primary_year": 2016,
+      "quality_flags": [],
+      "sha256": "24874485829bbda8cc56f2ab06af8392918bfd286aa8cd1c1a2eb22586c32619",
+      "size_bytes": 67838658,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "bridges",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1017462,
+          44.3942358,
+          -68.9887003,
+          44.482988
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 24,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString"
+        ],
+        "timestamp": "2026-04-25T11:45:33Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_bridges_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "9c5ffde8466deeb20261721a672711716c3c2af31bebef1dfedb3559ca880edd",
+      "size_bytes": 19321,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "buildings",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1109119,
+          44.4007843,
+          -62.8756285,
+          46.0581013
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1498,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:40:26Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_buildings_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "30309cd10a6b4b9a33028f9cf6af66fed95c77d72d6aa128b96e847da8ea2d4a",
+      "size_bytes": 1609421,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "cycleways",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -70.8192444,
+          43.0783199,
+          -67.2254626,
+          45.1918619
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 37,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString",
+          "MultiLineString"
+        ],
+        "timestamp": "2026-04-25T11:43:30Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_cycleways_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "200e955f17baa4a8efdb0c9822dacb479aaee726da4b632382c9e15585dbf3a5",
+      "size_bytes": 1631884,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "green_spaces",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.106611,
+          44.3843949,
+          -62.7499816,
+          46.125
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 40,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "MultiPolygon",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:44:30Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_green_spaces_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "64fd26538de62235c59e1c7e153ff96af001b0b70924d05bc3d94dfe675025b0",
+      "size_bytes": 690453,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "major_roads",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1256936,
+          44.3750592,
+          -62.8204381,
+          46.079476
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 160,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString"
+        ],
+        "timestamp": "2026-04-25T11:42:28Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_major_roads_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "fe3825ddcb04a94f2df7a824919e1fc48859455a99ba14657c336c744fe3ed06",
+      "size_bytes": 226755,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "roads",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1301875,
+          44.3717481,
+          -62.8204381,
+          46.079476
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1369,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString"
+        ],
+        "timestamp": "2026-04-25T11:41:30Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_roads_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "9eca652ae304e05ff2d7403b5f08cc4c96ee8b49daddd7c80ce2a5baccbc0835",
+      "size_bytes": 1397533,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "transport_stops",
+      "media_type": "structured",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0351557,
+          44.4124118,
+          -68.9944355,
+          44.4554235
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 14,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString",
+          "Point"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_transportstops2026.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "8fd6ec8d4f02ce451125ebf4a319ef593d04894c2d46435934613b779fc98044",
+      "size_bytes": 6389,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "water",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1335598,
+          44.2777695,
+          -62.847329,
+          46.0825515
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 107,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "LineString",
+          "MultiLineString",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:44:30Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfast_water_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "33285784aed815d65753f9cfd4fa4259a0fa33e8914a610a9df2886fb1022c11",
+      "size_bytes": 445544,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "boundary",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1182822,
+          44.3674294,
+          -62.8520031,
+          46.0833889
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 4,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:50:39Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastboudnary2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "23f72830a7e69832284aabff0b9afb5bbda9b783cfce6bc4bb07649f73a175f7",
+      "size_bytes": 49166,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "commercial",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0323454,
+          44.4007843,
+          -68.9756963,
+          44.4393984
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 100,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastcommercial2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "c2e13ac1f850c6073adcd9959415c76e9b903f26bcb36a779be842adcbf8da6d",
+      "size_bytes": 110390,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "developmentland",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -68.9965736,
+          44.4215222,
+          -68.9964546,
+          44.4216125
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:48:36Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastdevelopmentland2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "8e45a1443e92346d92ebe872bfc73aff9077ec610d8ec5fed9f3d3c97c7b79ba",
+      "size_bytes": 1008,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "education",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0348706,
+          44.4094929,
+          -69.0045676,
+          44.4371051
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 7,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfasteducation2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "63ebeba532b2ecfaf6d8388ffeee785d36f37831f48d9afffae31c282002a007",
+      "size_bytes": 11080,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "healthcare",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0190465,
+          44.4109915,
+          -68.9926489,
+          44.4326672
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 8,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfasthealthcare2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "b45f734a0fa84b525780c814222822e6b8b0037ef08c6809ab34b4f3b0a84216",
+      "size_bytes": 11201,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "landmarks",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0138642,
+          44.4076883,
+          -62.8773682,
+          46.0794088
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 18,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:49:36Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastlandmarks2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "f6c3d2fd258d504dca0b36b78a93931d674a3aeabd84fd5c8932c7d393752709",
+      "size_bytes": 23659,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "landuse",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0891954,
+          44.405956,
+          -62.8753686,
+          46.0791285
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 24,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:48:36Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastlanduse2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "bd07b67540987b6bedaeb292746c7abcb6432af59d145e47f6e43c649c6186b1",
+      "size_bytes": 39605,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "places",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.1003154,
+          44.4014649,
+          -61.9707663,
+          47.0589738
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 14,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "MultiPolygon",
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:49:36Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastplaces2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "0f2f5be9455ab7b8e69ccaf92754496822c10accfa902e23dd9fd7d32a2dfce5",
+      "size_bytes": 3987312,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "publicservices",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0238381,
+          44.4119521,
+          -68.9814742,
+          44.4317927
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 12,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "Point",
+          "Polygon"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfastpublicservices2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "2d67f5d175ac00cb14df2f1a8a369e58ee76cd8dcbeaf97c3e2ee32aa6cd0313",
+      "size_bytes": 25714,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "transitroutes",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -69.0299353,
+          44.4118489,
+          -68.9942982,
+          44.4317903
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 13,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          "MultiLineString",
+          "Point"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z",
+        "type": "FeatureCollection"
+      },
+      "path": "data/2026/belfasttransitroutes2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "outside_target_belfast_ni_bbox"
+      ],
+      "sha256": "74aa551f7a2b3c489d3af11d152e07003815515560622114dcf9e5cf02ad52d9",
+      "size_bytes": 42313,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": null,
+      "folder_year": 2026,
+      "layer": "buildings_export",
+      "media_type": "vector",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/exportbuildings.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "f5621656079e20fab2ec9c8b2434eb8b115aaeb7e985b81a4c182ed7581ef738",
+      "size_bytes": 110224684,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    }
+  ],
+  "inventory_path": "config/source_inventory.json",
+  "project": "belfast-historical-replay-2016-2026",
+  "scan_dirs": [
+    "data"
+  ],
+  "schema_version": "1.0",
+  "summary": {
+    "file_count": 22,
+    "quality_flag_counts": {
+      "folder_filename_year_mismatch": 1,
+      "metadata_skipped": 1,
+      "outside_target_belfast_ni_bbox": 18
+    },
+    "source_counts": {
+      "osm_overpass": 19,
+      "repo_existing_2016_rasters": 3
+    },
+    "total_size_bytes": 277764948
+  },
+  "target_area": {
+    "approx_bbox_wgs84": [
+      -6.12,
+      54.45,
+      -5.74,
+      54.75
+    ],
+    "name": "Belfast, Northern Ireland",
+    "notes": "Approximate validation envelope only; not a legal or analytical boundary."
+  }
+}
