@@ -39,6 +39,12 @@ STYLE_MAP: dict[str, dict[str, Any]] = {
     "landuse": {"category": "land", "color": "#94a3b8", "defaultVisible": False},
     "developmentland": {"category": "development", "color": "#f59e0b", "defaultVisible": False},
     "boundary": {"category": "boundary", "color": "#e5e7eb", "defaultVisible": True},
+    "ni_roads_osm": {"category": "roads", "color": "#f97316", "defaultVisible": True},
+    "ni_cycleways_osm": {"category": "roads", "color": "#22c55e", "defaultVisible": True},
+    "ni_green_spaces_osm": {"category": "green", "color": "#22c55e", "defaultVisible": True},
+    "ni_water_osm": {"category": "water", "color": "#38bdf8", "defaultVisible": True},
+    "ni_transport_stops_osm": {"category": "transit", "color": "#2563eb", "defaultVisible": True},
+    "ni_services_osm": {"category": "services", "color": "#7c3aed", "defaultVisible": False},
 }
 
 
@@ -337,9 +343,13 @@ def build_manifest(root: Path) -> dict[str, Any]:
     generated_layer = build_buildings_layer(root)
     vector_layers = []
     source_artifacts = []
-    for path in sorted((root / "data/2026").glob("*.geojson")):
+    vector_source_paths = list(sorted((root / "data/2026").glob("*.geojson")))
+    vector_source_paths += list(sorted((root / "data/derived/2026").glob("belfast_ni_*_osm_2026.geojson")))
+    for path in vector_source_paths:
         if path.name == "exportbuildings.geojson":
             source_artifacts.append(source_artifact(root, path, 2026, "Raw full building export", "source-available-heavy"))
+            continue
+        if path.name == "belfast_ni_buildings_3d_core.geojson":
             continue
         layer = vector_layer_from_path(root, path)
         if layer["region"] == "belfast-ni":

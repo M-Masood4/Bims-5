@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-25T13:55:49.164941+00:00",
+  "generatedAt": "2026-04-25T14:23:32.043353+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -101,9 +101,9 @@
       "year": 2018,
       "label": "2018 replay",
       "status": "source-available",
-      "summary": "2 source artifact(s) are available for ETL and comparison.",
+      "summary": "3 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 2
+      "sourceArtifactCount": 3
     },
     {
       "year": 2019,
@@ -117,9 +117,9 @@
       "year": 2020,
       "label": "2020 replay",
       "status": "source-available",
-      "summary": "1 source artifact(s) are available for ETL and comparison.",
+      "summary": "3 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 1
+      "sourceArtifactCount": 3
     },
     {
       "year": 2021,
@@ -132,10 +132,10 @@
     {
       "year": 2022,
       "label": "2022 replay",
-      "status": "pending-source",
-      "summary": "No local source artifact is present yet; add Google Earth/manual, OSM history, official statistics, or Earth observation exports.",
+      "status": "source-available",
+      "summary": "1 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 0
+      "sourceArtifactCount": 1
     },
     {
       "year": 2023,
@@ -166,7 +166,7 @@
       "label": "2026 replay",
       "status": "ready",
       "summary": "Interactive Belfast NI 3D building replay is ready; local OSM/OpenData source files are catalogued for category expansion.",
-      "layerCount": 1,
+      "layerCount": 7,
       "sourceArtifactCount": 18
     }
   ],
@@ -209,7 +209,224 @@
         "sourceStatus": "derived-from-local-source"
       },
       "byteSize": 20564986,
-      "modifiedAt": "2026-04-25T13:55:48.225147+00:00"
+      "modifiedAt": "2026-04-25T14:23:30.936058+00:00"
+    },
+    {
+      "id": "source-ni-cycleways-osm",
+      "year": 2026,
+      "label": "Belfast Ni Cycleways Osm 2026",
+      "category": "roads",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_cycleways_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-cycleways-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 16272,
+      "bbox": [
+        -6.08676,
+        54.511248,
+        -5.764025,
+        54.700218
+      ],
+      "geometryTypes": [
+        "LineString"
+      ],
+      "render": {
+        "color": "#22c55e",
+        "lineWidth": 2.0,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 6474490,
+      "modifiedAt": "2026-04-25T14:21:57.170773+00:00"
+    },
+    {
+      "id": "source-ni-green-spaces-osm",
+      "year": 2026,
+      "label": "Belfast Ni Green Spaces Osm 2026",
+      "category": "green",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_green_spaces_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-green-spaces-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 5174,
+      "bbox": [
+        -6.088015,
+        54.514813,
+        -5.772514,
+        54.702427
+      ],
+      "geometryTypes": [
+        "Polygon"
+      ],
+      "render": {
+        "color": "#22c55e",
+        "lineWidth": 1.2,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 2986300,
+      "modifiedAt": "2026-04-25T14:22:41.501008+00:00"
+    },
+    {
+      "id": "source-ni-roads-osm",
+      "year": 2026,
+      "label": "Belfast Ni Roads Osm 2026",
+      "category": "roads",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_roads_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-roads-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 17195,
+      "bbox": [
+        -6.131375,
+        54.508032,
+        -5.770561,
+        54.718103
+      ],
+      "geometryTypes": [
+        "LineString"
+      ],
+      "render": {
+        "color": "#f97316",
+        "lineWidth": 2.0,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 7751482,
+      "modifiedAt": "2026-04-25T14:21:53.104148+00:00"
+    },
+    {
+      "id": "source-ni-services-osm",
+      "year": 2026,
+      "label": "Belfast Ni Services Osm 2026",
+      "category": "services",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_services_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-services-osm",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 1315,
+      "bbox": [
+        -6.070718,
+        54.525714,
+        -5.782087,
+        54.696068
+      ],
+      "geometryTypes": [
+        "Point"
+      ],
+      "render": {
+        "color": "#7c3aed",
+        "lineWidth": 1.2,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 391305,
+      "modifiedAt": "2026-04-25T14:23:09.691774+00:00"
+    },
+    {
+      "id": "source-ni-transport-stops-osm",
+      "year": 2026,
+      "label": "Belfast Ni Transport Stops Osm 2026",
+      "category": "transit",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_transport_stops_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-transport-stops-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 1092,
+      "bbox": [
+        -6.078428,
+        54.520141,
+        -5.781776,
+        54.696818
+      ],
+      "geometryTypes": [
+        "Point"
+      ],
+      "render": {
+        "color": "#2563eb",
+        "lineWidth": 2.0,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 323419,
+      "modifiedAt": "2026-04-25T14:23:06.841408+00:00"
+    },
+    {
+      "id": "source-ni-water-osm",
+      "year": 2026,
+      "label": "Belfast Ni Water Osm 2026",
+      "category": "water",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_water_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-water-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 1027,
+      "bbox": [
+        -6.089938,
+        54.498519,
+        -5.770623,
+        54.703514
+      ],
+      "geometryTypes": [
+        "LineString",
+        "Polygon"
+      ],
+      "render": {
+        "color": "#38bdf8",
+        "lineWidth": 1.2,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 664402,
+      "modifiedAt": "2026-04-25T14:22:45.407348+00:00"
     }
   ],
   "sourceArtifacts": [
@@ -886,6 +1103,36 @@
       "modifiedAt": "2026-04-25T13:16:30.957576+00:00"
     },
     {
+      "id": "ndbi-2018",
+      "year": 2018,
+      "label": "Belfast Ndbi 2018",
+      "type": "tif",
+      "path": "data/2016/belfast_ndbi_2018.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 48606199,
+      "modifiedAt": "2026-04-25T14:06:59.661279+00:00"
+    },
+    {
+      "id": "ndbi-2020",
+      "year": 2020,
+      "label": "Belfast Ndbi 2020",
+      "type": "tif",
+      "path": "data/2016/belfast_ndbi_2020.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 48344629,
+      "modifiedAt": "2026-04-25T14:07:00.141658+00:00"
+    },
+    {
       "id": "ndvi-2016",
       "year": 2016,
       "label": "Belfast Ndvi 2016",
@@ -916,6 +1163,21 @@
       "modifiedAt": "2026-04-25T13:16:31.876351+00:00"
     },
     {
+      "id": "ndvi-2020",
+      "year": 2020,
+      "label": "Belfast Ndvi 2020",
+      "type": "tif",
+      "path": "data/2016/belfast_ndvi_2020.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 47530316,
+      "modifiedAt": "2026-04-25T14:07:00.580258+00:00"
+    },
+    {
       "id": "rgb-2016",
       "year": 2016,
       "label": "Belfast Rgb 2016",
@@ -943,7 +1205,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 74901629,
-      "modifiedAt": "2026-04-25T13:16:00.613085+00:00"
+      "modifiedAt": "2026-04-25T14:07:30.630645+00:00"
     },
     {
       "id": "rgb-2020",
@@ -959,6 +1221,21 @@
       },
       "byteSize": 74314279,
       "modifiedAt": "2026-04-25T13:16:32.510410+00:00"
+    },
+    {
+      "id": "rgb-2022",
+      "year": 2022,
+      "label": "Belfast Rgb 2022",
+      "type": "tif",
+      "path": "data/2016/belfast_rgb_2022.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 73839100,
+      "modifiedAt": "2026-04-25T14:07:01.207737+00:00"
     },
     {
       "id": "census-2021-dataset",
