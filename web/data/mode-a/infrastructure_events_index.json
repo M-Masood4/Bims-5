@@ -1,0 +1,90 @@
+{
+  "kind": "belfast.infrastructureEventIndex",
+  "schemaVersion": "1.0.0",
+  "eventCount": 29324,
+  "countsByYearSignal": {
+    "2016": {
+      "traffic": 2055,
+      "jobs": 102,
+      "electricity": 0,
+      "buildings": 1109,
+      "services": 64
+    },
+    "2017": {
+      "traffic": 522,
+      "jobs": 98,
+      "electricity": 0,
+      "buildings": 1429,
+      "services": 104
+    },
+    "2018": {
+      "traffic": 336,
+      "jobs": 91,
+      "electricity": 0,
+      "buildings": 1408,
+      "services": 89
+    },
+    "2019": {
+      "traffic": 515,
+      "jobs": 25,
+      "electricity": 1,
+      "buildings": 349,
+      "services": 27
+    },
+    "2020": {
+      "traffic": 564,
+      "jobs": 48,
+      "electricity": 0,
+      "buildings": 743,
+      "services": 51
+    },
+    "2021": {
+      "traffic": 835,
+      "jobs": 70,
+      "electricity": 5,
+      "buildings": 1415,
+      "services": 80
+    },
+    "2022": {
+      "traffic": 1879,
+      "jobs": 67,
+      "electricity": 48,
+      "buildings": 1111,
+      "services": 87
+    },
+    "2023": {
+      "traffic": 1259,
+      "jobs": 75,
+      "electricity": 201,
+      "buildings": 1062,
+      "services": 102
+    },
+    "2024": {
+      "traffic": 3057,
+      "jobs": 77,
+      "electricity": 234,
+      "buildings": 1092,
+      "services": 63
+    },
+    "2025": {
+      "traffic": 4422,
+      "jobs": 20,
+      "electricity": 118,
+      "buildings": 282,
+      "services": 11
+    },
+    "2026": {
+      "traffic": 1678,
+      "jobs": 0,
+      "electricity": 244,
+      "buildings": 0,
+      "services": 0
+    }
+  },
+  "catalogPath": "data/derived/2026/belfast_infrastructure_events_2016_2026.json",
+  "basis": [
+    "Official public project/opening records for named major events.",
+    "OpenStreetMap Overpass metadata timestamp/version/changeset records for asset-level mapped additions.",
+    "OSM timestamps prove public mapped visibility, not construction/opening dates."
+  ]
+}

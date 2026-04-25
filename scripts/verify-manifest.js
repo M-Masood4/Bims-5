@@ -123,10 +123,13 @@ for (const year of modeA.years) {
   }
   const metricCards = modeA.metricsByYear[String(year)] || [];
   const commits = modeA.commitsByYear[String(year)] || [];
-  assert(Array.isArray(commits) && commits.length === 5, `Mode A commits must include exactly five signals for ${year}.`);
-  assert(JSON.stringify(commits.map((commit) => commit.type)) === JSON.stringify(requiredModeAMetrics), `Mode A commit order is incorrect for ${year}.`);
+  assert(Array.isArray(commits) && commits.length >= 10, `Mode A commits must include source-backed infrastructure events for ${year}.`);
   for (const commit of commits) {
     assert(commit.title && commit.subtitle && commit.explanation, `Commit ${commit.id} needs planning copy.`);
+    assert(commit.eventId, `Commit ${commit.id} must reference a real infrastructure event id.`);
+    assert(commit.eventSourceBasis, `Commit ${commit.id} must declare its event source basis.`);
+    assert(commit.eventSourceUrl, `Commit ${commit.id} must include a public source URL.`);
+    assert(commit.eventRecord?.id === commit.eventId, `Commit ${commit.id} must embed its source event record.`);
     assert(Array.isArray(commit.cellIds) && commit.cellIds.length >= 5, `Commit ${commit.id} must carry affected replay cell ids.`);
     assert(Array.isArray(commit.affectedSignals) && commit.affectedSignals.length >= 3, `Commit ${commit.id} must explain affected signals.`);
     assert(Array.isArray(commit.auditTrail) && commit.auditTrail.length >= 2, `Commit ${commit.id} must include an audit trail.`);
@@ -138,6 +141,9 @@ for (const year of modeA.years) {
 assert(electricityFeatureCounts[2026] >= electricityFeatureCounts[2016], "Electricity replay should add mapped assets over the timeline.");
 assert(seenDatedPowerAsset, "Electricity replay should include Overpass timestamp-backed power assets.");
 assert(seenLaterPowerAsset, "Electricity replay should include power assets that first appear after 2016.");
+assert(modeA.eventCatalog?.eventCount >= 1000, "Mode A must reference the infrastructure event catalog.");
+assert(exists("web/data/mode-a/infrastructure_events_index.json"), "Mode A infrastructure event index is missing.");
+assert(exists("data/derived/2026/belfast_infrastructure_events_2016_2026.json"), "Full infrastructure event catalog is missing.");
 
 if (failures.length) {
   console.error("Manifest verification failed:");

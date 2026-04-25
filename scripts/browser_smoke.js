@@ -47,7 +47,7 @@ function assert(condition, message) {
   assert(loaded.layout, "Reference-style replay layout did not render.");
   assert(loaded.metricCards === 5, "Five metric cards did not render.");
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
-  assert(loaded.commits === 5, "Default change list should show all infrastructure changes.");
+  assert(loaded.commits >= 10, "Default change list should show source-backed infrastructure changes.");
   assert(loaded.toggles >= 3, "Filtered product layer toggles did not render.");
   assert(loaded.navButtons === 0, "Left product navigation should be removed.");
   assert(loaded.electricity, "Electricity replay layer did not render.");
@@ -62,14 +62,20 @@ function assert(condition, message) {
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.metric === expected, label.toLowerCase());
   }
 
+  await page.locator("#yearSlider").evaluate((slider) => {
+    slider.value = "2024";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.waitForFunction(() => document.querySelector("#currentYearLabel")?.textContent?.trim() === "2024");
+
   await page.locator('[data-change-filter="building"]').click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.changeFilter === "building");
-  await page.waitForFunction(() => document.querySelectorAll(".commit").length === 1);
+  await page.waitForFunction(() => document.querySelectorAll(".commit").length >= 1);
   await page.locator('[data-change-filter="employment"]').click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.changeFilter === "employment");
-  await page.waitForFunction(() => document.querySelectorAll(".commit").length === 1);
+  await page.waitForFunction(() => document.querySelectorAll(".commit").length >= 1);
   await page.locator('[data-change-filter="all"]').click();
-  await page.waitForFunction(() => document.querySelectorAll(".commit").length === 5);
+  await page.waitForFunction(() => document.querySelectorAll(".commit").length >= 10);
 
   const electricityCounts = await page.evaluate(async () => {
     const [a, b] = await Promise.all([
@@ -155,7 +161,7 @@ function assert(condition, message) {
 
   const filteredErrors = consoleErrors.filter((error) => !/Failed to load resource.*mapbox|favicon/i.test(error));
   assert(filteredErrors.length === 0, `Browser console errors:\n${filteredErrors.join("\n")}`);
-  console.log(`Browser smoke OK: ${loaded.metricCards} cards, ${loaded.lensTabs} lens tabs, ${loaded.commits} commits, ${loaded.toggles} toggles, ${loaded.cells} cells.`);
+  console.log(`Browser smoke OK: ${loaded.metricCards} cards, ${loaded.lensTabs} lens tabs, ${loaded.commits} source-backed commits, ${loaded.toggles} toggles, ${loaded.cells} cells.`);
 })().catch((error) => {
   console.error(error);
   process.exit(1);
