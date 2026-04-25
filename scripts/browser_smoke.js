@@ -65,16 +65,35 @@ function assert(condition, message) {
   await page.locator("#studioTool").click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.activeView === "studio");
   await page.waitForFunction(() => document.querySelector("#scenarioStudio")?.textContent?.includes("2036 Scenario Studio"));
-  await page.locator("#scenarioStudio [data-studio-action='add-building']").click();
-  await page.waitForFunction(() => window.BelfastScenarioStudio?.state?.placing === true);
   const studioDropPoint = await page.evaluate(() => {
     const { state } = window.BelfastGitModeA;
     const point = state.map.project([-5.905, 54.607]);
-    return { x: point.x, y: point.y };
+    const canvas = document.querySelector(".mapboxgl-canvas").getBoundingClientRect();
+    return { x: point.x, y: point.y, targetX: point.x - canvas.left, targetY: point.y - canvas.top };
   });
-  await page.mouse.click(studioDropPoint.x, studioDropPoint.y);
+  await page.evaluate(({ targetX, targetY }) => {
+    const source = document.querySelector("#scenarioStudio [data-studio-action='add-building']");
+    const canvas = document.querySelector(".mapboxgl-canvas");
+    const rect = canvas.getBoundingClientRect();
+    const dataTransfer = new DataTransfer();
+    source.dispatchEvent(new DragEvent("dragstart", { bubbles: true, cancelable: true, dataTransfer }));
+    const eventInit = {
+      bubbles: true,
+      cancelable: true,
+      clientX: rect.left + targetX,
+      clientY: rect.top + targetY,
+      dataTransfer
+    };
+    canvas.dispatchEvent(new DragEvent("dragover", eventInit));
+    canvas.dispatchEvent(new DragEvent("drop", eventInit));
+  }, studioDropPoint);
+  await page.waitForFunction(() => Boolean(document.querySelector(".studio-drop-marker") || document.querySelector(".simulation-preview.dropped")), null, { timeout: 3000 });
   await page.waitForFunction(() => Boolean(window.BelfastScenarioStudio?.state?.validation));
   await page.waitForFunction(() => document.querySelector("#scenarioStudio")?.textContent?.includes("Placement status"));
+  await page.waitForFunction(() => {
+    const text = document.querySelector("#scenarioStudio")?.textContent || "";
+    return ["Traffic", "Jobs", "Public Transit", "Electricity"].every((label) => text.includes(label));
+  });
   await page.waitForFunction(() => {
     const source = window.BelfastGitModeA?.state?.map?.getSource("studio-building-handles");
     return Boolean(source && window.BelfastScenarioStudio?.state?.geometry);

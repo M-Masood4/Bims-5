@@ -1329,6 +1329,22 @@ button {
   color: var(--blue-2);
 }
 
+.build-tool-grid button[draggable="true"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.build-tool-grid button[draggable="true"]::after {
+  content: "drag";
+  position: absolute;
+  right: 7px;
+  bottom: 5px;
+  color: #64748b;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .build-tool-grid button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
@@ -1457,6 +1473,78 @@ button {
   text-align: center;
 }
 
+.simulation-preview {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #c7d2fe;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #eef4ff 0%, #f0fdfa 100%);
+}
+
+.simulation-preview strong {
+  color: #174ea6;
+  font-size: 0.78rem;
+}
+
+.simulation-preview span {
+  color: #334155;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.simulation-preview.dropped {
+  animation: studio-card-pop 0.72s ease both;
+}
+
+.studio-drop-marker {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.studio-drop-marker::before,
+.studio-drop-marker::after,
+.studio-drop-marker span {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+}
+
+.studio-drop-marker::before {
+  border: 2px solid rgba(17, 85, 201, 0.82);
+  animation: studio-drop-ring 1.35s ease-out forwards;
+}
+
+.studio-drop-marker::after {
+  inset: 22px;
+  background: rgba(17, 85, 201, 0.92);
+  box-shadow: 0 0 0 10px rgba(17, 85, 201, 0.15);
+  animation: studio-drop-core 0.84s cubic-bezier(0.2, 1.4, 0.35, 1) forwards;
+}
+
+.studio-drop-marker span {
+  inset: 12px;
+  border: 1px dashed rgba(15, 118, 110, 0.8);
+  animation: studio-drop-spin 1.25s linear forwards;
+}
+
+.replay-app.studio-simulating .map-workspace::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 96px 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 35% 45%, rgba(17, 85, 201, 0.14), transparent 28%),
+    linear-gradient(105deg, transparent 0%, rgba(20, 184, 166, 0.2) 45%, transparent 60%);
+  animation: studio-map-scan 1.4s ease-in-out infinite;
+}
+
 .scenario-branches-card,
 .agent-reasoning-card {
   border-color: #dbeafe;
@@ -1484,6 +1572,7 @@ button {
 .branch-card.active {
   border-color: var(--blue);
   box-shadow: inset 0 0 0 1px rgba(17, 85, 201, 0.18);
+  transform: translateY(-1px);
 }
 
 .branch-topline {
@@ -1516,17 +1605,171 @@ button {
 
 .branch-deltas {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
 }
 
 .branch-deltas b {
-  padding: 4px 3px;
-  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 7px;
+  border-radius: 7px;
   background: #f1f5f9;
   color: #1f3656;
+  font-size: 0.63rem;
+  text-align: left;
+}
+
+.branch-deltas b em {
+  font-style: normal;
+  font-weight: 900;
+}
+
+.signal-delta.good {
+  background: #ecfdf5;
+  color: #166534;
+}
+
+.signal-delta.risk {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.signal-delta.neutral {
+  background: #f8fafc;
+  color: #475569;
+}
+
+.signal-delta.traffic {
+  border-left: 3px solid #ea580c;
+}
+
+.signal-delta.jobs {
+  border-left: 3px solid #7c3aed;
+}
+
+.signal-delta.transit {
+  border-left: 3px solid #2563eb;
+}
+
+.signal-delta.electricity {
+  border-left: 3px solid #0f766e;
+}
+
+.simulation-progress {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 42%, #ecfeff 100%);
+}
+
+.simulation-progress strong {
+  color: #174ea6;
+  font-size: 0.84rem;
+}
+
+.simulation-progress span {
+  color: #53657e;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.simulation-sweep {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dbeafe;
+}
+
+.simulation-sweep i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1155c9, #0f766e);
+  animation: simulation-sweep 1.1s ease-in-out infinite;
+}
+
+.simulation-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.simulation-steps b {
+  padding: 5px 4px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #1c3556;
   font-size: 0.58rem;
   text-align: center;
+}
+
+.selected-impact {
+  display: grid;
+  gap: 9px;
+  padding: 10px;
+  border: 1px solid #dbeafe;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.selected-impact > strong {
+  color: #142949;
+  font-size: 0.8rem;
+}
+
+.impact-signal-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.impact-signal {
+  display: grid;
+  gap: 5px;
+}
+
+.impact-signal span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #1f3656;
+  font-size: 0.7rem;
+}
+
+.impact-signal span em {
+  font-style: normal;
+  font-weight: 900;
+}
+
+.impact-signal i {
+  display: block;
+  width: var(--impact-width);
+  height: 7px;
+  border-radius: 999px;
+  background: #64748b;
+}
+
+.impact-signal small {
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+
+.impact-signal.good i {
+  background: linear-gradient(90deg, #16a34a, #0f766e);
+}
+
+.impact-signal.risk i {
+  background: linear-gradient(90deg, #f97316, #dc2626);
+}
+
+.impact-signal.neutral i {
+  background: #94a3b8;
 }
 
 .reporter-note {
@@ -1630,6 +1873,73 @@ button {
   color: #166534;
   font-size: 0.72rem;
   line-height: 1.35;
+}
+
+@keyframes studio-drop-ring {
+  0% {
+    opacity: 0;
+    transform: scale(0.18);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.32);
+  }
+}
+
+@keyframes studio-drop-core {
+  0% {
+    transform: scale(0.3) translateY(-22px);
+  }
+  62% {
+    transform: scale(1.12) translateY(0);
+  }
+  100% {
+    transform: scale(0.82);
+  }
+}
+
+@keyframes studio-drop-spin {
+  to {
+    transform: rotate(180deg) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes studio-card-pop {
+  0% {
+    transform: translateY(8px);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes studio-map-scan {
+  0% {
+    opacity: 0.2;
+    transform: translateX(-10%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateX(10%);
+  }
+}
+
+@keyframes simulation-sweep {
+  0% {
+    transform: translateX(-105%);
+  }
+  100% {
+    transform: translateX(245%);
+  }
 }
 
 @media (max-width: 1260px) {

@@ -12,12 +12,20 @@
     community: { residentialShare: 0, commercialShare: 0, communityShare: 1 }
   };
 
+  const SIMULATION_SIGNALS = [
+    { id: "traffic", label: "Traffic", metric: "mobilityStrain", tone: "traffic", direction: "down", copy: "corridor strain" },
+    { id: "jobs", label: "Jobs", metric: "economicOpportunity", tone: "jobs", direction: "up", copy: "local opportunity" },
+    { id: "transit", label: "Public Transit", metric: "transportAccess", tone: "transit", direction: "up", copy: "access uplift" },
+    { id: "electricity", label: "Electricity", metric: "electricityDemand", tone: "electricity", direction: "down", copy: "demand pressure" }
+  ];
+
   const studioState = {
     placing: false,
     busy: false,
     validating: false,
     error: "",
     decision: "",
+    justDropped: false,
     location: null,
     geometry: null,
     validation: null,
@@ -31,6 +39,8 @@
       footprintSqm: 1500
     }
   };
+
+  let dropMarker = null;
 
   const els = {
     panel: document.querySelector("#scenarioStudio"),
@@ -56,6 +66,51 @@
   function signedPct(value) {
     const rounded = Math.round((Number(value) || 0) * 100);
     return `${rounded >= 0 ? "+" : ""}${rounded}%`;
+  }
+
+  function signalDelta(branch, signal) {
+    return Number(branch?.diffFromBaseline?.[signal.metric] || 0);
+  }
+
+  function signalIsGood(value, signal) {
+    if (Math.abs(value) < 0.005) return "neutral";
+    return signal.direction === "down" ? (value < 0 ? "good" : "risk") : (value > 0 ? "good" : "risk");
+  }
+
+  function renderSignalDeltas(branch) {
+    return SIMULATION_SIGNALS.map((signal) => {
+      const value = signalDelta(branch, signal);
+      const quality = signalIsGood(value, signal);
+      return `
+        <b class="signal-delta ${escapeHtml(signal.tone)} ${quality}">
+          <span>${escapeHtml(signal.label)}</span>
+          <em>${escapeHtml(signedPct(value))}</em>
+        </b>
+      `;
+    }).join("");
+  }
+
+  function renderSelectedImpact(branch) {
+    if (!branch) return "";
+    return `
+      <section class="selected-impact">
+        <strong>${escapeHtml(branch.name)} impact vs 2036 baseline</strong>
+        <div class="impact-signal-grid">
+          ${SIMULATION_SIGNALS.map((signal) => {
+            const value = signalDelta(branch, signal);
+            const quality = signalIsGood(value, signal);
+            const magnitude = Math.min(100, Math.max(8, Math.round(Math.abs(value) * 900)));
+            return `
+              <div class="impact-signal ${escapeHtml(signal.tone)} ${quality}">
+                <span><b>${escapeHtml(signal.label)}</b><em>${escapeHtml(signedPct(value))}</em></span>
+                <i style="--impact-width:${magnitude}%"></i>
+                <small>${escapeHtml(signal.copy)}</small>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </section>
+    `;
   }
 
   function score(value) {
@@ -335,8 +390,33 @@
     studioState.geometry = buildSquareFootprint(studioState.location, stats.footprintSqm);
     studioState.validation = null;
     studioState.error = "";
+    studioState.simulationResult = null;
+    studioState.selectedBranchName = "";
+    playDropAnimation(studioState.location);
     setPlacementMode(false);
     await validatePlacement();
+    renderBranches();
+  }
+
+  function playDropAnimation(location) {
+    const currentMap = map();
+    if (!currentMap || !window.mapboxgl) return;
+    if (dropMarker) dropMarker.remove();
+    const markerElement = document.createElement("div");
+    markerElement.className = "studio-drop-marker";
+    markerElement.innerHTML = "<span></span>";
+    dropMarker = new window.mapboxgl.Marker({ element: markerElement, anchor: "center" })
+      .setLngLat([location.lng, location.lat])
+      .addTo(currentMap);
+    studioState.justDropped = true;
+    els.app?.classList.add("studio-drop-active");
+    window.setTimeout(() => {
+      dropMarker?.remove();
+      dropMarker = null;
+      studioState.justDropped = false;
+      els.app?.classList.remove("studio-drop-active");
+      renderStudioPanel();
+    }, 1400);
   }
 
   async function validatePlacement() {
@@ -368,6 +448,8 @@
     studioState.error = "";
     studioState.simulationResult = null;
     studioState.selectedBranchName = "";
+    studioState.decision = "";
+    els.app?.classList.add("studio-simulating");
     renderStudioPanel();
     renderBranches();
     renderReasoning();
@@ -388,6 +470,7 @@
       studioState.error = error.message;
     } finally {
       studioState.busy = false;
+      els.app?.classList.remove("studio-simulating");
       renderStudioPanel();
       renderBranches();
       renderReasoning();
@@ -450,6 +533,12 @@
         <span><b>${escapeHtml(stats.estimatedJobs)}</b> jobs</span>
         <span><b>${escapeHtml(stats.estimatedElectricityDemand)}</b> demand proxy</span>
       </div>
+      ${studioState.location ? `
+        <div class="simulation-preview ${studioState.justDropped ? "dropped" : ""}">
+          <strong>${studioState.justDropped ? "Building dropped" : "Ready to simulate"}</strong>
+          <span>Next render: Traffic, Jobs, Public Transit, Electricity impacts against 2036 baseline.</span>
+        </div>
+      ` : ""}
       ${studioState.error ? `<p class="studio-error">${escapeHtml(studioState.error)}</p>` : ""}
       <button type="button" class="generate-simulations" data-studio-action="generate" ${!studioState.location || studioState.validating || studioState.busy || validation?.status === "invalid" ? "disabled" : ""}>
         ${studioState.busy ? "Gemini agents running..." : "Generate simulations"}
@@ -461,7 +550,16 @@
   function renderBranches() {
     if (!els.branches) return;
     if (studioState.busy) {
-      els.branches.innerHTML = `<div class="empty-state"><strong>Gemini agents are building futures</strong><span>Coordinator, specialist agents, critic, and reporter are running before deterministic metrics are shown.</span></div>`;
+      els.branches.innerHTML = `
+        <div class="simulation-progress">
+          <strong>Gemini agents are building futures</strong>
+          <span>Coordinator -> specialists -> variants -> deterministic impacts -> critic -> reporter</span>
+          <div class="simulation-sweep"><i></i></div>
+          <div class="simulation-steps">
+            <b>Traffic</b><b>Jobs</b><b>Public Transit</b><b>Electricity</b>
+          </div>
+        </div>
+      `;
       return;
     }
     const branches = studioState.simulationResult?.simulation?.branches || [];
@@ -480,12 +578,8 @@
         <button type="button" class="branch-card ${active ? "active" : ""}" data-branch-name="${escapeHtml(branch.name)}">
           <span class="branch-topline"><strong>${escapeHtml(branch.name)}</strong>${branch.recommended ? "<em>Recommended</em>" : ""}</span>
           <small>${escapeHtml(branch.description || branch.objective)}</small>
-          <span class="branch-deltas">
-            <b>Pop ${escapeHtml(signedPct(branch.diffFromBaseline?.populationPressure))}</b>
-            <b>Mob ${escapeHtml(signedPct(branch.diffFromBaseline?.mobilityStrain))}</b>
-            <b>Opp ${escapeHtml(signedPct(branch.diffFromBaseline?.economicOpportunity))}</b>
-            <b>Exp ${escapeHtml(signedPct(branch.diffFromBaseline?.environmentalExposure))}</b>
-            <b>Fair ${escapeHtml(signedPct(branch.diffFromBaseline?.fairnessScore))}</b>
+          <span class="branch-deltas simulation-signals">
+            ${renderSignalDeltas(branch)}
           </span>
         </button>
       `;
@@ -511,11 +605,13 @@
     const report = result.report || {};
     const critic = result.critic || {};
     const specialists = result.specialistAgents || [];
+    const branch = selectedBranch();
     els.reasoning.innerHTML = `
       <section class="reporter-note">
         <strong>${escapeHtml(report.headline || "Reporter Agent summary")}</strong>
         <p>${escapeHtml(report.summary || "")}</p>
       </section>
+      ${renderSelectedImpact(branch)}
       ${specialists.slice(0, 6).map((agent) => `
         <div class="agent-note">
           <strong>${escapeHtml(agent.agent || "Specialist Agent")} <span>${escapeHtml(agent.risk || "")}</span></strong>
@@ -580,6 +676,7 @@
     studioState.selectedBranchName = branchName;
     updateAffectedCells();
     renderBranches();
+    renderReasoning();
   }
 
   function handleReasoningClick(event) {
