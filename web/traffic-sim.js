@@ -423,6 +423,238 @@
     return Math.max(lo, Math.min(hi, n));
   }
 
+  // --- junction discovery + comparison sim ---------------------------------
+  // Used by the postcode-driven "plan a road" workflow: the user enters a
+  // postcode, we sample road endpoints near that point, render them as
+  // clickable nodes; user picks two, we wire a candidate road; runComparison
+  // simulates with and without it and returns the diff.
+
+  // Find candidate junction nodes (road endpoints, deduped) near a point.
+  // count = how many to return; radiusKm = max distance from centre.
+  function findJunctionNodes(centre, count, radiusKm) {
+    if (!Array.isArray(centre) || centre.length !== 2) return [];
+    count = count || 14;
+    radiusKm = radiusKm || 0.6;
+    const segs = sampleOsmSegments();
+    if (!segs.length) return [];
+    // Bucket endpoints to ~10m grid so near-duplicates merge into one node.
+    const cell = 0.0001; // ≈11m at this latitude
+    const nodes = new Map();
+    function add(coord, segId) {
+      if (!coord || coord.length < 2) return;
+      const dKm = Math.hypot(
+        (coord[0] - centre[0]) * M_PER_DEG_LNG,
+        (coord[1] - centre[1]) * M_PER_DEG_LAT
+      ) / 1000;
+      if (dKm > radiusKm) return;
+      const key = Math.round(coord[0] / cell) + ',' + Math.round(coord[1] / cell);
+      const existing = nodes.get(key);
+      if (existing) {
+        existing.degree++;
+        existing.dist = Math.min(existing.dist, dKm);
+      } else {
+        nodes.set(key, { lng: coord[0], lat: coord[1], degree: 1, dist: dKm });
+      }
+    }
+    for (let i = 0; i < segs.length; i++) {
+      add(segs[i].a, segs[i].id);
+      add(segs[i].b, segs[i].id);
+    }
+    if (!nodes.size) return [];
+    // Prefer high-degree (real intersections) but also reach further nodes
+    // so the user gets a spread instead of all clustered at one point.
+    const arr = Array.from(nodes.values())
+      .sort((x, y) => (y.degree - x.degree) || (x.dist - y.dist));
+    const picked = [];
+    const minSpacingKm = Math.max(0.04, radiusKm / 4);
+    for (let i = 0; i < arr.length && picked.length < count; i++) {
+      const n = arr[i];
+      let tooClose = false;
+      for (let j = 0; j < picked.length; j++) {
+        const p = picked[j];
+        const dKm = Math.hypot(
+          (n.lng - p.lng) * M_PER_DEG_LNG,
+          (n.lat - p.lat) * M_PER_DEG_LAT
+        ) / 1000;
+        if (dKm < minSpacingKm) { tooClose = true; break; }
+      }
+      if (!tooClose) picked.push(n);
+    }
+    return picked.map((n, i) => ({
+      id: 'junction-' + i,
+      coord: [n.lng, n.lat],
+      degree: n.degree,
+    }));
+  }
+
+  // Run a head-to-head simulation with and without a candidate road. Both
+  // runs use the same RNG seed and starting positions so the only variable
+  // is the road graph. Returns aggregated metrics + per-segment occupancy
+  // so the UI can colour the diff.
+  function runComparison(opts) {
+    opts = opts || {};
+    const baseSegments = (opts.baseSegments || []).map(s => Object.assign({}, s));
+    const candidate = opts.candidate;
+    const allSegments = candidate
+      ? baseSegments.concat([Object.assign({}, candidate, { id: candidate.id || 'cand-1' })])
+      : baseSegments.slice();
+
+    const density = clampInt(opts.density, 1, 600);
+    const speedMul = Math.max(0.1, Math.min(3, opts.speed || 1));
+    const totalSeconds = Math.max(1, Math.min(60, opts.durationSeconds || 6));
+    const dt = 0.1; // 10 Hz simulated step
+    const seed = (opts.seed != null) ? opts.seed >>> 0 : 0xb1f55;
+
+    function runOne(segs, label) {
+      const segments = segs.map(s => ({
+        id: s.id,
+        a: s.a, b: s.b,
+        length: Math.max(20, distMetres(s.a, s.b)),
+        source: s.source || 'osm',
+        occupants: new Set(),
+        // accumulated stats:
+        occSum: 0, occSamples: 0,
+        through: 0,
+      }));
+      if (!segments.length) return null;
+      const segById = new Map(segments.map(s => [s.id, s]));
+      // Seeded RNG so both runs share initial vehicle layout
+      let rng = seed >>> 0;
+      function rand01() { rng = (rng * 1664525 + 1013904223) >>> 0; return (rng & 0xffffff) / 0xffffff; }
+
+      const vehicles = [];
+      for (let i = 0; i < density; i++) {
+        const seg = segments[Math.floor(rand01() * segments.length)];
+        const v = {
+          id: i,
+          segmentId: seg.id,
+          t: rand01(),
+          forward: rand01() > 0.5,
+          baseSpeed: 7 + rand01() * 7,
+          jitter: 0.85 + rand01() * 0.3,
+          onUserRoad: seg.source === 'user',
+          onCandidate: seg.source === 'candidate',
+          totalDist: 0,
+        };
+        seg.occupants.add(v.id);
+        vehicles.push(v);
+      }
+
+      function neighbour(prev) {
+        const target = prev.b;
+        const candidates = [];
+        for (let i = 0; i < segments.length; i++) {
+          const s = segments[i];
+          if (s.id === prev.id) continue;
+          if (distMetres(s.a, target) < 25 || distMetres(s.b, target) < 25) {
+            candidates.push(s);
+            if (candidates.length >= 6) break;
+          }
+        }
+        return candidates.length
+          ? candidates[Math.floor(rand01() * candidates.length)]
+          : segments[Math.floor(rand01() * segments.length)];
+      }
+
+      let speedSum = 0, speedCount = 0, congestedSampleCount = 0;
+      let candidateUsage = 0;     // vehicles entering the candidate road
+      const ticks = Math.floor(totalSeconds / dt);
+      for (let tick = 0; tick < ticks; tick++) {
+        // Sample occupancy at start of tick
+        for (let i = 0; i < segments.length; i++) {
+          segments[i].occSum += segments[i].occupants.size;
+          segments[i].occSamples++;
+        }
+        for (let i = 0; i < vehicles.length; i++) {
+          const v = vehicles[i];
+          const seg = segById.get(v.segmentId);
+          if (!seg) continue;
+          const occ = seg.occupants.size;
+          const cap = Math.max(2, Math.floor(seg.length / 60));
+          const congestion = Math.min(1, occ / cap);
+          const eff = v.baseSpeed * v.jitter * speedMul * (1 - 0.7 * congestion);
+          speedSum += eff;
+          speedCount++;
+          if (congestion > 0.55) congestedSampleCount++;
+          v.t += (v.forward ? 1 : -1) * (eff / seg.length) * dt;
+          v.totalDist += eff * dt;
+          if (v.t > 1 || v.t < 0) {
+            seg.occupants.delete(v.id);
+            seg.through++;
+            const fromPoint = v.t > 1 ? seg.b : seg.a;
+            const next = neighbour(seg);
+            const forward = distMetres(next.a, fromPoint) < distMetres(next.b, fromPoint);
+            v.segmentId = next.id;
+            v.t = forward ? 0 : 1;
+            v.forward = forward;
+            next.occupants.add(v.id);
+            if (next.source === 'candidate') candidateUsage++;
+          }
+        }
+      }
+
+      const segmentStats = segments.map(s => ({
+        id: s.id,
+        a: s.a, b: s.b,
+        source: s.source,
+        avgOcc: s.occSamples ? s.occSum / s.occSamples : 0,
+        capacity: Math.max(2, Math.floor(s.length / 60)),
+        through: s.through,
+      }));
+      return {
+        label: label,
+        vehicles: vehicles.length,
+        avgSpeed: speedCount ? speedSum / speedCount : 0,
+        congested: speedCount ? congestedSampleCount / speedCount : 0,
+        throughput: vehicles.reduce((sum, v) => sum + v.totalDist, 0),
+        candidateUsage: candidateUsage,
+        segments: segmentStats,
+      };
+    }
+
+    const before = runOne(baseSegments, 'before');
+    const after  = runOne(allSegments, 'after');
+    if (!before || !after) return null;
+
+    // Per-segment diff: positive = more congested with new road, negative = relieved.
+    const beforeBySeg = new Map(before.segments.map(s => [s.id, s]));
+    const segmentDeltas = after.segments.map(s => {
+      const b = beforeBySeg.get(s.id);
+      const baseRatio = b ? (b.avgOcc / Math.max(1, b.capacity)) : 0;
+      const afterRatio = s.avgOcc / Math.max(1, s.capacity);
+      return {
+        id: s.id, a: s.a, b: s.b, source: s.source,
+        baseRatio: baseRatio, afterRatio: afterRatio,
+        delta: afterRatio - baseRatio,
+      };
+    });
+
+    return {
+      before: {
+        avgSpeed: before.avgSpeed,
+        congested: before.congested,
+        throughput: before.throughput,
+        vehicles: before.vehicles,
+      },
+      after: {
+        avgSpeed: after.avgSpeed,
+        congested: after.congested,
+        throughput: after.throughput,
+        vehicles: after.vehicles,
+        candidateUsage: after.candidateUsage,
+      },
+      segmentDeltas: segmentDeltas,
+    };
+  }
+
+  // Build segment array for a branch (OSM context + user roads, no candidate).
+  function segmentsForBranch(branch) {
+    const userRoads = (branch && branch.items || [])
+      .filter(it => it.type === 'road' && Array.isArray(it.start) && Array.isArray(it.end))
+      .map(it => ({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user' }));
+    return [...sampleOsmSegments(), ...userRoads];
+  }
+
   window.TrafficSim = {
     init: init,
     start: start,
@@ -434,5 +666,9 @@
     refreshSegments: refreshSegments,
     getMetrics: function () { return Object.assign({}, state.metrics); },
     isRunning: function () { return state.running; },
+    findJunctionNodes: findJunctionNodes,
+    runComparison: runComparison,
+    segmentsForBranch: segmentsForBranch,
+    sampleOsmSegments: sampleOsmSegments,
   };
 })();

@@ -138,11 +138,15 @@
         <div class="map-search" id="mapSearch">
           <form id="postcodeForm" autocomplete="off">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input id="postcodeInput" type="search" placeholder="Search postcode (BT1, BT7...)" maxlength="20" />
+            <input id="postcodeInput" type="search" placeholder="Full Belfast postcode (BT7 1NN)" maxlength="20" />
             <button type="submit">Go</button>
           </form>
           <div class="map-search-status" id="mapSearchStatus" hidden></div>
           <ul class="map-search-suggest" id="mapSearchSuggest" hidden></ul>
+          <div class="plan-road-hint" id="planRoadHint" hidden>
+            <span class="plan-road-step" id="planRoadStep">Click two glowing junctions to plan a road</span>
+            <button type="button" class="plan-road-cancel" id="planRoadCancel" title="Clear junctions">&times;</button>
+          </div>
         </div>
 
         <!-- Predicted impact heatmap controls (sim mode only) -->
@@ -241,6 +245,10 @@
       <button class="compare-btn" id="compareBtn" type="button">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
+      </button>
+      <button class="compare-btn road-compare-btn" id="roadCompareBtn" type="button" title="Pick a postcode, plan a road, see before/after impact">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v14"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+        Plan New Road
       </button>
 
       <!-- Roads / Traffic Simulator (lightweight, in-page) -->
@@ -375,6 +383,64 @@
       </div>
       <div class="diff-stats" id="diffStats"></div>
       <div class="diff-evidence" id="diffEvidence"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Road Impact Comparison modal: shows the before/after of adding a new road -->
+<div id="roadCompareModal" class="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card xl">
+    <div class="modal-head">
+      <h3>Road Impact: <span id="roadCompareName">New Road</span></h3>
+      <button class="modal-close" data-close type="button">&times;</button>
+    </div>
+    <div class="modal-body" id="roadCompareBody">
+      <div class="rc-progress" id="roadCompareProgress">
+        <div class="rc-progress-bar"><div id="roadCompareProgressFill"></div></div>
+        <div class="rc-progress-label" id="roadCompareProgressLabel">Running baseline simulation…</div>
+      </div>
+      <div class="rc-result" id="roadCompareResult" hidden>
+        <div class="rc-maps">
+          <div class="rc-side rc-before">
+            <div class="rc-side-head"><span class="rc-side-tag">Before</span><span class="rc-side-sub">no new road</span></div>
+            <svg class="rc-mini-map" id="roadCompareMapBefore" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div class="rc-side rc-after">
+            <div class="rc-side-head"><span class="rc-side-tag">After</span><span class="rc-side-sub">with new road</span></div>
+            <svg class="rc-mini-map" id="roadCompareMapAfter" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+        </div>
+        <div class="rc-stats">
+          <div class="rc-stat" data-stat="speed">
+            <div class="rc-stat-label">Average speed</div>
+            <div class="rc-stat-row"><span class="rc-stat-before" id="rcSpeedBefore">—</span><span class="rc-stat-arrow" id="rcSpeedArrow">→</span><span class="rc-stat-after" id="rcSpeedAfter">—</span></div>
+            <div class="rc-stat-delta" id="rcSpeedDelta">—</div>
+          </div>
+          <div class="rc-stat" data-stat="congestion">
+            <div class="rc-stat-label">Congested time</div>
+            <div class="rc-stat-row"><span class="rc-stat-before" id="rcCongBefore">—</span><span class="rc-stat-arrow" id="rcCongArrow">→</span><span class="rc-stat-after" id="rcCongAfter">—</span></div>
+            <div class="rc-stat-delta" id="rcCongDelta">—</div>
+          </div>
+          <div class="rc-stat" data-stat="throughput">
+            <div class="rc-stat-label">Distance moved</div>
+            <div class="rc-stat-row"><span class="rc-stat-before" id="rcFlowBefore">—</span><span class="rc-stat-arrow" id="rcFlowArrow">→</span><span class="rc-stat-after" id="rcFlowAfter">—</span></div>
+            <div class="rc-stat-delta" id="rcFlowDelta">—</div>
+          </div>
+          <div class="rc-stat" data-stat="usage">
+            <div class="rc-stat-label">Vehicles using new road</div>
+            <div class="rc-stat-row"><span class="rc-stat-after" id="rcUsage">—</span></div>
+            <div class="rc-stat-delta">over the simulated window</div>
+          </div>
+        </div>
+        <div class="rc-legend">
+          <span class="rc-leg-item"><i class="rc-sw rc-sw-relief"></i> Relieved (less congested)</span>
+          <span class="rc-leg-item"><i class="rc-sw rc-sw-neutral"></i> Unchanged</span>
+          <span class="rc-leg-item"><i class="rc-sw rc-sw-worse"></i> Worsened (more congested)</span>
+          <span class="rc-leg-item"><i class="rc-sw rc-sw-new"></i> New road</span>
+        </div>
+        <div class="rc-summary" id="roadCompareSummary"></div>
+      </div>
     </div>
   </div>
 </div>

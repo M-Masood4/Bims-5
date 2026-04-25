@@ -12,16 +12,17 @@
 
   // ---------- CONSTANTS ----------
 
-  const HISTORICAL_YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-  const SIM_YEARS = [2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036];
+  const HISTORICAL_YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  const SIM_YEARS = [2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036];
   const ALL_YEARS = HISTORICAL_YEARS.concat(SIM_YEARS);
-  const BASE_YEAR = 2026;
+  const BASE_YEAR = 2025;
+  const START_YEAR = 2026;
   const FINAL_YEAR = 2036;
 
   const STORAGE_KEY = 'belfast-dashboard-v1';
 
   const TOOL_LABELS = {
-    building: 'Click on the map to place a building',
+    building: 'Search a full Belfast postcode, then add the building there',
     road: 'Click two points on the map to place a road',
     park: 'Click on the map to place a park',
     infrastructure: 'Click on the map to place infrastructure',
@@ -90,20 +91,6 @@
     }
   ];
 
-  // Per-item year-over-year impact (per item, per year that has elapsed since placement).
-  // Numbers are intentionally tuned to feel meaningful but not absurd.
-  const IMPACT_RULES = {
-    building: {
-      residential: { population: 110, traffic: 0.0035, air: -0.18, housing: -0.012, economy: 0.018 },
-      commercial: { population: 18, traffic: 0.006, air: -0.12, housing: -0.002, economy: 0.075 },
-      industrial: { population: 6, traffic: 0.0085, air: -0.55, housing: 0, economy: 0.1 },
-      mixed_use: { population: 70, traffic: 0.0045, air: -0.22, housing: -0.008, economy: 0.05 }
-    },
-    road: { population: 0, traffic: -0.014, air: 0.04, housing: -0.001, economy: 0.022 },
-    park: { population: 0, traffic: -0.002, air: 0.85, housing: 0.001, economy: 0.004 },
-    infrastructure: { population: 0, traffic: -0.022, air: 0.18, housing: -0.002, economy: 0.04 }
-  };
-
   const PRESETS = {
     building: [
       { id: 'residential', label: 'Residential', color: '#a855f7' },
@@ -136,6 +123,7 @@
     pendingRoadStart: null, // for two-click road placement
     historicalMetrics: null, // { 2016: { traffic, jobs, electricity, buildings, services }, ... }
     summaryData: null,
+    baselineForecast: null,
     manifest: null,
     map: null,
     mapLoaded: false,
@@ -156,7 +144,9 @@
     impactMetric: 'traffic',        // which predicted metric to visualise on the map
     impactLayersAdded: false,
     lastPlacedItemId: null,         // for similar-events overlay focus
-    predictorReady: false
+    predictorReady: false,
+    selectedPostcode: null,
+    lastScenarioResult: null
   };
 
   // Lens definitions (the 5 historical signals)
@@ -201,63 +191,86 @@
 
   function fmtDeltaLabel(metric, before, after) {
     const diff = after - before;
-    if (Math.abs(diff) < 1e-6) return 'no change vs 2026';
+    if (Math.abs(diff) < 1e-6) return 'no change vs 2025';
     if (metric.id === 'population') {
       const sign = diff > 0 ? '+' : '';
-      return sign + fmtNumber(diff) + ' vs 2026';
+      return sign + fmtNumber(diff) + ' vs 2025';
     }
     if (metric.id === 'economy') {
       const sign = diff > 0 ? '+' : '';
-      return sign + '£' + Math.abs(diff).toFixed(2) + 'B vs 2026';
+      return sign + '£' + Math.abs(diff).toFixed(2) + 'B vs 2025';
     }
     if (metric.id === 'air') {
       const sign = diff > 0 ? '+' : '';
-      return sign + diff.toFixed(0) + ' AQI vs 2026';
+      return sign + diff.toFixed(0) + ' AQI vs 2025';
     }
-    return fmtPct((after - before) / Math.max(0.0001, before), true) + ' vs 2026';
+    return fmtPct((after - before) / Math.max(0.0001, before), true) + ' vs 2025';
   }
 
-  function isSimYear(y) { return y >= 2027; }
+  function isSimYear(y) { return y >= START_YEAR; }
 
   function activeBranch() { return state.branches.find(b => b.id === state.activeBranchId) || state.branches[0]; }
 
   // ---------- IMPACT MODEL ----------
 
-  // For each metric we accumulate the contribution of every item placed in the active branch,
-  // from its `year` up to the requested target year. Each year of "operation" contributes its
-  // per-year delta. Then we add this to the 2026 baseline to get the simulated value.
   function metricsForBranchYear(branch, targetYear) {
-    const out = {};
-    METRICS.forEach(m => { out[m.id] = m.baseline; });
-
-    if (!branch || !branch.items.length || targetYear <= BASE_YEAR) return out;
-
-    const cap = Math.min(targetYear, FINAL_YEAR);
-    branch.items.forEach(item => {
-      const startYear = Math.max(BASE_YEAR + 1, item.year);
-      const elapsed = Math.max(0, cap - startYear + 1);
-      if (elapsed <= 0) return;
-      const rule = ruleFor(item);
-      Object.keys(rule).forEach(metricId => {
-        out[metricId] += rule[metricId] * elapsed;
-      });
-    });
-
-    // Soft caps to keep numbers sane
-    out.air = clamp(out.air, 0, 100);
-    out.housing = clamp(out.housing, 0, 1.5);
-    out.traffic = clamp(out.traffic, 0, 1.5);
-    out.economy = Math.max(0, out.economy);
-    out.population = Math.max(0, out.population);
-
-    return out;
+    const year = clamp(targetYear, BASE_YEAR, FINAL_YEAR);
+    if (year <= BASE_YEAR) return baselineDisplayMetrics(BASE_YEAR);
+    const forecastMetrics = metricsFromScenario(branch, year) || baselineForecastMetrics(year);
+    return displayMetricsFromForecast(forecastMetrics, year);
   }
 
-  function ruleFor(item) {
-    if (item.type === 'building') {
-      return IMPACT_RULES.building[item.preset] || IMPACT_RULES.building.residential;
-    }
-    return IMPACT_RULES[item.type] || {};
+  function baselineForecastMetrics(year) {
+    const summary = state.baselineForecast && state.baselineForecast.summaryByYear;
+    if (summary && summary[String(year)]) return summary[String(year)];
+    if (summary && summary[String(START_YEAR)]) return summary[String(START_YEAR)];
+    return null;
+  }
+
+  function metricsFromScenario(branch, year) {
+    if (!branch || branch.locked) return null;
+    const result = branch.scenarioResult || state.lastScenarioResult;
+    if (!result || !result.timelineByYear) return null;
+    const target = result.timelineByYear[String(year)];
+    if (!target) return null;
+    const objective = branch.forecastObjective || objectiveForBranch(branch);
+    const branchRow = (target.branches || []).find(b => b.objective === objective) || (target.branches || [])[0];
+    return branchRow ? branchRow.metrics : target.baseline;
+  }
+
+  function baselineDisplayMetrics(year) {
+    const forecast = baselineForecastMetrics(Math.max(START_YEAR, year + 1));
+    return displayMetricsFromForecast(forecast, year);
+  }
+
+  function displayMetricsFromForecast(forecast, year) {
+    const baseline = (state.baselineForecast && state.baselineForecast.summaryByYear && state.baselineForecast.summaryByYear[String(START_YEAR)]) || {};
+    const f = forecast || baseline;
+    const popBase = METRICS.find(m => m.id === 'population').baseline;
+    const economyBase = METRICS.find(m => m.id === 'economy').baseline;
+    const populationDelta = ((f.population || 0) - (baseline.population || 0)) * 58_000;
+    const economyDelta = ((f.economy || 0) - (baseline.economy || 0)) * 4.2;
+    return {
+      population: Math.max(0, popBase + populationDelta),
+      traffic: clamp(Number(f.traffic || 0), 0, 1.5),
+      air: clamp(92 - Number(f.environmentAir || 0) * 72, 0, 100),
+      housing: clamp(Number(f.housingPressure || 0), 0, 1.5),
+      economy: Math.max(0, economyBase + economyDelta)
+    };
+  }
+
+  function objectiveForBranch(branch) {
+    if (!branch) return 'user_proposal';
+    if (branch.id === 'green') return 'green_mitigation';
+    if (branch.id === 'transport') return 'traffic_mitigation';
+    if (branch.id === 'density') return 'user_proposal';
+    const name = String(branch.name || '').toLowerCase();
+    if (name.includes('green')) return 'green_mitigation';
+    if (name.includes('traffic') || name.includes('transport')) return 'traffic_mitigation';
+    if (name.includes('fair')) return 'fairness_first';
+    if (name.includes('job') || name.includes('econom')) return 'jobs_optimised';
+    if (name.includes('balanced')) return 'balanced';
+    return 'user_proposal';
   }
 
   function metricChangeClass(metric, before, after) {
@@ -267,12 +280,12 @@
     return goingUp ? 'down' : 'up';
   }
 
-  // Sparkline points, 11 entries from 2026 (always baseline) projected to 2036.
+  // Sparkline points, 11 entries from 2026 through 2036.
   function sparklinePoints(branch, metric) {
     const start = metric.baseline;
     const pts = [];
-    for (let i = 0; i <= 10; i++) {
-      const yr = BASE_YEAR + i;
+    for (let i = 0; i < SIM_YEARS.length; i++) {
+      const yr = SIM_YEARS[i];
       const m = metricsForBranchYear(branch, yr);
       pts.push(m[metric.id]);
     }
@@ -304,13 +317,19 @@
         year: state.year,
         view: state.view,
         activeBranchId: state.activeBranchId,
-        branches: state.branches,
+        branches: state.branches.map(b => {
+          const copy = { ...b };
+          delete copy.scenarioResult;
+          delete copy._scenarioPending;
+          return copy;
+        }),
         activeTool: state.activeTool,
         activeBuildingPreset: state.activeBuildingPreset,
         nextItemId: state.nextItemId,
         bottomCollapsed: state.bottomCollapsed,
         mode: state.mode,
-        lens: state.lens
+        lens: state.lens,
+        selectedPostcode: state.selectedPostcode
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (_) {}
@@ -333,6 +352,7 @@
       if (typeof data.bottomCollapsed === 'boolean') state.bottomCollapsed = data.bottomCollapsed;
       if (data.mode === 'historical' || data.mode === 'simulation') state.mode = data.mode;
       if (data.lens && LENSES.find(l => l.id === data.lens)) state.lens = data.lens;
+      if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
     } catch (_) {}
   }
@@ -361,7 +381,15 @@
       'similarEvents', 'similarEventsList', 'similarEventsConf',
       'trafficSimSection', 'trafficSimToggle', 'trafficSimToggleLabel',
       'trafficSimDensity', 'trafficSimDensityVal', 'trafficSimSpeed', 'trafficSimSpeedVal',
-      'trafficSimStats', 'trafficSimVehicles', 'trafficSimSpeedStat', 'trafficSimCongested'
+      'trafficSimStats', 'trafficSimVehicles', 'trafficSimSpeedStat', 'trafficSimCongested',
+      'roadCompareBtn', 'roadCompareModal', 'roadCompareName',
+      'roadCompareProgress', 'roadCompareProgressFill', 'roadCompareProgressLabel',
+      'roadCompareResult', 'roadCompareMapBefore', 'roadCompareMapAfter',
+      'rcSpeedBefore', 'rcSpeedAfter', 'rcSpeedDelta', 'rcSpeedArrow',
+      'rcCongBefore', 'rcCongAfter', 'rcCongDelta', 'rcCongArrow',
+      'rcFlowBefore', 'rcFlowAfter', 'rcFlowDelta', 'rcFlowArrow',
+      'rcUsage', 'roadCompareSummary',
+      'planRoadHint', 'planRoadStep', 'planRoadCancel'
     ];
     ids.forEach(id => { els[id] = document.getElementById(id); });
     els.mapCanvas = document.querySelector('.map-canvas');
@@ -382,6 +410,16 @@
       state.historicalMetrics = json.metricsByYear || {};
     } catch (e) {
       console.warn('historical fetch failed', e);
+    }
+  }
+
+  async function loadForecastData() {
+    try {
+      const res = await fetch('/data/mode-a/baseline_2025_forecast.json');
+      if (!res.ok) throw new Error('forecast fetch ' + res.status);
+      state.baselineForecast = await res.json();
+    } catch (e) {
+      console.warn('forecast fetch failed', e);
     }
   }
 
@@ -418,21 +456,28 @@
     }
 
     const view = m.viewport || { center: [-5.9301, 54.5973], zoom: 12.1, pitch: 0, bearing: 0 };
+    // Map perf: disable antialias and pitch in 2D mode for a much faster
+    // first paint. The 3D extrusion layer is added on-demand when the user
+    // toggles to 3D rather than at every load.
     state.map = new mapboxgl.Map({
       container: 'map',
       style: (m.mapbox && m.mapbox.style) || 'mapbox://styles/mapbox/dark-v11',
       center: view.center,
       zoom: view.zoom,
       pitch: state.view === '3D' ? (view.pitch || 60) : 0,
-      bearing: view.bearing || 0,
-      antialias: true,
-      attributionControl: false
+      bearing: state.view === '3D' ? (view.bearing || 0) : 0,
+      antialias: false,
+      attributionControl: false,
+      fadeDuration: 100,
     });
 
     state.map.on('load', () => {
       state.mapLoaded = true;
       addItemSources();
-      addAdded3DBuildings();
+      // Only build the heavy 3D extrusion layer if the user is actually in
+      // 3D view; otherwise wait for them to flip the toggle. Cuts initial
+      // load time on the dashboard.
+      if (state.view === '3D') addAdded3DBuildings();
       ensureImpactLayers();
       attachMapInteractions();
       hideOverlay();
@@ -620,7 +665,7 @@
     if (!state.activeTool) return;
     if (state.activeTool === 'remove') return; // handled by per-layer click
     if (isSimYear(state.year) === false && state.activeTool) {
-      toast('Switch to a simulation year (2027-2036) to add changes', 'warn');
+      toast('Switch to a simulation year (2026-2036) to add changes', 'warn');
       return;
     }
     const lng = e.lngLat.lng;
@@ -650,10 +695,64 @@
 
   // ---------- ITEM CRUD ----------
 
+  function buildingConfigForPreset(preset) {
+    const map = {
+      residential: { size: 'medium', buildingType: 'apartments', affordabilityMix: 'affordable', floors: 8, footprintSqm: 1500 },
+      commercial: { size: 'medium', buildingType: 'office', affordabilityMix: 'market', floors: 8, footprintSqm: 1500 },
+      industrial: { size: 'large', buildingType: 'office', affordabilityMix: 'market', floors: 4, footprintSqm: 3500 },
+      mixed_use: { size: 'medium', buildingType: 'mixed_use', affordabilityMix: 'affordable', floors: 8, footprintSqm: 1500 }
+    };
+    const config = map[preset] || map.residential;
+    return {
+      ...config,
+      energyStandard: 'net_zero_ready',
+      parkingTransitAssumption: 'transit_first',
+      mitigation: { green: preset === 'mixed_use', mobility: true, energy: true }
+    };
+  }
+
+  function addBuildingAtSelectedPostcode(branch) {
+    const resolved = state.selectedPostcode;
+    if (!resolved || !resolved.canPlace || !resolved.location) {
+      toast('Search a full Belfast postcode first. Broad BT outcodes can zoom, but cannot place.', 'warn');
+      if (els.postcodeInput) els.postcodeInput.focus();
+      return;
+    }
+    const preset = state.activeBuildingPreset;
+    const presetDef = PRESETS.building.find(p => p.id === preset);
+    const item = {
+      id: 'item-' + (state.nextItemId++),
+      type: 'building',
+      year: START_YEAR,
+      lng: resolved.location.lng,
+      lat: resolved.location.lat,
+      postcode: resolved.postcode || resolved.normalizedPostcode,
+      resolvedPostcode: resolved,
+      preset: preset,
+      buildingConfig: buildingConfigForPreset(preset),
+      color: presetDef ? presetDef.color : '#a855f7',
+      label: capitalise(preset.replace('_', ' ')),
+      height: preset === 'industrial' ? 22 : preset === 'commercial' ? 60 : preset === 'mixed_use' ? 45 : 32
+    };
+    branch.items.push(item);
+    branch.forecastObjective = objectiveForBranch(branch);
+    branch.scenarioResult = null;
+    state.lastPlacedItemId = item.id;
+    if (state.year < START_YEAR) setYear(START_YEAR);
+    afterChange();
+    triggerEpicentrePulse(item);
+    toast('Added ' + item.label + ' at ' + item.postcode);
+    runScenarioForBranch(branch, item);
+  }
+
   function addItemAt(type, lng, lat) {
     const branch = activeBranch();
     if (branch.locked) {
       toast('Baseline is locked. Switch to or create another branch.', 'warn');
+      return;
+    }
+    if (type === 'building') {
+      addBuildingAtSelectedPostcode(branch);
       return;
     }
     const item = {
@@ -681,6 +780,49 @@
     afterChange();
     if (item.type === 'building') triggerEpicentrePulse(item);
     toast('Added ' + (item.label || type) + ' to ' + branch.name);
+  }
+
+  async function runScenarioForBranch(branch, item) {
+    const building = item || (branch.items || []).find(it => it.type === 'building' && it.postcode);
+    if (!building || !building.postcode) return null;
+    if (branch._scenarioPending) return branch._scenarioPending;
+    branch._scenarioPending = fetch('/api/scenario-studio/run', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        postcode: building.postcode,
+        building: {
+          id: building.id,
+          postcode: building.postcode,
+          config: building.buildingConfig || buildingConfigForPreset(building.preset),
+          delivery: { startYear: START_YEAR, completionYear: FINAL_YEAR }
+        },
+        startYear: START_YEAR,
+        baselineYear: BASE_YEAR,
+        horizonYear: FINAL_YEAR
+      })
+    })
+      .then(async res => {
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.ok === false) throw new Error(json.detail || json.error || ('scenario ' + res.status));
+        branch.scenarioResult = json;
+        branch.forecastObjective = objectiveForBranch(branch);
+        state.lastScenarioResult = json;
+        renderImpact();
+        renderBranches();
+        updateImpactRipples();
+        updateImpactLensUI();
+        return json;
+      })
+      .catch(err => {
+        toast('Scenario run failed: ' + err.message, 'error');
+        return null;
+      })
+      .finally(() => {
+        branch._scenarioPending = null;
+        saveState();
+      });
+    return branch._scenarioPending;
   }
 
   // Briefly amp up the epicentre dot's pulse value, then settle to its
@@ -738,6 +880,7 @@
     const before = branch.items.length;
     branch.items = branch.items.filter(it => it.id !== itemId);
     if (branch.items.length !== before) {
+      branch.scenarioResult = null;
       afterChange();
       toast('Item removed', 'warn');
     }
@@ -760,8 +903,8 @@
     const items = branch.items.filter(it => it.year <= state.year || !isSimYear(state.year));
 
     // Show all items up through the chosen year (for simulation years)
-    // For historical years 2016-2026 we show no user items (those don't exist yet).
-    const visible = state.year >= 2027
+    // For historical years 2016-2025 we show no user items (those don't exist yet).
+    const visible = state.year >= START_YEAR
       ? branch.items.filter(it => it.year <= state.year)
       : [];
 
@@ -941,9 +1084,8 @@
   function setYear(y) {
     state.year = y;
     state.activeEventId = null;
-    // Auto-mode: 2026 is the baseline. Anything before = historical, anything from
-    // 2026 onward = simulation. The user no longer toggles mode explicitly.
-    const desiredMode = y < BASE_YEAR ? 'historical' : 'simulation';
+    // Auto-mode: 2025 is the baseline. 2026 onward is the forecast simulation.
+    const desiredMode = y <= BASE_YEAR ? 'historical' : 'simulation';
     if (desiredMode !== state.mode) {
       state.mode = desiredMode;
       if (desiredMode === 'historical') {
@@ -970,6 +1112,11 @@
       renderCompareSection();
       renderHistoricalMapLayers();
     } else {
+      // Always call renderCompareSection so the simulation panel HTML is
+      // restored when transitioning from historical → simulation. Otherwise
+      // the panel keeps the "Event Detail" content from the previous mode
+      // and our Plan New Road / Run buttons disappear.
+      renderCompareSection();
       updateImpactRipples();
       updateImpactLensUI();
     }
@@ -1019,10 +1166,14 @@
     if (els.presetSection) els.presetSection.style.display = showPresets ? '' : 'none';
     if (els.modifySub) {
       if (state.activeTool) {
-        els.modifySub.textContent = TOOL_LABELS[state.activeTool] || 'Click on the map to place';
+        els.modifySub.textContent = state.activeTool === 'building' && state.selectedPostcode
+          ? 'Building will be placed at ' + (state.selectedPostcode.postcode || state.selectedPostcode.normalizedPostcode)
+          : (TOOL_LABELS[state.activeTool] || 'Click on the map to place');
         els.modifySub.style.color = 'var(--blue-2)';
       } else {
-        els.modifySub.textContent = 'Pick an element, then click on the map to place it';
+        els.modifySub.textContent = state.selectedPostcode
+          ? 'Ready at ' + (state.selectedPostcode.postcode || state.selectedPostcode.normalizedPostcode)
+          : 'Search a full Belfast postcode before adding a building';
         els.modifySub.style.color = '';
       }
     }
@@ -1067,12 +1218,17 @@
       btn.addEventListener('click', () => {
         const t = btn.getAttribute('data-tool');
         // Toggle off if already active
+        if (t === 'building' && (!state.selectedPostcode || !state.selectedPostcode.canPlace)) {
+          toast('Search a full Belfast postcode first. BT7 can zoom; BT7 1NN can place.', 'warn');
+          if (els.postcodeInput) els.postcodeInput.focus();
+          return;
+        }
         state.activeTool = state.activeTool === t ? null : t;
         state.pendingRoadStart = null;
-        if (state.activeTool && state.year < 2027) {
+        if (state.activeTool && state.year < START_YEAR) {
           // Auto-jump to first sim year so the action is meaningful.
           // setYear() auto-flips mode to simulation as a side effect.
-          setYear(2027);
+          setYear(START_YEAR);
         }
         renderModify();
       });
@@ -1129,7 +1285,7 @@
     const cls = metricChangeClass(metric, before, after);
     const changed = Math.abs(after - before) > (metric.id === 'population' ? 100 : 0.001);
     const valueStr = fmtMetricValue(metric, after);
-    const deltaStr = year === BASE_YEAR ? 'Today' : fmtDeltaLabel(metric, before, after);
+    const deltaStr = year === BASE_YEAR ? '2025 baseline' : fmtDeltaLabel(metric, before, after);
     const sparkVals = sparklinePoints(branch, metric);
     const spark = sparklineSvg(sparkVals, metric.color);
 
@@ -1565,7 +1721,7 @@
     // Compute marginal impact: branch metrics with item vs without
     const without = state.branches.map(b => b.id === branch.id ? Object.assign({}, b, { items: branch.items.filter(i => i.id !== item.id) }) : b);
     const baseBranch = without.find(b => b.id === branch.id);
-    const target = state.year >= 2027 ? state.year : FINAL_YEAR;
+    const target = state.year >= START_YEAR ? state.year : FINAL_YEAR;
     const withMetrics = metricsForBranchYear(branch, target);
     const withoutMetrics = metricsForBranchYear(baseBranch, target);
 
@@ -1632,6 +1788,12 @@
     if (!els.compareModal || !els.compareBody) return;
     const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
     els.compareYear.textContent = target;
+    const scenario = activeBranch().scenarioResult || state.lastScenarioResult;
+    if (scenario && scenario.timelineByYear && scenario.timelineByYear[String(target)]) {
+      renderScenarioCompareModal(scenario, target);
+      els.compareModal.hidden = false;
+      return;
+    }
     const branches = state.branches;
     if (branches.length < 2) {
       els.compareBody.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-mute)">Create a second branch to compare.</div>';
@@ -1693,15 +1855,83 @@
     els.compareModal.hidden = false;
   }
 
+  function renderScenarioCompareModal(scenario, target) {
+    const yearRow = scenario.timelineByYear[String(target)];
+    const branches = [
+      { name: scenario.baselineBranch.name, objective: 'baseline', metrics: yearRow.baseline, diffFromBaseline: {} }
+    ].concat((yearRow.branches || []).map(b => ({ name: b.name, objective: b.objective, metrics: b.metrics, diffFromBaseline: b.diffFromBaseline || {} })));
+    const metricDefs = [
+      { id: 'traffic', label: 'Traffic', goodDirection: 'down' },
+      { id: 'population', label: 'Population', goodDirection: 'up' },
+      { id: 'jobs', label: 'Jobs', goodDirection: 'up' },
+      { id: 'economy', label: 'Economy', goodDirection: 'up' },
+      { id: 'housingPressure', label: 'Housing Pressure', goodDirection: 'down' },
+      { id: 'services', label: 'Services', goodDirection: 'up' },
+      { id: 'electricity', label: 'Electricity Load', goodDirection: 'down' },
+      { id: 'environmentAir', label: 'Air / Exposure', goodDirection: 'down' },
+      { id: 'greenScore', label: 'Green Score', goodDirection: 'up' },
+      { id: 'fairness', label: 'Fairness', goodDirection: 'up' },
+      { id: 'fiscalBalance', label: 'Fiscal Balance', goodDirection: 'up' },
+      { id: 'planningViability', label: 'Planning Viability', goodDirection: 'up' }
+    ];
+    const winners = {};
+    metricDefs.forEach(m => {
+      let best = branches[0];
+      branches.forEach(b => {
+        const cur = Number(b.metrics[m.id] || 0);
+        const old = Number(best.metrics[m.id] || 0);
+        if (m.goodDirection === 'up' ? cur > old : cur < old) best = b;
+      });
+      winners[m.id] = best.name;
+    });
+    const cols = ['170px'].concat(branches.map(() => 'minmax(130px, 1fr)')).join(' ');
+    let html = '<div class="compare-grid scenario-compare" style="grid-template-columns:' + cols + '">';
+    html += '<div class="head">Metric</div>';
+    branches.forEach(b => { html += '<div class="head">' + escapeHtml(truncate(b.name, 24)) + '</div>'; });
+    metricDefs.forEach(m => {
+      html += '<div class="row-label">' + m.label + '</div>';
+      branches.forEach(b => {
+        const value = Number(b.metrics[m.id] || 0);
+        const cls = winners[m.id] === b.name ? 'winning' : 'neutral-cell';
+        const delta = b.diffFromBaseline && Number.isFinite(Number(b.diffFromBaseline[m.id])) ? Number(b.diffFromBaseline[m.id]) : 0;
+        html += '<div class="' + cls + '"><div>' + value.toFixed(3) + '</div>' +
+          '<div style="font-size:10px;color:var(--text-mute);margin-top:2px">' + (b.objective === 'baseline' ? 'no-build' : ((delta >= 0 ? '+' : '') + delta.toFixed(3))) + '</div></div>';
+      });
+    });
+    html += '</div>';
+    const trace = scenario.agentTrace || [];
+    if (trace.length) {
+      html += '<div class="compare-summary"><strong>Agent swarm</strong><br>' +
+        trace.slice(0, 6).map(t => escapeHtml(t.agent + ': ' + t.summary)).join('<br>') +
+        '</div>';
+    }
+    html += '<div class="compare-summary"><strong>' + escapeHtml(scenario.recommendedBranch || 'Recommended branch') + '</strong> is recommended by deterministic score. Model: ' + escapeHtml(scenario.modelVersion || 'forecast') + '.</div>';
+    els.compareBody.innerHTML = html;
+  }
+
   function closeCompareModal() { if (els.compareModal) els.compareModal.hidden = true; }
 
   // ---------- RUN SIMULATION ----------
 
-  function runSimulation() {
+  async function runSimulation() {
     if (state.isRunningSim) return;
+    const branch = activeBranch();
+    const building = branch.items.find(it => it.type === 'building' && it.postcode);
+    if (!building) {
+      toast('Add a building from a full postcode before running the forecast.', 'warn');
+      if (els.postcodeInput) els.postcodeInput.focus();
+      return;
+    }
     state.isRunningSim = true;
     if (els.runBtn) els.runBtn.classList.add('running');
     if (els.runBtnLabel) els.runBtnLabel.textContent = 'Simulating...';
+    const scenario = await runScenarioForBranch(branch, building);
+    if (!scenario) {
+      state.isRunningSim = false;
+      if (els.runBtn) els.runBtn.classList.remove('running');
+      if (els.runBtnLabel) els.runBtnLabel.textContent = 'Run Simulation';
+      return;
+    }
     // Kick off the in-page traffic flow visualisation alongside the year
     // animation. Auto-stops when the sim ends (toggle still works manually).
     const trafficWasRunning = window.TrafficSim && window.TrafficSim.isRunning();
@@ -1711,9 +1941,8 @@
       window.TrafficSim.refreshSegments();
     }
     // Animate playback through sim years
-    const branch = activeBranch();
     let i = 0;
-    setYear(2027);
+    setYear(START_YEAR);
     const tick = setInterval(() => {
       i++;
       if (i >= SIM_YEARS.length) {
@@ -1804,6 +2033,411 @@
     if (els.trafficSimCongested) els.trafficSimCongested.textContent = Math.round((m.congested || 0) * 100) + '%';
   }
 
+  // ================================================================
+  // ROAD PLANNER — postcode → junctions → plan road → impact comparison
+  // ================================================================
+  // Workflow:
+  //   1. User searches a postcode. flyToResolvedPostcode() then arms the planner with
+  //      the searched coordinate (via armRoadPlanner).
+  //   2. We sample junction nodes from the OSM road network around that point
+  //      and render them as glowing clickable circles.
+  //   3. User clicks two junctions; we drop them as a candidate road into the
+  //      active branch's items list (same shape as a normal road item).
+  //   4. "Plan New Road" button (or auto-open) runs runComparison() with the
+  //      candidate vs. the same network without it, and shows the impact
+  //      modal with before/after stats and a per-segment congestion diff.
+
+  const roadPlanner = {
+    armed: false,
+    centre: null,
+    junctions: [],
+    pickedIds: [],         // up to 2 junction ids picked by the user
+    candidateRoadItemId: null, // id of the most recently planned road in branch
+  };
+
+  function ensureRoadPlannerLayers() {
+    if (!state.map || !state.mapLoaded) return false;
+    if (!state.map.getSource('road-planner-junctions')) {
+      state.map.addSource('road-planner-junctions', { type: 'geojson', data: emptyFC() });
+    }
+    if (!state.map.getLayer('road-planner-junctions-halo')) {
+      state.map.addLayer({
+        id: 'road-planner-junctions-halo',
+        type: 'circle',
+        source: 'road-planner-junctions',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 12, 16, 22],
+          'circle-color': ['case', ['==', ['get', 'picked'], 1], '#22d3ee', '#60a5fa'],
+          'circle-opacity': 0.18,
+          'circle-blur': 0.3,
+        },
+      });
+      state.map.addLayer({
+        id: 'road-planner-junctions-dot',
+        type: 'circle',
+        source: 'road-planner-junctions',
+        paint: {
+          'circle-radius': ['case', ['==', ['get', 'picked'], 1], 8, 5.5],
+          'circle-color': ['case', ['==', ['get', 'picked'], 1], '#22d3ee', '#dbeafe'],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': ['case', ['==', ['get', 'picked'], 1], '#0e7490', '#1d4ed8'],
+        },
+      });
+      // Click handler — pick a junction
+      state.map.on('click', 'road-planner-junctions-dot', onJunctionClick);
+      state.map.on('mouseenter', 'road-planner-junctions-dot', () => {
+        if (state.map) state.map.getCanvas().style.cursor = 'pointer';
+      });
+      state.map.on('mouseleave', 'road-planner-junctions-dot', () => {
+        if (state.map) state.map.getCanvas().style.cursor = '';
+      });
+    }
+    return true;
+  }
+
+  function emptyFC() { return { type: 'FeatureCollection', features: [] }; }
+
+  function junctionsAsFC() {
+    return {
+      type: 'FeatureCollection',
+      features: roadPlanner.junctions.map(j => ({
+        type: 'Feature',
+        properties: {
+          id: j.id,
+          picked: roadPlanner.pickedIds.indexOf(j.id) >= 0 ? 1 : 0,
+        },
+        geometry: { type: 'Point', coordinates: j.coord },
+      })),
+    };
+  }
+
+  function paintJunctions() {
+    if (!ensureRoadPlannerLayers()) return;
+    const src = state.map.getSource('road-planner-junctions');
+    if (src) src.setData(junctionsAsFC());
+  }
+
+  function clearRoadPlanner() {
+    roadPlanner.armed = false;
+    roadPlanner.centre = null;
+    roadPlanner.junctions = [];
+    roadPlanner.pickedIds = [];
+    if (state.map && state.map.getSource('road-planner-junctions')) {
+      state.map.getSource('road-planner-junctions').setData(emptyFC());
+    }
+    if (els.planRoadHint) els.planRoadHint.hidden = true;
+  }
+
+  function showPlanRoadHint(text) {
+    if (!els.planRoadHint) return;
+    els.planRoadHint.hidden = false;
+    if (els.planRoadStep) els.planRoadStep.textContent = text;
+  }
+
+  // Called by the postcode search flow once we've zoomed to a location.
+  function armRoadPlanner(centreCoord) {
+    if (!Array.isArray(centreCoord) || centreCoord.length !== 2) return;
+    if (!window.TrafficSim || !window.TrafficSim.findJunctionNodes) return;
+    if (state.year < START_YEAR) {
+      // Only meaningful in simulation years (when user-added roads count).
+      return;
+    }
+    // Wait a beat for the flyTo to settle so OSM tiles are in viewport before
+    // we sample junctions from queryRenderedFeatures.
+    setTimeout(() => {
+      const nodes = window.TrafficSim.findJunctionNodes(centreCoord, 14, 0.5);
+      if (!nodes.length) {
+        showPlanRoadHint('No nearby junctions found here — try a denser postcode');
+        return;
+      }
+      roadPlanner.armed = true;
+      roadPlanner.centre = centreCoord;
+      roadPlanner.junctions = nodes;
+      roadPlanner.pickedIds = [];
+      paintJunctions();
+      showPlanRoadHint('Click two glowing junctions to plan a road');
+    }, 850);
+  }
+
+  function onJunctionClick(e) {
+    if (!roadPlanner.armed) return;
+    const f = e.features && e.features[0];
+    if (!f) return;
+    const id = f.properties && f.properties.id;
+    if (!id) return;
+    const idx = roadPlanner.pickedIds.indexOf(id);
+    if (idx >= 0) {
+      roadPlanner.pickedIds.splice(idx, 1);
+    } else {
+      roadPlanner.pickedIds.push(id);
+      if (roadPlanner.pickedIds.length > 2) roadPlanner.pickedIds.shift();
+    }
+    paintJunctions();
+    if (roadPlanner.pickedIds.length === 1) {
+      showPlanRoadHint('Pick the second junction');
+    } else if (roadPlanner.pickedIds.length === 2) {
+      const ja = roadPlanner.junctions.find(n => n.id === roadPlanner.pickedIds[0]);
+      const jb = roadPlanner.junctions.find(n => n.id === roadPlanner.pickedIds[1]);
+      if (!ja || !jb) return;
+      placeCandidateRoad(ja.coord, jb.coord);
+    }
+  }
+
+  function placeCandidateRoad(a, b) {
+    const branch = activeBranch();
+    if (branch.locked) {
+      // Auto-create a planning branch so the baseline stays untouched.
+      createBranch('Road Plan', '#22d3ee', 'baseline');
+    }
+    addRoadItem(a, b);
+    // Track the freshly placed item so runRoadComparison knows which one is
+    // the candidate.
+    const fresh = activeBranch().items[activeBranch().items.length - 1];
+    if (fresh) roadPlanner.candidateRoadItemId = fresh.id;
+    showPlanRoadHint('Road planned — click "Plan New Road" again to run impact analysis');
+    setTimeout(() => { runRoadComparison(); }, 250);
+  }
+
+  function setRoadCompareProgress(label, frac) {
+    if (els.roadCompareProgressLabel) els.roadCompareProgressLabel.textContent = label;
+    if (els.roadCompareProgressFill) els.roadCompareProgressFill.style.width = Math.round(Math.max(0, Math.min(1, frac)) * 100) + '%';
+  }
+
+  function openRoadCompareModal() {
+    if (!els.roadCompareModal) return;
+    if (els.roadCompareResult) els.roadCompareResult.hidden = true;
+    if (els.roadCompareProgress) els.roadCompareProgress.hidden = false;
+    setRoadCompareProgress('Preparing simulations…', 0.05);
+    els.roadCompareModal.hidden = false;
+  }
+
+  // Called by the "Plan New Road" button. If a candidate road already exists,
+  // run the impact comparison; otherwise prompt the user to search a postcode.
+  function runRoadComparison() {
+    if (!window.TrafficSim || !window.TrafficSim.runComparison) {
+      toast('Traffic engine not ready yet', 'warn');
+      return;
+    }
+    const branch = activeBranch();
+    // Find the candidate road — most recently-placed road, prefer the one we
+    // tracked.
+    const roadItems = branch.items.filter(it => it.type === 'road');
+    if (!roadItems.length) {
+      // No road yet — arm the planner so the user can pick one.
+      if (!roadPlanner.armed) {
+        if (els.postcodeInput) els.postcodeInput.focus();
+        showPlanRoadHint('Search a postcode, then click two junctions to plan a road');
+        toast('Search a postcode and pick two junctions to plan a road', 'warn');
+        return;
+      }
+      toast('Click two junctions to plan a road first', 'warn');
+      return;
+    }
+    let cand = roadItems[roadItems.length - 1];
+    if (roadPlanner.candidateRoadItemId) {
+      const found = roadItems.find(it => it.id === roadPlanner.candidateRoadItemId);
+      if (found) cand = found;
+    }
+
+    // Build the segment graph for the branch *without* the candidate, then
+    // run with it appended as source:'candidate'.
+    const baseSegments = window.TrafficSim.segmentsForBranch({
+      items: branch.items.filter(it => it.id !== cand.id),
+    });
+    const candidate = {
+      id: 'candidate-' + cand.id,
+      a: cand.start,
+      b: cand.end,
+      source: 'candidate',
+    };
+
+    openRoadCompareModal();
+    if (els.roadCompareName) els.roadCompareName.textContent = cand.label || 'New Road';
+
+    // Yield to the browser so the modal paints, then run.
+    setTimeout(() => {
+      setRoadCompareProgress('Running baseline (without new road)…', 0.25);
+      // Two synchronous runs back-to-back — each takes ~50ms with default
+      // density. We split them into two setTimeout-delayed steps so the UI
+      // can show the progress bar incrementing.
+      setTimeout(() => {
+        const result = window.TrafficSim.runComparison({
+          baseSegments: baseSegments,
+          candidate: candidate,
+          density: Number(els.trafficSimDensity ? els.trafficSimDensity.value : 80),
+          speed: Number(els.trafficSimSpeed ? els.trafficSimSpeed.value : 1),
+          durationSeconds: 6,
+          seed: 0xb1f55, // stable seed so before/after share spawn positions
+        });
+        setRoadCompareProgress('Comparing…', 0.9);
+        setTimeout(() => {
+          if (!result) {
+            toast('Could not run comparison — load the OSM map first', 'warn');
+            if (els.roadCompareModal) els.roadCompareModal.hidden = true;
+            return;
+          }
+          renderRoadCompareResult(result, cand);
+        }, 200);
+      }, 200);
+    }, 80);
+  }
+
+  // ---------- Render the result ----------
+
+  function renderRoadCompareResult(result, candItem) {
+    if (els.roadCompareProgress) els.roadCompareProgress.hidden = true;
+    if (els.roadCompareResult) els.roadCompareResult.hidden = false;
+
+    // Stats
+    setStatPair('Speed', els.rcSpeedBefore, els.rcSpeedAfter, els.rcSpeedDelta, els.rcSpeedArrow,
+      result.before.avgSpeed, result.after.avgSpeed, 'm/s', { higherIsBetter: true, decimals: 1 });
+    setStatPair('Cong',  els.rcCongBefore, els.rcCongAfter, els.rcCongDelta, els.rcCongArrow,
+      result.before.congested * 100, result.after.congested * 100, '%', { higherIsBetter: false, decimals: 0 });
+    setStatPair('Flow',  els.rcFlowBefore, els.rcFlowAfter, els.rcFlowDelta, els.rcFlowArrow,
+      result.before.throughput / 1000, result.after.throughput / 1000, 'km', { higherIsBetter: true, decimals: 1 });
+    if (els.rcUsage) els.rcUsage.textContent = String(result.after.candidateUsage || 0) + ' trips';
+
+    // Mini-maps
+    drawCompareMap(els.roadCompareMapBefore, result.segmentDeltas, 'before', candItem);
+    drawCompareMap(els.roadCompareMapAfter,  result.segmentDeltas, 'after',  candItem);
+
+    // Plain-language summary
+    const dSpeed = result.after.avgSpeed - result.before.avgSpeed;
+    const dCong  = result.after.congested - result.before.congested;
+    const verdictBits = [];
+    if (dSpeed > 0.3) verdictBits.push('average speeds rise by ' + dSpeed.toFixed(1) + ' m/s');
+    else if (dSpeed < -0.3) verdictBits.push('average speeds drop by ' + Math.abs(dSpeed).toFixed(1) + ' m/s');
+    if (dCong < -0.03) verdictBits.push('congested time falls by ' + Math.abs(dCong * 100).toFixed(0) + '%');
+    else if (dCong > 0.03) verdictBits.push('congested time grows by ' + (dCong * 100).toFixed(0) + '%');
+    if (!verdictBits.length) verdictBits.push('the network shifts but overall flow stays similar');
+    const verdict = (dSpeed >= 0 && dCong <= 0) ? 'Net relief'
+                  : (dSpeed <= 0 && dCong >= 0) ? 'Net congestion'
+                  : 'Mixed effect';
+    if (els.roadCompareSummary) {
+      els.roadCompareSummary.innerHTML =
+        '<span class="rc-verdict rc-verdict-' + verdict.toLowerCase().replace(/[^a-z]+/g, '-') + '">' + escapeHtml(verdict) + '</span>' +
+        ' — ' + escapeHtml(verdictBits.join(' · ')) + '. ' +
+        escapeHtml(result.after.candidateUsage + ' simulated vehicles routed via the new road.');
+    }
+  }
+
+  function setStatPair(label, beforeEl, afterEl, deltaEl, arrowEl, beforeVal, afterVal, unit, opts) {
+    opts = opts || {};
+    const dec = (typeof opts.decimals === 'number') ? opts.decimals : 1;
+    if (beforeEl) beforeEl.textContent = beforeVal.toFixed(dec) + ' ' + unit;
+    if (afterEl)  afterEl.textContent  = afterVal.toFixed(dec) + ' ' + unit;
+    const delta = afterVal - beforeVal;
+    const better = opts.higherIsBetter ? delta > 0 : delta < 0;
+    const sameish = Math.abs(delta) < (opts.epsilon != null ? opts.epsilon : (opts.higherIsBetter ? 0.05 : 0.5));
+    if (arrowEl) {
+      arrowEl.textContent = sameish ? '≈' : (delta > 0 ? '▲' : '▼');
+      arrowEl.className = 'rc-stat-arrow ' + (sameish ? 'neutral' : (better ? 'good' : 'bad'));
+    }
+    if (deltaEl) {
+      deltaEl.textContent = (delta > 0 ? '+' : '') + delta.toFixed(dec) + ' ' + unit;
+      deltaEl.className = 'rc-stat-delta ' + (sameish ? 'neutral' : (better ? 'good' : 'bad'));
+    }
+  }
+
+  // Draw a simple SVG schematic of the road network coloured by congestion
+  // (or, in the "after" view, by the delta vs. before so users can see which
+  // segments improved or got worse).
+  function drawCompareMap(svgEl, segmentDeltas, mode, candItem) {
+    if (!svgEl) return;
+    while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+    if (!segmentDeltas.length) return;
+    const W = 320, H = 220, pad = 12;
+    let minLng =  Infinity, maxLng = -Infinity, minLat =  Infinity, maxLat = -Infinity;
+    segmentDeltas.forEach(s => {
+      [s.a, s.b].forEach(p => {
+        if (p[0] < minLng) minLng = p[0]; if (p[0] > maxLng) maxLng = p[0];
+        if (p[1] < minLat) minLat = p[1]; if (p[1] > maxLat) maxLat = p[1];
+      });
+    });
+    if (candItem && candItem.start && candItem.end) {
+      [candItem.start, candItem.end].forEach(p => {
+        if (p[0] < minLng) minLng = p[0]; if (p[0] > maxLng) maxLng = p[0];
+        if (p[1] < minLat) minLat = p[1]; if (p[1] > maxLat) maxLat = p[1];
+      });
+    }
+    const dLng = Math.max(1e-6, maxLng - minLng);
+    const dLat = Math.max(1e-6, maxLat - minLat);
+    function project(p) {
+      const x = pad + ((p[0] - minLng) / dLng) * (W - 2 * pad);
+      const y = pad + (1 - (p[1] - minLat) / dLat) * (H - 2 * pad);
+      return [x, y];
+    }
+    function colourFor(s) {
+      if (mode === 'before') {
+        // amber→red ramp by congestion ratio
+        const r = Math.min(1, s.baseRatio);
+        return ratioToColour(r);
+      } else {
+        // diff: green = improvement, red = worse
+        const d = s.delta;
+        if (d < -0.05) return '#22c55e';
+        if (d >  0.05) return '#ef4444';
+        return '#94a3b8';
+      }
+    }
+    function ratioToColour(r) {
+      if (r < 0.15) return '#1e3a8a';
+      if (r < 0.4)  return '#fde68a';
+      if (r < 0.7)  return '#fb923c';
+      return '#dc2626';
+    }
+    // Draw segments
+    segmentDeltas.forEach(s => {
+      const [x1, y1] = project(s.a);
+      const [x2, y2] = project(s.b);
+      const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', x1.toFixed(1));
+      ln.setAttribute('y1', y1.toFixed(1));
+      ln.setAttribute('x2', x2.toFixed(1));
+      ln.setAttribute('y2', y2.toFixed(1));
+      ln.setAttribute('stroke', colourFor(s));
+      ln.setAttribute('stroke-width', s.source === 'candidate' ? 0 : 1.6);
+      ln.setAttribute('stroke-linecap', 'round');
+      ln.setAttribute('opacity', mode === 'after' ? '0.85' : '0.7');
+      svgEl.appendChild(ln);
+    });
+    // Draw candidate road (only on after) as a bright cyan dashed line
+    if (mode === 'after' && candItem && candItem.start && candItem.end) {
+      const [x1, y1] = project(candItem.start);
+      const [x2, y2] = project(candItem.end);
+      const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', x1.toFixed(1));
+      ln.setAttribute('y1', y1.toFixed(1));
+      ln.setAttribute('x2', x2.toFixed(1));
+      ln.setAttribute('y2', y2.toFixed(1));
+      ln.setAttribute('stroke', '#22d3ee');
+      ln.setAttribute('stroke-width', 3.2);
+      ln.setAttribute('stroke-linecap', 'round');
+      ln.setAttribute('stroke-dasharray', '6 3');
+      svgEl.appendChild(ln);
+      [candItem.start, candItem.end].forEach(p => {
+        const [cx, cy] = project(p);
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', cx.toFixed(1));
+        c.setAttribute('cy', cy.toFixed(1));
+        c.setAttribute('r', 3.2);
+        c.setAttribute('fill', '#22d3ee');
+        c.setAttribute('stroke', '#0e7490');
+        c.setAttribute('stroke-width', 1);
+        svgEl.appendChild(c);
+      });
+    }
+  }
+
+  function attachRoadCompare() {
+    if (els.roadCompareBtn) {
+      els.roadCompareBtn.addEventListener('click', runRoadComparison);
+    }
+    if (els.planRoadCancel) {
+      els.planRoadCancel.addEventListener('click', clearRoadPlanner);
+    }
+  }
+
   // ---------- EXPORT ----------
 
   function exportResults() {
@@ -1815,7 +2449,10 @@
       year: target,
       items: branch.items,
       metrics: metricsForBranchYear(branch, target),
-      baseline: METRICS.reduce((acc, m) => { acc[m.id] = m.baseline; return acc; }, {})
+      baselineYear: BASE_YEAR,
+      forecastYears: SIM_YEARS,
+      baseline: METRICS.reduce((acc, m) => { acc[m.id] = m.baseline; return acc; }, {}),
+      scenarioResult: branch.scenarioResult || state.lastScenarioResult || null
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -1842,6 +2479,11 @@
     if (state.map) {
       const targetPitch = v === '3D' ? ((state.manifest && state.manifest.viewport && state.manifest.viewport.pitch) || 60) : 0;
       state.map.easeTo({ pitch: targetPitch, bearing: v === '3D' ? -24 : 0, duration: 700 });
+      // Lazy-add the 3D extrusion layer the first time the user actually
+      // needs it. Saves a chunky GPU upload on initial map load.
+      if (v === '3D' && state.mapLoaded && !state.map.getLayer('items-buildings-3d')) {
+        try { addAdded3DBuildings(); renderItemsOnMap(); } catch (_) {}
+      }
       if (state.map.getLayer('items-buildings-3d')) {
         state.map.setLayoutProperty('items-buildings-3d', 'visibility', v === '3D' ? 'visible' : 'none');
       }
@@ -1871,10 +2513,10 @@
         const m = t.getAttribute('data-mode-tab');
         if (m === 'historical') {
           // Jump to a representative historical year — the timeline year drives mode.
-          if (state.year >= BASE_YEAR) setYear(2025);
+          if (state.year >= BASE_YEAR) setYear(BASE_YEAR);
           syncTopNavForMode();
         } else if (m === 'simulation') {
-          if (state.year < BASE_YEAR + 1) setYear(2027);
+          if (state.year < START_YEAR) setYear(START_YEAR);
           syncTopNavForMode();
         } else if (m === 'compare') {
           openCompareModal();
@@ -1911,8 +2553,8 @@
     const branch = activeBranch();
     const text = sim
       ? 'Simulating ' + branch.name + ' to ' + state.year
-      : 'Showing ' + state.year + ' historical baseline';
-    els.mapSubtitle.innerHTML = text + ' <span class="info-i" title="Pick a tool, then click on the map. Switch to a year between 2027 and 2036 to add changes.">i</span>';
+      : 'Showing ' + state.year + (state.year === BASE_YEAR ? ' forecast baseline' : ' historical replay');
+    els.mapSubtitle.innerHTML = text + ' <span class="info-i" title="Search a full Belfast postcode, then run a forecast year between 2026 and 2036.">i</span>';
   }
 
   // ---------- AFTER CHANGE PIPELINE ----------
@@ -1928,26 +2570,18 @@
     saveState();
   }
 
-  // ---------- POSTCODE SEARCH (Mapbox geocoding) ----------
+  // ---------- POSTCODE SEARCH (local postcode resolver) ----------
 
   let searchMarker = null;
   let searchDebounce = null;
 
-  async function geocodePostcode(query) {
+  async function resolvePostcode(query) {
     const q = query.trim();
     if (!q) return null;
-    const token = state.manifest && state.manifest.mapbox && state.manifest.mapbox.token;
-    if (!token) return null;
-    // Belfast extent bbox to bias results into the city
-    const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
-      encodeURIComponent(q) +
-      '.json?country=gb&types=postcode,address,place,neighborhood,locality,poi' +
-      '&proximity=-5.93,54.6&limit=5&access_token=' + token;
     try {
-      const res = await fetch(url);
+      const res = await fetch('/api/postcode/resolve?postcode=' + encodeURIComponent(q));
       if (!res.ok) return null;
-      const json = await res.json();
-      return Array.isArray(json.features) ? json.features : [];
+      return await res.json();
     } catch (_) {
       return null;
     }
@@ -1961,37 +2595,49 @@
     els.mapSearchStatus.hidden = false;
   }
 
-  function showSearchSuggestions(features) {
+  function showSearchSuggestions(results) {
     if (!els.mapSearchSuggest) return;
-    if (!features || !features.length) { els.mapSearchSuggest.hidden = true; els.mapSearchSuggest.innerHTML = ''; return; }
+    const features = Array.isArray(results) ? results : (results ? [results] : []);
+    if (!features.length) { els.mapSearchSuggest.hidden = true; els.mapSearchSuggest.innerHTML = ''; return; }
     els.mapSearchSuggest.innerHTML = features.map((f, i) => {
-      const ctx = (f.context || []).map(c => c.text).join(', ');
-      return '<li data-i="' + i + '"><strong>' + escapeHtml(f.text || f.place_name) + '</strong>' +
-        (ctx ? '<small>' + escapeHtml(ctx) + '</small>' : '') + '</li>';
+      const status = f.canPlace ? 'Ready to place' : (f.precision === 'outcode' ? 'Zoom only - enter full postcode' : 'Not placeable');
+      return '<li data-i="' + i + '"><strong>' + escapeHtml(f.postcode || f.normalizedPostcode || f.input || '') + '</strong>' +
+        '<small>' + escapeHtml((f.label || 'Belfast') + ' · ' + status) + '</small></li>';
     }).join('');
     els.mapSearchSuggest.hidden = false;
     els.mapSearchSuggest.querySelectorAll('li').forEach(li => {
       li.addEventListener('click', () => {
         const idx = parseInt(li.getAttribute('data-i'), 10);
-        flyToFeature(features[idx]);
+        flyToResolvedPostcode(features[idx]);
         els.mapSearchSuggest.hidden = true;
       });
     });
   }
 
-  function flyToFeature(feat) {
-    if (!feat || !state.map || !Array.isArray(feat.center)) return;
-    const c = feat.center;
-    state.map.flyTo({ center: c, zoom: feat.bbox ? 14 : 15.5, duration: 800 });
+  function flyToResolvedPostcode(feat) {
+    if (!feat || !state.map || !feat.location) return;
+    const c = [feat.location.lng, feat.location.lat];
+    state.map.flyTo({ center: c, zoom: feat.precision === 'outcode' ? 13.7 : 16.2, pitch: 62, bearing: -24, duration: 900 });
     if (searchMarker) { try { searchMarker.remove(); } catch (_) {} }
     const el = document.createElement('div');
-    el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 4px rgba(96,165,250,0.35),0 0 18px rgba(96,165,250,0.7);border:2px solid #0a1426;';
+    el.style.cssText = 'width:22px;height:22px;border-radius:50%;background:' + (feat.canPlace ? '#22c55e' : '#f59e0b') + ';box-shadow:0 0 0 7px rgba(96,165,250,0.25),0 0 22px rgba(96,165,250,0.7);border:2px solid #0a1426;';
     searchMarker = new mapboxgl.Marker({ element: el })
       .setLngLat(c)
-      .setPopup(new mapboxgl.Popup({ offset: 14 }).setHTML('<strong>' + escapeHtml(feat.text || '') + '</strong><br><small>' + escapeHtml(feat.place_name || '') + '</small>'))
+      .setPopup(new mapboxgl.Popup({ offset: 14 }).setHTML('<strong>' + escapeHtml(feat.postcode || feat.normalizedPostcode || '') + '</strong><br><small>' + escapeHtml(feat.canPlace ? 'Buildability gate passed' : ((feat.warnings || [])[0] || 'Full postcode required')) + '</small>'))
       .addTo(state.map);
     searchMarker.togglePopup();
-    showSearchStatus('');
+    if (feat.canPlace) {
+      state.selectedPostcode = feat;
+      showSearchStatus((feat.postcode || feat.normalizedPostcode) + ' selected · Add Building enabled');
+      setView('3D');
+    } else {
+      state.selectedPostcode = null;
+      showSearchStatus(((feat.warnings || [])[0] || 'Full Belfast postcode required'), 'error');
+    }
+    renderModify();
+    saveState();
+    // Arm the road planner with junction nodes around the searched location.
+    armRoadPlanner(c);
   }
 
   function attachPostcodeSearch() {
@@ -2000,20 +2646,18 @@
       e.preventDefault();
       const q = els.postcodeInput.value;
       if (!q.trim()) return;
-      showSearchStatus('Searching...');
-      const features = await geocodePostcode(q);
-      if (!features) { showSearchStatus('Search failed', 'error'); return; }
-      if (!features.length) { showSearchStatus('No results for "' + q + '"', 'error'); return; }
-      showSearchStatus('');
-      flyToFeature(features[0]);
+      showSearchStatus('Resolving postcode...');
+      const resolved = await resolvePostcode(q);
+      if (!resolved) { showSearchStatus('Search failed', 'error'); return; }
+      flyToResolvedPostcode(resolved);
     });
     els.postcodeInput.addEventListener('input', () => {
       const q = els.postcodeInput.value.trim();
       if (searchDebounce) clearTimeout(searchDebounce);
       if (q.length < 2) { showSearchSuggestions([]); return; }
       searchDebounce = setTimeout(async () => {
-        const features = await geocodePostcode(q);
-        if (features && features.length) showSearchSuggestions(features);
+        const resolved = await resolvePostcode(q);
+        if (resolved && resolved.precision !== 'invalid') showSearchSuggestions([resolved]);
         else showSearchSuggestions([]);
       }, 250);
     });
@@ -2049,7 +2693,7 @@
   function setMode(mode) {
     state.mode = mode;
     if (mode === 'historical') {
-      if (state.year > 2026) state.year = 2026;
+      if (state.year > BASE_YEAR) state.year = BASE_YEAR;
       state.activeTool = null;
       state.pendingRoadStart = null;
     } else {
@@ -2922,6 +3566,10 @@
         if (els.runBtn) els.runBtn.addEventListener('click', runSimulation);
         if (els.compareBtn) els.compareBtn.addEventListener('click', openCompareModal);
         if (els.exportBtn) els.exportBtn.addEventListener('click', exportResults);
+        // Re-attach the traffic-sim and road-compare listeners since the
+        // restored HTML has fresh DOM nodes that lost their handlers.
+        attachTrafficSim();
+        attachRoadCompare();
       }
       return;
     }
@@ -3482,13 +4130,14 @@
     if (els.collapseBtn) els.collapseBtn.addEventListener('click', toggleBottomCollapse);
     attachPostcodeSearch();
     attachTrafficSim();
+    attachRoadCompare();
 
     // Apply persisted collapse state. Mode is now derived from the year — see
     // setYear()'s auto-mode logic. We just need to make sure the persisted
     // mode matches the persisted year so historical UI shows up correctly on
     // first paint.
     applyBottomCollapse();
-    state.mode = state.year < BASE_YEAR ? 'historical' : 'simulation';
+    state.mode = state.year <= BASE_YEAR ? 'historical' : 'simulation';
     if (state.mode === 'historical') {
       setMode('historical');
     }
@@ -3543,10 +4192,15 @@
       });
     }
 
-    // Map last so the rest of the UI is alive even if Mapbox fails
-    await loadHistorical();
+    // Map last so the rest of the UI is alive even if Mapbox fails. Run
+    // historical + forecast fetches in parallel with the manifest fetch —
+    // manifest blocks map init (we need the Mapbox token), but the data
+    // fetches can keep going while Mapbox boots its WebGL context.
+    const histPromise = loadHistorical();
+    const forecastPromise = loadForecastData();
     await loadManifest();
     initMap();
+    await Promise.all([histPromise, forecastPromise]);
 
     // Expose for debugging / smoke tests
     window.BelfastDashboard = {
