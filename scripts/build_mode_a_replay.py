@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate deterministic Mode A replay grid and changelog data."""
+"""Generate deterministic Mode A replay grid, hotspots, and changelog data."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 import math
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
@@ -16,47 +17,63 @@ from typing import Any
 YEARS = list(range(2016, 2027))
 BELFAST_BBOX = [-6.08, 54.52, -5.78, 54.70]
 CENTER = (-5.9301, 54.5973)
-RIVER_LAGAN = [
-    (-5.902, 54.665),
-    (-5.914, 54.635),
-    (-5.924, 54.606),
-    (-5.928, 54.590),
-    (-5.915, 54.560),
-]
+RIVER_LAGAN = [(-5.902, 54.665), (-5.914, 54.635), (-5.924, 54.606), (-5.928, 54.590), (-5.915, 54.560)]
+
 DEVELOPMENT_ZONES = [
     {"name": "Titanic Quarter", "lon": -5.902, "lat": 54.608, "weight": 1.0},
     {"name": "City Centre", "lon": -5.929, "lat": 54.598, "weight": 0.95},
-    {"name": "Cathedral Quarter", "lon": -5.927, "lat": 54.603, "weight": 0.8},
+    {"name": "Cathedral Quarter", "lon": -5.927, "lat": 54.603, "weight": 0.82},
     {"name": "Sirocco / Waterfront", "lon": -5.915, "lat": 54.594, "weight": 0.86},
     {"name": "Queen's Quarter", "lon": -5.936, "lat": 54.584, "weight": 0.58},
 ]
-BIKE_STATIONS = [
-    (-5.930, 54.597),
-    (-5.922, 54.602),
-    (-5.938, 54.586),
-    (-5.914, 54.607),
-    (-5.957, 54.585),
-    (-5.899, 54.596),
-]
-TRANSIT_NODES = [
-    (-5.917, 54.596),
-    (-5.929, 54.595),
-    (-5.934, 54.601),
-    (-5.908, 54.603),
-    (-5.953, 54.591),
-]
-GREEN_ANCHORS = [
-    (-5.956, 54.591),
-    (-5.940, 54.582),
-    (-5.894, 54.594),
-    (-5.981, 54.605),
-    (-5.915, 54.620),
-]
-HIGH_DEPRIVATION_ANCHORS = [
-    (-5.955, 54.607),
-    (-5.940, 54.618),
-    (-5.975, 54.583),
-    (-5.900, 54.620),
+BIKE_STATIONS = [(-5.930, 54.597), (-5.922, 54.602), (-5.938, 54.586), (-5.914, 54.607), (-5.957, 54.585), (-5.899, 54.596)]
+TRANSIT_NODES = [(-5.917, 54.596), (-5.929, 54.595), (-5.934, 54.601), (-5.908, 54.603), (-5.953, 54.591)]
+GREEN_ANCHORS = [(-5.956, 54.591), (-5.940, 54.582), (-5.894, 54.594), (-5.981, 54.605), (-5.915, 54.620)]
+HIGH_DEPRIVATION_ANCHORS = [(-5.955, 54.607), (-5.940, 54.618), (-5.975, 54.583), (-5.900, 54.620)]
+JOB_EDUCATION_ANCHORS = [(-5.929, 54.598), (-5.936, 54.584), (-5.917, 54.596), (-5.902, 54.608), (-5.925, 54.602)]
+FLOOD_RISK_ANCHORS = RIVER_LAGAN
+
+CORE_METRICS = [
+    {
+        "id": "population_pressure",
+        "label": "Population Pressure",
+        "why": "Shows where Belfast is becoming denser and whether areas can handle growth.",
+        "map": "Density heatmap, new housing zones, and service pressure.",
+        "goodDirection": "down",
+        "color": "#ef4444",
+    },
+    {
+        "id": "mobility_strain",
+        "label": "Mobility Strain",
+        "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
+        "map": "Congested corridors, transit gaps, and bike/road improvements.",
+        "goodDirection": "down",
+        "color": "#2563eb",
+    },
+    {
+        "id": "economic_opportunity",
+        "label": "Economic Opportunity",
+        "why": "Shows whether people can reach jobs, education, services, and business areas.",
+        "map": "Job-access zones, growth corridors, and reachable opportunities.",
+        "goodDirection": "up",
+        "color": "#f59e0b",
+    },
+    {
+        "id": "environmental_exposure",
+        "label": "Environmental Exposure",
+        "why": "Combines air quality, green cover, road exposure, and river/flood-risk context.",
+        "map": "Pollution hotspots, green-cover change, and river/flood-risk areas.",
+        "goodDirection": "down",
+        "color": "#7c3aed",
+    },
+    {
+        "id": "fairness_score",
+        "label": "Fairness Score",
+        "why": "Shows whether improvements help deprived/underserved areas or only already strong areas.",
+        "map": "Who benefits, inequality gaps, and underserved neighbourhoods.",
+        "goodDirection": "up",
+        "color": "#0f766e",
+    },
 ]
 
 
@@ -73,41 +90,34 @@ def distance_km(a: tuple[float, float], b: tuple[float, float]) -> float:
 
 
 def nearest_score(point: tuple[float, float], anchors: list[tuple[float, float]], radius_km: float) -> float:
-    distance = min(distance_km(point, anchor) for anchor in anchors)
-    return clamp(1 - distance / radius_km)
+    return clamp(1 - min(distance_km(point, anchor) for anchor in anchors) / radius_km)
 
 
 def weighted_anchor_score(point: tuple[float, float], anchors: list[dict[str, float]], radius_km: float) -> float:
     score = 0.0
     for anchor in anchors:
-      distance = distance_km(point, (anchor["lon"], anchor["lat"]))
-      score = max(score, anchor["weight"] * clamp(1 - distance / radius_km))
+        score = max(score, float(anchor["weight"]) * clamp(1 - distance_km(point, (anchor["lon"], anchor["lat"])) / radius_km))
     return clamp(score)
 
 
-def grid_cells(cols: int = 18, rows: int = 12) -> list[dict[str, Any]]:
+def grid_cells(cols: int = 22, rows: int = 14) -> list[dict[str, Any]]:
     west, south, east, north = BELFAST_BBOX
     dx = (east - west) / cols
     dy = (north - south) / rows
     cells = []
     for row in range(rows):
         for col in range(cols):
-            x0 = west + col * dx
-            x1 = x0 + dx
-            y0 = south + row * dy
-            y1 = y0 + dy
-            lon = (x0 + x1) / 2
-            lat = (y0 + y1) / 2
+            x0 = round(west + col * dx, 6)
+            x1 = round(x0 + dx, 6)
+            y0 = round(south + row * dy, 6)
+            y1 = round(y0 + dy, 6)
             cells.append(
                 {
                     "id": f"belfast_{row:02d}_{col:02d}",
                     "row": row,
                     "col": col,
-                    "center": (lon, lat),
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]],
-                    },
+                    "center": ((x0 + x1) / 2, (y0 + y1) / 2),
+                    "geometry": {"type": "Polygon", "coordinates": [[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]]},
                 }
             )
     return cells
@@ -129,6 +139,17 @@ def load_population(root: Path) -> dict[int, int]:
     return values
 
 
+def load_census_total(root: Path) -> int | None:
+    path = root / "data/2021/belfast_census_2021_dataset.csv"
+    if not path.exists():
+        return None
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("Variable") == "Total Population":
+                return int(float(row["Value"]))
+    return None
+
+
 def load_air_quality(root: Path) -> dict[int, float]:
     path = root / "belfast_air_quality.csv"
     if not path.exists():
@@ -136,10 +157,8 @@ def load_air_quality(root: Path) -> dict[int, float]:
     yearly: dict[int, list[float]] = {}
     with path.open(newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
-        for index, row in enumerate(reader):
+        for row in reader:
             date = row.get("Date", "")
-            if len(date) < 10:
-                continue
             try:
                 year = int(date[-4:])
             except ValueError:
@@ -158,8 +177,6 @@ def load_air_quality(root: Path) -> dict[int, float]:
                     pass
             if vals:
                 yearly.setdefault(year, []).append(mean(vals))
-            if index > 140_000:
-                break
     if not yearly:
         return {}
     raw = {year: mean(vals) for year, vals in yearly.items()}
@@ -167,112 +184,128 @@ def load_air_quality(root: Path) -> dict[int, float]:
     max_v = max(raw.values())
     normalized = {}
     for year in YEARS:
-        fallback = raw.get(year)
-        if fallback is None:
-            known_years = sorted(raw)
-            before = max([item for item in known_years if item <= year], default=known_years[0])
-            after = min([item for item in known_years if item >= year], default=known_years[-1])
-            if before == after:
-                fallback = raw[before]
-            else:
-                t = (year - before) / (after - before)
-                fallback = raw[before] * (1 - t) + raw[after] * t
-        exposure = (fallback - min_v) / (max_v - min_v or 1)
-        normalized[year] = clamp(1 - exposure)
+        if year in raw:
+            value = raw[year]
+        else:
+            known = sorted(raw)
+            before = max([item for item in known if item <= year], default=known[0])
+            after = min([item for item in known if item >= year], default=known[-1])
+            value = raw[before] if before == after else raw[before] + (raw[after] - raw[before]) * ((year - before) / (after - before))
+        normalized[year] = clamp((value - min_v) / (max_v - min_v or 1))
     return normalized
 
 
-def metric_values(cell: dict[str, Any], year: int, air_by_year: dict[int, float]) -> dict[str, float]:
+def raster_years(root: Path) -> dict[int, set[str]]:
+    found: dict[int, set[str]] = {}
+    for path in list((root / "data/2016").glob("*.tif")) + list((root / "data/2026").glob("*.tif")):
+        match = re.search(r"(20\d{2})", path.name)
+        if match:
+            year = int(match.group(1))
+            kind = "ndvi" if "ndvi" in path.name.lower() else "ndbi" if "ndbi" in path.name.lower() else "rgb"
+            found.setdefault(year, set()).add(kind)
+    return found
+
+
+def support_values(cell: dict[str, Any], year: int, air_by_year: dict[int, float], population_by_year: dict[int, int]) -> dict[str, float]:
     progress = (year - 2016) / 10
     point = cell["center"]
-    centre = nearest_score(point, [CENTER], 5.6)
-    river = nearest_score(point, RIVER_LAGAN, 2.2)
-    development_anchor = weighted_anchor_score(point, DEVELOPMENT_ZONES, 4.8)
-    bike_anchor = nearest_score(point, BIKE_STATIONS, 3.4)
-    transit_anchor = nearest_score(point, TRANSIT_NODES, 3.7)
-    green_anchor = nearest_score(point, GREEN_ANCHORS, 3.8)
-    deprivation = nearest_score(point, HIGH_DEPRIVATION_ANCHORS, 4.6)
+    centre = nearest_score(point, [CENTER], 5.7)
+    river = nearest_score(point, RIVER_LAGAN, 2.1)
+    development = weighted_anchor_score(point, DEVELOPMENT_ZONES, 4.5)
+    bikes = nearest_score(point, BIKE_STATIONS, 3.2)
+    transit = nearest_score(point, TRANSIT_NODES, 3.8)
+    green = nearest_score(point, GREEN_ANCHORS, 3.5)
+    deprivation = nearest_score(point, HIGH_DEPRIVATION_ANCHORS, 4.5)
+    jobs = nearest_score(point, JOB_EDUCATION_ANCHORS, 4.0)
+    flood = nearest_score(point, FLOOD_RISK_ANCHORS, 1.7)
+    wave = 0.035 * math.sin((cell["row"] * 1.4 + cell["col"] * 0.7 + year * 0.4))
+    pop_growth = 0.0
+    if population_by_year:
+        base = population_by_year.get(2016) or min(population_by_year.values())
+        current = population_by_year.get(year, base)
+        pop_growth = clamp((current - base) / max(base, 1) * 5.0, -0.2, 0.35)
 
-    wave = 0.04 * math.sin((cell["row"] * 1.7 + cell["col"] * 0.9 + year) * 0.7)
-    development_pressure = clamp(0.14 + development_anchor * (0.42 + 0.35 * progress) + centre * 0.14 + wave)
-    planning_intensity = clamp(0.08 + development_anchor * (0.34 + 0.42 * progress) + river * 0.12 + wave * 0.5)
-    green_cover = clamp(0.34 + green_anchor * 0.45 + river * 0.12 - development_pressure * (0.16 + 0.08 * progress) + 0.03 * math.cos(year + cell["col"]))
-    mobility_access = clamp(0.20 + transit_anchor * 0.34 + bike_anchor * (0.16 + 0.28 * progress) + centre * 0.14)
-    bike_activity = clamp(0.05 + bike_anchor * (0.15 + 0.58 * min(progress, 0.6)) + centre * 0.12)
-    air_quality = clamp((air_by_year.get(year, 0.58) * 0.58) + green_cover * 0.20 - development_pressure * 0.16 - centre * 0.05 + 0.24)
-    opportunity_access = clamp(mobility_access * 0.42 + green_cover * 0.18 + centre * 0.20 + (1 - development_pressure) * 0.08 + 0.12)
-    fairness_context = clamp(deprivation)
-    deprivation_weighted_opportunity = clamp(opportunity_access * (0.74 + 0.26 * fairness_context))
+    development_pressure = clamp(0.12 + development * (0.38 + 0.36 * progress) + centre * 0.13 + pop_growth + wave)
+    planning_intensity = clamp(0.08 + development * (0.28 + 0.48 * progress) + river * 0.14 + wave * 0.5)
+    green_cover = clamp(0.36 + green * 0.42 + river * 0.11 - development_pressure * (0.17 + 0.08 * progress) + 0.03 * math.cos(year + cell["col"]))
+    transit_access = clamp(0.18 + transit * 0.48 + centre * 0.18)
+    bike_access = clamp(0.05 + bikes * (0.16 + 0.52 * min(progress, 0.65)) + centre * 0.1)
+    road_pressure = clamp(0.14 + centre * 0.38 + development * 0.32 + (1 - green_cover) * 0.12)
+    pollutant_exposure = clamp(air_by_year.get(year, 0.45) * 0.55 + road_pressure * 0.35 - green_cover * 0.12 + flood * 0.08)
+    service_access = clamp(jobs * 0.42 + transit_access * 0.34 + centre * 0.12 + bike_access * 0.12)
 
     return {
-        "development_pressure": round(development_pressure, 3),
-        "planning_intensity": round(planning_intensity, 3),
-        "green_cover": round(green_cover, 3),
-        "mobility_access": round(mobility_access, 3),
-        "bike_activity": round(bike_activity, 3),
-        "air_quality": round(air_quality, 3),
-        "opportunity_access": round(opportunity_access, 3),
-        "fairness_context": round(fairness_context, 3),
-        "deprivation_weighted_opportunity": round(deprivation_weighted_opportunity, 3),
+        "development_pressure": development_pressure,
+        "planning_intensity": planning_intensity,
+        "green_cover": green_cover,
+        "transit_access": transit_access,
+        "bike_access": bike_access,
+        "road_pressure": road_pressure,
+        "pollutant_exposure": pollutant_exposure,
+        "service_access": service_access,
+        "deprivation_weight": deprivation,
+        "flood_risk": flood,
+        "jobs_access": jobs,
+        "centre_access": centre,
     }
 
 
-def direction(metric: str, delta: float) -> str:
-    threshold = 0.045
-    if abs(delta) < threshold:
+def core_metrics(support: dict[str, float], year: int, population_by_year: dict[int, int]) -> dict[str, float]:
+    progress = (year - 2016) / 10
+    population_pressure = clamp(0.12 + support["development_pressure"] * 0.46 + support["centre_access"] * 0.18 + support["planning_intensity"] * 0.15 + progress * 0.08)
+    mobility_strain = clamp(support["road_pressure"] * 0.42 + (1 - support["transit_access"]) * 0.22 + (1 - support["bike_access"]) * 0.18 + support["development_pressure"] * 0.14)
+    economic_opportunity = clamp(support["service_access"] * 0.52 + support["jobs_access"] * 0.24 + support["transit_access"] * 0.16 + support["bike_access"] * 0.08)
+    environmental_exposure = clamp(support["pollutant_exposure"] * 0.45 + (1 - support["green_cover"]) * 0.24 + support["flood_risk"] * 0.18 + support["road_pressure"] * 0.13)
+    fairness_score = clamp(0.50 + (economic_opportunity - mobility_strain) * 0.30 - support["deprivation_weight"] * 0.18 + support["transit_access"] * support["deprivation_weight"] * 0.16)
+    return {
+        "population_pressure": round(population_pressure, 3),
+        "mobility_strain": round(mobility_strain, 3),
+        "economic_opportunity": round(economic_opportunity, 3),
+        "environmental_exposure": round(environmental_exposure, 3),
+        "fairness_score": round(fairness_score, 3),
+        "development_pressure": round(support["development_pressure"], 3),
+        "green_cover": round(support["green_cover"], 3),
+        "bike_access": round(support["bike_access"], 3),
+        "transit_access": round(support["transit_access"], 3),
+        "planning_intensity": round(support["planning_intensity"], 3),
+        "deprivation_weight": round(support["deprivation_weight"], 3),
+    }
+
+
+def metric_direction(metric: str, delta: float) -> str:
+    if abs(delta) < 0.035:
         return "stable"
-    if metric in {"air_quality", "green_cover", "opportunity_access", "mobility_access", "deprivation_weighted_opportunity", "bike_activity"}:
-        return "improved" if delta > 0 else "worsened"
-    if metric in {"development_pressure", "planning_intensity"}:
-        return "increased" if delta > 0 else "decreased"
-    return "changed"
+    if metric in {"population_pressure", "mobility_strain", "environmental_exposure"}:
+        return "worsened" if delta > 0 else "improved"
+    return "improved" if delta > 0 else "worsened"
 
 
-def dominant_change(values: dict[str, float], baseline: dict[str, float]) -> str:
-    deltas = {key: values[key] - baseline[key] for key in values}
-    ordered = sorted(deltas.items(), key=lambda item: abs(item[1]), reverse=True)
-    metric, delta = ordered[0]
-    if metric == "development_pressure" and delta > 0.08:
-        return "appeared"
-    return direction(metric, delta)
-
-
-def confidence(values: dict[str, float], year: int) -> str:
-    evidence_sources = 2
-    if year in {2016, 2018, 2020, 2021, 2026}:
-        evidence_sources += 1
-    if values["development_pressure"] > 0.55 or values["mobility_access"] > 0.55:
-        evidence_sources += 1
-    return "high" if evidence_sources >= 4 else "medium" if evidence_sources == 3 else "low"
-
-
-def evidence_for(values: dict[str, float], year: int, change: str) -> list[str]:
-    evidence = [
-        "OpenStreetMap building export clipped to Belfast NI core",
-        "250m-style grid proxy generated from local spatial anchors",
-    ]
-    if year in {2016, 2018, 2020}:
-        evidence.append("Local raster source available for satellite/NDVI review")
-    if year == 2021:
-        evidence.append("NISRA census and NI Air hourly archive available")
-    if year >= 2021:
-        evidence.append("NI Air annual trend proxy included")
-    if change in {"appeared", "increased"}:
-        evidence.append("Development pressure proxy uses waterfront and city-centre intensity")
-    if change in {"improved", "worsened"}:
-        evidence.append("Opportunity and exposure scores are normalized directional indicators")
+def evidence_for(metric: str, year: int, rasters: dict[int, set[str]]) -> list[str]:
+    evidence = {
+        "population_pressure": ["NISRA population/census totals", "OSM building density and development-zone proxy", "Planning/local development source inventory"],
+        "mobility_strain": ["Translink stops/routes source inventory", "OSM roads/cycleways context", "Belfast Bikes historical/live source inventory"],
+        "economic_opportunity": ["NISRA census context", "OSM services, education, healthcare and commercial source layers", "Transit and job/education access proxy"],
+        "environmental_exposure": ["NI Air Belfast Centre hourly archive", "NDVI/NDBI raster source availability", "Road-pressure and River Lagan exposure proxy"],
+        "fairness_score": ["NISRA deprivation/Data Zone source plan", "Population and opportunity access weighting", "Underserved-area anchor proxy"],
+    }[metric][:]
+    if year in rasters:
+        evidence.append(f"Local raster evidence for {year}: {', '.join(sorted(rasters[year]))}")
+    elif year in {2017, 2019, 2021, 2023, 2025}:
+        evidence.append("Interpolated between available raster/statistical evidence years")
     return evidence
 
 
-def feature_collection(cells: list[dict[str, Any]], values_by_cell: dict[str, dict[int, dict[str, float]]], year: int) -> dict[str, Any]:
+def feature_collection(cells: list[dict[str, Any]], values: dict[str, dict[int, dict[str, float]]], year: int, rasters: dict[int, set[str]]) -> dict[str, Any]:
     features = []
     for cell in cells:
-        values = values_by_cell[cell["id"]][year]
-        baseline = values_by_cell[cell["id"]][2016]
-        previous = values_by_cell[cell["id"]][max(2016, year - 1)]
-        deltas_2016 = {f"{key}_delta_2016": round(values[key] - baseline[key], 3) for key in values}
-        deltas_prev = {f"{key}_delta_previous": round(values[key] - previous[key], 3) for key in values}
-        change = dominant_change(values, baseline)
+        props = values[cell["id"]][year]
+        base = values[cell["id"]][2016]
+        previous = values[cell["id"]][max(2016, year - 1)]
+        metric_deltas = {f"{metric}_delta_2016": round(props[metric] - base[metric], 3) for metric in [item["id"] for item in CORE_METRICS]}
+        metric_deltas.update({f"{metric}_delta_previous": round(props[metric] - previous[metric], 3) for metric in [item["id"] for item in CORE_METRICS]})
+        dominant_metric = max([item["id"] for item in CORE_METRICS], key=lambda metric: abs(metric_deltas[f"{metric}_delta_2016"]))
+        dominant_change = metric_direction(dominant_metric, metric_deltas[f"{dominant_metric}_delta_2016"])
+        confidence = "high" if year in {2016, 2021, 2026} else "medium" if year in rasters else "low-medium"
         features.append(
             {
                 "type": "Feature",
@@ -282,12 +315,12 @@ def feature_collection(cells: list[dict[str, Any]], values_by_cell: dict[str, di
                     "year": year,
                     "row": cell["row"],
                     "col": cell["col"],
-                    **values,
-                    **deltas_2016,
-                    **deltas_prev,
-                    "dominant_change": change,
-                    "confidence": confidence(values, year),
-                    "evidence": evidence_for(values, year, change),
+                    **props,
+                    **metric_deltas,
+                    "dominant_metric": dominant_metric,
+                    "dominant_change": dominant_change,
+                    "confidence": confidence,
+                    "evidence": evidence_for(dominant_metric, year, rasters),
                 },
                 "geometry": cell["geometry"],
             }
@@ -300,161 +333,138 @@ def feature_collection(cells: list[dict[str, Any]], values_by_cell: dict[str, di
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "bbox": BELFAST_BBOX,
             "cell_count": len(features),
-            "resolution_note": "Regular demo grid approximating 250m-500m cells across Belfast NI.",
+            "resolution_note": "Regular replay grid across Belfast NI; values are normalized 0-1 lens scores.",
         },
         "features": features,
     }
 
 
-def metric_card(metric: str, label: str, values: list[float], baseline_values: list[float], good_direction: str) -> dict[str, Any]:
-    current = mean(values)
-    baseline = mean(baseline_values)
+def metric_card(metric_meta: dict[str, Any], year_values: list[float], base_values: list[float]) -> dict[str, Any]:
+    metric = metric_meta["id"]
+    current = mean(year_values)
+    baseline = mean(base_values)
     delta = current - baseline
-    positive = delta >= 0 if good_direction == "up" else delta <= 0
+    good_up = metric_meta["goodDirection"] == "up"
+    improved = delta >= 0 if good_up else delta <= 0
     return {
         "metric": metric,
-        "label": label,
+        "label": metric_meta["label"],
         "value": round(current, 3),
         "display": f"{round(current * 100)}",
         "delta": round(delta, 3),
         "deltaDisplay": f"{'+' if delta >= 0 else ''}{round(delta * 100)}",
-        "trend": "improved" if positive and abs(delta) >= 0.02 else "worsened" if not positive and abs(delta) >= 0.02 else "stable",
-        "sparkline": [round(item, 3) for item in values[:12]],
+        "trend": "improved" if improved and abs(delta) >= 0.02 else "worsened" if not improved and abs(delta) >= 0.02 else "stable",
+        "why": metric_meta["why"],
+        "mapShows": metric_meta["map"],
+        "color": metric_meta["color"],
+        "sparkline": [round(value, 3) for value in year_values[:14]],
     }
 
 
-def commits_for_year(year: int, averages: dict[int, dict[str, float]]) -> list[dict[str, Any]]:
+def commit(symbol: str, year: int, metric: str, title: str, delta: float, confidence: str, evidence: list[str], tone: str) -> dict[str, Any]:
+    return {
+        "id": f"{year}-{metric}",
+        "symbol": symbol,
+        "type": metric,
+        "title": title,
+        "delta": round(delta, 3),
+        "confidence": confidence,
+        "tone": tone,
+        "evidence": evidence,
+    }
+
+
+def commits_for_year(year: int, averages: dict[int, dict[str, float]], rasters: dict[int, set[str]]) -> list[dict[str, Any]]:
     current = averages[year]
     base = averages[2016]
-    previous = averages[max(2016, year - 1)]
-    dev_delta = current["development_pressure"] - base["development_pressure"]
-    bike_delta = current["bike_activity"] - base["bike_activity"]
-    green_delta = current["green_cover"] - base["green_cover"]
-    air_delta = current["air_quality"] - base["air_quality"]
-    opportunity_delta = current["deprivation_weighted_opportunity"] - base["deprivation_weighted_opportunity"]
-    yearly_dev = current["development_pressure"] - previous["development_pressure"]
     return [
-        {
-            "id": f"{year}-development",
-            "symbol": "+",
-            "type": "development",
-            "title": "Development pressure concentrated around waterfront and city-centre zones",
-            "delta": round(dev_delta, 3),
-            "confidence": "medium",
-            "tone": "increase",
-            "evidence": ["OSM building footprint context", "Planning pressure proxy", "Waterfront/city-centre spatial anchors"],
-        },
-        {
-            "id": f"{year}-mobility",
-            "symbol": "+" if bike_delta >= 0 else "~",
-            "type": "mobility",
-            "title": "Bike and active-travel access strengthens around central corridors",
-            "delta": round(bike_delta, 3),
-            "confidence": "medium",
-            "tone": "improved" if bike_delta >= 0 else "changed",
-            "evidence": ["Belfast Bikes historical source plan", "OSM cycleway/station context", "Transit node access proxy"],
-        },
-        {
-            "id": f"{year}-green",
-            "symbol": "+" if green_delta >= 0 else "-",
-            "type": "green",
-            "title": "Green-cover signal holds around parks but weakens near development pressure",
-            "delta": round(green_delta, 3),
-            "confidence": "medium" if year in {2016, 2018, 2020, 2026} else "low",
-            "tone": "improved" if green_delta >= 0 else "worsened",
-            "evidence": ["NDVI/NDBI raster source availability", "OSM parks and green-space context", "Development-pressure counter-signal"],
-        },
-        {
-            "id": f"{year}-air",
-            "symbol": "+" if air_delta >= 0 else "-",
-            "type": "air",
-            "title": "Air-quality exposure proxy improves, with road corridors still flagged",
-            "delta": round(air_delta, 3),
-            "confidence": "high" if year >= 2021 else "medium",
-            "tone": "improved" if air_delta >= 0 else "worsened",
-            "evidence": ["NI Air Belfast Centre hourly archive", "Road-pressure proxy", "Green-cover modifier"],
-        },
-        {
-            "id": f"{year}-fairness",
-            "symbol": "!" if opportunity_delta < 0.08 and year > 2016 else "~",
-            "type": "fairness",
-            "title": "Opportunity gains remain uneven after deprivation weighting",
-            "delta": round(opportunity_delta, 3),
-            "confidence": "medium",
-            "tone": "risk" if opportunity_delta < 0.08 and year > 2016 else "changed",
-            "evidence": ["NISRA census/deprivation source plan", "Transport and services access proxy", "Fairness-weighted opportunity score"],
-        },
-        {
-            "id": f"{year}-yearly",
-            "symbol": "~",
-            "type": "diff",
-            "title": "Year-on-year city diff updated from previous replay state",
-            "delta": round(yearly_dev, 3),
-            "confidence": "medium",
-            "tone": "changed",
-            "evidence": ["Deterministic yearly grid metrics", "2016 baseline comparison", "Previous-year delta"],
-        },
+        commit("+", year, "population_pressure", "Population pressure intensifies around the city core and waterfront growth zones", current["population_pressure"] - base["population_pressure"], "medium", evidence_for("population_pressure", year, rasters), "worsened"),
+        commit("~", year, "mobility_strain", "Mobility strain shifts along road corridors while transit and bike access offset central pressure", current["mobility_strain"] - base["mobility_strain"], "medium", evidence_for("mobility_strain", year, rasters), metric_direction("mobility_strain", current["mobility_strain"] - base["mobility_strain"])),
+        commit("+", year, "economic_opportunity", "Economic opportunity remains strongest near jobs, education, services, and transit corridors", current["economic_opportunity"] - base["economic_opportunity"], "medium", evidence_for("economic_opportunity", year, rasters), metric_direction("economic_opportunity", current["economic_opportunity"] - base["economic_opportunity"])),
+        commit("!" if current["environmental_exposure"] > base["environmental_exposure"] else "-", year, "environmental_exposure", "Environmental exposure combines air quality, road pressure, green-cover loss, and river risk", current["environmental_exposure"] - base["environmental_exposure"], "high" if year >= 2021 else "medium", evidence_for("environmental_exposure", year, rasters), metric_direction("environmental_exposure", current["environmental_exposure"] - base["environmental_exposure"])),
+        commit("!" if current["fairness_score"] < base["fairness_score"] else "+", year, "fairness_score", "Fairness score tracks whether opportunity gains reach underserved neighbourhoods", current["fairness_score"] - base["fairness_score"], "medium", evidence_for("fairness_score", year, rasters), metric_direction("fairness_score", current["fairness_score"] - base["fairness_score"])),
     ]
+
+
+def hotspots_for_year(year: int, values: dict[str, dict[int, dict[str, float]]], cells: list[dict[str, Any]]) -> dict[str, Any]:
+    features = []
+    by_cell = {cell["id"]: cell for cell in cells}
+    for metric in [item["id"] for item in CORE_METRICS]:
+        ordered = sorted(values.items(), key=lambda item: item[1][year][metric], reverse=True)[:7]
+        for cell_id, year_values in ordered:
+            cell = by_cell[cell_id]
+            lon, lat = cell["center"]
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "cell_id": cell_id,
+                        "year": year,
+                        "metric": metric,
+                        "value": year_values[year][metric],
+                        "label": next(item["label"] for item in CORE_METRICS if item["id"] == metric),
+                    },
+                    "geometry": {"type": "Point", "coordinates": [round(lon, 6), round(lat, 6)]},
+                }
+            )
+    return {"type": "FeatureCollection", "features": features}
 
 
 def build(root: Path, output_dir: Path) -> dict[str, Any]:
     cells = grid_cells()
     air = load_air_quality(root)
     population = load_population(root)
-    values_by_cell: dict[str, dict[int, dict[str, float]]] = {}
+    census_total = load_census_total(root)
+    rasters = raster_years(root)
+    values: dict[str, dict[int, dict[str, float]]] = {}
     for cell in cells:
-        values_by_cell[cell["id"]] = {year: metric_values(cell, year, air) for year in YEARS}
+        values[cell["id"]] = {}
+        for year in YEARS:
+            support = support_values(cell, year, air, population)
+            values[cell["id"]][year] = core_metrics(support, year, population)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for year in YEARS:
-        collection = feature_collection(cells, values_by_cell, year)
-        (output_dir / f"grid_{year}.geojson").write_text(json.dumps(collection, separators=(",", ":")), encoding="utf-8")
+        (output_dir / f"grid_{year}.geojson").write_text(json.dumps(feature_collection(cells, values, year, rasters), separators=(",", ":")), encoding="utf-8")
+        (output_dir / f"hotspots_{year}.geojson").write_text(json.dumps(hotspots_for_year(year, values, cells), separators=(",", ":")), encoding="utf-8")
 
     averages: dict[int, dict[str, float]] = {}
     for year in YEARS:
         averages[year] = {}
-        for metric in next(iter(values_by_cell.values()))[year]:
-            averages[year][metric] = mean(cell_years[year][metric] for cell_years in values_by_cell.values())
+        for metric in [item["id"] for item in CORE_METRICS]:
+            averages[year][metric] = mean(cell_years[year][metric] for cell_years in values.values())
 
     metrics_by_year = {}
     for year in YEARS:
-        year_features = [values_by_cell[cell["id"]][year] for cell in cells]
-        base_features = [values_by_cell[cell["id"]][2016] for cell in cells]
-        metric_values_for = lambda metric, source: [item[metric] for item in source]
+        year_features = [values[cell["id"]][year] for cell in cells]
+        base_features = [values[cell["id"]][2016] for cell in cells]
         metrics_by_year[str(year)] = [
-            metric_card("development_pressure", "Development pressure", metric_values_for("development_pressure", year_features), metric_values_for("development_pressure", base_features), "down"),
-            metric_card("mobility_access", "Mobility access", metric_values_for("mobility_access", year_features), metric_values_for("mobility_access", base_features), "up"),
-            metric_card("air_quality", "Air quality", metric_values_for("air_quality", year_features), metric_values_for("air_quality", base_features), "up"),
-            metric_card("green_cover", "Green cover", metric_values_for("green_cover", year_features), metric_values_for("green_cover", base_features), "up"),
-            metric_card("deprivation_weighted_opportunity", "Opportunity fairness", metric_values_for("deprivation_weighted_opportunity", year_features), metric_values_for("deprivation_weighted_opportunity", base_features), "up"),
+            metric_card(meta, [item[meta["id"]] for item in year_features], [item[meta["id"]] for item in base_features])
+            for meta in CORE_METRICS
         ]
 
     summary = {
-        "schemaVersion": "1.0.0",
+        "schemaVersion": "2.0.0",
         "kind": "belfast.modeA.summary",
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "years": YEARS,
         "bbox": BELFAST_BBOX,
         "cellCount": len(cells),
         "gridTemplate": "/data/mode-a/grid_{year}.geojson",
+        "hotspotTemplate": "/data/mode-a/hotspots_{year}.geojson",
+        "coreMetrics": CORE_METRICS,
         "metricsByYear": metrics_by_year,
-        "commitsByYear": {str(year): commits_for_year(year, averages) for year in YEARS},
+        "commitsByYear": {str(year): commits_for_year(year, averages, rasters) for year in YEARS},
         "populationByYear": population,
-        "airQualityByYear": {str(key): round(value, 3) for key, value in air.items()},
-        "layers": [
-            {"id": "development_pressure", "label": "Development", "color": "#f97316"},
-            {"id": "mobility_access", "label": "Mobility", "color": "#2563eb"},
-            {"id": "green_cover", "label": "Green cover", "color": "#16a34a"},
-            {"id": "air_quality", "label": "Air quality", "color": "#7c3aed"},
-            {"id": "deprivation_weighted_opportunity", "label": "Opportunity", "color": "#0f766e"},
-            {"id": "fairness_context", "label": "Fairness", "color": "#e11d48"},
-        ],
+        "census2021TotalPopulation": census_total,
+        "airQualityExposureByYear": {str(key): round(value, 3) for key, value in air.items()},
+        "rasterEvidenceByYear": {str(key): sorted(value) for key, value in rasters.items()},
         "sources": [
-            {"name": "OpenStreetMap building export", "status": "local", "confidence": "medium", "note": "3D city skeleton and development proxy"},
-            {"name": "NI Air Belfast Centre archive", "status": "local", "confidence": "high for 2021 input", "note": "Air-quality exposure trend proxy"},
-            {"name": "NISRA census/population files", "status": "local", "confidence": "high for official totals", "note": "Population/fairness context"},
-            {"name": "Sentinel/Landsat rasters", "status": "local sources", "confidence": "medium pending tile ETL", "note": "Green/built-up evidence anchors"},
-            {"name": "Belfast Bikes/Translink/planning", "status": "planned source inventory", "confidence": "proxy", "note": "Mode A contract ready for full ingestion"},
+            {"name": "OpenStreetMap / Overpass local exports", "status": "local", "confidence": "medium", "note": "Buildings, roads, parks, services and development context"},
+            {"name": "NI Air Belfast Centre archive", "status": "local", "confidence": "high for available year(s)", "note": "NO2, PM10 and PM2.5 exposure trend input"},
+            {"name": "NISRA census and population files", "status": "local", "confidence": "high for official totals", "note": "Population pressure and fairness context"},
+            {"name": "Sentinel/Landsat NDVI/NDBI/RGB rasters", "status": "local sources", "confidence": "medium pending raster tiling", "note": "Green cover and built-up evidence anchors"},
+            {"name": "Belfast Bikes, Translink, planning/local development", "status": "inventory/online", "confidence": "proxy until imported", "note": "Contracts documented for mobility, opportunity and development pressure"},
         ],
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -469,7 +479,7 @@ def main() -> int:
     root = args.root.resolve()
     output = args.output if args.output.is_absolute() else root / args.output
     summary = build(root, output)
-    print(f"Wrote Mode A replay to {output} for {len(summary['years'])} years and {summary['cellCount']} cells.")
+    print(f"Wrote Mode A replay to {output} for {len(summary['years'])} years, {summary['cellCount']} cells, and {len(summary['coreMetrics'])} core metrics.")
     return 0
 
 

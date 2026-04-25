@@ -30,17 +30,23 @@ function assert(condition, message) {
 
   const loaded = await page.evaluate(() => ({
     metricCards: document.querySelectorAll(".metric-card").length,
+    lensTabs: document.querySelectorAll(".lens-tab").length,
     commits: document.querySelectorAll(".commit").length,
     toggles: document.querySelectorAll(".switch-row").length,
+    layout: Boolean(document.querySelector(".topbar") && document.querySelector(".icon-nav") && document.querySelector(".bottom-deck")),
     canvas: Boolean(document.querySelector(".mapboxgl-canvas")),
     year: document.querySelector("#currentYearLabel")?.textContent?.trim(),
     cells: window.BelfastGitModeA.state.modeA.cellCount,
-    sources: window.BelfastGitModeA.state.modeA.sources.length
+    sources: window.BelfastGitModeA.state.modeA.sources.length,
+    metrics: window.BelfastGitModeA.metrics
   }));
   assert(loaded.canvas, "Mapbox canvas did not render.");
-  assert(loaded.metricCards >= 5, "Metric cards did not render.");
-  assert(loaded.commits >= 5, "City commits did not render.");
-  assert(loaded.toggles >= 7, "Layer toggles did not render.");
+  assert(loaded.layout, "Reference-style replay layout did not render.");
+  assert(loaded.metricCards === 5, "Five metric cards did not render.");
+  assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
+  assert(loaded.commits === 5, "Five city commits did not render.");
+  assert(loaded.toggles >= 8, "Map layer toggles did not render.");
+  assert(JSON.stringify(loaded.metrics) === JSON.stringify(["population_pressure", "mobility_strain", "economic_opportunity", "environmental_exposure", "fairness_score"]), "Browser metric registry is not the required five-lens set.");
   assert(loaded.year === "2026", "Initial year is not 2026.");
   assert(loaded.cells >= 100, "Mode A grid is too small.");
   assert(loaded.sources >= 5, "Source evidence list is too small.");
@@ -52,6 +58,8 @@ function assert(condition, message) {
   await page.waitForFunction(() => document.querySelector("#currentYearLabel")?.textContent?.trim() === "2021");
   await page.locator(".commit").first().click();
   await page.waitForFunction(() => document.querySelector("#evidencePanel")?.textContent?.includes("Evidence"));
+  await page.locator(".lens-tab", { hasText: "Fairness" }).click();
+  await page.waitForFunction(() => window.BelfastGitModeA?.state?.metric === "fairness_score");
   await page.locator("#toggle3d").click();
   await page.waitForTimeout(750);
 
@@ -60,7 +68,7 @@ function assert(condition, message) {
 
   const filteredErrors = consoleErrors.filter((error) => !/Failed to load resource.*mapbox|favicon/i.test(error));
   assert(filteredErrors.length === 0, `Browser console errors:\n${filteredErrors.join("\n")}`);
-  console.log(`Browser smoke OK: ${loaded.metricCards} cards, ${loaded.commits} commits, ${loaded.toggles} toggles, ${loaded.cells} cells.`);
+  console.log(`Browser smoke OK: ${loaded.metricCards} cards, ${loaded.lensTabs} lens tabs, ${loaded.commits} commits, ${loaded.toggles} toggles, ${loaded.cells} cells.`);
 })().catch((error) => {
   console.error(error);
   process.exit(1);

@@ -3,102 +3,114 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BelfastGit · Replay Belfast</title>
+    <title>Replay Belfast</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <div class="product-shell">
-      <aside class="left-rail" aria-label="BelfastGit navigation">
-        <header class="logo-block">
-          <div class="logo-mark">BG</div>
-          <div>
-            <h1>Belfast<span>Git</span></h1>
-            <p>Urban change, versioned.</p>
-          </div>
-        </header>
-
-        <nav class="mode-list" aria-label="Modes">
-          <button class="mode active" type="button"><span>▶</span><strong>Replay</strong><small>Explore history 2016-2026</small></button>
-          <button class="mode" type="button"><span>⚗</span><strong>Simulate</strong><small>Model the future 2026-2036</small></button>
-          <button class="mode" type="button"><span>⑂</span><strong>Branches</strong><small>Manage scenarios</small></button>
-        </nav>
-
-        <section class="rail-section">
-          <div class="section-title">Data Layers</div>
-          <div id="layerToggles" class="switch-list"></div>
+    <div class="replay-app">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Replay Belfast home">
+          <span class="brand-mark">R</span>
+          <span><strong>Replay</strong><small>Belfast</small></span>
+        </a>
+        <div class="top-copy">
+          <strong>See the past. Understand today.</strong>
+          <span>Plan tomorrow.</span>
+        </div>
+        <section class="lens-strip" aria-label="Explore by lens">
+          <span>Explore by lens</span>
+          <div id="lensTabs" class="lens-tabs"></div>
         </section>
+        <div class="baseline-pill">
+          <small>Historical Replay -&gt;</small>
+          <strong>2036 Simulation Baseline</strong>
+        </div>
+      </header>
 
-        <section class="rail-section">
-          <div class="section-title">Basemap</div>
-          <div class="segmented">
-            <button id="lightMap" type="button" class="active">Standard</button>
-            <button id="darkMap" type="button">Night</button>
-            <button id="toggle3d" type="button">3D</button>
-          </div>
-        </section>
-
-        <section class="rail-footer">
-          <div><strong>Current Branch</strong><span>2016to2026 / Mode A</span></div>
-          <div><strong>Data Sources</strong><span id="sourceTotal">Loading</span></div>
-          <div><strong>Model Resolution</strong><span>Replay grid · 216 cells</span></div>
-        </section>
+      <aside class="icon-nav" aria-label="Product navigation">
+        <button class="active" type="button"><span>O</span>Overview</button>
+        <button type="button"><span>L</span>Map Layers</button>
+        <button type="button"><span>I</span>Indicators</button>
+        <button type="button"><span>C</span>City Commits</button>
+        <button type="button"><span>X</span>Compare</button>
+        <button type="button"><span>F</span>2036</button>
+        <button type="button"><span>D</span>Data Library</button>
+        <button type="button"><span>S</span>Settings</button>
+        <div class="nav-bottom">
+          <label><input type="checkbox" checked> Labels</label>
+          <label><input type="checkbox" checked> Legend</label>
+        </div>
       </aside>
 
-      <main class="map-pane">
+      <main class="map-workspace">
         <div id="map" aria-label="Replay Belfast map"></div>
 
+        <section class="floating-card layer-card" aria-label="Map layers">
+          <header><strong>Map Layers</strong><span id="sourceTotal">Loading</span></header>
+          <div id="layerToggles" class="switch-list"></div>
+          <div class="basemap-row">
+            <button id="lightMap" class="active" type="button">Standard</button>
+            <button id="darkMap" type="button">Night</button>
+            <button id="toggle3d" class="active" type="button">3D</button>
+          </div>
+        </section>
+
         <div class="map-toolbar" aria-label="Map tools">
-          <button id="selectTool" type="button" title="Select">↖</button>
-          <button id="fitTool" type="button" title="Fit Belfast">⌖</button>
-          <button id="layersTool" type="button" title="Layers">▣</button>
-          <button id="settingsTool" type="button" title="Settings">☷</button>
+          <button id="selectTool" type="button" title="Select">A</button>
+          <button id="fitTool" type="button" title="Fit Belfast">F</button>
+          <button id="layersTool" type="button" title="Layers">L</button>
+          <button id="settingsTool" type="button" title="Settings">S</button>
         </div>
 
-        <div class="map-legend">
+        <div class="floating-card map-legend">
           <strong>Change Intensity</strong>
-          <span id="legendMetric">Development pressure</span>
+          <span id="legendMetric">Population Pressure</span>
           <div class="legend-ramp"></div>
-          <div class="legend-labels"><span>decrease</span><span>stable</span><span>increase</span></div>
+          <div class="legend-labels"><span>low</span><span>medium</span><span>high</span></div>
         </div>
 
         <div id="evidencePopover" class="evidence-popover" hidden></div>
 
-        <section class="timeline-dock" aria-label="Year timeline">
-          <div class="timeline-labels">
-            <span>History replay</span>
-            <span id="currentYearLabel">2026</span>
-          </div>
-          <div id="yearTicks" class="year-ticks"></div>
-          <input id="yearSlider" type="range" min="2016" max="2026" step="1" value="2026" aria-label="Replay year">
-          <div class="timeline-actions">
-            <button id="playButton" type="button">▶</button>
+        <section class="bottom-deck" aria-label="Replay timeline and metrics">
+          <div class="timeline-dock">
+            <div class="timeline-intro">
+              <strong>Replay timeline</strong>
+              <span>Scrub through time to see how Belfast has changed.</span>
+            </div>
+            <button id="playButton" class="play-button" type="button">Play</button>
+            <div class="timeline-control">
+              <div id="yearTicks" class="year-ticks"></div>
+              <input id="yearSlider" type="range" min="2016" max="2026" step="1" value="2026" aria-label="Replay year">
+            </div>
             <button id="speedButton" type="button">1x</button>
             <button id="presentButton" type="button">Go to 2026</button>
           </div>
+
+          <section class="glance-row">
+            <div class="glance-title">
+              <strong>Belfast at a glance</strong>
+              <span><span id="currentYearLabel">2026</span> vs 2016</span>
+            </div>
+            <div id="metricCards" class="metric-stack"></div>
+          </section>
         </section>
       </main>
 
       <aside class="right-panel" aria-label="Replay analytics">
         <header class="panel-header">
-          <p>Mode A</p>
-          <h2>Replay Belfast</h2>
-          <span id="manifestStatus">Loading manifest</span>
+          <div>
+            <p>City Commits</p>
+            <span>Evidence-backed changelog for Belfast.</span>
+          </div>
+          <strong id="manifestStatus">Loading manifest</strong>
         </header>
 
-        <section class="panel-card">
-          <h3>Metric Cards</h3>
-          <div id="metricCards" class="metric-stack"></div>
-        </section>
-
-        <section class="panel-card city-commits-card">
-          <h3>City Commits</h3>
-          <div id="cityCommits" class="commit-list"></div>
-        </section>
+        <div id="cityCommits" class="commit-list"></div>
 
         <section class="panel-card evidence-card">
-          <h3>Evidence</h3>
-          <div id="evidencePanel" class="evidence-panel">Select a city commit or grid cell to inspect source evidence.</div>
+          <h3>Evidence Trail</h3>
+          <div id="evidencePanel" class="evidence-panel">Select a city commit or grid cell to inspect source evidence and confidence.</div>
         </section>
       </aside>
     </div>

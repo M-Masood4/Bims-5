@@ -8,6 +8,13 @@ const modeASummaryPath = path.join(rootDir, "web", "data", "mode-a", "summary.js
 const modeA = JSON.parse(fs.readFileSync(modeASummaryPath, "utf8"));
 
 const failures = [];
+const requiredModeAMetrics = [
+  "population_pressure",
+  "mobility_strain",
+  "economic_opportunity",
+  "environmental_exposure",
+  "fairness_score"
+];
 
 function fail(message) {
   failures.push(message);
@@ -82,6 +89,7 @@ assert([...artifactPaths].some((item) => item.includes("belfast_air_quality.csv"
 assert(modeA.kind === "belfast.modeA.summary", "Mode A summary kind is incorrect.");
 assert(modeA.years?.[0] === 2016 && modeA.years?.at(-1) === 2026, "Mode A summary must cover 2016-2026.");
 assert(modeA.cellCount >= 100, "Mode A grid should have enough cells for a city replay.");
+assert(JSON.stringify((modeA.coreMetrics || []).map((metric) => metric.id)) === JSON.stringify(requiredModeAMetrics), "Mode A core metrics must match the five-lens product brief.");
 for (const year of modeA.years) {
   const gridPath = `web/data/mode-a/grid_${year}.geojson`;
   assert(exists(gridPath), `Mode A grid missing for ${year}.`);
@@ -89,11 +97,14 @@ for (const year of modeA.years) {
   assert(grid.type === "FeatureCollection", `Mode A grid ${year} is not a FeatureCollection.`);
   assert(grid.features.length === modeA.cellCount, `Mode A grid ${year} cell count mismatch.`);
   const first = grid.features[0]?.properties || {};
-  for (const metric of ["development_pressure", "green_cover", "mobility_access", "air_quality", "deprivation_weighted_opportunity"]) {
+  for (const metric of requiredModeAMetrics) {
     assert(Number.isFinite(first[metric]), `Mode A grid ${year} missing metric ${metric}.`);
+    assert(Number.isFinite(first[`${metric}_delta_2016`]), `Mode A grid ${year} missing 2016 delta for ${metric}.`);
   }
-  assert(Array.isArray(modeA.commitsByYear[String(year)]) && modeA.commitsByYear[String(year)].length >= 4, `Mode A commits missing for ${year}.`);
-  assert(Array.isArray(modeA.metricsByYear[String(year)]) && modeA.metricsByYear[String(year)].length >= 5, `Mode A metric cards missing for ${year}.`);
+  const metricCards = modeA.metricsByYear[String(year)] || [];
+  assert(Array.isArray(modeA.commitsByYear[String(year)]) && modeA.commitsByYear[String(year)].length === 5, `Mode A commits must include exactly five lenses for ${year}.`);
+  assert(Array.isArray(metricCards) && metricCards.length === 5, `Mode A metric cards must include exactly five lenses for ${year}.`);
+  assert(JSON.stringify(metricCards.map((card) => card.metric)) === JSON.stringify(requiredModeAMetrics), `Mode A metric card order is incorrect for ${year}.`);
 }
 
 if (failures.length) {
