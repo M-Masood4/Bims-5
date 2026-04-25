@@ -1,0 +1,65 @@
+import type { MapMouseEvent, MapRef } from "react-map-gl";
+import type { Network, TrafficLink, TransportRoute, Building } from "../types";
+import { NETWORK_LAYER_ID, NETWORK_CASING_LAYER_ID, TRANSPORT_LAYER_PREFIX, BUILDING_LAYER_ID } from "../constants";
+
+interface DetectedFeatures {
+  link?: TrafficLink;
+  routes: TransportRoute[];
+  building?: Building;
+}
+
+export function safeQueryRenderedFeatures(
+  map: MapRef | null,
+  point: mapboxgl.PointLike | [mapboxgl.PointLike, mapboxgl.PointLike],
+  layers: string[]
+) {
+  if (!map) return [];
+  
+  const mapInstance = map.getMap();
+  const existingLayers = layers.filter(layerId => mapInstance.getLayer(layerId));
+  
+  if (existingLayers.length === 0) return [];
+  
+  return mapInstance.queryRenderedFeatures(point, { layers: existingLayers });
+}
+
+export function detectFeaturesAtPoint(
+  event: MapMouseEvent,
+  network: Network | null
+): DetectedFeatures {
+  if (!network) {
+    return { routes: [] };
+  }
+
+  const features = event.features || [];
+  let link: TrafficLink | undefined;
+  let building: Building | undefined;
+  const routeMap = new Map<string, TransportRoute>();
+
+  for (const feature of features) {
+    const layerId = feature.layer?.id;
+    const isNetworkLayer = [NETWORK_LAYER_ID, NETWORK_CASING_LAYER_ID].some(
+      (id) => layerId === id || layerId === `static-${id}` || layerId === `draft-${id}`,
+    );
+    if (isNetworkLayer && feature.properties) {
+      link = network.links.get(feature.properties.id);
+    } else if (
+      feature.layer?.id?.startsWith(TRANSPORT_LAYER_PREFIX) &&
+      feature.properties &&
+      network.transportRoutes
+    ) {
+      const route = network.transportRoutes.get(feature.properties.id);
+      if (route) {
+        routeMap.set(route.id, route);
+      }
+    } else if (
+      feature.layer?.id === BUILDING_LAYER_ID &&
+      feature.properties &&
+      network.buildings
+    ) {
+      building = network.buildings.get(feature.properties.id);
+    }
+  }
+
+  return { link, routes: [...routeMap.values()], building };
+}

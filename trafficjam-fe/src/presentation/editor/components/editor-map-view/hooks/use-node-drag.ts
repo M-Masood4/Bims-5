@@ -1,0 +1,300 @@
+import { NODE_LAYER_ID } from "@/constants";
+import { useNodeSnap } from "@/presentation/editor/hooks";
+import type { Network, LngLatTuple, TrafficNode, TrafficLink } from "@/types";
+import { safeQueryRenderedFeatures } from "@/utils";
+import { findSnapPoint } from "@/utils/snap-to-network";
+import { useState, useRef, useCallback, useMemo } from "react";
+import type { MapRef, MapMouseEvent } from "react-map-gl";
+import { useRafState } from "react-use";
+
+interface UseNodeDragParams {
+  network: Network | null;
+  mapRef: React.RefObject<MapRef | null>;
+  editorMode: boolean;
+  onNetworkChange: (network: Network) => void;
+  onBeforeChange?: (network: Network) => void;
+}
+
+const DRAG_THRESHOLD = 5;
+
+interface ConnectedLinkInfo {
+  linkId: string;
+  indicesToUpdate: number[];
+}
+
+export function useNodeDrag({
+  network,
+  mapRef,
+  editorMode,
+  onNetworkChange,
+  onBeforeChange,
+}: UseNodeDragParams) {
+  const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [tempDragPosition, setTempDragPosition] =
+    useRafState<LngLatTuple | null>(null);
+  const [connectedLinks, setConnectedLinks] = useState<ConnectedLinkInfo[]>([]);
+
+  const isDraggingRef = useRef(false);
+  const draggedNodeIdRef = useRef<string | null>(null);
+  const tempDragPositionRef = useRef<LngLatTuple | null>(null);
+  const dragStartPos = useRef<{ x: number; y: number } | null>(null);
+  const hasMoved = useRef(false);
+
+  const positionIndex = useMemo(() => {
+    const index = new Map<string, TrafficNode>();
+    if (!network) return index;
+
+    for (const node of network.nodes.values()) {
+      const key = `${node.position[0].toFixed(6)},${node.position[1].toFixed(6)}`;
+      index.set(key, node);
+    }
+    return index;
+  }, [network]);
+
+  const { snapNodeToNetwork } = useNodeSnap({
+    network,
+    onNetworkChange,
+    onBeforeChange,
+  });
+
+  const hiddenIds = useMemo(() => {
+    if (!isDragging || !draggedNodeId) return [];
+    return [draggedNodeId, ...connectedLinks.map((l) => l.linkId)];
+  }, [isDragging, draggedNodeId, connectedLinks]);
+
+  const draftNetwork = useMemo(() => {
+    if (!isDragging || !draggedNodeId || !tempDragPosition || !network)
+      return null;
+
+    const nodes = new Map<string, TrafficNode>();
+    const links = new Map<string, TrafficLink>();
+
+    const draggedNode = network.nodes.get(draggedNodeId);
+    if (draggedNode) {
+      nodes.set(draggedNodeId, { ...draggedNode, position: tempDragPosition });
+    }
+
+    for (const { linkId, indicesToUpdate } of connectedLinks) {
+      const link = network.links.get(linkId);
+      if (!link) continue;
+
+      const geometry = [...link.geometry];
+      for (const idx of indicesToUpdate) {
+        geometry[idx] = tempDragPosition;
+      }
+
+      links.set(linkId, { ...link, geometry });
+
+      for (const coord of geometry) {
+        const key = `${coord[0].toFixed(6)},${coord[1].toFixed(6)}`;
+        const node = positionIndex.get(key);
+        if (node && !nodes.has(node.id)) {
+          nodes.set(node.id, node);
+        }
+      }
+    }
+
+    return { nodes, links } as Network;
+  }, [
+    isDragging,
+    draggedNodeId,
+    tempDragPosition,
+    network,
+    connectedLinks,
+    positionIndex,
+  ]);
+
+  const handleMouseDown = useCallback(
+    (e: MapMouseEvent): boolean => {
+      if (!editorMode || !network || !mapRef.current) return false;
+      const map = mapRef.current;
+      const features = safeQueryRenderedFeatures(map, e.point, [
+        NODE_LAYER_ID,
+        `static-${NODE_LAYER_ID}`,
+        `draft-${NODE_LAYER_ID}`,
+      ]);
+
+      let nodeId: string | null = null;
+      if (features?.length) {
+        const feature = features[0];
+        nodeId = (feature.properties?.id || feature.id)?.toString() || null;
+      } else {
+        const snapResult = findSnapPoint(
+          [e.lngLat.lat, e.lngLat.lng],
+          network,
+          [],
+        );
+        if (snapResult?.isNode && snapResult.nodeId) {
+          nodeId = snapResult.nodeId;
+        }
+      }
+
+      if (!nodeId) return false;
+
+      const node = network.nodes.get(nodeId);
+      if (!node) return false;
+
+      const currentConnectedLinks: ConnectedLinkInfo[] = [];
+      for (const [linkId, link] of network.links.entries()) {
+        const indices: number[] = [];
+        if (link.from === nodeId) indices.push(0);
+        if (link.to === nodeId) indices.push(link.geometry.length - 1);
+
+        for (let i = 0; i < link.geometry.length; i++) {
+          if (indices.includes(i)) continue;
+          const [lat, lng] = link.geometry[i];
+          if (
+            Math.abs(lat - node.position[0]) < 0.000001 &&
+            Math.abs(lng - node.position[1]) < 0.000001
+          ) {
+            indices.push(i);
+          }
+        }
+        if (indices.length > 0) {
+          currentConnectedLinks.push({ linkId, indicesToUpdate: indices });
+        }
+      }
+
+      setConnectedLinks(currentConnectedLinks);
+      draggedNodeIdRef.current = nodeId.toString();
+      isDraggingRef.current = true;
+      dragStartPos.current = { x: e.point.x, y: e.point.y };
+      hasMoved.current = false;
+      tempDragPositionRef.current = null;
+
+      setDraggedNodeId(nodeId.toString());
+      setTempDragPosition(null);
+
+      if (map.dragPan) {
+        map.getMap().getCanvas().style.cursor = "grabbing";
+        map.dragPan.disable();
+      }
+      e.originalEvent.preventDefault();
+      e.originalEvent.stopPropagation();
+      return true;
+    },
+    [
+      editorMode,
+      network,
+      mapRef,
+      setTempDragPosition,
+      setConnectedLinks,
+      setDraggedNodeId,
+    ],
+  );
+
+  const handleMouseMove = useCallback(
+    (e: MapMouseEvent): boolean => {
+      if (!isDraggingRef.current || !draggedNodeIdRef.current || !network)
+        return false;
+
+      if (dragStartPos.current && !hasMoved.current) {
+        const dx = e.point.x - dragStartPos.current.x;
+        const dy = e.point.y - dragStartPos.current.y;
+        if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) {
+          hasMoved.current = true;
+          setIsDragging(true);
+        } else {
+          return true;
+        }
+      }
+
+      const newPosition: LngLatTuple = [e.lngLat.lat, e.lngLat.lng];
+      tempDragPositionRef.current = newPosition;
+      setTempDragPosition(newPosition);
+
+      return true;
+    },
+    [network, setTempDragPosition, setIsDragging],
+  );
+
+  const handleMouseUp = useCallback((): boolean => {
+    if (!isDraggingRef.current) return false;
+    const map = mapRef.current;
+
+    if (
+      hasMoved.current &&
+      tempDragPositionRef.current &&
+      draggedNodeIdRef.current &&
+      network
+    ) {
+      const nodeId = draggedNodeIdRef.current;
+      const finalPos = tempDragPositionRef.current;
+
+      const filteredNetwork = {
+        ...network,
+        nodes: new Map(
+          [...network.nodes.entries()].filter(([id]) => id !== nodeId),
+        ),
+      };
+
+      const snapResult = findSnapPoint(finalPos, filteredNetwork, []);
+      if (snapResult?.isNode && snapResult.nodeId) {
+        snapNodeToNetwork(nodeId, finalPos);
+      } else {
+        if (onBeforeChange) onBeforeChange(network);
+
+        const updatedNodes = new Map(network.nodes);
+        const nodeToUpdate = updatedNodes.get(nodeId);
+        if (nodeToUpdate) {
+          updatedNodes.set(nodeId, { ...nodeToUpdate, position: finalPos });
+        }
+
+        const updatedLinks = new Map(network.links);
+        for (const { linkId, indicesToUpdate } of connectedLinks) {
+          const link = updatedLinks.get(linkId);
+          if (link) {
+            const geometry = [...link.geometry];
+            for (const idx of indicesToUpdate) {
+              geometry[idx] = finalPos;
+            }
+            updatedLinks.set(linkId, { ...link, geometry });
+          }
+        }
+        onNetworkChange({
+          ...network,
+          nodes: updatedNodes,
+          links: updatedLinks,
+        });
+      }
+    }
+
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    setDraggedNodeId(null);
+    setTempDragPosition(null);
+    draggedNodeIdRef.current = null;
+    tempDragPositionRef.current = null;
+    setConnectedLinks([]);
+    dragStartPos.current = null;
+    hasMoved.current = false;
+
+    if (map && map.dragPan) {
+      map.getMap().getCanvas().style.cursor = "";
+      map.dragPan.enable();
+    }
+    return true;
+  }, [
+    network,
+    mapRef,
+    onNetworkChange,
+    onBeforeChange,
+    snapNodeToNetwork,
+    setTempDragPosition,
+    connectedLinks,
+    setConnectedLinks,
+    setIsDragging,
+    setDraggedNodeId,
+  ]);
+
+  return {
+    isDragging,
+    draggedNodeId,
+    draftNetwork,
+    hiddenIds,
+    onMouseDown: handleMouseDown,
+    onMouseMove: handleMouseMove,
+    onMouseUp: handleMouseUp,
+  };
+}

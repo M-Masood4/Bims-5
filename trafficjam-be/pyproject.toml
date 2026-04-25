@@ -1,0 +1,6 @@
+[project]
+name = "bims5-be"
+version = "0.1.0"
+description = "BIMS 5 backend — orchestrates urban simulation runs via NATS and MATSim."
+readme = "README.md"
+requires-python = ">=3.13"
