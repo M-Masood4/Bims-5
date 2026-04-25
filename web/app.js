@@ -227,14 +227,14 @@ function infrastructureChanges() {
     const type = CHANGE_TYPES[commit.type] || CHANGE_TYPES.traffic;
     const intensity = Math.min(100, Math.max(6, Math.round(Math.abs(commit.delta || 0) * 100)));
     const mw = commit.type === "electricity" ? Math.max(15, Math.round((0.35 + Math.abs(commit.delta || 0)) * 140)) : 0;
-    const scenario = commit.type === "electricity" && commit.delta > 0.1 ? "Data centre load" : commit.type === "electricity" ? "Wind farm / grid relief" : type.headline;
+    const scenario = commit.type === "electricity" ? "Mapped grid asset event" : type.headline;
     return {
       ...commit,
       changeType: type.type,
       changeLabel: type.label,
       headline: type.headline,
       icon: type.icon,
-      detail: type.detail,
+      detail: commit.subtitle || type.detail,
       scenario,
       intensity,
       estimatedMw: mw,
@@ -261,7 +261,7 @@ function impactCopy(change, metric) {
   }
   if (metric === "electricity") {
     const load = change.estimatedMw ? ` Estimated load: ${change.estimatedMw} MW.` : "";
-    return `${change.scenario} changes grid headroom by ${signedPct(delta)} in the selected cells.${load} Electricity is derived from the GRID-style load/headroom proxy and OSM power assets.`;
+    return `${change.scenario} changes grid headroom by ${signedPct(delta)} in the selected cells.${load} The event is backed by ${change.eventSourceBasis || "a public source record"}; electricity impact is derived from the GRID-style load/headroom proxy and OSM power assets.`;
   }
   if (metric === "buildings") {
     return `${change.headline} shifts mapped building pressure by ${signedPct(delta)} around ${area}. Building footprints visible on the map are filtered by replay year so later mapped/proxy additions appear as the slider moves.`;
@@ -892,9 +892,9 @@ function renderCommits() {
       <span class="commit-symbol">${escapeHtml(meta.icon)}</span>
       <span class="commit-body">
         <span class="commit-meta"><strong>${escapeHtml(commit.changeLabel)}</strong><em>${escapeHtml(commit.month || state.year)}</em></span>
-        <strong>${escapeHtml(commit.headline)} in ${escapeHtml(commit.area || "Belfast")}</strong>
+        <strong>${escapeHtml(commit.title || commit.headline)} in ${escapeHtml(commit.area || "Belfast")}</strong>
         <small>${escapeHtml(commit.detail)}</small>
-        <span class="commit-foot"><span>${escapeHtml(commit.severity || "Medium")}</span><span>Analyse impacts</span></span>
+        <span class="commit-foot"><span>${escapeHtml(commit.eventSourceBasis || commit.severity || "Source-backed")}</span><span>Analyse impacts</span></span>
       </span>
     `;
     row.addEventListener("click", () => selectCommit(commit));
@@ -1126,8 +1126,8 @@ function showCommitEvidence(commit) {
         <span class="selected-icon" style="--metric-color:${escapeHtml(meta.palette[2])}">${escapeHtml(meta.icon)}</span>
         <div>
           <small>${escapeHtml(commit.changeLabel || labelFor(commit.type))} / ${escapeHtml(commit.month || state.year)}</small>
-          <strong>${escapeHtml(commit.headline || commit.title)} in ${escapeHtml(commit.area || "Belfast")}</strong>
-          <span>${escapeHtml(commit.severity || "Medium")} confidence, ${escapeHtml(signedPct(commit.delta || 0))} baseline shift${commit.estimatedMw ? `, ${escapeHtml(commit.estimatedMw)} MW load proxy` : ""}</span>
+          <strong>${escapeHtml(commit.title || commit.headline)} in ${escapeHtml(commit.area || "Belfast")}</strong>
+          <span>${escapeHtml(commit.eventSourceBasis || "public event record")} / ${escapeHtml(commit.confidence || "Medium")} confidence, ${escapeHtml(signedPct(commit.delta || 0))} baseline shift${commit.estimatedMw ? `, ${escapeHtml(commit.estimatedMw)} MW load proxy` : ""}</span>
         </div>
       </header>
       <p>${escapeHtml(commit.detail || commit.explanation || commit.subtitle || "")}</p>
@@ -1166,6 +1166,12 @@ function showCommitEvidence(commit) {
         <dt>Map diff</dt><dd><span>${escapeHtml(commit.mapInstruction || "Selected replay cells highlighted.")}</span></dd>
         <dt>Signal</dt><dd><span>${escapeHtml(labelFor(commit.type))} ${escapeHtml(commit.tone)}, delta ${escapeHtml(commit.delta)}</span></dd>
         <dt>Area</dt><dd><span>${escapeHtml(commit.area || "Belfast")}</span></dd>
+        <dt>Source event</dt><dd>
+          <span>${escapeHtml(commit.eventSourceBasis || "public event record")}</span>
+          <span>${escapeHtml(commit.eventSourceName || "Source catalog")}</span>
+          ${commit.eventSourceUrl ? `<span>${escapeHtml(commit.eventSourceUrl)}</span>` : ""}
+          ${commit.eventOsmChangesetUrl ? `<span>${escapeHtml(commit.eventOsmChangesetUrl)}</span>` : ""}
+        </dd>
         <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
         <dt>Audit trail</dt><dd>${auditTrail.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
       </dl>

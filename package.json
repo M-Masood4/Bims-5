@@ -4,6 +4,7 @@
   "private": true,
   "description": "Lightweight local UI/API scaffold for the Belfast historical replay data.",
   "scripts": {
+    "build:events": "node scripts/build_infrastructure_events.js",
     "build:manifest": "python scripts/build_ui_manifest.py && python scripts/build_mode_a_replay.py",
     "start": "node server.js",
     "verify": "node scripts/verify-manifest.js",

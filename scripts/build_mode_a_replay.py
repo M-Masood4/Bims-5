@@ -563,6 +563,58 @@ def affected_signals(metric: str, year: int, averages: dict[int, dict[str, float
     return rows
 
 
+def load_infrastructure_events(root: Path) -> list[dict[str, Any]]:
+    path = root / "data/derived/2026/belfast_infrastructure_events_2016_2026.json"
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+    return [event for event in payload.get("events", []) if isinstance(event, dict)]
+
+
+def event_score(event: dict[str, Any]) -> tuple[int, int, str]:
+    source_basis = str(event.get("sourceBasis") or "")
+    title = str(event.get("title") or "")
+    official = 1 if "official" in source_basis.lower() else 0
+    named = 1 if not title.lower().startswith(("road", "service", "building", "power", "generator", "residential", "unclassified")) else 0
+    return (official, named, title)
+
+
+def event_cell_ids(event: dict[str, Any], metric: str, values: dict[str, dict[int, dict[str, float]]], cells: list[dict[str, Any]], year: int, limit: int = 36) -> list[str]:
+    coords = event.get("coordinates")
+    if not isinstance(coords, list) or len(coords) < 2:
+        ordered = sorted(
+            values.items(),
+            key=lambda item: item[1][year][metric],
+            reverse=True,
+        )[:limit]
+        return [cell_id for cell_id, _year_values in ordered]
+    point = (float(coords[0]), float(coords[1]))
+    by_cell = {cell["id"]: cell for cell in cells}
+    ordered = sorted(
+        values.items(),
+        key=lambda item: (distance_km(point, by_cell[item[0]]["center"]), -item[1][year][metric]),
+    )[:limit]
+    return [cell_id for cell_id, _year_values in ordered]
+
+
+def signal_narrative_from_event(event: dict[str, Any], metric: str, area: str, year: int, delta: float) -> tuple[str, str, str, str]:
+    source_basis = str(event.get("sourceBasis") or "public event record")
+    title = str(event.get("title") or f"{metric} infrastructure event")
+    subtitle = str(event.get("subtitle") or f"Public-source {source_basis} for this infrastructure change.")
+    note = str(event.get("impactNote") or "")
+    direction = metric_direction(metric, delta)
+    symbol = "+" if direction in {"increased", "improved", "appeared"} else "-" if direction in {"decreased", "worsened", "reduced"} else "~"
+    explanation = (
+        f"This city commit is backed by a real event record: {title}. "
+        f"The event is located around {area}; the highlighted cells are deterministic replay-impact cells for {year}, not invented event claims. "
+        f"{note}".strip()
+    )
+    return symbol, title, subtitle, explanation
+
+
 def signal_narrative(metric: str, area: str, year: int, delta: float) -> tuple[str, str, str, str]:
     direction = metric_direction(metric, delta)
     severity = "High" if abs(delta) >= 0.12 else "Medium" if abs(delta) >= 0.055 else "Watch"
@@ -609,29 +661,70 @@ def commit(
     area: str,
     cell_ids: list[str],
     averages: dict[int, dict[str, float]],
+    event: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     severity = "High" if abs(delta) >= 0.12 else "Medium" if abs(delta) >= 0.055 else "Watch"
+    event_record = event or {}
+    event_evidence = []
+    if event_record:
+        event_evidence = [
+            f"Event record: {event_record.get('title')}",
+            f"Source basis: {event_record.get('sourceBasis')}",
+            f"Source: {event_record.get('sourceName')}",
+            f"URL: {event_record.get('sourceUrl')}",
+        ]
+        if event_record.get("osmChangesetUrl"):
+            event_evidence.append(f"OSM changeset: {event_record.get('osmChangesetUrl')}")
     return {
-        "id": f"{year}-{metric}",
+        "id": str(event_record.get("id") or f"{year}-{metric}"),
         "symbol": symbol,
         "type": metric,
         "signal": metric,
         "title": title,
         "subtitle": subtitle,
         "area": area,
-        "month": commit_month(metric, year),
+        "month": str(event_record.get("month") or commit_month(metric, year)),
         "severity": severity,
         "delta": round(delta, 3),
-        "confidence": confidence,
+        "confidence": str(event_record.get("confidence") or confidence),
         "tone": tone,
         "cellIds": cell_ids,
-        "mapInstruction": f"Highlight the top {len(cell_ids)} affected replay cells around {area}. Click any cell in the list to zoom into that exact diff.",
+        "eventId": event_record.get("id"),
+        "eventSourceBasis": event_record.get("sourceBasis"),
+        "eventSourceName": event_record.get("sourceName"),
+        "eventSourceUrl": event_record.get("sourceUrl"),
+        "eventOsmChangesetUrl": event_record.get("osmChangesetUrl"),
+        "eventOsmTimestamp": event_record.get("osmTimestamp"),
+        "eventRecord": {
+            key: event_record.get(key)
+            for key in [
+                "id",
+                "sourceId",
+                "year",
+                "month",
+                "category",
+                "signal",
+                "title",
+                "sourceBasis",
+                "sourceName",
+                "sourceUrl",
+                "osmChangesetUrl",
+                "osmTimestamp",
+                "osmVersion",
+                "osmChangeset",
+                "coordinates",
+                "tags",
+            ]
+            if event_record.get(key) not in (None, "")
+        },
+        "mapInstruction": f"Highlight {len(cell_ids)} replay-impact cells around the source event near {area}. Click any cell in the list to zoom into that exact diff.",
         "explanation": explanation,
-        "evidence": evidence,
+        "evidence": event_evidence + evidence,
         "affectedSignals": affected_signals(metric, year, averages),
         "auditTrail": [
-            "Grid cell score generated deterministically from local source artifacts.",
-            "Commit wording is derived from metric deltas, not invented as unsupported fact.",
+            "Commit title and date come from the infrastructure event catalog, not generated city-story text.",
+            "Public OSM metadata events use timestamp/version/changeset as mapped-event evidence, not proof of construction date.",
+            "Replay-impact cells are generated deterministically around the event location from local source artifacts.",
             "Gemini can summarize the selected diff, but the map state and evidence remain deterministic.",
         ],
     }
@@ -643,40 +736,42 @@ def commits_for_year(
     values: dict[str, dict[int, dict[str, float]]],
     cells: list[dict[str, Any]],
     rasters: dict[int, set[str]],
+    events: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     current = averages[year]
     base = averages[2016]
-    by_cell = {cell["id"]: cell for cell in cells}
     commits = []
+    yearly_events = [event for event in (events or []) if int(event.get("year", -1)) == year]
     for metric in [item["id"] for item in CORE_METRICS]:
-        ordered = sorted(
-            values.items(),
-            key=lambda item: (item[1][year][metric], abs(item[1][year][metric] - item[1][2016][metric])),
-            reverse=True,
-        )[:36]
-        cell_ids = [cell_id for cell_id, _year_values in ordered]
-        leading_cell = by_cell[cell_ids[0]]
-        area = area_name(leading_cell["center"])
-        delta = current[metric] - base[metric]
-        symbol, title, subtitle, explanation = signal_narrative(metric, area, year, delta)
-        confidence = "high" if metric in {"traffic", "services"} and year in {2016, 2021, 2026} else "medium-high" if metric in {"buildings", "electricity"} else "medium"
-        commits.append(
-            commit(
-                symbol,
-                year,
-                metric,
-                title,
-                subtitle,
-                explanation,
-                delta,
-                confidence,
-                evidence_for(metric, year, rasters),
-                metric_direction(metric, delta),
-                area,
-                cell_ids,
-                averages,
+        metric_events = [event for event in yearly_events if event.get("signal") == metric]
+        metric_events = sorted(metric_events, key=event_score, reverse=True)[:8]
+        for event in metric_events:
+            cell_ids = event_cell_ids(event, metric, values, cells, year)
+            if not cell_ids:
+                continue
+            coords = event.get("coordinates")
+            area = area_name((float(coords[0]), float(coords[1]))) if isinstance(coords, list) and len(coords) >= 2 else str(event.get("area") or "Belfast")
+            delta = current[metric] - base[metric]
+            symbol, title, subtitle, explanation = signal_narrative_from_event(event, metric, area, year, delta)
+            confidence = "high" if str(event.get("sourceBasis", "")).lower().startswith("official") else "medium"
+            commits.append(
+                commit(
+                    symbol,
+                    year,
+                    metric,
+                    title,
+                    subtitle,
+                    explanation,
+                    delta,
+                    confidence,
+                    evidence_for(metric, year, rasters),
+                    metric_direction(metric, delta),
+                    area,
+                    cell_ids,
+                    averages,
+                    event,
+                )
             )
-        )
     return commits
 
 
@@ -839,6 +934,7 @@ def electricity_layers_for_year(
 
 def build(root: Path, output_dir: Path) -> dict[str, Any]:
     cells = grid_cells()
+    infrastructure_events = load_infrastructure_events(root)
     air = load_air_quality(root)
     population = load_population(root)
     census_total = load_census_total(root)
@@ -853,6 +949,32 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
             values[cell["id"]][year] = core_metrics(support, year, population)
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    event_counts: dict[str, dict[str, int]] = {}
+    for year in YEARS:
+        event_counts[str(year)] = {metric["id"]: 0 for metric in CORE_METRICS}
+    for event in infrastructure_events:
+        year_key = str(event.get("year"))
+        signal = str(event.get("signal") or "")
+        if year_key in event_counts and signal in event_counts[year_key]:
+            event_counts[year_key][signal] += 1
+    (output_dir / "infrastructure_events_index.json").write_text(
+        json.dumps(
+            {
+                "kind": "belfast.infrastructureEventIndex",
+                "schemaVersion": "1.0.0",
+                "eventCount": len(infrastructure_events),
+                "countsByYearSignal": event_counts,
+                "catalogPath": "data/derived/2026/belfast_infrastructure_events_2016_2026.json",
+                "basis": [
+                    "Official public project/opening records for named major events.",
+                    "OpenStreetMap Overpass metadata timestamp/version/changeset records for asset-level mapped additions.",
+                    "OSM timestamps prove public mapped visibility, not construction/opening dates.",
+                ],
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
     for year in YEARS:
         (output_dir / f"grid_{year}.geojson").write_text(json.dumps(feature_collection(cells, values, year, rasters), separators=(",", ":")), encoding="utf-8")
         (output_dir / f"hotspots_{year}.geojson").write_text(json.dumps(hotspots_for_year(year, values, cells), separators=(",", ":")), encoding="utf-8")
@@ -890,7 +1012,17 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
         "electricityTemplate": "/data/mode-a/electricity_{year}.geojson",
         "coreMetrics": CORE_METRICS,
         "metricsByYear": metrics_by_year,
-        "commitsByYear": {str(year): commits_for_year(year, averages, values, cells, rasters) for year in YEARS},
+        "commitsByYear": {str(year): commits_for_year(year, averages, values, cells, rasters, infrastructure_events) for year in YEARS},
+        "eventCatalog": {
+            "path": "/data/mode-a/infrastructure_events_index.json",
+            "sourcePath": "data/derived/2026/belfast_infrastructure_events_2016_2026.json",
+            "eventCount": len(infrastructure_events),
+            "basis": [
+                "Official public project/opening records for named major events.",
+                "OpenStreetMap Overpass metadata timestamp/version/changeset records for asset-level mapped additions.",
+                "OSM timestamps prove public mapped visibility, not construction/opening dates.",
+            ],
+        },
         "populationByYear": population,
         "census2021TotalPopulation": census_total,
         "bikeTripTotalsByYear": bike_trip_totals,
@@ -901,6 +1033,7 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
             {"name": "OpenStreetMap / Overpass local exports", "status": "local", "confidence": "medium", "note": "Buildings, roads, services, places, power assets and development context"},
             {"name": "NI Air Belfast Centre archive", "status": "local", "confidence": "high for available year(s)", "note": "Traffic and exposure context retained as supporting evidence"},
             {"name": "NISRA census and population files", "status": "local", "confidence": "high for official totals", "note": "Jobs, service demand and planning pressure context"},
+            {"name": "Northern Ireland planning statistics", "status": "copied from main/planning_statistics", "confidence": "high for application decision records", "note": "Approved Belfast planning records back source-event commits for buildings, jobs, services and electricity"},
             {"name": "Sentinel/Landsat NDVI/NDBI/RGB rasters", "status": "local sources", "confidence": "medium pending raster tiling", "note": "Building and development evidence anchors"},
             {"name": "Belfast Bikes trip and station datasets", "status": "local", "confidence": "high for sample months", "note": "Traffic offset and active-travel context"},
             {"name": "Belfast trees, pitches and public toilets open data", "status": "local", "confidence": "medium", "note": "Services and civic-access context"},
