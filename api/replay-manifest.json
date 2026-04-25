@@ -1,0 +1,844 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "belfast.replay.manifest",
+  "name": "Belfast Historical Replay",
+  "description": "UI/API contract for replaying Belfast geospatial layers from 2016 through 2026. Current vector data is available for 2026; 2016 raster assets are tracked as source metadata until tiled previews are generated.",
+  "createdAt": "2026-04-25T00:00:00Z",
+  "contract": {
+    "manifestEndpoint": "/api/manifest",
+    "layerEndpointTemplate": "/api/layers/{year}/{layerId}",
+    "expectedEtlFields": [
+      "year",
+      "layers",
+      "bbox",
+      "featureCount",
+      "byteSize",
+      "geometryTypes",
+      "provenance",
+      "sourceStatus"
+    ],
+    "notes": "ETL branches can replace this file or emit compatible year manifests that preserve layer ids, source path, bbox, counts, and provenance status."
+  },
+  "viewport": {
+    "center": [
+      44.425,
+      -69.01
+    ],
+    "zoom": 12,
+    "focusBbox": [
+      -69.14,
+      44.36,
+      -68.96,
+      44.47
+    ]
+  },
+  "years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "timeline": [
+    {
+      "year": 2016,
+      "label": "2016 baseline rasters",
+      "status": "source-available",
+      "summary": "Local GeoTIFF rasters are present and catalogued. Browser map previews require a future tile/COG ETL output.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 3
+    },
+    {
+      "year": 2017,
+      "label": "2017 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2018,
+      "label": "2018 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2019,
+      "label": "2019 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2020,
+      "label": "2020 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2021,
+      "label": "2021 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2022,
+      "label": "2022 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2023,
+      "label": "2023 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2024,
+      "label": "2024 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2025,
+      "label": "2025 pending ETL",
+      "status": "pending-etl",
+      "summary": "No generated replay manifest has been merged for this year yet.",
+      "bbox": null,
+      "vectorLayerCount": 0,
+      "rasterLayerCount": 0
+    },
+    {
+      "year": 2026,
+      "label": "2026 current vectors",
+      "status": "ready",
+      "summary": "GeoJSON/JSON layers are available for immediate map display through the local API.",
+      "bbox": [
+        -69.14,
+        44.36,
+        -68.96,
+        44.47
+      ],
+      "vectorLayerCount": 18,
+      "rasterLayerCount": 0
+    }
+  ],
+  "layers": [
+    {
+      "id": "boundary",
+      "year": 2026,
+      "label": "Boundary",
+      "category": "context",
+      "type": "geojson",
+      "path": "data/2026/belfastboudnary2026.geojson",
+      "apiPath": "/api/layers/2026/boundary",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 4,
+      "byteSize": 49166,
+      "bbox": [
+        -69.1182822,
+        44.3674294,
+        -62.8520031,
+        46.0833889
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:50:39Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#1f2937",
+        "weight": 2,
+        "fillOpacity": 0.04
+      }
+    },
+    {
+      "id": "major-roads",
+      "year": 2026,
+      "label": "Major roads",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfast_major_roads_2026.geojson",
+      "apiPath": "/api/layers/2026/major-roads",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 160,
+      "byteSize": 226755,
+      "bbox": [
+        -69.1256936,
+        44.3750592,
+        -62.8204381,
+        46.079476
+      ],
+      "geometryTypes": [
+        "LineString"
+      ],
+      "timestamp": "2026-04-25T11:42:28Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#c05621",
+        "weight": 3,
+        "opacity": 0.8
+      }
+    },
+    {
+      "id": "roads",
+      "year": 2026,
+      "label": "Roads",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfast_roads_2026.geojson",
+      "apiPath": "/api/layers/2026/roads",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 1369,
+      "byteSize": 1397533,
+      "bbox": [
+        -69.1301875,
+        44.3717481,
+        -62.8204381,
+        46.079476
+      ],
+      "geometryTypes": [
+        "LineString"
+      ],
+      "timestamp": "2026-04-25T11:41:30Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#6b7280",
+        "weight": 1.3,
+        "opacity": 0.7
+      }
+    },
+    {
+      "id": "water",
+      "year": 2026,
+      "label": "Water",
+      "category": "environment",
+      "type": "geojson",
+      "path": "data/2026/belfast_water_2026.geojson",
+      "apiPath": "/api/layers/2026/water",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 107,
+      "byteSize": 445544,
+      "bbox": [
+        -69.1335598,
+        44.2777695,
+        -62.847329,
+        46.0825515
+      ],
+      "geometryTypes": [
+        "LineString",
+        "MultiLineString",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:44:30Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#0e7490",
+        "weight": 1.5,
+        "fillOpacity": 0.22
+      }
+    },
+    {
+      "id": "green-spaces",
+      "year": 2026,
+      "label": "Green spaces",
+      "category": "environment",
+      "type": "geojson",
+      "path": "data/2026/belfast_green_spaces_2026.geojson",
+      "apiPath": "/api/layers/2026/green-spaces",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 40,
+      "byteSize": 690453,
+      "bbox": [
+        -69.106611,
+        44.3843949,
+        -62.7499816,
+        46.125
+      ],
+      "geometryTypes": [
+        "MultiPolygon",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:44:30Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#15803d",
+        "weight": 1.4,
+        "fillOpacity": 0.24
+      }
+    },
+    {
+      "id": "buildings",
+      "year": 2026,
+      "label": "Buildings",
+      "category": "built-form",
+      "type": "geojson",
+      "path": "data/2026/belfast_buildings_2026.geojson",
+      "apiPath": "/api/layers/2026/buildings",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 1498,
+      "byteSize": 1609421,
+      "bbox": [
+        -69.1109119,
+        44.4007843,
+        -62.8756285,
+        46.0581013
+      ],
+      "geometryTypes": [
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:40:26Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#4b5563",
+        "weight": 0.8,
+        "fillOpacity": 0.18
+      }
+    },
+    {
+      "id": "cycleways",
+      "year": 2026,
+      "label": "Cycleways",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfast_cycleways_2026.geojson",
+      "apiPath": "/api/layers/2026/cycleways",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 37,
+      "byteSize": 1631884,
+      "bbox": [
+        -70.8192444,
+        43.0783199,
+        -67.2254626,
+        45.1918619
+      ],
+      "geometryTypes": [
+        "LineString",
+        "MultiLineString"
+      ],
+      "timestamp": "2026-04-25T11:43:30Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#7c3aed",
+        "weight": 2.5,
+        "opacity": 0.82
+      }
+    },
+    {
+      "id": "bridges",
+      "year": 2026,
+      "label": "Bridges",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfast_bridges_2026.geojson",
+      "apiPath": "/api/layers/2026/bridges",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 24,
+      "byteSize": 19321,
+      "bbox": [
+        -69.1017462,
+        44.3942358,
+        -68.9887003,
+        44.482988
+      ],
+      "geometryTypes": [
+        "LineString"
+      ],
+      "timestamp": "2026-04-25T11:45:33Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#92400e",
+        "weight": 3,
+        "opacity": 0.85
+      }
+    },
+    {
+      "id": "transit-routes",
+      "year": 2026,
+      "label": "Transit routes",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfasttransitroutes2026.geojson",
+      "apiPath": "/api/layers/2026/transit-routes",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 13,
+      "byteSize": 42313,
+      "bbox": [
+        -69.0299353,
+        44.4118489,
+        -68.9942982,
+        44.4317903
+      ],
+      "geometryTypes": [
+        "MultiLineString",
+        "Point"
+      ],
+      "timestamp": "2026-04-25T11:46:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#2563eb",
+        "weight": 3,
+        "opacity": 0.85
+      }
+    },
+    {
+      "id": "transport-stops",
+      "year": 2026,
+      "label": "Transport stops",
+      "category": "movement",
+      "type": "geojson",
+      "path": "data/2026/belfast_transportstops2026.json",
+      "apiPath": "/api/layers/2026/transport-stops",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 14,
+      "byteSize": 6389,
+      "bbox": [
+        -69.0351557,
+        44.4124118,
+        -68.9944355,
+        44.4554235
+      ],
+      "geometryTypes": [
+        "LineString",
+        "Point"
+      ],
+      "timestamp": "2026-04-25T11:46:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#0891b2",
+        "weight": 2,
+        "opacity": 0.9
+      }
+    },
+    {
+      "id": "commercial",
+      "year": 2026,
+      "label": "Commercial",
+      "category": "services",
+      "type": "geojson",
+      "path": "data/2026/belfastcommercial2026.geojson",
+      "apiPath": "/api/layers/2026/commercial",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 100,
+      "byteSize": 110390,
+      "bbox": [
+        -69.0323454,
+        44.4007843,
+        -68.9756963,
+        44.4393984
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:47:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#be123c",
+        "weight": 1.4,
+        "fillOpacity": 0.18
+      }
+    },
+    {
+      "id": "development-land",
+      "year": 2026,
+      "label": "Development land",
+      "category": "built-form",
+      "type": "geojson",
+      "path": "data/2026/belfastdevelopmentland2026.geojson",
+      "apiPath": "/api/layers/2026/development-land",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 1,
+      "byteSize": 1008,
+      "bbox": [
+        -68.9965736,
+        44.4215222,
+        -68.9964546,
+        44.4216125
+      ],
+      "geometryTypes": [
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:48:36Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#b45309",
+        "weight": 1.6,
+        "fillOpacity": 0.28
+      }
+    },
+    {
+      "id": "education",
+      "year": 2026,
+      "label": "Education",
+      "category": "services",
+      "type": "geojson",
+      "path": "data/2026/belfasteducation2026.geojson",
+      "apiPath": "/api/layers/2026/education",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 7,
+      "byteSize": 11080,
+      "bbox": [
+        -69.0348706,
+        44.4094929,
+        -69.0045676,
+        44.4371051
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:46:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#6d28d9",
+        "weight": 1.6,
+        "fillOpacity": 0.16
+      }
+    },
+    {
+      "id": "healthcare",
+      "year": 2026,
+      "label": "Healthcare",
+      "category": "services",
+      "type": "geojson",
+      "path": "data/2026/belfasthealthcare2026.geojson",
+      "apiPath": "/api/layers/2026/healthcare",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 8,
+      "byteSize": 11201,
+      "bbox": [
+        -69.0190465,
+        44.4109915,
+        -68.9926489,
+        44.4326672
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:47:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#dc2626",
+        "weight": 1.6,
+        "fillOpacity": 0.16
+      }
+    },
+    {
+      "id": "landmarks",
+      "year": 2026,
+      "label": "Landmarks",
+      "category": "places",
+      "type": "geojson",
+      "path": "data/2026/belfastlandmarks2026.geojson",
+      "apiPath": "/api/layers/2026/landmarks",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 18,
+      "byteSize": 23659,
+      "bbox": [
+        -69.0138642,
+        44.4076883,
+        -62.8773682,
+        46.0794088
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:49:36Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#9333ea",
+        "weight": 1.8,
+        "fillOpacity": 0.16
+      }
+    },
+    {
+      "id": "land-use",
+      "year": 2026,
+      "label": "Land use",
+      "category": "context",
+      "type": "geojson",
+      "path": "data/2026/belfastlanduse2026.geojson",
+      "apiPath": "/api/layers/2026/land-use",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 24,
+      "byteSize": 39605,
+      "bbox": [
+        -69.0891954,
+        44.405956,
+        -62.8753686,
+        46.0791285
+      ],
+      "geometryTypes": [
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:48:36Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#64748b",
+        "weight": 1,
+        "fillOpacity": 0.18
+      }
+    },
+    {
+      "id": "places",
+      "year": 2026,
+      "label": "Places",
+      "category": "places",
+      "type": "geojson",
+      "path": "data/2026/belfastplaces2026.geojson",
+      "apiPath": "/api/layers/2026/places",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 14,
+      "byteSize": 3987312,
+      "bbox": [
+        -69.1003154,
+        44.4014649,
+        -61.9707663,
+        47.0589738
+      ],
+      "geometryTypes": [
+        "MultiPolygon",
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:49:36Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#0f766e",
+        "weight": 1.6,
+        "fillOpacity": 0.1
+      }
+    },
+    {
+      "id": "public-services",
+      "year": 2026,
+      "label": "Public services",
+      "category": "services",
+      "type": "geojson",
+      "path": "data/2026/belfastpublicservices2026.geojson",
+      "apiPath": "/api/layers/2026/public-services",
+      "status": "ready",
+      "defaultVisible": false,
+      "featureCount": 12,
+      "byteSize": 25714,
+      "bbox": [
+        -69.0238381,
+        44.4119521,
+        -68.9814742,
+        44.4317927
+      ],
+      "geometryTypes": [
+        "Point",
+        "Polygon"
+      ],
+      "timestamp": "2026-04-25T11:47:31Z",
+      "provenance": {
+        "sourceName": "OpenStreetMap via Overpass export",
+        "license": "ODbL",
+        "sourceStatus": "source-file-present"
+      },
+      "render": {
+        "color": "#0369a1",
+        "weight": 1.6,
+        "fillOpacity": 0.16
+      }
+    },
+    {
+      "id": "raster-rgb-2016",
+      "year": 2016,
+      "label": "RGB raster",
+      "category": "raster",
+      "type": "geotiff",
+      "path": "data/2016/belfast_rgb_2016.tif",
+      "status": "source-available",
+      "defaultVisible": false,
+      "metadataOnly": true,
+      "featureCount": null,
+      "byteSize": 67838658,
+      "bbox": null,
+      "geometryTypes": [],
+      "provenance": {
+        "sourceName": "Local raster source",
+        "license": "Unknown",
+        "sourceStatus": "source-file-present"
+      }
+    },
+    {
+      "id": "raster-ndbi-2016",
+      "year": 2016,
+      "label": "NDBI raster",
+      "category": "raster",
+      "type": "geotiff",
+      "path": "data/2016/belfast_ndbi_2016.tif",
+      "status": "source-available",
+      "defaultVisible": false,
+      "metadataOnly": true,
+      "featureCount": null,
+      "byteSize": 41994015,
+      "bbox": null,
+      "geometryTypes": [],
+      "provenance": {
+        "sourceName": "Local raster source",
+        "license": "Unknown",
+        "sourceStatus": "source-file-present"
+      }
+    },
+    {
+      "id": "raster-ndvi-2018",
+      "year": 2016,
+      "label": "NDVI raster file",
+      "category": "raster",
+      "type": "geotiff",
+      "path": "data/2016/belfast_ndvi_2018.tif",
+      "status": "source-available",
+      "defaultVisible": false,
+      "metadataOnly": true,
+      "featureCount": null,
+      "byteSize": 47378843,
+      "bbox": null,
+      "geometryTypes": [],
+      "provenance": {
+        "sourceName": "Local raster source",
+        "license": "Unknown",
+        "sourceStatus": "source-file-present",
+        "note": "File is stored under data/2016 but filename indicates 2018."
+      }
+    }
+  ],
+  "sourceArtifacts": [
+    {
+      "id": "exportbuildings-raw",
+      "year": 2026,
+      "label": "Raw exported buildings",
+      "type": "geojson",
+      "path": "data/2026/exportbuildings.geojson",
+      "status": "source-available-heavy",
+      "featureCount": 141981,
+      "byteSize": 110224684,
+      "bbox": [
+        -69.1109119,
+        44.4007843,
+        -5.8100227,
+        54.6647886
+      ],
+      "notes": "Catalogued for provenance and future ETL. Not offered as a default interactive layer because it is large and contains broad extents."
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Belfast Replay 2016-2026</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQqN3ZWfR7PuZNx9jnyrC1YbM3V8x5E="
+      crossorigin="">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Replay controls">
+        <header class="app-header">
+          <p class="eyebrow">Operational replay</p>
+          <h1>Belfast 2016-2026</h1>
+          <p id="manifestStatus" class="status-line">Loading manifest...</p>
+        </header>
+
+        <section class="panel">
+          <label class="field-label" for="yearSelect">Replay year</label>
+          <select id="yearSelect"></select>
+          <div id="yearSummary" class="year-summary"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>Layers</h2>
+            <button id="resetView" type="button">Reset view</button>
+          </div>
+          <div id="layerToggles" class="layer-list"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Summary</h2>
+          <dl id="summaryStats" class="stats"></dl>
+        </section>
+
+        <section class="panel">
+          <h2>Provenance</h2>
+          <div id="provenanceList" class="provenance-list"></div>
+        </section>
+      </aside>
+
+      <main class="map-workspace">
+        <div id="map" aria-label="Belfast replay map"></div>
+        <div id="mapNotice" class="map-notice" role="status"></div>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
