@@ -98,7 +98,7 @@ const LENS_REGISTRY = [
 ];
 
 const CONTEXT_REGISTRY = [
-  { id: "change_heatmap", label: "Heatmap", icon: "H", description: "selected lens change intensity" },
+  { id: "change_heatmap", label: "Heatmap", icon: "H", description: "selected lens and traffic intensity" },
   { id: "boundaries", label: "District Grid", icon: "B", description: "replay cell boundaries" },
   { id: "buildings", label: "3D Buildings", icon: "3D", description: "OSM building skeleton" },
   { id: "roads", label: "Roads", icon: "R", description: "major streets and access corridors" },

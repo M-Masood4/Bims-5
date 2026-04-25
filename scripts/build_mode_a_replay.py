@@ -46,7 +46,7 @@ CORE_METRICS = [
         "id": "mobility_strain",
         "label": "Mobility Strain",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "map": "Congested corridors, transit gaps, and bike/road improvements.",
+        "map": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "goodDirection": "down",
         "color": "#2563eb",
     },

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "kind": "belfast.modeA.summary",
-  "generatedAt": "2026-04-25T14:51:43.416751+00:00",
+  "generatedAt": "2026-04-25T14:53:25.192687+00:00",
   "years": [
     2016,
     2017,
@@ -38,7 +38,7 @@
       "id": "mobility_strain",
       "label": "Mobility Strain",
       "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-      "map": "Congested corridors, transit gaps, and bike/road improvements.",
+      "map": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
       "goodDirection": "down",
       "color": "#2563eb"
     },
@@ -106,7 +106,7 @@
         "deltaDisplay": "+0",
         "trend": "stable",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.423,
@@ -248,7 +248,7 @@
         "deltaDisplay": "+1",
         "trend": "stable",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.425,
@@ -390,7 +390,7 @@
         "deltaDisplay": "+1",
         "trend": "stable",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.43,
@@ -532,7 +532,7 @@
         "deltaDisplay": "+2",
         "trend": "stable",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.435,
@@ -674,7 +674,7 @@
         "deltaDisplay": "+2",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.439,
@@ -816,7 +816,7 @@
         "deltaDisplay": "+3",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.443,
@@ -958,7 +958,7 @@
         "deltaDisplay": "+3",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.448,
@@ -1100,7 +1100,7 @@
         "deltaDisplay": "+5",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.454,
@@ -1242,7 +1242,7 @@
         "deltaDisplay": "+6",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.462,
@@ -1384,7 +1384,7 @@
         "deltaDisplay": "+6",
         "trend": "worsened",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.473,
@@ -1526,7 +1526,7 @@
         "deltaDisplay": "+1",
         "trend": "stable",
         "why": "Combines traffic, public transport, walkability, and bike access into one pressure score.",
-        "mapShows": "Congested corridors, transit gaps, and bike/road improvements.",
+        "mapShows": "Traffic heatmap, congested corridors, transit gaps, and bike/road improvements.",
         "color": "#2563eb",
         "sparkline": [
           0.418,
