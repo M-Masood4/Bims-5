@@ -5,6 +5,7 @@ import { Sidebar } from "./components/sidebar/sidebar";
 import { ConfirmDialog } from "./components/confirm-dialog";
 import { Dialog } from "./components/dialog";
 import { AgentConfigModal } from "./presentation/editor/components/agent-config-modal/agent-config-modal";
+import { CompareDialog } from "./components/compare-dialog/compare-dialog";
 import { useScenarioManager, DEFAULT_AGENT_CONFIG } from "./api";
 import { DEFAULT_CITY } from "./constants/cities";
 import type { Run, AgentConfig } from "./types";
@@ -39,6 +40,8 @@ export default function App() {
     runId: string;
   } | null>(null);
   const [rerunSource, setRerunSource] = useState<Run | null>(null);
+  const [isLaunchDialogOpen, setIsLaunchDialogOpen] = useState(false);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   const handleRunSimulation = useCallback(
     (info: { scenarioId: string; runId: string }) => {
@@ -60,6 +63,11 @@ export default function App() {
   const handleRerunRun = useCallback((run: Run) => {
     setRerunSource(run);
     setMode("editor");
+  }, []);
+
+  const handleRunSimulationClick = useCallback(() => {
+    setMode("editor");
+    setIsLaunchDialogOpen(true);
   }, []);
 
   const handleRenameScenario = useCallback(
@@ -121,6 +129,8 @@ export default function App() {
         runs={runs}
         onSelectRun={handleSelectRun}
         onRerunRun={handleRerunRun}
+        onRunSimulationClick={handleRunSimulationClick}
+        onCompareBranches={() => setIsCompareOpen(true)}
       />
       <main style={{ flex: 1, position: "relative", overflow: "hidden" }}>
         {mode === "editor" ? (
@@ -131,6 +141,9 @@ export default function App() {
             onRunSimulation={handleRunSimulation}
             rerunSource={rerunSource}
             onClearRerun={() => setRerunSource(null)}
+            isLaunchDialogOpen={isLaunchDialogOpen}
+            onOpenLaunchDialog={() => setIsLaunchDialogOpen(true)}
+            onCloseLaunchDialog={() => setIsLaunchDialogOpen(false)}
           />
         ) : (
           runInfo && (
@@ -205,6 +218,18 @@ export default function App() {
             <strong>{duplicateName}</strong>
           </p>
         </Dialog>
+      )}
+
+      {isCompareOpen && (
+        <CompareDialog
+          runs={runs}
+          scenarios={scenarios}
+          onViewRun={(run) => {
+            setRunInfo({ scenarioId: run.scenarioId, runId: run.id });
+            setMode("visualizer");
+          }}
+          onClose={() => setIsCompareOpen(false)}
+        />
       )}
     </div>
   );

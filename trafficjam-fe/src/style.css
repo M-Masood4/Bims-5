@@ -53,36 +53,6 @@ html {
   height: 100vh;
 }
 
-.map-controls {
-  position: absolute;
-  top: 40px;
-  left: 10px;
-  z-index: 1000;
-}
-
-.map-control-btn {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  margin-bottom: 15px;
-  background: #fff;
-  border: 1px solid #ccc;
-  transition: all 0.2s ease;
-}
-
-
-.map-control-btn:hover {
-  background: #f0f0f0;
-}
-
-.map-control-btn.active {
-  background: #3b82f6;
-  color: white;
-  border-color: #2563eb;
-}
 
 .link-tooltip {
   font-size: 12px;

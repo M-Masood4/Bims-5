@@ -17,6 +17,9 @@ interface EditorProps {
   onRunSimulation: (info: { scenarioId: string; runId: string }) => void;
   rerunSource?: Run | null;
   onClearRerun?: () => void;
+  isLaunchDialogOpen?: boolean;
+  onOpenLaunchDialog?: () => void;
+  onCloseLaunchDialog?: () => void;
 }
 
 export function Editor({
@@ -26,6 +29,9 @@ export function Editor({
   onRunSimulation,
   rerunSource,
   onClearRerun,
+  isLaunchDialogOpen,
+  onOpenLaunchDialog,
+  onCloseLaunchDialog,
 }: EditorProps) {
   function remapSelectedLinks(
     selectedLinks: TrafficLink[],
@@ -45,7 +51,7 @@ export function Editor({
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(
     null,
   );
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [localDialogOpen, setLocalDialogOpen] = useState(false);
 
   if (prevScenarioIdRef.current !== activeScenario?.id) {
     prevScenarioIdRef.current = activeScenario?.id;
@@ -154,19 +160,21 @@ export function Editor({
 
   const handleLaunch = useCallback(
     (info: { scenarioId: string; runId: string }) => {
-      setDialogOpen(false);
+      setLocalDialogOpen(false);
+      onCloseLaunchDialog?.();
       onClearRerun?.();
       onRunSimulation(info);
     },
-    [onRunSimulation, onClearRerun],
+    [onRunSimulation, onClearRerun, onCloseLaunchDialog],
   );
 
   const handleCloseDialog = useCallback(() => {
-    setDialogOpen(false);
+    setLocalDialogOpen(false);
+    onCloseLaunchDialog?.();
     onClearRerun?.();
-  }, [onClearRerun]);
+  }, [onClearRerun, onCloseLaunchDialog]);
 
-  const showDialog = dialogOpen || !!rerunSource;
+  const showDialog = localDialogOpen || (isLaunchDialogOpen ?? false) || !!rerunSource;
 
   const handleSelectAllWithSameName = useCallback(
     (streetName: string) => {
@@ -230,7 +238,10 @@ export function Editor({
       {status && !isDirty && !isSaving && !showSaved && (
         <StatusBar message={status} />
       )}
-      <RunSimulationFab onClick={() => setDialogOpen(true)} disabled={!activeScenario} />
+      <RunSimulationFab
+        onClick={() => onOpenLaunchDialog ? onOpenLaunchDialog() : setLocalDialogOpen(true)}
+        disabled={!activeScenario}
+      />
       {showDialog && (
         <LaunchDialog
           activeScenario={activeScenario}

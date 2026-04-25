@@ -11,6 +11,7 @@ interface UseNodeAddParams {
   mapRef: React.RefObject<MapRef | null>;
   editorMode: boolean;
   minZoom: number;
+  roadType?: string;
   onNetworkChange: (network: Network) => void;
   onBeforeChange?: (network: Network) => void;
 }
@@ -20,6 +21,7 @@ export function useNodeAdd({
   mapRef,
   editorMode,
   minZoom,
+  roadType = "residential",
   onNetworkChange,
   onBeforeChange,
 }: UseNodeAddParams) {
@@ -49,7 +51,7 @@ export function useNodeAdd({
         from: tempNodeId,
         to: "temp",
         geometry: [tempNodePosition, tempLinkEndPosition],
-        tags: { highway: "unclassified" },
+        tags: { highway: roadType },
       });
     }
 
@@ -145,9 +147,7 @@ export function useNodeAdd({
           from: newNodeId,
           to: snapResult.nodeId,
           geometry: [tempNodePosition, snapResult.point],
-          tags: {
-            highway: "unclassified",
-          },
+          tags: { highway: roadType },
         };
 
         const updatedNodes = new Map(network.nodes);

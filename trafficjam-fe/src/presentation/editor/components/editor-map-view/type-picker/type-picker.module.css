@@ -1,0 +1,68 @@
+.panel {
+  position: absolute;
+  bottom: 36px;
+  left: 12px;
+  z-index: 100;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: calc(100% - 180px);
+}
+
+.panelLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #80868b;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1.5px solid #dadce0;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3c4043;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: #f8f9fa;
+  border-color: #bdc1c6;
+}
+
+.chip.chipActive {
+  background: #fff;
+  font-weight: 600;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hint {
+  font-size: 11px;
+  color: #9aa0a6;
+  font-style: italic;
+  padding-top: 2px;
+}

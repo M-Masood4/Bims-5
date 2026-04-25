@@ -1,76 +1,86 @@
 .message {
-  font-size: 0.95rem;
-  color: #ccc;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #5f6368;
+  line-height: 1.6;
   margin: 0;
 }
 
 .input {
   width: 100%;
-  margin-top: 1rem;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 0.4rem;
-  padding: 0.6rem 0.8rem;
-  color: #fff;
-  font-size: 0.9rem;
+  margin-top: 14px;
+  background: #fff;
+  border: 1.5px solid #dadce0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #202124;
+  font-size: 14px;
   box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .input:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: #333;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+.input::placeholder {
+  color: #bdc1c6;
 }
 
 .cancelButton {
   background: none;
-  border: 1px solid #444;
-  color: #aaa;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.5rem;
+  border: 1.5px solid #dadce0;
+  color: #5f6368;
+  padding: 9px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background 0.12s, border-color 0.12s;
 }
 
 .cancelButton:hover {
-  background: #2a2a2a;
-  color: #fff;
+  background: #f1f3f4;
+  border-color: #bdc1c6;
 }
 
 .dangerButton,
 .primaryButton {
   color: white;
   border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 9px 24px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.2s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 13px;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
 .dangerButton {
-  background: #dc2626;
+  background: #d93025;
+  box-shadow: 0 1px 3px rgba(217, 48, 37, 0.35);
 }
 
 .dangerButton:hover:not(:disabled) {
-  background: #b91c1c;
-  transform: translateY(-1px);
+  background: #c5221f;
+  box-shadow: 0 2px 8px rgba(217, 48, 37, 0.45);
 }
 
 .primaryButton {
-  background: #2563eb;
+  background: #1a73e8;
+  box-shadow: 0 1px 3px rgba(26, 115, 232, 0.35);
 }
 
 .primaryButton:hover:not(:disabled) {
-  background: #1d4ed8;
-  transform: translateY(-1px);
+  background: #1765cc;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.45);
 }
 
 .dangerButton:disabled,
 .primaryButton:disabled {
-  opacity: 0.5;
+  background: #e8eaed;
+  color: #bdc1c6;
   cursor: not-allowed;
+  box-shadow: none;
 }

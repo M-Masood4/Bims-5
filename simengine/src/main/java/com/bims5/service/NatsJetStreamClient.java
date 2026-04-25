@@ -10,9 +10,11 @@ import io.nats.client.Options;
 import io.nats.client.api.ObjectStoreConfiguration;
 import io.nats.client.api.RetentionPolicy;
 import io.nats.client.api.StreamConfiguration;
+import io.nats.client.api.StreamInfo;
 import io.nats.client.api.StorageType;
 import io.nats.client.ObjectStore;
 import io.nats.client.ObjectStoreManagement;
+import io.nats.client.api.ObjectMeta;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class NatsJetStreamClient {
     private static final Duration MAX_AGE = Duration.of(30, ChronoUnit.DAYS);
     private static final int MAX_RECONNECTS = -1;
     private static final Duration RECONNECT_WAIT = Duration.ofSeconds(2);
+    private static final int MAX_MSG_SIZE = 16 * 1024 * 1024; // 16MB
+    private static final int CHUNK_SIZE = 128 * 1024; // 128KB
 
     @Value("${nats.url:nats://localhost:4222}")
     private String natsUrl;
@@ -143,26 +147,45 @@ public class NatsJetStreamClient {
         }
     }
 
+    private void ensureBucket(String bucketName) throws Exception {
+        ObjectStoreManagement osm = connection.objectStoreManagement();
+        try {
+            osm.getStatus(bucketName);
+        } catch (Exception e) {
+            ObjectStoreConfiguration osc = ObjectStoreConfiguration.builder(bucketName)
+                    .storageType(StorageType.File)
+                    .build();
+            osm.create(osc);
+        }
+        JetStreamManagement jsm = connection.jetStreamManagement();
+        StreamInfo si = jsm.getStreamInfo("OBJ_" + bucketName);
+        StreamConfiguration siConfig = si.getConfiguration();
+        
+        // Force update if it's currently smaller than our desired limit
+        if (siConfig.getMaxMsgSize() < MAX_MSG_SIZE) {
+            StreamConfiguration updated = StreamConfiguration.builder(siConfig)
+                    .maxMsgSize(MAX_MSG_SIZE)
+                    .build();
+            jsm.updateStream(updated);
+            logger.info("Updated bucket {} stream with maxMsgSize {} bytes", bucketName, MAX_MSG_SIZE);
+        }
+    }
+
     public void uploadToObjectStore(String bucketName, String objectName, File file) {
         if (connection == null || connection.getStatus() != Connection.Status.CONNECTED) {
             logger.warn("NATS not connected, cannot upload to object store");
             return;
         }
         try {
-            ObjectStoreManagement osm = connection.objectStoreManagement();
-            try {
-                osm.getStatus(bucketName);
-            } catch (Exception e) {
-                // Bucket doesn't exist, create it
-                ObjectStoreConfiguration osc = ObjectStoreConfiguration.builder(bucketName)
-                        .storageType(StorageType.File)
-                        .build();
-                osm.create(osc);
-            }
-
+            ensureBucket(bucketName);
+            
             ObjectStore os = connection.objectStore(bucketName);
+            ObjectMeta meta = ObjectMeta.builder(objectName)
+                    .chunkSize(CHUNK_SIZE)
+                    .build();
+            
             try (InputStream in = new FileInputStream(file)) {
-                os.put(objectName, in);
+                os.put(meta, in);
             }
             logger.debug("Successfully uploaded {} to bucket {}", objectName, bucketName);
         } catch (Exception e) {

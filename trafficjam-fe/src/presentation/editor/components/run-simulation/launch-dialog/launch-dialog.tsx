@@ -140,6 +140,8 @@ export function LaunchDialog({
   );
 
   const buildingCount = network?.buildings?.size ?? 0;
+  const nodeCount = network?.nodes?.size ?? 0;
+  const linkCount = network?.links?.size ?? 0;
   const hasNoBuildings = buildingCount === 0;
   const syntheticBuildingCount = network
     ? buildSyntheticBuildings(network).length
@@ -174,6 +176,20 @@ export function LaunchDialog({
       maxWidth={480}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.networkSummary}>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{nodeCount.toLocaleString()}</span>
+            <span className={styles.statLabel}>Nodes</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{linkCount.toLocaleString()}</span>
+            <span className={styles.statLabel}>Links</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{buildingCount.toLocaleString()}</span>
+            <span className={styles.statLabel}>Buildings</span>
+          </div>
+        </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>Run Note (optional)</label>
           <input

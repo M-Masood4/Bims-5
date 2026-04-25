@@ -15,7 +15,11 @@ import { CombinedTooltip } from "@/components/combined-tooltip";
 import { getMaxBounds } from "@/utils";
 import { useMapInteractions } from "@/hooks";
 import type { Network, TrafficLink, Building } from "@/types";
-import { EditorControls } from "./editor-controls";
+import type { HighwayType } from "@/constants/road-styles";
+import type { BuildingType } from "@/types";
+import { MapToolbar } from "./map-toolbar/map-toolbar";
+import { TypePicker } from "./type-picker/type-picker";
+import type { EditorTool } from "./editor-tool";
 import {
   NetworkLayer,
   NodeLayer,
@@ -54,9 +58,15 @@ export function EditorMapView({
   canUndo,
   selectedLinkId,
 }: EditorMapViewProps) {
+  const [activeTool, setActiveTool] = useState<EditorTool>("select");
   const [showBuildings, setShowBuildings] = useState(true);
-  const [editorMode, setEditorMode] = useState(false);
+  const [selectedRoadType, setSelectedRoadType] = useState<HighwayType>("residential");
+  const [selectedBuildingType, setSelectedBuildingType] = useState<BuildingType>("house");
+  const [selectedElecLayer, setSelectedElecLayer] = useState("lines");
+  const [selectedTransportLayer, setSelectedTransportLayer] = useState("bus");
   const mapRef = useRef<MapRef | null>(null);
+
+  const editorMode = activeTool === "roads";
 
   const { exportNetwork } = useNetworkExport(network, { onStatusChange });
 
@@ -113,9 +123,10 @@ export function EditorMapView({
     mapRef,
     editorMode,
     minZoom: MIN_EDIT_ZOOM,
+    roadType: selectedRoadType,
     onNetworkChange: (updatedNetwork: Network | null) => {
       if (updatedNetwork) {
-        onNetworkSave(updatedNetwork, "Added node");
+        onNetworkSave(updatedNetwork, `Added ${selectedRoadType} road`);
       }
     },
     onBeforeChange: () => {},
@@ -131,6 +142,13 @@ export function EditorMapView({
     },
     [onUndo, canUndo],
   );
+
+  const handleSelectTool = useCallback((tool: EditorTool) => {
+    setActiveTool(tool);
+    if (tool === "buildings") setShowBuildings(true);
+    if (tool === "demolish") onStatusChange("Demolish mode — click a link or building to remove it");
+    else if (tool !== "select") onStatusChange("");
+  }, [onStatusChange]);
 
   const handleMapRef = useCallback((ref: MapRef | null) => {
     mapRef.current = ref;
@@ -150,14 +168,6 @@ export function EditorMapView({
     const { data } = ctx.getImageData(0, 0, size, size);
     map.addImage(HOTSPOT_PATTERN_ID, { width: size, height: size, data });
   }, []);
-
-  const toggleBuildings = useCallback(() => {
-    setShowBuildings((prev) => !prev);
-  }, [setShowBuildings]);
-
-  const toggleEditorMode = useCallback(() => {
-    setEditorMode((prev) => !prev);
-  }, [setEditorMode]);
 
   const handleMapClick = useCallback(
     (event: MapMouseEvent) => {
@@ -190,6 +200,7 @@ export function EditorMapView({
     },
     [nodeDragMouseMove, nodeAddMouseMove, onMouseMove],
   );
+
   return (
     <Map
       ref={handleMapRef}
@@ -211,16 +222,29 @@ export function EditorMapView({
       onMouseMove={handleMapMouseMove}
       onMouseLeave={onMouseLeave}
     >
-      <EditorControls
-        onClear={onClear}
-        onExport={exportNetwork}
-        showBuildings={showBuildings}
-        onToggleBuildings={toggleBuildings}
-        editorMode={editorMode}
-        onToggleEditorMode={toggleEditorMode}
+      <MapToolbar
+        activeTool={activeTool}
+        onSelectTool={handleSelectTool}
         onUndo={onUndo}
         canUndo={canUndo}
+        onExport={exportNetwork}
+        onClear={onClear}
+        showBuildings={showBuildings}
+        onToggleBuildings={() => setShowBuildings((p) => !p)}
       />
+
+      <TypePicker
+        activeTool={activeTool}
+        selectedRoadType={selectedRoadType}
+        onSelectRoadType={setSelectedRoadType}
+        selectedBuildingType={selectedBuildingType}
+        onSelectBuildingType={setSelectedBuildingType}
+        selectedElecLayer={selectedElecLayer}
+        onSelectElecLayer={setSelectedElecLayer}
+        selectedTransportLayer={selectedTransportLayer}
+        onSelectTransportLayer={setSelectedTransportLayer}
+      />
+
       {baseNetwork && (
         <NetworkLayer
           network={baseNetwork}
@@ -243,17 +267,13 @@ export function EditorMapView({
       {(isDragging && dragDraftNetwork) || (isAddingNode && addDraftNetwork) ? (
         <>
           <NetworkLayer
-            network={
-              (isDragging ? dragDraftNetwork : addDraftNetwork) as Network
-            }
+            network={(isDragging ? dragDraftNetwork : addDraftNetwork) as Network}
             hoverInfo={null}
             selectedLinkId={selectedLinkId}
             idPrefix="draft"
           />
           <NodeLayer
-            network={
-              (isDragging ? dragDraftNetwork : addDraftNetwork) as Network
-            }
+            network={(isDragging ? dragDraftNetwork : addDraftNetwork) as Network}
             editorMode={editorMode}
             draggedNodeId={draggedNodeId}
             tempNodeId={isAddingNode ? tempNodeId : null}

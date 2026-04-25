@@ -1,0 +1,84 @@
+.toolbar {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 130px;
+  user-select: none;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+  transition: background 0.12s, color 0.12s;
+  text-align: left;
+  width: 100%;
+}
+
+.btn:hover:not(:disabled) {
+  background: #f1f3f4;
+  color: #202124;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn.active {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+.btn.activeUtil {
+  color: #1a73e8;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.sep {
+  height: 1px;
+  background: #e8eaed;
+  margin: 3px 6px;
+}
+
+.danger {
+  color: #d93025;
+}
+
+.danger:hover:not(:disabled) {
+  background: #fce8e6;
+  color: #c5221f;
+}
