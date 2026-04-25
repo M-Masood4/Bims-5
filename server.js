@@ -112,7 +112,7 @@ async function readJsonRequest(req, limitBytes = 512_000) {
   return raw ? JSON.parse(raw) : {};
 }
 
-async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutputTokens = 1400 }) {
+async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutputTokens = 1400, responseJsonSchema = null }) {
   const apiKey = geminiKey();
   if (!apiKey) {
     const error = new Error("Gemini API key is required for Scenario Studio. Add GEMINI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY to .env.local.");
@@ -121,6 +121,14 @@ async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutput
   }
   const model = process.env.GEMINI_SCENARIO_MODEL || process.env.GEMINI_MODEL || "gemini-2.5-flash";
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  const generationConfig = {
+    temperature,
+    maxOutputTokens,
+    responseMimeType: "application/json",
+    thinkingConfig: { thinkingBudget: 0 }
+  };
+  if (responseJsonSchema) generationConfig.responseJsonSchema = responseJsonSchema;
+
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -129,12 +137,7 @@ async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutput
     },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature,
-        maxOutputTokens,
-        responseMimeType: "application/json",
-        thinkingConfig: { thinkingBudget: 0 }
-      }
+      generationConfig
     })
   });
   if (!response.ok) {
@@ -203,6 +206,151 @@ function requireKeys(object, keys, label) {
   }
   return object;
 }
+
+const BUILDING_INTENT_SCHEMA = {
+  type: "object",
+  properties: {
+    type: { type: "string", enum: ["building"] },
+    location_name: { type: "string" },
+    location: {
+      type: ["object", "null"],
+      properties: {
+        lng: { type: "number" },
+        lat: { type: "number" }
+      }
+    },
+    size: { type: "string", enum: ["small", "medium", "large", "custom"] },
+    buildingType: { type: "string", enum: ["apartments", "mixed_use", "office", "community"] },
+    affordabilityMix: { type: "string", enum: ["market", "affordable", "social", "student"] }
+  },
+  required: ["type", "location_name", "size", "buildingType", "affordabilityMix"]
+};
+
+const COORDINATOR_SCHEMA = {
+  type: "object",
+  properties: {
+    next_steps: { type: "array", items: { type: "string" } },
+    required_agents: { type: "array", items: { type: "string" } },
+    active_scenario: { type: "string" }
+  },
+  required: ["next_steps", "required_agents", "active_scenario"]
+};
+
+const SITE_AGENT_SCHEMA = {
+  type: "object",
+  properties: {
+    site_status: { type: "string", enum: ["valid", "warning", "invalid"] },
+    site_label: { type: "string" },
+    warnings: { type: "array", items: { type: "string" } },
+    positive_factors: { type: "array", items: { type: "string" } },
+    confidence: { type: "string", enum: ["low", "medium", "medium-high", "high"] }
+  },
+  required: ["site_status", "site_label", "warnings", "positive_factors", "confidence"]
+};
+
+const SPECIALIST_RECOMMENDATIONS_SCHEMA = {
+  type: "object",
+  properties: {
+    agents: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          agent: { type: "string" },
+          risk: { type: "string", enum: ["low", "medium", "medium-high", "high"] },
+          opportunity: { type: "string", enum: ["low", "medium", "high"] },
+          reason: { type: "string" },
+          recommended_variant: {
+            type: "object",
+            properties: {
+              add_mobility_corridor: { type: "boolean" },
+              mode: { type: "string" },
+              radius_m: { type: "integer" },
+              buildingType: { type: "string" },
+              commercialShare: { type: "number" },
+              communityShare: { type: "number" },
+              energyStandard: { type: "string" },
+              solarOrStorageAssumption: { type: "boolean" },
+              affordabilityMix: { type: "string" },
+              connectToOpportunityHub: { type: "boolean" },
+              addGreenCorridor: { type: "boolean" },
+              bufferRadiusM: { type: "integer" }
+            }
+          }
+        },
+        required: ["agent", "risk", "opportunity", "reason", "recommended_variant"]
+      }
+    }
+  },
+  required: ["agents"]
+};
+
+const SCENARIO_VARIANTS_SCHEMA = {
+  type: "object",
+  properties: {
+    scenario_variants: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          branchName: { type: "string" },
+          objective: {
+            type: "string",
+            enum: ["user_proposal", "traffic_mitigation", "jobs_optimised", "fairness_first", "green_mitigation", "balanced"]
+          },
+          description: { type: "string" },
+          interventions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                type: { type: "string", enum: ["building", "mobility_corridor", "green_corridor", "opportunity_hub"] },
+                locationName: { type: "string" },
+                size: { type: "string", enum: ["small", "medium", "large", "custom"] },
+                buildingType: { type: "string", enum: ["apartments", "mixed_use", "office", "community"] },
+                affordabilityMix: { type: "string", enum: ["market", "affordable", "social", "student"] },
+                mode: { type: "string" },
+                radius_m: { type: "integer" },
+                bufferRadiusM: { type: "integer" },
+                energyStandard: { type: "string" },
+                rationale: { type: "string" }
+              },
+              required: ["type", "rationale"]
+            }
+          },
+          assumptions: { type: "array", items: { type: "string" } }
+        },
+        required: ["branchName", "objective", "description", "interventions", "assumptions"]
+      }
+    }
+  },
+  required: ["scenario_variants"]
+};
+
+const CRITIC_SCHEMA = {
+  type: "object",
+  properties: {
+    confidenceLabel: { type: "string", enum: ["low", "medium", "medium-high", "high"] },
+    humanReviewRequired: { type: "boolean" },
+    warnings: { type: "array", items: { type: "string" } },
+    unsupportedClaims: { type: "array", items: { type: "string" } },
+    recommendedBranch: { type: "string" },
+    recommendations: { type: "array", items: { type: "string" } }
+  },
+  required: ["confidenceLabel", "humanReviewRequired", "warnings", "unsupportedClaims", "recommendedBranch", "recommendations"]
+};
+
+const REPORTER_SCHEMA = {
+  type: "object",
+  properties: {
+    headline: { type: "string" },
+    summary: { type: "string" },
+    city_commits: { type: "array", items: { type: "string" } },
+    recommendations: { type: "array", items: { type: "string" } },
+    warnings: { type: "array", items: { type: "string" } }
+  },
+  required: ["headline", "summary", "city_commits", "recommendations", "warnings"]
+};
 
 function coordinatorPrompt(payload, building) {
   return [
@@ -395,6 +543,7 @@ async function handleParseBuildingIntent(req, res) {
       agentName: "Building Intent Parser",
       temperature: 0.15,
       maxOutputTokens: 500,
+      responseJsonSchema: BUILDING_INTENT_SCHEMA,
       prompt: [
         "You are the building-intent parser for Replay Belfast.",
         "Parse the user's request into one building intervention. Return only JSON.",
@@ -455,6 +604,7 @@ async function handleGenerateBuildingVariants(req, res) {
       agentName: "Scenario Variant Agent",
       temperature: 0.35,
       maxOutputTokens: 3500,
+      responseJsonSchema: SCENARIO_VARIANTS_SCHEMA,
       prompt: variantPrompt(building, siteContext, specialists)
     });
     const variants = scenarioStudio.sanitizeScenarioVariants(gemini.json, building, rootDir, { strict: true });
@@ -501,6 +651,7 @@ async function handleExplainSimulation(req, res) {
       agentName: "Reporter Agent",
       temperature: 0.3,
       maxOutputTokens: 2500,
+      responseJsonSchema: REPORTER_SCHEMA,
       prompt: reporterPrompt(simulation, critic)
     });
     const report = requireKeys(gemini.json, ["headline", "summary", "city_commits", "recommendations"], "Reporter Agent response");
@@ -542,6 +693,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Scenario Coordinator Agent",
       temperature: 0.15,
       maxOutputTokens: 1200,
+      responseJsonSchema: COORDINATOR_SCHEMA,
       prompt: coordinatorPrompt(payload, building)
     });
     const coordinator = requireKeys(coordinatorGemini.json, ["next_steps", "required_agents"], "Coordinator Agent response");
@@ -550,6 +702,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Site Agent",
       temperature: 0.2,
       maxOutputTokens: 900,
+      responseJsonSchema: SITE_AGENT_SCHEMA,
       prompt: siteAgentPrompt(building, siteContext)
     });
     const siteAgent = requireKeys(siteGemini.json, ["site_status", "site_label", "warnings", "positive_factors", "confidence"], "Site Agent response");
@@ -558,6 +711,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Specialist Impact Agents",
       temperature: 0.25,
       maxOutputTokens: 3500,
+      responseJsonSchema: SPECIALIST_RECOMMENDATIONS_SCHEMA,
       prompt: specialistPrompt(building, siteContext)
     });
     const specialistAgents = Array.isArray(specialistGemini.json.agents) ? specialistGemini.json.agents : null;
@@ -567,6 +721,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Scenario Variant Agent",
       temperature: 0.35,
       maxOutputTokens: 4000,
+      responseJsonSchema: SCENARIO_VARIANTS_SCHEMA,
       prompt: variantPrompt(building, siteContext, specialistAgents)
     });
     const variants = scenarioStudio.sanitizeScenarioVariants(variantGemini.json, building, rootDir, { strict: true });
@@ -580,6 +735,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Simulation Critic Agent",
       temperature: 0.2,
       maxOutputTokens: 2500,
+      responseJsonSchema: CRITIC_SCHEMA,
       prompt: criticPrompt(simulation, siteContext)
     });
     const critic = requireKeys(criticGemini.json, ["confidenceLabel", "humanReviewRequired", "warnings", "unsupportedClaims", "recommendedBranch", "recommendations"], "Critic Agent response");
@@ -588,6 +744,7 @@ async function handleScenarioStudioRun(req, res) {
       agentName: "Reporter Agent",
       temperature: 0.3,
       maxOutputTokens: 2500,
+      responseJsonSchema: REPORTER_SCHEMA,
       prompt: reporterPrompt(simulation, critic)
     });
     const report = requireKeys(reporterGemini.json, ["headline", "summary", "city_commits", "recommendations"], "Reporter Agent response");

@@ -38,6 +38,9 @@ assert(exists("web/data/mode-a/summary.json"), "Mode A summary is missing.");
 
 const idsByYear = new Set();
 let totalInteractiveFeatures = 0;
+const electricityFeatureCounts = {};
+let seenDatedPowerAsset = false;
+let seenLaterPowerAsset = false;
 
 for (const layer of manifest.layers || []) {
   assert(layer.id && /^[a-z0-9_-]+$/.test(layer.id), `Layer id is not URL-safe: ${layer.id}`);
@@ -107,7 +110,17 @@ for (const year of modeA.years) {
   const electricity = readJson(electricityPath);
   assert(electricity.type === "FeatureCollection", `Mode A electricity ${year} is not a FeatureCollection.`);
   assert(electricity.features.length >= 100, `Mode A electricity ${year} needs Belfast power assets.`);
-  assert(Number.isFinite(electricity.features[0]?.properties?.grid_load_pct), `Mode A electricity ${year} missing grid_load_pct.`);
+  electricityFeatureCounts[year] = electricity.features.length;
+  const electricityProps = electricity.features[0]?.properties || {};
+  assert(Number.isFinite(electricityProps.grid_load_pct), `Mode A electricity ${year} missing grid_load_pct.`);
+  assert(Number.isInteger(electricityProps.replay_first_visible_year), `Mode A electricity ${year} missing replay_first_visible_year.`);
+  assert(electricityProps.visibility_basis, `Mode A electricity ${year} missing visibility_basis.`);
+  if (electricity.features.some((feature) => feature.properties?.visibility_basis === "OSM metadata timestamp")) {
+    seenDatedPowerAsset = true;
+  }
+  if (electricity.features.some((feature) => (feature.properties?.replay_first_visible_year || 2016) > 2016)) {
+    seenLaterPowerAsset = true;
+  }
   const metricCards = modeA.metricsByYear[String(year)] || [];
   const commits = modeA.commitsByYear[String(year)] || [];
   assert(Array.isArray(commits) && commits.length === 5, `Mode A commits must include exactly five signals for ${year}.`);
@@ -121,6 +134,10 @@ for (const year of modeA.years) {
   assert(Array.isArray(metricCards) && metricCards.length === 5, `Mode A metric cards must include exactly five lenses for ${year}.`);
   assert(JSON.stringify(metricCards.map((card) => card.metric)) === JSON.stringify(requiredModeAMetrics), `Mode A metric card order is incorrect for ${year}.`);
 }
+
+assert(electricityFeatureCounts[2026] >= electricityFeatureCounts[2016], "Electricity replay should add mapped assets over the timeline.");
+assert(seenDatedPowerAsset, "Electricity replay should include Overpass timestamp-backed power assets.");
+assert(seenLaterPowerAsset, "Electricity replay should include power assets that first appear after 2016.");
 
 if (failures.length) {
   console.error("Manifest verification failed:");

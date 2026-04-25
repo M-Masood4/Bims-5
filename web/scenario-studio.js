@@ -35,6 +35,7 @@
     panel: document.querySelector("#scenarioStudio"),
     branches: document.querySelector("#scenarioBranches"),
     reasoning: document.querySelector("#agentReasoning"),
+    studioTool: document.querySelector("#studioTool"),
     app: document.querySelector(".replay-app")
   };
 
@@ -174,6 +175,9 @@
     if (!currentMap.getSource("studio-building")) {
       currentMap.addSource("studio-building", { type: "geojson", data: featureCollection() });
     }
+    if (!currentMap.getSource("studio-building-handles")) {
+      currentMap.addSource("studio-building-handles", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    }
     if (!currentMap.getLayer("studio-building-fill")) {
       currentMap.addLayer({
         id: "studio-building-fill",
@@ -210,6 +214,20 @@
         }
       });
     }
+    if (!currentMap.getLayer("studio-building-handles")) {
+      currentMap.addLayer({
+        id: "studio-building-handles",
+        type: "circle",
+        source: "studio-building-handles",
+        paint: {
+          "circle-color": "#ffffff",
+          "circle-radius": 5,
+          "circle-stroke-color": statusColorExpression(),
+          "circle-stroke-width": 2.5,
+          "circle-opacity": 0.95
+        }
+      });
+    }
     updateBuildingSource();
     updateAffectedCells();
   }
@@ -237,6 +255,7 @@
     const geometry = studioState.geometry;
     if (!geometry) {
       source.setData(featureCollection());
+      currentMap?.getSource("studio-building-handles")?.setData({ type: "FeatureCollection", features: [] });
       return;
     }
     const stats = deriveBuildingStats();
@@ -252,6 +271,19 @@
       },
       geometry
     }));
+    currentMap?.getSource("studio-building-handles")?.setData(handleFeaturesFromGeometry(geometry, status));
+  }
+
+  function handleFeaturesFromGeometry(geometry, status) {
+    const ring = geometry?.coordinates?.[0] || [];
+    return {
+      type: "FeatureCollection",
+      features: ring.slice(0, 4).map((coord, index) => ({
+        type: "Feature",
+        properties: { status, handle: index + 1 },
+        geometry: { type: "Point", coordinates: coord }
+      }))
+    };
   }
 
   function updateAffectedCells() {
@@ -293,8 +325,12 @@
   async function handleMapClick(event) {
     if (!studioState.placing) return;
     event.originalEvent?.stopPropagation?.();
+    await placeBuildingAt(event.lngLat);
+  }
+
+  async function placeBuildingAt(lngLat) {
     const stats = deriveBuildingStats();
-    studioState.location = { lng: Number(event.lngLat.lng.toFixed(6)), lat: Number(event.lngLat.lat.toFixed(6)) };
+    studioState.location = { lng: Number(lngLat.lng.toFixed(6)), lat: Number(lngLat.lat.toFixed(6)) };
     studioState.geometry = buildSquareFootprint(studioState.location, stats.footprintSqm);
     studioState.validation = null;
     studioState.error = "";
@@ -364,6 +400,7 @@
     const status = studioState.validating ? "Checking site..." : validation?.siteLabel || validation?.site_label || (studioState.location ? "Site selected" : "Click Add Building, then click the map");
     const warningList = validation?.warnings || [];
     els.panel.classList.toggle("has-placement", Boolean(studioState.location));
+    els.studioTool?.classList.toggle("active", studioState.placing || appState()?.activeView === "studio");
     els.panel.innerHTML = `
       <header class="studio-head">
         <div>
@@ -373,7 +410,7 @@
         <b>${escapeHtml(validation?.status || (studioState.placing ? "placing" : "ready"))}</b>
       </header>
       <div class="build-tool-grid">
-        <button type="button" data-studio-action="add-building" class="${studioState.placing ? "active" : ""}">Add Building</button>
+        <button type="button" data-studio-action="add-building" draggable="true" class="${studioState.placing ? "active" : ""}">Add Building</button>
         <button type="button" disabled>Mobility Corridor</button>
         <button type="button" disabled>Green Corridor</button>
         <button type="button" disabled>Opportunity Hub</button>
@@ -416,7 +453,7 @@
       <button type="button" class="generate-simulations" data-studio-action="generate" ${!studioState.location || studioState.validating || studioState.busy || validation?.status === "invalid" ? "disabled" : ""}>
         ${studioState.busy ? "Gemini agents running..." : "Generate simulations"}
       </button>
-      <div class="studio-flow">2016 history -> 2026 present -> 2036 scenario target</div>
+      <div class="studio-flow">Drag Add Building onto the map, or click it and then click a site. 2016 history -> 2026 present -> 2036 scenario target</div>
     `;
   }
 
@@ -503,6 +540,14 @@
     }
   }
 
+  function handlePanelDragStart(event) {
+    const button = event.target.closest("[data-studio-action='add-building']");
+    if (!button) return;
+    event.dataTransfer?.setData("text/plain", "add-building");
+    event.dataTransfer.effectAllowed = "copy";
+    setPlacementMode(true);
+  }
+
   function handlePanelChange(event) {
     const field = event.target.dataset.studioField;
     if (!field) return;
@@ -537,12 +582,39 @@
     renderReasoning();
     els.panel.addEventListener("click", handlePanelClick);
     els.panel.addEventListener("change", handlePanelChange);
+    els.panel.addEventListener("dragstart", handlePanelDragStart);
+    els.studioTool?.addEventListener("click", () => {
+      const nextView = appState()?.activeView === "studio" ? "overview" : "studio";
+      window.BelfastGitModeA?.setView?.(nextView);
+      renderStudioPanel();
+    });
     els.branches?.addEventListener("click", handleBranchClick);
     whenMapReady((currentMap) => {
       addStudioLayers(currentMap);
+      attachDropHandlers(currentMap);
       currentMap.on("style.load", () => {
         window.setTimeout(() => addStudioLayers(currentMap), 0);
       });
+    });
+  }
+
+  function attachDropHandlers(currentMap) {
+    const canvas = currentMap.getCanvas();
+    if (canvas.dataset.studioDropReady === "true") return;
+    canvas.dataset.studioDropReady = "true";
+    canvas.addEventListener("dragover", (event) => {
+      if (event.dataTransfer?.types?.includes("text/plain")) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "copy";
+      }
+    });
+    canvas.addEventListener("drop", (event) => {
+      const value = event.dataTransfer?.getData("text/plain");
+      if (value !== "add-building") return;
+      event.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const point = [event.clientX - rect.left, event.clientY - rect.top];
+      placeBuildingAt(currentMap.unproject(point));
     });
   }
 
