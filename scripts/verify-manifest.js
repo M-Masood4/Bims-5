@@ -79,6 +79,8 @@ const buildingLayer = manifest.layers.find((layer) => layer.id === "belfast-ni-b
 assert(buildingLayer, "3D Belfast NI building layer is required.");
 assert(buildingLayer?.mode === "fill-extrusion", "Building layer must render as fill-extrusion.");
 assert((buildingLayer?.featureCount || 0) >= 10000, "Building layer should include a substantial interactive feature set.");
+const electricityLayer = manifest.layers.find((layer) => layer.category === "electricity");
+assert(electricityLayer, "Belfast electricity OSM context layer is required.");
 
 const artifactPaths = new Set((manifest.sourceArtifacts || []).map((artifact) => artifact.path));
 assert(artifactPaths.has("data/2026/exportbuildings.geojson"), "Raw full building export must remain catalogued.");
@@ -92,7 +94,9 @@ assert(modeA.cellCount >= 100, "Mode A grid should have enough cells for a city 
 assert(JSON.stringify((modeA.coreMetrics || []).map((metric) => metric.id)) === JSON.stringify(requiredModeAMetrics), "Mode A core metrics must match the five-lens product brief.");
 for (const year of modeA.years) {
   const gridPath = `web/data/mode-a/grid_${year}.geojson`;
+  const electricityPath = `web/data/mode-a/electricity_${year}.geojson`;
   assert(exists(gridPath), `Mode A grid missing for ${year}.`);
+  assert(exists(electricityPath), `Mode A electricity replay missing for ${year}.`);
   const grid = readJson(gridPath);
   assert(grid.type === "FeatureCollection", `Mode A grid ${year} is not a FeatureCollection.`);
   assert(grid.features.length === modeA.cellCount, `Mode A grid ${year} cell count mismatch.`);
@@ -101,6 +105,10 @@ for (const year of modeA.years) {
     assert(Number.isFinite(first[metric]), `Mode A grid ${year} missing metric ${metric}.`);
     assert(Number.isFinite(first[`${metric}_delta_2016`]), `Mode A grid ${year} missing 2016 delta for ${metric}.`);
   }
+  const electricity = readJson(electricityPath);
+  assert(electricity.type === "FeatureCollection", `Mode A electricity ${year} is not a FeatureCollection.`);
+  assert(electricity.features.length >= 100, `Mode A electricity ${year} needs Belfast power assets.`);
+  assert(Number.isFinite(electricity.features[0]?.properties?.grid_load_pct), `Mode A electricity ${year} missing grid_load_pct.`);
   const metricCards = modeA.metricsByYear[String(year)] || [];
   assert(Array.isArray(modeA.commitsByYear[String(year)]) && modeA.commitsByYear[String(year)].length === 5, `Mode A commits must include exactly five lenses for ${year}.`);
   assert(Array.isArray(metricCards) && metricCards.length === 5, `Mode A metric cards must include exactly five lenses for ${year}.`);

@@ -45,6 +45,7 @@ STYLE_MAP: dict[str, dict[str, Any]] = {
     "ni_water_osm": {"category": "water", "color": "#38bdf8", "defaultVisible": True},
     "ni_transport_stops_osm": {"category": "transit", "color": "#2563eb", "defaultVisible": True},
     "ni_services_osm": {"category": "services", "color": "#7c3aed", "defaultVisible": False},
+    "ni_power_grid_osm": {"category": "electricity", "color": "#facc15", "defaultVisible": True},
 }
 
 
@@ -421,6 +422,7 @@ def build_manifest(root: Path) -> dict[str, Any]:
             {"id": "green", "label": "Green", "description": "Parks and green infrastructure"},
             {"id": "water", "label": "Water", "description": "River and water features"},
             {"id": "services", "label": "Services", "description": "Education, healthcare, civic, commercial"},
+            {"id": "electricity", "label": "Electricity", "description": "Power lines, substations and load-stress proxy"},
             {"id": "places", "label": "Places", "description": "Landmarks and places"},
             {"id": "sources", "label": "Sources", "description": "Raw inputs and pending ETL artifacts"},
         ],

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "kind": "belfast.modeA.summary",
-  "generatedAt": "2026-04-25T14:46:21.957075+00:00",
+  "generatedAt": "2026-04-25T14:49:39.963732+00:00",
   "years": [
     2016,
     2017,
@@ -24,6 +24,7 @@
   "cellCount": 308,
   "gridTemplate": "/data/mode-a/grid_{year}.geojson",
   "hotspotTemplate": "/data/mode-a/hotspots_{year}.geojson",
+  "electricityTemplate": "/data/mode-a/electricity_{year}.geojson",
   "coreMetrics": [
     {
       "id": "population_pressure",
@@ -2600,6 +2601,17 @@
       "status": "local",
       "confidence": "medium",
       "note": "Monitoring-site context for environmental exposure evidence"
+    },
+    {
+      "name": "Belfast electricity assets from OSM power tags",
+      "status": "local derived",
+      "confidence": "medium for asset location, proxy for load",
+      "note": "GRID-inspired load/headroom replay over power lines and substations"
     }
-  ]
+  ],
+  "electricityMethod": {
+    "sourceInspiration": "GRID-main.zip",
+    "rendering": "Power lines and substations use load percentage and headroom status, similar to GRID heatmap/viability scoring.",
+    "caveat": "Belfast load is a replay proxy; asset locations come from OSM power tags, not live NIE Networks telemetry."
+  }
 }

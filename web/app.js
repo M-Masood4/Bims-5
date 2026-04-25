@@ -28,6 +28,7 @@ const state = {
     transit: true,
     green: true,
     water: true,
+    electricity: true,
     services: false
   }
 };
@@ -104,6 +105,7 @@ const CONTEXT_REGISTRY = [
   { id: "transit", label: "Transit", icon: "T", description: "routes and stops" },
   { id: "green", label: "Parks", icon: "G", description: "green-space context" },
   { id: "water", label: "River", icon: "W", description: "River Lagan and water" },
+  { id: "electricity", label: "Electricity", icon: "E", description: "power grid lines and headroom" },
   { id: "services", label: "Services", icon: "S", description: "health, education, civic, commercial" }
 ];
 
@@ -176,6 +178,12 @@ function initMap() {
     const feature = event.features?.[0];
     if (feature) showCellEvidence(feature, event.lngLat);
   });
+  for (const layer of ["electricity-line", "electricity-circle", "electricity-fill"]) {
+    state.map.on("click", layer, (event) => {
+      const feature = event.features?.[0];
+      if (feature) showElectricityEvidence(feature, event.lngLat);
+    });
+  }
   state.map.on("mouseenter", "mode-a-grid-fill", () => {
     state.map.getCanvas().style.cursor = "pointer";
   });
@@ -209,6 +217,7 @@ function addModeALayers() {
       "line-width": 0.35
     }
   });
+  addElectricityLayers();
 
   const buildingLayer = state.manifest.layers.find((layer) => layer.id === "belfast-ni-buildings-3d");
   if (buildingLayer) {
@@ -301,6 +310,65 @@ function addVectorContextLayers() {
       group.push(id);
     }
   }
+}
+
+function addElectricityLayers() {
+  state.map.addSource("electricity-replay", {
+    type: "geojson",
+    data: `/data/mode-a/electricity_${state.year}.geojson`
+  });
+  state.map.addLayer({
+    id: "electricity-fill",
+    type: "fill",
+    source: "electricity-replay",
+    filter: ["match", ["geometry-type"], ["Polygon", "MultiPolygon"], true, false],
+    paint: {
+      "fill-color": electricityColorExpression(),
+      "fill-opacity": 0.22
+    }
+  });
+  state.map.addLayer({
+    id: "electricity-line",
+    type: "line",
+    source: "electricity-replay",
+    filter: ["match", ["geometry-type"], ["LineString", "MultiLineString"], true, false],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": electricityColorExpression(),
+      "line-width": ["interpolate", ["linear"], ["coalesce", ["to-number", ["get", "grid_load_pct"]], 50], 0, 1.2, 65, 2.4, 90, 4.6],
+      "line-opacity": 0.82
+    }
+  });
+  state.map.addLayer({
+    id: "electricity-circle",
+    type: "circle",
+    source: "electricity-replay",
+    filter: ["match", ["geometry-type"], ["Point", "MultiPoint"], true, false],
+    paint: {
+      "circle-color": electricityColorExpression(),
+      "circle-radius": ["interpolate", ["linear"], ["coalesce", ["to-number", ["get", "grid_load_pct"]], 50], 0, 3, 65, 5.5, 90, 9],
+      "circle-stroke-color": "#ffffff",
+      "circle-stroke-width": 1.2,
+      "circle-opacity": 0.9
+    }
+  });
+  createLayerGroup("electricity").push("electricity-fill", "electricity-line", "electricity-circle");
+}
+
+function electricityColorExpression() {
+  return [
+    "interpolate",
+    ["linear"],
+    ["coalesce", ["to-number", ["get", "grid_load_pct"]], 50],
+    0,
+    "#16a34a",
+    55,
+    "#facc15",
+    75,
+    "#f97316",
+    92,
+    "#dc2626"
+  ];
 }
 
 function gridPaint() {
@@ -402,6 +470,8 @@ function renderYear() {
   });
   const source = state.map?.getSource("mode-a-grid");
   if (source) source.setData(`/data/mode-a/grid_${state.year}.geojson`);
+  const electricitySource = state.map?.getSource("electricity-replay");
+  if (electricitySource) electricitySource.setData(`/data/mode-a/electricity_${state.year}.geojson`);
   updateMapStyles();
   renderMetrics();
   renderCommits();
@@ -422,6 +492,11 @@ function updateMapStyles() {
       if (state.map.getLayer(id)) {
         state.map.setLayoutProperty(id, "visibility", state.layers[category] === false ? "none" : "visible");
       }
+    }
+  }
+  for (const id of ["electricity-fill", "electricity-line", "electricity-circle"]) {
+    if (state.map.getLayer(id)) {
+      state.map.setLayoutProperty(id, "visibility", state.layers.electricity === false ? "none" : "visible");
     }
   }
 
@@ -534,6 +609,29 @@ function showCellEvidence(feature, lngLat) {
   `;
   els.evidencePopover.hidden = false;
   els.evidencePopover.innerHTML = `<strong>${escapeHtml(labelFor(props.dominant_metric))}</strong><span>${escapeHtml(props.dominant_change)}, ${escapeHtml(props.confidence)} confidence</span>`;
+  const point = state.map.project(lngLat);
+  els.evidencePopover.style.left = `${Math.min(point.x + 12, window.innerWidth - 270)}px`;
+  els.evidencePopover.style.top = `${Math.max(point.y - 24, 80)}px`;
+  window.clearTimeout(showCellEvidence.timer);
+  showCellEvidence.timer = window.setTimeout(() => {
+    els.evidencePopover.hidden = true;
+  }, 2800);
+}
+
+function showElectricityEvidence(feature, lngLat) {
+  const props = feature.properties;
+  const evidence = Array.isArray(props.evidence) ? props.evidence : JSON.parse(props.evidence || "[]");
+  els.evidencePanel.innerHTML = `
+    <strong>${escapeHtml(props.name || props.power || "Electricity asset")}</strong>
+    <dl>
+      <dt>Grid Status</dt><dd>${escapeHtml(props.status)} load, ${escapeHtml(props.grid_load_pct)}% estimated load, ${escapeHtml(props.headroom_pct)}% headroom</dd>
+      <dt>Asset</dt><dd>${escapeHtml(props.power || "power")} ${props.voltage ? `, ${escapeHtml(props.voltage)} volts` : ""}</dd>
+      <dt>Confidence</dt><dd>${escapeHtml(props.confidence)} for location, proxy for load</dd>
+      <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
+    </dl>
+  `;
+  els.evidencePopover.hidden = false;
+  els.evidencePopover.innerHTML = `<strong>${escapeHtml(props.status || "grid")}</strong><span>${escapeHtml(props.grid_load_pct)}% load, ${escapeHtml(props.headroom_pct)}% headroom</span>`;
   const point = state.map.project(lngLat);
   els.evidencePopover.style.left = `${Math.min(point.x + 12, window.innerWidth - 270)}px`;
   els.evidencePopover.style.top = `${Math.max(point.y - 24, 80)}px`;

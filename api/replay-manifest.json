@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-25T14:46:15.917962+00:00",
+  "generatedAt": "2026-04-25T14:49:21.523753+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -68,6 +68,11 @@
       "id": "services",
       "label": "Services",
       "description": "Education, healthcare, civic, commercial"
+    },
+    {
+      "id": "electricity",
+      "label": "Electricity",
+      "description": "Power lines, substations and load-stress proxy"
     },
     {
       "id": "places",
@@ -166,7 +171,7 @@
       "label": "2026 replay",
       "status": "ready",
       "summary": "Interactive Belfast NI 3D building replay is ready; local OSM/OpenData source files are catalogued for category expansion.",
-      "layerCount": 7,
+      "layerCount": 8,
       "sourceArtifactCount": 18
     }
   ],
@@ -209,7 +214,7 @@
         "sourceStatus": "derived-from-local-source"
       },
       "byteSize": 20564986,
-      "modifiedAt": "2026-04-25T14:46:14.970015+00:00"
+      "modifiedAt": "2026-04-25T14:49:20.024896+00:00"
     },
     {
       "id": "source-ni-cycleways-osm",
@@ -282,6 +287,44 @@
       },
       "byteSize": 2986300,
       "modifiedAt": "2026-04-25T14:22:41.501008+00:00"
+    },
+    {
+      "id": "source-ni-power-grid-osm",
+      "year": 2026,
+      "label": "Belfast Ni Power Grid Osm 2026",
+      "category": "electricity",
+      "region": "belfast-ni",
+      "type": "geojson",
+      "mode": "line-fill-point",
+      "path": "data/derived/2026/belfast_ni_power_grid_osm_2026.geojson",
+      "apiPath": "/api/layers/2026/source-ni-power-grid-osm",
+      "status": "ready",
+      "defaultVisible": true,
+      "featureCount": 4441,
+      "bbox": [
+        -6.120844,
+        54.389643,
+        -5.672096,
+        54.746275
+      ],
+      "geometryTypes": [
+        "LineString",
+        "Point",
+        "Polygon"
+      ],
+      "render": {
+        "color": "#facc15",
+        "lineWidth": 1.2,
+        "fillOpacity": 0.22,
+        "circleRadius": 4
+      },
+      "provenance": {
+        "sourceName": "Local repository vector source",
+        "license": "ODbL/open-data attribution pending per source file",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 1596208,
+      "modifiedAt": "2026-04-25T14:47:28.836061+00:00"
     },
     {
       "id": "source-ni-roads-osm",

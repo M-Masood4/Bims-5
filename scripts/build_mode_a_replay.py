@@ -521,6 +521,97 @@ def hotspots_for_year(year: int, values: dict[str, dict[int, dict[str, float]]],
     return {"type": "FeatureCollection", "features": features}
 
 
+def walk_geometry_coords(geometry: dict[str, Any] | None) -> list[tuple[float, float]]:
+    coords: list[tuple[float, float]] = []
+
+    def walk(node: Any) -> None:
+        if isinstance(node, list):
+            if len(node) >= 2 and isinstance(node[0], (int, float)) and isinstance(node[1], (int, float)):
+                coords.append((float(node[0]), float(node[1])))
+            else:
+                for item in node:
+                    walk(item)
+
+    if geometry:
+        walk(geometry.get("coordinates"))
+    return coords
+
+
+def geometry_centroid(geometry: dict[str, Any] | None) -> tuple[float, float] | None:
+    coords = walk_geometry_coords(geometry)
+    if not coords:
+        return None
+    return (sum(lon for lon, _lat in coords) / len(coords), sum(lat for _lon, lat in coords) / len(coords))
+
+
+def electricity_status(load: float) -> str:
+    if load >= 0.82:
+        return "stressed"
+    if load >= 0.66:
+        return "tight"
+    if load >= 0.48:
+        return "watch"
+    return "headroom"
+
+
+def electricity_layers_for_year(
+    root: Path,
+    year: int,
+    cells: list[dict[str, Any]],
+    values: dict[str, dict[int, dict[str, float]]],
+) -> dict[str, Any]:
+    path = root / "data/derived/2026/belfast_ni_power_grid_osm_2026.geojson"
+    if not path.exists():
+        return {"type": "FeatureCollection", "features": []}
+    source = json.loads(path.read_text(encoding="utf-8"))
+    progress = (year - 2016) / 10
+    features = []
+    for feature in source.get("features", []):
+        centroid = geometry_centroid(feature.get("geometry"))
+        if not centroid:
+            continue
+        cell = min(cells, key=lambda item: distance_km(centroid, item["center"]))
+        metrics = values[cell["id"]][year]
+        props = feature.get("properties") or {}
+        power_type = props.get("power") or "grid"
+        type_weight = 0.08 if power_type in {"line", "minor_line", "cable"} else 0.14 if power_type in {"substation", "transformer"} else 0.05
+        load = clamp(
+            0.23
+            + metrics["population_pressure"] * 0.24
+            + metrics["development_pressure"] * 0.18
+            + metrics["economic_opportunity"] * 0.14
+            + metrics["traffic_pressure"] * 0.08
+            + progress * 0.10
+            + type_weight
+        )
+        headroom = clamp(1 - load)
+        properties = {
+            **{key: value for key, value in props.items() if value not in (None, "")},
+            "year": year,
+            "cell_id": cell["id"],
+            "grid_load_pct": round(load * 100, 1),
+            "headroom_pct": round(headroom * 100, 1),
+            "status": electricity_status(load),
+            "confidence": "medium",
+            "evidence": [
+                "OSM power lines/substations current asset map",
+                "GRID reference method: load heatmap and headroom scoring",
+                "Load is a Belfast replay proxy weighted by population, development and opportunity pressure",
+            ],
+        }
+        features.append({"type": "Feature", "id": f"{feature.get('id', len(features))}-{year}", "properties": properties, "geometry": feature.get("geometry")})
+    return {
+        "type": "FeatureCollection",
+        "name": f"belfast_ni_electricity_{year}",
+        "metadata": {
+            "year": year,
+            "source": "OSM power-grid assets with GRID-style load/headroom replay proxy",
+            "feature_count": len(features),
+        },
+        "features": features,
+    }
+
+
 def build(root: Path, output_dir: Path) -> dict[str, Any]:
     cells = grid_cells()
     air = load_air_quality(root)
@@ -540,6 +631,7 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
     for year in YEARS:
         (output_dir / f"grid_{year}.geojson").write_text(json.dumps(feature_collection(cells, values, year, rasters), separators=(",", ":")), encoding="utf-8")
         (output_dir / f"hotspots_{year}.geojson").write_text(json.dumps(hotspots_for_year(year, values, cells), separators=(",", ":")), encoding="utf-8")
+        (output_dir / f"electricity_{year}.geojson").write_text(json.dumps(electricity_layers_for_year(root, year, cells, values), separators=(",", ":")), encoding="utf-8")
 
     averages: dict[int, dict[str, float]] = {}
     for year in YEARS:
@@ -565,6 +657,7 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
         "cellCount": len(cells),
         "gridTemplate": "/data/mode-a/grid_{year}.geojson",
         "hotspotTemplate": "/data/mode-a/hotspots_{year}.geojson",
+        "electricityTemplate": "/data/mode-a/electricity_{year}.geojson",
         "coreMetrics": CORE_METRICS,
         "metricsByYear": metrics_by_year,
         "commitsByYear": {str(year): commits_for_year(year, averages, rasters) for year in YEARS},
@@ -582,7 +675,13 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
             {"name": "Belfast Bikes trip and station datasets", "status": "local", "confidence": "high for sample months", "note": "Yearly mobility strain and active-travel signal"},
             {"name": "Belfast trees, pitches and public toilets open data", "status": "local", "confidence": "medium", "note": "Green-cover, recreation and civic-service context"},
             {"name": "BCCAQ air monitoring inventory", "status": "local", "confidence": "medium", "note": "Monitoring-site context for environmental exposure evidence"},
+            {"name": "Belfast electricity assets from OSM power tags", "status": "local derived", "confidence": "medium for asset location, proxy for load", "note": "GRID-inspired load/headroom replay over power lines and substations"},
         ],
+        "electricityMethod": {
+            "sourceInspiration": "GRID-main.zip",
+            "rendering": "Power lines and substations use load percentage and headroom status, similar to GRID heatmap/viability scoring.",
+            "caveat": "Belfast load is a replay proxy; asset locations come from OSM power tags, not live NIE Networks telemetry.",
+        },
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     return summary

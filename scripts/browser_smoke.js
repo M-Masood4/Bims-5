@@ -38,14 +38,16 @@ function assert(condition, message) {
     year: document.querySelector("#currentYearLabel")?.textContent?.trim(),
     cells: window.BelfastGitModeA.state.modeA.cellCount,
     sources: window.BelfastGitModeA.state.modeA.sources.length,
-    metrics: window.BelfastGitModeA.metrics
+    metrics: window.BelfastGitModeA.metrics,
+    electricity: Boolean(window.BelfastGitModeA.state.map.getLayer("electricity-line"))
   }));
   assert(loaded.canvas, "Mapbox canvas did not render.");
   assert(loaded.layout, "Reference-style replay layout did not render.");
   assert(loaded.metricCards === 5, "Five metric cards did not render.");
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
   assert(loaded.commits === 5, "Five city commits did not render.");
-  assert(loaded.toggles >= 8, "Map layer toggles did not render.");
+  assert(loaded.toggles >= 9, "Map layer toggles did not render.");
+  assert(loaded.electricity, "Electricity replay layer did not render.");
   assert(JSON.stringify(loaded.metrics) === JSON.stringify(["population_pressure", "mobility_strain", "economic_opportunity", "environmental_exposure", "fairness_score"]), "Browser metric registry is not the required five-lens set.");
   assert(loaded.year === "2026", "Initial year is not 2026.");
   assert(loaded.cells >= 100, "Mode A grid is too small.");

@@ -48,6 +48,11 @@ QUERIES = {
         node["shop"]({bbox});
         node["office"]({bbox});
     """,
+    "power_grid": """
+        node["power"~"substation|transformer|plant|generator|tower|pole|switch"]({bbox});
+        way["power"~"line|minor_line|cable|substation|plant|generator"]({bbox});
+        relation["power"~"line|substation|plant|generator"]({bbox});
+    """,
 }
 
 
@@ -76,7 +81,7 @@ def way_geometry(element: dict[str, Any]) -> dict[str, Any] | None:
         return None
     tags = element.get("tags") or {}
     closed = coords[0] == coords[-1] and len(coords) >= 4
-    polygonish = any(key in tags for key in ["building", "leisure", "landuse", "natural", "water"])
+    polygonish = any(key in tags for key in ["building", "leisure", "landuse", "natural", "water"]) or tags.get("power") in {"substation", "plant", "generator"}
     if closed and polygonish:
         return {"type": "Polygon", "coordinates": [coords]}
     return {"type": "LineString", "coordinates": coords}
@@ -110,6 +115,9 @@ def convert(payload: dict[str, Any], layer_id: str) -> dict[str, Any]:
                     "landuse": tags.get("landuse"),
                     "natural": tags.get("natural"),
                     "waterway": tags.get("waterway"),
+                    "power": tags.get("power"),
+                    "voltage": tags.get("voltage"),
+                    "operator": tags.get("operator"),
                     "route": tags.get("route"),
                 },
                 "geometry": geometry,
