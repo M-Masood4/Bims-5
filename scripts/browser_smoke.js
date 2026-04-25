@@ -26,7 +26,7 @@ function assert(condition, message) {
   await page.waitForSelector(".mapboxgl-canvas", { timeout: 30000 });
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.map?.loaded(), null, { timeout: 30000 });
   await page.waitForSelector(".metric-card", { state: "attached", timeout: 30000 });
-  await page.waitForSelector(".commit", { timeout: 30000 });
+  await page.waitForSelector(".commit, .commit-filter-note", { timeout: 30000 });
 
   const loaded = await page.evaluate(() => ({
     metricCards: document.querySelectorAll(".metric-card").length,
@@ -47,13 +47,13 @@ function assert(condition, message) {
   assert(loaded.layout, "Reference-style replay layout did not render.");
   assert(loaded.metricCards === 5, "Five metric cards did not render.");
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
-  assert(loaded.commits >= 10, "Default change list should show source-backed infrastructure changes.");
+  assert(loaded.commits === 0, "Default 2036 future view should start without historical commit rows.");
   assert(loaded.toggles >= 3, "Filtered product layer toggles did not render.");
   assert(loaded.navButtons === 0, "Left product navigation should be removed.");
   assert(loaded.electricity, "Electricity replay layer did not render.");
   assert(loaded.selectionLayer, "Commit selection highlight layer did not render.");
   assert(JSON.stringify(loaded.metrics) === JSON.stringify(["traffic", "jobs", "electricity", "buildings", "services"]), "Browser metric registry is not the required five-signal set.");
-  assert(loaded.year === "2026", "Initial year is not 2026.");
+  assert(loaded.year === "2036", "Initial year is not the 2036 simulation horizon.");
   assert(loaded.cells >= 100, "Mode A grid is too small.");
   assert(loaded.sources >= 5, "Source evidence list is too small.");
 
@@ -91,15 +91,29 @@ function assert(condition, message) {
   await page.waitForFunction(() => Boolean(window.BelfastScenarioStudio?.state?.validation));
   await page.waitForFunction(() => document.querySelector("#scenarioStudio")?.textContent?.includes("Placement status"));
   await page.waitForFunction(() => {
-    const text = document.querySelector("#scenarioStudio")?.textContent || "";
-    return ["Traffic", "Jobs", "Public Transit", "Electricity"].every((label) => text.includes(label));
-  });
+    const text = document.querySelector("#proposalImpact")?.textContent || "";
+    return [
+      "Traffic",
+      "Population",
+      "Jobs / Opportunity",
+      "Services",
+      "Electricity",
+      "Environment",
+      "Fairness"
+    ].every((label) => text.includes(label));
+  }, null, { timeout: 60000 });
   await page.waitForFunction(() => {
     const source = window.BelfastGitModeA?.state?.map?.getSource("studio-building-handles");
     return Boolean(source && window.BelfastScenarioStudio?.state?.geometry);
   });
+  await page.waitForFunction(() => document.querySelector("#proposalImpact")?.textContent?.includes("proposed 2036 intervention"));
+  await page.waitForFunction(() => document.querySelectorAll(".branch-card").length >= 2, null, { timeout: 60000 });
   await page.locator("#studioTool").click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.activeView === "overview");
+
+  await page.locator("#postcodeInput").fill("BT7");
+  await page.locator("#postcodeSearch").evaluate((form) => form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })));
+  await page.waitForFunction(() => document.querySelector("#postcodeStatus")?.textContent?.includes("BT7"));
 
   await page.locator("#yearSlider").evaluate((slider) => {
     slider.value = "2024";

@@ -1,159 +1,324 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Replay Belfast</title>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
-  </head>
-  <body>
-    <div class="replay-app">
-      <header class="topbar">
-        <a class="brand" href="/" aria-label="Replay Belfast home">
-          <span class="brand-mark">R</span>
-          <span><strong>Replay Belfast</strong><small>city repository</small></span>
-        </a>
-        <div class="repo-path" aria-label="Replay branch">
-          <span>Urban Repo</span>
-          <b>/</b>
-          <span>Historical Replay</span>
-          <b>/</b>
-          <strong>main branch</strong>
-          <b>/</b>
-          <span>2016-2026</span>
-        </div>
-        <section class="lens-strip" aria-label="Impact lenses">
-          <span>Impact lens</span>
-          <div id="lensTabs" class="lens-tabs"></div>
-        </section>
-        <div class="baseline-pill">
-          <small>Historical Replay -&gt;</small>
-          <strong>2036 Simulation Baseline</strong>
-        </div>
-      </header>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Belfast 2016-2036 - Simulation Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
 
-      <main class="map-workspace">
-        <div id="map" aria-label="Replay Belfast map"></div>
+<div class="app">
 
-        <section class="floating-card layer-card" aria-label="Map layers" hidden>
-          <header><strong>Signal Layers</strong><span id="sourceTotal">Loading</span></header>
-          <p id="filterHint" class="filter-hint">Only layers relevant to the selected signal are shown.</p>
-          <div id="layerToggles" class="switch-list"></div>
-          <div class="basemap-row">
-            <button id="lightMap" class="active" type="button">Standard</button>
-            <button id="darkMap" type="button">Night</button>
-            <button id="toggle3d" class="active" type="button">3D</button>
-          </div>
-        </section>
-
-        <div class="map-toolbar" aria-label="Map tools">
-          <button id="studioTool" type="button" title="Open Scenario Studio">Studio</button>
-          <button id="selectTool" type="button" title="Reset selection">Reset</button>
-          <button id="fitTool" type="button" title="Fit Belfast">F</button>
-        </div>
-
-        <section id="viewPanel" class="floating-card view-panel" hidden></section>
-
-        <section id="scenarioStudio" class="floating-card scenario-studio" aria-label="2036 Scenario Studio"></section>
-
-        <div class="floating-card map-legend">
-          <strong>Change intensity</strong>
-          <span id="legendMetric">Traffic</span>
-          <div class="legend-ramp"></div>
-          <div class="legend-labels"><span>low</span><span>medium</span><span>high</span></div>
-        </div>
-
-        <div id="evidencePopover" class="evidence-popover" hidden></div>
-
-        <section class="bottom-deck" aria-label="Replay timeline and metrics">
-          <div class="timeline-dock">
-            <div class="timeline-intro">
-              <strong>Replay timeline</strong>
-              <span>Scrub years, then inspect changes on the right.</span>
-            </div>
-            <button id="playButton" class="play-button" type="button">Play</button>
-            <div class="timeline-control">
-              <div id="yearTicks" class="year-ticks"></div>
-              <input id="yearSlider" type="range" min="2016" max="2026" step="1" value="2026" aria-label="Replay year">
-            </div>
-            <button id="speedButton" type="button">Animate</button>
-            <button id="presentButton" type="button">Go to 2026</button>
-          </div>
-
-          <section class="glance-row">
-            <div class="glance-title">
-              <strong>Belfast at a glance</strong>
-              <span><span id="currentYearLabel">2026</span> vs 2016</span>
-            </div>
-            <div id="metricCards" class="metric-stack"></div>
-          </section>
-        </section>
-      </main>
-
-      <aside class="right-panel" aria-label="Replay analytics">
-        <header class="panel-header">
-          <div>
-            <p>Infrastructure Changes</p>
-            <span>Click a change to inspect traffic, jobs, electricity, and service impacts.</span>
-          </div>
-          <div class="commit-controls">
-            <select id="commitYearSelect" aria-label="Commit year"></select>
-            <button id="resetSelection" type="button">Reset</button>
-            <strong id="manifestStatus">Loading</strong>
-          </div>
-        </header>
-
-        <div class="change-filters">
-          <button class="active" type="button" data-change-filter="all">All</button>
-          <button type="button" data-change-filter="building">Buildings</button>
-          <button type="button" data-change-filter="road">Roads</button>
-          <button type="button" data-change-filter="power">Grid</button>
-          <button type="button" data-change-filter="employment">Jobs</button>
-          <button type="button" data-change-filter="service">Services</button>
-        </div>
-
-        <div id="cityCommits" class="commit-list"></div>
-
-        <section class="panel-card scenario-branches-card">
-          <h3>Scenario Branches</h3>
-          <div id="scenarioBranches" class="scenario-branches">
-            <div class="empty-state">
-              <strong>No proposed building yet</strong>
-              <span>Open Studio, drop a building, then Generate simulations to compare 2036 futures.</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel-card agent-reasoning-card">
-          <h3>Agent Reasoning</h3>
-          <div id="agentReasoning" class="agent-reasoning">
-            <div class="empty-state">
-              <strong>Gemini agents ready</strong>
-              <span>Coordinator, specialist, critic, and reporter outputs appear after a simulation run.</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel-card selected-card">
-          <h3>Selected Change</h3>
-          <div id="selectedChange" class="selected-change">
-            <div class="empty-state">
-              <strong>Select a commit</strong>
-              <span>Click a city commit to highlight the affected map cells and inspect impact.</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel-card evidence-card">
-          <h3>Evidence Trail</h3>
-          <div id="evidencePanel" class="evidence-panel">Select a city commit or grid cell to inspect source evidence and confidence.</div>
-        </section>
-      </aside>
+  <!-- ========== HEADER ========== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18"/><path d="M5 21V7l5-4 5 4v14"/><path d="M15 21V11l4-2v12"/><path d="M9 9v.01"/><path d="M9 13v.01"/><path d="M9 17v.01"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>BELFAST</h1>
+        <small>2016 - 2036</small>
+      </div>
     </div>
 
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
-    <script src="/app.js"></script>
-    <script src="/scenario-studio.js"></script>
-  </body>
+    <nav class="nav" id="topNav">
+      <button class="nav-btn" data-mode-tab="historical">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        Historical View
+      </button>
+      <button class="nav-btn active" data-mode-tab="simulation">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6"/><path d="M10 3v6L4 21h16L14 9V3"/></svg>
+        Simulation Mode
+      </button>
+      <button class="nav-btn" data-mode-tab="compare">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+        Compare &amp; Insights
+      </button>
+      <button class="nav-btn" data-mode-tab="library">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
+        Data Library
+      </button>
+    </nav>
+
+    <div class="top-right">
+      <button class="icon-btn" id="settingsBtn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.86 1.18 1.43 2.11 1.43H21a2 2 0 1 1 0 4h-.09c-.93 0-1.75.57-2.11 1.43z"/></svg>
+        Settings
+      </button>
+      <button class="icon-btn" id="helpBtn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
+      </button>
+      <button class="icon-btn square" id="themeBtn" type="button" title="Toggle theme">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN GRID ========== -->
+  <div class="main">
+
+    <!-- 1: TIMEFRAME -->
+    <div class="panel">
+      <div class="panel-title">1. Choose Timeframe</div>
+      <div class="timeframe-scroll">
+        <div class="tf-heading">Historical Data</div>
+        <ul class="year-list" id="historicalYears"></ul>
+        <div class="tf-heading">Simulation Mode</div>
+        <ul class="year-list" id="simulationYears"></ul>
+      </div>
+    </div>
+
+    <!-- 2: ADD / MODIFY -->
+    <div class="panel modify-panel-host">
+      <div class="panel-title">2. Add / Modify</div>
+      <div class="panel-sub" id="modifySub">Pick an element, then click on the map to place it</div>
+
+      <div class="modify-list" id="modifyList">
+        <button class="modify-btn" data-tool="building">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/><path d="M8 6h.01"/><path d="M12 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/></svg>
+          Building
+        </button>
+        <button class="modify-btn" data-tool="road">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v3"/><path d="M12 11v3"/><path d="M12 17v3"/></svg>
+          Road
+        </button>
+        <button class="modify-btn" data-tool="park">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12c0-3.87 3.13-7 7-7s7 3.13 7 7c0 1.5-.5 2.91-1.4 4-.83 1.05-2.05 1.83-3.5 2.16"/></svg>
+          Park / Green Space
+        </button>
+        <button class="modify-btn" data-tool="infrastructure">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/><path d="M3 13h18"/><path d="M9 21V13"/><path d="M15 21V13"/></svg>
+          Infrastructure
+        </button>
+        <button class="modify-btn danger" data-tool="remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Remove
+        </button>
+      </div>
+
+      <div class="preset-section" id="presetSection">
+        <div class="preset-label" id="presetLabel">Building Presets</div>
+        <div class="preset-grid" id="presetGrid"></div>
+      </div>
+    </div>
+
+    <!-- 3: MAP -->
+    <div class="panel map-panel">
+      <div class="map-header">
+        <div class="map-title">
+          <h2>BELFAST CITY EVOLUTION</h2>
+          <small id="mapSubtitle">Showing 2026 - present day baseline <span class="info-i" title="Drop a building or road, then advance the timeline to project impact through 2036.">i</span></small>
+        </div>
+        <div class="view-toggle" id="viewToggle">
+          <button class="active" data-view="2D" type="button">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
+            2D Map View
+          </button>
+          <button data-view="3D" type="button">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>
+            3D View
+          </button>
+        </div>
+      </div>
+
+      <div class="map-canvas">
+        <div id="map" aria-label="Belfast map"></div>
+        <div class="map-overlay" id="mapOverlay" aria-hidden="true">
+          <div class="overlay-loader">
+            <div class="loader-ring"></div>
+            <span>Loading Belfast...</span>
+          </div>
+        </div>
+        <div class="map-cursor-hint" id="cursorHint" hidden>
+          <span id="cursorHintText">Click on the map to place</span>
+        </div>
+        <div class="map-active-tag" id="activeBranchTag">
+          <span class="tag-dot" id="tagDot"></span>
+          <span id="tagName">Baseline</span>
+          <span class="tag-year" id="tagYear">2026</span>
+        </div>
+      </div>
+
+      <div class="timeline-bar">
+        <button class="tl-btn" id="tlPrev" type="button" title="Previous year">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="tl-btn" id="tlPlay" type="button" title="Play / pause">
+          <svg id="tlPlayIcon" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <div class="tl-year-now" id="tlYearNow">2026</div>
+        <div class="tl-track" id="tlTrack">
+          <div class="tl-line"></div>
+          <div class="tl-progress" id="tlProgress"></div>
+          <div class="tl-thumb" id="tlThumb"></div>
+          <div class="tl-marks" id="tlMarks"></div>
+        </div>
+        <button class="tl-btn" id="tlNext" type="button" title="Next year">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4: IMPACT -->
+    <div class="panel impact-panel">
+      <div class="panel-title" id="impactTitle">Impact Overview (2026)</div>
+      <div class="impact-stack" id="impactStack"></div>
+      <button class="show-all" id="showAllBtn" type="button">
+        Show All Indicators
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+
+    <!-- 5: ABOUT -->
+    <div class="panel about-panel">
+      <h4>About This Project</h4>
+      <p>Explore how Belfast has changed since 2016 and simulate future scenarios up to 2036. Drop buildings, roads or parks into a branch and watch the impact ripple across population, traffic, air quality and the city economy.</p>
+      <button class="about-btn" id="aboutBtn" type="button">Project Info</button>
+    </div>
+
+    <!-- 6: BRANCHES -->
+    <div class="panel branches-panel">
+      <h3>3. Scenario Branches</h3>
+      <div class="panel-sub">Create and manage different simulation paths</div>
+      <button class="new-branch-btn" id="newBranchBtn" type="button">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Branch
+      </button>
+      <div class="branch-list" id="branchList"></div>
+    </div>
+
+    <!-- 7: BRANCH TIMELINE -->
+    <div class="panel timeline-panel">
+      <div class="tl-header">
+        <h3>BRANCH TIMELINE <span id="tlBranchName"></span></h3>
+      </div>
+      <div class="tl-svg-wrap" id="branchTimelineWrap">
+        <svg id="branchTimelineSvg" viewBox="0 0 940 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="tl-help">
+        Click any node to inspect <span>&middot;</span> Drag a node to move year <span>&middot;</span> Right-click to delete
+      </div>
+    </div>
+
+    <!-- 8: SIMULATE & COMPARE -->
+    <div class="panel compare-panel">
+      <h3>4. Simulate &amp; Compare</h3>
+      <div class="panel-sub">Run simulation and compare results</div>
+
+      <button class="run-btn" id="runBtn" type="button">
+        <span id="runBtnLabel">Run Simulation</span>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </button>
+      <button class="compare-btn" id="compareBtn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        Compare Branches
+      </button>
+
+      <div class="active-info">
+        <div class="active-row"><span>Active Branch</span><span>Year</span></div>
+        <div class="active-vals"><span id="activeBranchName">Baseline</span><span id="activeYearLabel">2026</span></div>
+      </div>
+
+      <button class="export-btn" id="exportBtn" type="button">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export Results
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ========== BOTTOM NAV ========== -->
+  <nav class="bottomnav">
+    <div class="bn-tabs">
+      <button class="bn-btn active" data-bottom-tab="dashboard" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </button>
+      <button class="bn-btn" data-bottom-tab="map" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Map Explorer
+      </button>
+      <button class="bn-btn" data-bottom-tab="analytics" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 17V9"/><path d="M12 17v-5"/><path d="M17 17v-3"/></svg>
+        Data Analytics
+      </button>
+      <button class="bn-btn" data-bottom-tab="community" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Community Insights
+      </button>
+      <button class="bn-btn" data-bottom-tab="reports" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        Reports
+      </button>
+    </div>
+
+    <div class="bn-right">
+      <div class="bcc-logo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:600;color:#fff;line-height:1.1">Belfast</div>
+        <div style="font-size:10px;color:var(--text-dim);line-height:1.1">City Council</div>
+      </div>
+      <div class="bn-divider"></div>
+      <span>Urban Intelligence Lab</span>
+    </div>
+  </nav>
+</div>
+
+<!-- ========== POPUPS / MODALS ========== -->
+
+<!-- Branch context menu -->
+<div id="branchMenu" class="ctx-menu" hidden>
+  <button data-act="rename">Rename</button>
+  <button data-act="duplicate">Duplicate</button>
+  <button data-act="recolor">Recolor</button>
+  <button data-act="delete" class="danger">Delete branch</button>
+</div>
+
+<!-- Node context menu -->
+<div id="nodeMenu" class="ctx-menu" hidden>
+  <button data-act="inspect">Inspect</button>
+  <button data-act="goto">Go to year</button>
+  <button data-act="delete" class="danger">Delete item</button>
+</div>
+
+<!-- Compare modal -->
+<div id="compareModal" class="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card large">
+    <div class="modal-head">
+      <h3>Compare Branches at <span id="compareYear">2036</span></h3>
+      <button class="modal-close" data-close type="button">&times;</button>
+    </div>
+    <div class="modal-body" id="compareBody"></div>
+  </div>
+</div>
+
+<!-- Inspect modal -->
+<div id="inspectModal" class="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="inspectTitle">Item</h3>
+      <button class="modal-close" data-close type="button">&times;</button>
+    </div>
+    <div class="modal-body" id="inspectBody"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast" hidden></div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+<script src="/dashboard.js"></script>
+</body>
 </html>

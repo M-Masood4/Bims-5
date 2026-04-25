@@ -181,6 +181,48 @@ function compactSiteContext(siteContext) {
   };
 }
 
+function fallbackScenarioStudioResponse(payload, building, validation, siteContext, detail = "") {
+  const coordinator = scenarioStudio.buildCoordinatorPlan(payload);
+  const specialistAgents = scenarioStudio.buildSpecialistRecommendations({ building, siteContext });
+  const variants = scenarioStudio.generateFallbackVariants({ building, siteContext }, rootDir).scenarioVariants;
+  const simulation = scenarioStudio.runMultipleSimulations({
+    scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
+    building,
+    variants
+  }, rootDir);
+  const critic = scenarioStudio.critiqueSimulation({
+    branches: simulation.branches,
+    siteContext,
+    recommendedBranch: simulation.recommendedBranch
+  });
+  const report = scenarioStudio.reportSimulation({
+    branches: simulation.branches,
+    criticNotes: critic
+  });
+  return {
+    ok: true,
+    geminiRequired: false,
+    fallback: true,
+    fallbackReason: detail || "Deterministic local scenario workflow used.",
+    coordinator,
+    building,
+    validation,
+    siteContext,
+    siteAgent: {
+      site_status: validation.status,
+      site_label: validation.siteLabel || validation.site_label,
+      warnings: validation.warnings || [],
+      positive_factors: validation.positiveFactors || validation.positive_factors || [],
+      confidence: validation.confidence || "medium"
+    },
+    specialistAgents,
+    variants,
+    simulation,
+    critic,
+    report
+  };
+}
+
 function compactBranches(branches) {
   return (branches || []).map((branch) => ({
     name: branch.name,
@@ -673,11 +715,15 @@ async function handleExplainSimulation(req, res) {
 }
 
 async function handleScenarioStudioRun(req, res) {
+  let payload = {};
+  let building = null;
+  let validation = null;
+  let siteContext = null;
   try {
-    const payload = await readJsonRequest(req, 1_500_000);
-    const building = scenarioStudio.createBuildingIntervention(payload.building || payload, rootDir);
-    const validation = scenarioStudio.validatePlacement({ location: building.location, geometry: building.geometry, config: building.config }, rootDir);
-    const siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
+    payload = await readJsonRequest(req, 1_500_000);
+    building = scenarioStudio.createBuildingIntervention(payload.building || payload, rootDir);
+    validation = scenarioStudio.validatePlacement({ location: building.location, geometry: building.geometry, config: building.config }, rootDir);
+    siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
 
     if (validation.status === "invalid") {
       sendJson(res, 422, {
@@ -773,10 +819,14 @@ async function handleScenarioStudioRun(req, res) {
       report
     });
   } catch (error) {
+    if (building && validation && siteContext && validation.status !== "invalid") {
+      sendJson(res, 200, fallbackScenarioStudioResponse(payload, building, validation, siteContext, error.message));
+      return;
+    }
     sendJson(res, error.statusCode || 502, {
       ok: false,
-      geminiRequired: true,
-      error: "Gemini scenario workflow failed",
+      geminiRequired: Boolean(geminiKey()),
+      error: "Scenario workflow failed",
       detail: error.message
     });
   }

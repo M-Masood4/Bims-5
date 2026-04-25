@@ -13,10 +13,13 @@
   };
 
   const SIMULATION_SIGNALS = [
-    { id: "traffic", label: "Traffic", metric: "mobilityStrain", tone: "traffic", direction: "down", copy: "corridor strain" },
-    { id: "jobs", label: "Jobs", metric: "economicOpportunity", tone: "jobs", direction: "up", copy: "local opportunity" },
-    { id: "transit", label: "Public Transit", metric: "transportAccess", tone: "transit", direction: "up", copy: "access uplift" },
-    { id: "electricity", label: "Electricity", metric: "electricityDemand", tone: "electricity", direction: "down", copy: "demand pressure" }
+    { id: "traffic", label: "Traffic", metric: "mobilityStrain", tone: "traffic", direction: "down", copy: "movement and corridor pressure" },
+    { id: "population", label: "Population", metric: "populationPressure", tone: "population", direction: "growth", copy: "local growth and density change" },
+    { id: "jobs", label: "Jobs / Opportunity", metric: "economicOpportunity", tone: "jobs", direction: "up", copy: "direct and indirect opportunity uplift" },
+    { id: "services", label: "Services", metric: "servicePressure", tone: "services", direction: "down", copy: "schools, health, amenities and utilities pressure" },
+    { id: "electricity", label: "Electricity", metric: "electricityDemand", tone: "electricity", direction: "down", copy: "local grid and energy demand" },
+    { id: "environment", label: "Environment", metric: "environmentalExposure", tone: "environment", direction: "down", copy: "exposure, green pressure and mitigation need" },
+    { id: "fairness", label: "Fairness", metric: "fairnessScore", tone: "fairness", direction: "up", copy: "who benefits and inclusion reach" }
   ];
 
   const studioState = {
@@ -46,6 +49,7 @@
     panel: document.querySelector("#scenarioStudio"),
     branches: document.querySelector("#scenarioBranches"),
     reasoning: document.querySelector("#agentReasoning"),
+    proposalImpact: document.querySelector("#proposalImpact"),
     studioTool: document.querySelector("#studioTool"),
     app: document.querySelector(".replay-app")
   };
@@ -74,7 +78,119 @@
 
   function signalIsGood(value, signal) {
     if (Math.abs(value) < 0.005) return "neutral";
+    if (signal.direction === "growth") return "neutral";
     return signal.direction === "down" ? (value < 0 ? "good" : "risk") : (value > 0 ? "good" : "risk");
+  }
+
+  function magnitudeLabel(value, signal) {
+    const absolute = Math.abs(Number(value) || 0);
+    const direction = value < -0.005 ? "decrease" : value > 0.005 ? "increase" : "limited change";
+    if (signal.id === "population" && value > 0.005) {
+      if (absolute >= 0.08) return "High density increase";
+      if (absolute >= 0.035) return "Significant growth node";
+      return "Small local uplift";
+    }
+    if (absolute >= 0.08) return direction === "increase" ? "High pressure" : "Strong improvement";
+    if (absolute >= 0.035) return direction === "increase" ? "Moderate strain" : "Moderate improvement";
+    if (absolute >= 0.01) return direction === "increase" ? "Low to moderate impact" : "Small improvement";
+    return "Low impact";
+  }
+
+  function getBelfastArea(location = studioState.location) {
+    if (!location) return "Belfast";
+    if (location.lng > -5.91) return "East Belfast";
+    if (location.lng < -5.955) return "West Belfast";
+    if (location.lat > 54.61) return "North Belfast";
+    if (location.lat < 54.585) return "South Belfast";
+    return "Central Belfast";
+  }
+
+  function typeLabel(type) {
+    return {
+      apartments: "Apartments",
+      mixed_use: "Mixed-use",
+      office: "Office-led",
+      community: "Community/public"
+    }[type] || label(type);
+  }
+
+  function proposalName(stats = deriveBuildingStats()) {
+    return `${getBelfastArea()} ${typeLabel(stats.buildingType)}`;
+  }
+
+  function activityStatement(stats) {
+    if (stats.buildingType === "mixed_use") {
+      return "This building adds residents, local jobs and neighbourhood services, creating a more balanced activity pattern than a single-use block.";
+    }
+    if (stats.buildingType === "office") {
+      return "This building adds jobs and commuter flow, increasing daytime movement and electricity demand while improving economic opportunity.";
+    }
+    if (stats.buildingType === "community") {
+      return "This building adds service value and public access, with lower population growth but stronger fairness and local support benefits.";
+    }
+    return "This building adds new residents and housing capacity, increasing demand on roads, transit, schools, shops, services and electricity.";
+  }
+
+  function firstOrderCopy(signal, stats, value) {
+    const type = stats.buildingType;
+    if (signal.id === "traffic") {
+      return type === "office"
+        ? "Office-led activity creates commuter peaks and extra transit load around the site."
+        : "New residents create daily trips and local movement demand on nearby corridors.";
+    }
+    if (signal.id === "population") return "The proposal becomes a local growth point and changes where future residential pressure lands.";
+    if (signal.id === "jobs") {
+      return type === "mixed_use" || type === "office"
+        ? "Commercial floorspace creates direct employment and local economic activation."
+        : "Housing mainly creates indirect opportunity by placing people closer to city jobs and shops.";
+    }
+    if (signal.id === "services") return "More activity increases demand for schools, health, amenities and day-to-day support systems.";
+    if (signal.id === "electricity") return "The building adds a local demand signal to the grid, strongest for larger and office-led schemes.";
+    if (signal.id === "environment") return "Urban intensity rises around the site, with green or exposure risks depending on local context.";
+    if (signal.id === "fairness") {
+      return stats.affordabilityMix === "social" || stats.affordabilityMix === "affordable"
+        ? "The access mix improves who benefits, especially where local need is higher."
+        : "Fairness gain is limited unless affordability or public access is strengthened.";
+    }
+    return signal.copy;
+  }
+
+  function rippleCopy(stats, validation) {
+    const warnings = validation?.warnings || [];
+    const parts = [];
+    if (stats.estimatedResidents > 0) parts.push("More residents create more movement demand and service pressure.");
+    if (stats.estimatedJobs > 0) parts.push("Jobs and visitors add daytime flow but can strengthen local opportunity.");
+    if (stats.buildingType === "mixed_use") parts.push("Mixed use can reduce some trip burden because more needs are nearby.");
+    if (stats.affordabilityMix === "affordable" || stats.affordabilityMix === "social") parts.push("Affordable access can improve fairness even where traffic pressure rises.");
+    if (warnings.some((item) => /transport|road/i.test(item))) parts.push("The site needs mobility support because access is already constrained.");
+    if (warnings.some((item) => /green|environment|flood/i.test(item))) parts.push("Green mitigation would improve the environmental branch.");
+    return parts.length ? parts : ["This is a proxy scenario: it explores plausible consequences rather than claiming exact forecasts."];
+  }
+
+  function branchForImpact() {
+    const branches = studioState.simulationResult?.simulation?.branches || [];
+    return branches.find((branch) => branch.objective === "user_proposal") || selectedBranch();
+  }
+
+  function directEstimate(signal, stats) {
+    const residents = Math.min(1, stats.estimatedResidents / 800);
+    const jobs = Math.min(1, stats.estimatedJobs / 1000);
+    const energy = Math.min(1, stats.estimatedElectricityDemand / 1000);
+    const fairness = stats.affordabilityMix === "social" ? 0.07 : stats.affordabilityMix === "affordable" ? 0.045 : 0.018;
+    return {
+      mobilityStrain: 0.08 * residents + (stats.buildingType === "office" ? 0.035 : 0),
+      populationPressure: 0.13 * residents,
+      economicOpportunity: 0.11 * jobs + (stats.buildingType === "community" ? 0.04 : 0),
+      servicePressure: 0.05 * residents - (stats.buildingType === "community" ? 0.035 : 0),
+      electricityDemand: 0.11 * energy,
+      environmentalExposure: 0.018 + (stats.floors > 12 ? 0.012 : 0),
+      fairnessScore: fairness
+    }[signal.metric] || 0;
+  }
+
+  function impactValue(signal, branch, stats) {
+    const value = branch?.diffFromBaseline?.[signal.metric];
+    return Number.isFinite(Number(value)) ? Number(value) : directEstimate(signal, stats);
   }
 
   function renderSignalDeltas(branch) {
@@ -109,6 +225,56 @@
             `;
           }).join("")}
         </div>
+      </section>
+    `;
+  }
+
+  function renderProposalImpact() {
+    if (!els.proposalImpact) return;
+    if (!studioState.location) {
+      els.proposalImpact.innerHTML = `
+        <div class="empty-state">
+          <strong>No proposed building yet</strong>
+          <span>Drag Building onto Belfast or click Add Building, then click a site.</span>
+        </div>
+      `;
+      return;
+    }
+    const stats = deriveBuildingStats();
+    const branch = branchForImpact();
+    const validation = studioState.validation;
+    els.proposalImpact.innerHTML = `
+      <section class="proposal-summary">
+        <span class="proposal-status">This is now a proposed 2036 intervention</span>
+        <h3>${escapeHtml(proposalName(stats))}</h3>
+        <dl>
+          <div><dt>Type</dt><dd>${escapeHtml(typeLabel(stats.buildingType))}</dd></div>
+          <div><dt>Size</dt><dd>${escapeHtml(label(stats.size))}</dd></div>
+          <div><dt>Access mix</dt><dd>${escapeHtml(label(stats.affordabilityMix))}</dd></div>
+          <div><dt>Scenario</dt><dd>Housing Growth Branch</dd></div>
+          <div><dt>Status</dt><dd>${studioState.busy ? "Simulation running" : branch ? "Draft simulation ready" : "Draft ready"}</dd></div>
+        </dl>
+        <p>${escapeHtml(activityStatement(stats))}</p>
+      </section>
+      <section class="impact-card-grid" aria-label="Building impact cards">
+        ${SIMULATION_SIGNALS.map((signal) => {
+          const value = impactValue(signal, branch, stats);
+          const quality = signalIsGood(value, signal);
+          return `
+            <article class="impact-card ${escapeHtml(signal.tone)} ${quality}">
+              <header>
+                <span>${escapeHtml(signal.label)}</span>
+                <b>${escapeHtml(magnitudeLabel(value, signal))}</b>
+              </header>
+              <strong>${escapeHtml(signedPct(value))}</strong>
+              <p>${escapeHtml(firstOrderCopy(signal, stats, value))}</p>
+            </article>
+          `;
+        }).join("")}
+      </section>
+      <section class="ripple-panel">
+        <strong>Second-order ripple effects</strong>
+        ${rippleCopy(stats, validation).map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
       </section>
     `;
   }
@@ -394,7 +560,11 @@
     studioState.selectedBranchName = "";
     playDropAnimation(studioState.location);
     setPlacementMode(false);
+    window.BelfastGitModeA?.setYear?.(2036);
     await validatePlacement();
+    if (studioState.validation?.status !== "invalid") {
+      await generateSimulations();
+    }
     renderBranches();
   }
 
@@ -439,6 +609,7 @@
       updateBuildingSource();
       renderStudioPanel();
       renderReasoning();
+      renderProposalImpact();
     }
   }
 
@@ -453,6 +624,7 @@
     renderStudioPanel();
     renderBranches();
     renderReasoning();
+    renderProposalImpact();
     try {
       const result = await postJson("/api/scenario-studio/run", {
         activeScenario: "Housing Growth",
@@ -474,6 +646,7 @@
       renderStudioPanel();
       renderBranches();
       renderReasoning();
+      renderProposalImpact();
     }
   }
 
@@ -481,7 +654,7 @@
     if (!els.panel) return;
     const stats = deriveBuildingStats();
     const validation = studioState.validation;
-    const status = studioState.validating ? "Checking site..." : validation?.siteLabel || validation?.site_label || (studioState.location ? "Site selected" : "Click Add Building, then click the map");
+    const status = studioState.validating ? "Checking site..." : validation?.siteLabel || validation?.site_label || (studioState.location ? "Site selected" : "Drag Building onto Belfast or click a site");
     const warningList = validation?.warnings || [];
     els.panel.classList.toggle("has-placement", Boolean(studioState.location));
     els.studioTool?.classList.toggle("active", studioState.placing || appState()?.activeView === "studio");
@@ -489,7 +662,7 @@
       <header class="studio-head">
         <div>
           <strong>2036 Scenario Studio</strong>
-          <span>Gemini designs branches. The simulation engine calculates them.</span>
+          <span>Drop a building into Belfast and test 2036 impact branches.</span>
         </div>
         <b>${escapeHtml(validation?.status || (studioState.placing ? "placing" : "ready"))}</b>
       </header>
@@ -535,16 +708,17 @@
       </div>
       ${studioState.location ? `
         <div class="simulation-preview ${studioState.justDropped ? "dropped" : ""}">
-          <strong>${studioState.justDropped ? "Building dropped" : "Ready to simulate"}</strong>
-          <span>Next render: Traffic, Jobs, Public Transit, Electricity impacts against 2036 baseline.</span>
+          <strong>${studioState.justDropped ? "New proposed development added" : "Draft simulation ready"}</strong>
+          <span>${escapeHtml(proposalName(stats))}: ${escapeHtml(activityStatement(stats))}</span>
         </div>
       ` : ""}
       ${studioState.error ? `<p class="studio-error">${escapeHtml(studioState.error)}</p>` : ""}
       <button type="button" class="generate-simulations" data-studio-action="generate" ${!studioState.location || studioState.validating || studioState.busy || validation?.status === "invalid" ? "disabled" : ""}>
-        ${studioState.busy ? "Gemini agents running..." : "Generate simulations"}
+        ${studioState.busy ? "Simulation agents running..." : "Run / refresh simulation"}
       </button>
-      <div class="studio-flow">Drag Add Building onto the map, or click it and then click a site. 2016 history -> 2026 present -> 2036 scenario target</div>
+      <div class="studio-flow">Buildings work now. Roads, parks and hubs are disabled until their scenario models are ready.</div>
     `;
+    renderProposalImpact();
   }
 
   function renderBranches() {
@@ -556,7 +730,7 @@
           <span>Coordinator -> specialists -> variants -> deterministic impacts -> critic -> reporter</span>
           <div class="simulation-sweep"><i></i></div>
           <div class="simulation-steps">
-            <b>Traffic</b><b>Jobs</b><b>Public Transit</b><b>Electricity</b>
+            <b>Traffic</b><b>Population</b><b>Jobs</b><b>Services</b><b>Grid</b><b>Environment</b><b>Fairness</b>
           </div>
         </div>
       `;
@@ -584,6 +758,7 @@
         </button>
       `;
     }).join("");
+    renderProposalImpact();
   }
 
   function renderReasoning() {
@@ -612,6 +787,14 @@
         <p>${escapeHtml(report.summary || "")}</p>
       </section>
       ${renderSelectedImpact(branch)}
+      <div class="agent-note">
+        <strong>Mobility view <span>Trade-off</span></strong>
+        <span>${escapeHtml(branch?.diffFromBaseline?.mobilityStrain > 0 ? "This building adds demand to nearby corridors. Pairing it with transport support improves the branch." : "Mobility pressure is contained by the selected branch assumptions.")}</span>
+      </div>
+      <div class="agent-note">
+        <strong>Fairness view <span>Inclusion</span></strong>
+        <span>${escapeHtml(deriveBuildingStats().affordabilityMix === "market" ? "Market-rate delivery has limited inclusion benefit unless affordability is improved." : "The access mix gives the proposal a stronger inclusion benefit than a market-rate version.")}</span>
+      </div>
       ${specialists.slice(0, 6).map((agent) => `
         <div class="agent-note">
           <strong>${escapeHtml(agent.agent || "Specialist Agent")} <span>${escapeHtml(agent.risk || "")}</span></strong>
@@ -698,6 +881,7 @@
     renderStudioPanel();
     renderBranches();
     renderReasoning();
+    renderProposalImpact();
     els.panel.addEventListener("click", handlePanelClick);
     els.panel.addEventListener("change", handlePanelChange);
     els.panel.addEventListener("dragstart", handlePanelDragStart);

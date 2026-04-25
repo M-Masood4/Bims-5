@@ -631,7 +631,7 @@ button {
 
 .year-ticks {
   display: grid;
-  grid-template-columns: repeat(11, 1fr);
+  grid-template-columns: repeat(var(--tick-count, 14), 1fr);
   align-items: end;
   gap: 0;
 }
@@ -646,6 +646,15 @@ button {
 .year-ticks button.active {
   color: var(--blue);
   font-weight: 900;
+}
+
+.year-ticks button.simulation-year {
+  color: #a78bfa;
+}
+
+.year-ticks button.simulation-year.active {
+  color: #c4b5fd;
+  text-shadow: 0 0 14px rgba(168, 85, 247, 0.55);
 }
 
 #yearSlider {
@@ -1964,5 +1973,415 @@ button {
   .lens-tabs {
     overflow-x: auto;
     padding-bottom: 2px;
+  }
+}
+
+/* 2036 impact-studio presentation */
+:root {
+  color-scheme: dark;
+  --bg: #07111d;
+  --panel: rgba(10, 24, 38, 0.92);
+  --ink: #e8f2ff;
+  --muted: #8da2ba;
+  --line: rgba(117, 149, 184, 0.22);
+  --blue: #2f7df6;
+  --blue-2: #80b6ff;
+  --teal: #27c1ae;
+  --green: #4ade80;
+  --orange: #f59e0b;
+  --purple: #a855f7;
+  --red: #fb7185;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.38);
+  --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+body {
+  background: #07111d;
+  color: var(--ink);
+}
+
+.replay-app {
+  grid-template-columns: minmax(780px, 1fr) 390px;
+  grid-template-rows: 76px minmax(0, 1fr);
+  background:
+    linear-gradient(180deg, rgba(8, 18, 31, 0.98), rgba(5, 12, 21, 1)),
+    #07111d;
+}
+
+.topbar {
+  grid-template-columns: 250px 280px minmax(250px, 1fr) 210px 260px;
+  gap: 14px;
+  padding: 12px 18px;
+  border-bottom-color: rgba(96, 165, 250, 0.16);
+  background: rgba(5, 13, 24, 0.96);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.32);
+}
+
+.brand-mark {
+  border: 1px solid rgba(191, 219, 254, 0.35);
+  background: linear-gradient(145deg, #0f172a, #1453ad 54%, #0f766e);
+}
+
+.brand small,
+.repo-path,
+.lens-strip > span,
+.baseline-pill small {
+  color: #9bb1cb;
+}
+
+.brand strong,
+.repo-path strong,
+.baseline-pill strong {
+  color: #f8fbff;
+}
+
+.repo-path {
+  border-left-color: rgba(148, 163, 184, 0.18);
+}
+
+.baseline-pill,
+.floating-card,
+.panel-card,
+.metric-card,
+.commit,
+.layer-card,
+.view-panel,
+.scenario-studio {
+  border-color: rgba(108, 142, 181, 0.24);
+  background: rgba(9, 23, 37, 0.9);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.lens-tab,
+.map-toolbar button,
+.switch-row,
+.change-filters button,
+.commit-controls select,
+.commit-controls button,
+.build-tool-grid button,
+.generate-simulations,
+.scenario-actions button,
+.building-config select,
+.building-config input {
+  border-color: rgba(129, 161, 196, 0.28);
+  background: rgba(14, 31, 49, 0.92);
+  color: #eaf3ff;
+}
+
+.lens-tab.active,
+.build-tool-grid button.active,
+.generate-simulations,
+.change-filters button.active {
+  border-color: rgba(96, 165, 250, 0.9);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(88, 28, 135, 0.86));
+  color: #fff;
+}
+
+.map-workspace {
+  background: #0a1727;
+}
+
+#map {
+  filter: saturate(1.1) contrast(1.06);
+}
+
+.bottom-deck {
+  border-color: rgba(74, 222, 128, 0.16);
+  background: rgba(5, 13, 24, 0.88);
+}
+
+.right-panel {
+  border-left-color: rgba(96, 165, 250, 0.16);
+  background: rgba(6, 15, 26, 0.98);
+}
+
+.panel-header {
+  border-bottom-color: rgba(96, 165, 250, 0.16);
+}
+
+.panel-header p,
+.panel-card h3,
+.commit strong,
+.metric-card strong,
+.studio-head strong,
+.proposal-summary h3 {
+  color: #f8fbff;
+}
+
+.postcode-search {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.postcode-search label {
+  color: #9bb1cb;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.postcode-search div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 6px;
+}
+
+.postcode-search input,
+.postcode-search button {
+  min-height: 34px;
+  border: 1px solid rgba(129, 161, 196, 0.28);
+  border-radius: 7px;
+  background: rgba(12, 28, 45, 0.95);
+  color: #eff6ff;
+}
+
+.postcode-search input {
+  width: 100%;
+  padding: 0 10px;
+}
+
+.postcode-search button {
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.postcode-search span {
+  overflow: hidden;
+  color: #77c9ff;
+  font-size: 0.67rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.proposal-impact {
+  display: grid;
+  gap: 10px;
+}
+
+.proposal-summary {
+  display: grid;
+  gap: 9px;
+}
+
+.proposal-status {
+  width: fit-content;
+  padding: 5px 8px;
+  border: 1px solid rgba(74, 222, 128, 0.34);
+  border-radius: 999px;
+  background: rgba(20, 83, 45, 0.35);
+  color: #bbf7d0;
+  font-size: 0.64rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.proposal-summary h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.proposal-summary dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+}
+
+.proposal-summary div {
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid rgba(129, 161, 196, 0.18);
+  border-radius: 7px;
+  background: rgba(15, 35, 56, 0.74);
+}
+
+.proposal-summary dt,
+.proposal-summary dd {
+  margin: 0;
+}
+
+.proposal-summary dt {
+  color: #8da2ba;
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.proposal-summary dd {
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  color: #edf6ff;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.proposal-summary p,
+.ripple-panel p {
+  margin: 0;
+  color: #a9bad0;
+  font-size: 0.74rem;
+  line-height: 1.42;
+}
+
+.impact-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.impact-card {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgba(129, 161, 196, 0.22);
+  border-radius: 8px;
+  background: rgba(11, 26, 42, 0.88);
+}
+
+.impact-card header {
+  display: grid;
+  gap: 3px;
+}
+
+.impact-card header span {
+  color: #e8f2ff;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.impact-card header b {
+  color: #94a3b8;
+  font-size: 0.64rem;
+}
+
+.impact-card > strong {
+  color: #f8fbff;
+  font-size: 1rem;
+}
+
+.impact-card p {
+  margin: 0;
+  color: #9fb1c7;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.impact-card.traffic {
+  border-left: 3px solid #f59e0b;
+}
+
+.impact-card.population {
+  border-left: 3px solid #38bdf8;
+}
+
+.impact-card.jobs {
+  border-left: 3px solid #a855f7;
+}
+
+.impact-card.services {
+  border-left: 3px solid #60a5fa;
+}
+
+.impact-card.electricity {
+  border-left: 3px solid #22d3ee;
+}
+
+.impact-card.environment {
+  border-left: 3px solid #4ade80;
+}
+
+.impact-card.fairness {
+  border-left: 3px solid #f472b6;
+}
+
+.impact-card.good > strong {
+  color: #86efac;
+}
+
+.impact-card.risk > strong {
+  color: #fbbf24;
+}
+
+.ripple-panel {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 8px;
+  background: rgba(6, 35, 37, 0.58);
+}
+
+.ripple-panel strong {
+  color: #ccfbf1;
+  font-size: 0.78rem;
+}
+
+.simulation-steps {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.signal-delta.population {
+  border-left: 3px solid #38bdf8;
+}
+
+.signal-delta.services {
+  border-left: 3px solid #60a5fa;
+}
+
+.signal-delta.environment {
+  border-left: 3px solid #4ade80;
+}
+
+.signal-delta.fairness {
+  border-left: 3px solid #f472b6;
+}
+
+.placement-status,
+.building-stats span,
+.simulation-preview,
+.selected-impact,
+.reporter-note,
+.agent-note,
+.branch-card {
+  border-color: rgba(129, 161, 196, 0.22);
+  background: rgba(13, 30, 48, 0.9);
+}
+
+.simulation-preview {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(15, 118, 110, 0.22));
+}
+
+.branch-card.active {
+  border-color: rgba(96, 165, 250, 0.9);
+  background: rgba(21, 48, 82, 0.96);
+}
+
+.signal-delta.good,
+.scenario-decision {
+  background: rgba(20, 83, 45, 0.45);
+  color: #bbf7d0;
+}
+
+.signal-delta.risk {
+  background: rgba(120, 53, 15, 0.5);
+  color: #fed7aa;
+}
+
+.signal-delta.neutral {
+  background: rgba(51, 65, 85, 0.72);
+  color: #cbd5e1;
+}
+
+@media (max-width: 1260px) {
+  .topbar {
+    grid-template-columns: 220px minmax(0, 1fr) 240px;
+  }
+
+  .postcode-search {
+    grid-column: 3;
   }
 }

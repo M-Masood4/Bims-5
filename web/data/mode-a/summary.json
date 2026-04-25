@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "kind": "belfast.modeA.summary",
-  "generatedAt": "2026-04-25T18:48:52.548091+00:00",
+  "generatedAt": "2026-04-25T19:07:59.908379+00:00",
   "years": [
     2016,
     2017,
@@ -36270,7 +36270,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -36388,7 +36388,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -36515,7 +36515,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -36642,7 +36642,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -36769,7 +36769,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -36896,7 +36896,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37023,7 +37023,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37150,7 +37150,7 @@
           "Belfast Bikes yearly trip snapshots",
           "Development-zone and road-pressure proxy",
           "Transit-node access context",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37275,7 +37275,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37400,7 +37400,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37525,7 +37525,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37650,7 +37650,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37775,7 +37775,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -37900,7 +37900,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38025,7 +38025,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38150,7 +38150,7 @@
           "NISRA census and population context",
           "Transit and centre-access proxy",
           "Public service and civic-point inventory",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38277,7 +38277,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38404,7 +38404,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38531,7 +38531,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38658,7 +38658,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38785,7 +38785,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -38914,7 +38914,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39043,7 +39043,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39172,7 +39172,7 @@
           "OSM power lines, substations and transformers",
           "GRID reference method: load/headroom replay proxy",
           "Development, service and job-access pressure",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39296,7 +39296,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39420,7 +39420,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39544,7 +39544,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39668,7 +39668,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39792,7 +39792,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -39916,7 +39916,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40040,7 +40040,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40164,7 +40164,7 @@
           "OSM building footprints and replay-first-visible-year profile",
           "Planning/development-zone pressure proxy",
           "Sentinel/Landsat NDBI source availability",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40288,7 +40288,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40412,7 +40412,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40536,7 +40536,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40660,7 +40660,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40784,7 +40784,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -40908,7 +40908,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -41032,7 +41032,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -41156,7 +41156,7 @@
           "OSM health, education, civic and commercial services",
           "Belfast public toilets and pitches open data",
           "Transit, bike and centre-access proxy",
-          "Local raster evidence for 2024: ndvi, rgb"
+          "Local raster evidence for 2024: ndbi, ndvi, rgb"
         ],
         "affectedSignals": [
           {
@@ -48310,6 +48310,7 @@
       "rgb"
     ],
     "2024": [
+      "ndbi",
       "ndvi",
       "rgb"
     ]

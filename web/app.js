@@ -1,12 +1,37 @@
 const REQUIRED_METRICS = ["traffic", "jobs", "electricity", "buildings", "services"];
 
 const emptyFeatureCollection = { type: "FeatureCollection", features: [] };
+const BELFAST_FOCUS_BBOX = [-6.055, 54.535, -5.795, 54.648];
+const HISTORICAL_START_YEAR = 2016;
+const PRESENT_BASELINE_YEAR = 2026;
+const SIMULATION_START_YEAR = 2027;
+const SIMULATION_END_YEAR = 2036;
+const SIMULATION_YEARS = Array.from({ length: SIMULATION_END_YEAR - HISTORICAL_START_YEAR + 1 }, (_item, index) => HISTORICAL_START_YEAR + index);
+const BELFAST_POSTCODE_AREAS = {
+  BT1: { label: "BT1 City Centre", center: [-5.9296, 54.5994], zoom: 14.4 },
+  BT2: { label: "BT2 Linen Quarter", center: [-5.9334, 54.5946], zoom: 14.3 },
+  BT3: { label: "BT3 Titanic Quarter / Harbour", center: [-5.9008, 54.6118], zoom: 13.6 },
+  BT4: { label: "BT4 Ballyhackamore / Sydenham", center: [-5.8726, 54.5992], zoom: 13.7 },
+  BT5: { label: "BT5 Castlereagh / Bloomfield", center: [-5.8856, 54.5877], zoom: 13.7 },
+  BT6: { label: "BT6 Ravenhill / Cregagh", center: [-5.9065, 54.5785], zoom: 13.7 },
+  BT7: { label: "BT7 Queen's / Ormeau", center: [-5.9282, 54.5847], zoom: 13.9 },
+  BT8: { label: "BT8 Newtownbreda / Carryduff edge", center: [-5.9062, 54.5385], zoom: 12.9 },
+  BT9: { label: "BT9 Malone / Stranmillis", center: [-5.9491, 54.5767], zoom: 13.7 },
+  BT10: { label: "BT10 Finaghy", center: [-5.9822, 54.5666], zoom: 13.5 },
+  BT11: { label: "BT11 Andersonstown", center: [-5.9976, 54.5846], zoom: 13.5 },
+  BT12: { label: "BT12 Falls / Sandy Row", center: [-5.9555, 54.5947], zoom: 13.8 },
+  BT13: { label: "BT13 Shankill / Springfield", center: [-5.9578, 54.6078], zoom: 13.7 },
+  BT14: { label: "BT14 Ardoyne / Ballysillan", center: [-5.948, 54.627], zoom: 13.5 },
+  BT15: { label: "BT15 North Belfast / Shore Road", center: [-5.9264, 54.6266], zoom: 13.5 },
+  BT16: { label: "BT16 Dundonald / East Belfast edge", center: [-5.8068, 54.5946], zoom: 13.2 },
+  BT17: { label: "BT17 Twinbrook / West Belfast edge", center: [-6.0286, 54.5607], zoom: 13.1 }
+};
 
 const state = {
   manifest: null,
   modeA: null,
   map: null,
-  year: 2026,
+  year: SIMULATION_END_YEAR,
   metric: "traffic",
   activeView: "overview",
   changeFilter: "all",
@@ -63,7 +88,10 @@ const els = {
   layersTool: document.querySelector("#layersTool"),
   settingsTool: document.querySelector("#settingsTool"),
   selectTool: document.querySelector("#selectTool"),
-  resetSelection: document.querySelector("#resetSelection")
+  resetSelection: document.querySelector("#resetSelection"),
+  postcodeSearch: document.querySelector("#postcodeSearch"),
+  postcodeInput: document.querySelector("#postcodeInput"),
+  postcodeStatus: document.querySelector("#postcodeStatus")
 };
 
 const LENS_REGISTRY = [
@@ -219,11 +247,12 @@ function visibleContextItems() {
 }
 
 function signalCommit(metric = state.metric) {
-  return (state.modeA?.commitsByYear?.[String(state.year)] || []).find((commit) => commit.type === metric);
+  return (state.modeA?.commitsByYear?.[String(dataYear())] || []).find((commit) => commit.type === metric);
 }
 
 function infrastructureChanges() {
-  return (state.modeA?.commitsByYear?.[String(state.year)] || []).map((commit) => {
+  if (isFutureYear()) return [];
+  return (state.modeA?.commitsByYear?.[String(dataYear())] || []).map((commit) => {
     const type = CHANGE_TYPES[commit.type] || CHANGE_TYPES.traffic;
     const intensity = Math.min(100, Math.max(6, Math.round(Math.abs(commit.delta || 0) * 100)));
     const mw = commit.type === "electricity" ? Math.max(15, Math.round((0.35 + Math.abs(commit.delta || 0)) * 140)) : 0;
@@ -287,26 +316,30 @@ async function loadData() {
 
   state.manifest = manifest;
   state.modeA = modeA;
-  state.year = modeA.years.at(-1);
+  state.timelineYears = SIMULATION_YEARS;
+  state.year = SIMULATION_END_YEAR;
 
-  els.yearSlider.min = modeA.years[0];
-  els.yearSlider.max = modeA.years.at(-1);
+  els.yearSlider.min = HISTORICAL_START_YEAR;
+  els.yearSlider.max = SIMULATION_END_YEAR;
   els.yearSlider.value = state.year;
   updateLayerCount();
   els.manifestStatus.textContent = `${modeA.cellCount} cells`;
   if (els.commitYearSelect) {
-    els.commitYearSelect.innerHTML = modeA.years.map((year) => `<option value="${year}">${year}</option>`).join("");
+    els.commitYearSelect.innerHTML = state.timelineYears.map((year) => `<option value="${year}">${year}${year >= SIMULATION_START_YEAR ? " simulation" : ""}</option>`).join("");
     els.commitYearSelect.value = state.year;
   }
 }
 
 function initMap() {
   mapboxgl.accessToken = state.manifest.mapbox.token;
+  const focusBbox = BELFAST_FOCUS_BBOX;
   state.map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/mapbox/light-v11",
+    style: "mapbox://styles/mapbox/dark-v11",
     center: state.manifest.viewport.center,
     zoom: 11.85,
+    minZoom: 10.8,
+    maxBounds: focusBbox,
     pitch: 54,
     bearing: -20,
     antialias: true
@@ -340,12 +373,14 @@ function addModeALayers() {
   if (!state.map.getSource("mode-a-grid")) {
     state.map.addSource("mode-a-grid", {
       type: "geojson",
-      data: `/data/mode-a/grid_${state.year}.geojson`,
+      data: `/data/mode-a/grid_${dataYear()}.geojson`,
       promoteId: "cell_id"
     });
   }
 
   addVectorContextLayers();
+  addBelfastMaskLayer();
+  addPostcodeSearchLayer();
 
   if (!state.map.getLayer("mode-a-grid-fill")) {
     state.map.addLayer({
@@ -400,6 +435,83 @@ function addModeALayers() {
 
   addElectricityLayers();
   addBuildingLayer();
+}
+
+function addBelfastMaskLayer() {
+  const bbox = BELFAST_FOCUS_BBOX;
+  const mask = {
+    type: "FeatureCollection",
+    features: [{
+      type: "Feature",
+      properties: {},
+      geometry: {
+        type: "Polygon",
+        coordinates: [[
+          [-180, -85],
+          [180, -85],
+          [180, 85],
+          [-180, 85],
+          [-180, -85]
+        ], [
+          [bbox[0], bbox[1]],
+          [bbox[0], bbox[3]],
+          [bbox[2], bbox[3]],
+          [bbox[2], bbox[1]],
+          [bbox[0], bbox[1]]
+        ]]
+      }
+    }]
+  };
+  if (!state.map.getSource("belfast-outside-mask")) {
+    state.map.addSource("belfast-outside-mask", { type: "geojson", data: mask });
+  }
+  if (!state.map.getLayer("belfast-outside-mask")) {
+    state.map.addLayer({
+      id: "belfast-outside-mask",
+      type: "fill",
+      source: "belfast-outside-mask",
+      paint: {
+        "fill-color": "#020817",
+        "fill-opacity": 0.72
+      }
+    });
+  }
+}
+
+function addPostcodeSearchLayer() {
+  if (!state.map.getSource("postcode-search-result")) {
+    state.map.addSource("postcode-search-result", {
+      type: "geojson",
+      data: emptyFeatureCollection
+    });
+  }
+  if (!state.map.getLayer("postcode-search-result-ring")) {
+    state.map.addLayer({
+      id: "postcode-search-result-ring",
+      type: "circle",
+      source: "postcode-search-result",
+      paint: {
+        "circle-radius": 18,
+        "circle-color": "#38bdf8",
+        "circle-opacity": 0.18,
+        "circle-stroke-color": "#bfdbfe",
+        "circle-stroke-width": 2
+      }
+    });
+  }
+  if (!state.map.getLayer("postcode-search-result-core")) {
+    state.map.addLayer({
+      id: "postcode-search-result-core",
+      type: "circle",
+      source: "postcode-search-result",
+      paint: {
+        "circle-radius": 5,
+        "circle-color": "#ffffff",
+        "circle-stroke-color": "#38bdf8",
+        "circle-stroke-width": 3
+      }
+    });
+  }
 }
 
 function addVectorContextLayers() {
@@ -519,7 +631,7 @@ function addElectricityLayers() {
   if (!state.map.getSource("electricity-replay")) {
     state.map.addSource("electricity-replay", {
       type: "geojson",
-      data: `/data/mode-a/electricity_${state.year}.geojson`
+      data: `/data/mode-a/electricity_${dataYear()}.geojson`
     });
   }
   if (!state.map.getLayer("electricity-fill")) {
@@ -655,11 +767,11 @@ function renderViewPanel() {
 
 function renderComparePanel() {
   if (!els.viewPanel || !state.modeA) return;
-  const cards = state.modeA.metricsByYear[String(state.year)] || [];
+  const cards = metricCardsForYear();
   els.viewPanel.hidden = false;
   els.viewPanel.innerHTML = `
-    <strong>Compare years</strong>
-    <p>Current view compares ${escapeHtml(state.year)} against the 2016 baseline.</p>
+    <strong>${isFutureYear() ? "Compare futures" : "Compare years"}</strong>
+    <p>${isFutureYear() ? `${escapeHtml(state.year)} is a simulated future against the 2026 baseline.` : `Current view compares ${escapeHtml(state.year)} against the 2016 baseline.`}</p>
     <div class="compare-grid">
       ${cards.map((card) => `
         <button type="button" data-metric="${escapeHtml(card.metric)}" class="${state.metric === card.metric ? "active" : ""}">
@@ -735,11 +847,14 @@ function updateLayerCount() {
 
 function renderTimeline() {
   els.yearTicks.innerHTML = "";
-  for (const year of state.modeA.years) {
+  const tickYears = timelineTickYears();
+  els.yearTicks.style.setProperty("--tick-count", tickYears.length);
+  for (const year of tickYears) {
     const tick = document.createElement("button");
     tick.type = "button";
     tick.textContent = year;
-    tick.className = year === state.year ? "active" : "";
+    tick.dataset.year = year;
+    tick.className = `${year === state.year ? "active" : ""}${year >= SIMULATION_START_YEAR ? " simulation-year" : ""}`;
     tick.addEventListener("click", () => {
       state.year = year;
       state.selectedCommit = null;
@@ -754,13 +869,13 @@ function renderYear() {
   els.yearSlider.value = state.year;
   if (els.commitYearSelect) els.commitYearSelect.value = state.year;
   document.querySelectorAll("#yearTicks button").forEach((button) => {
-    button.classList.toggle("active", Number(button.textContent) === state.year);
+    button.classList.toggle("active", Number(button.dataset.year) === state.year);
   });
   const source = state.map?.getSource("mode-a-grid");
-  if (source) source.setData(`/data/mode-a/grid_${state.year}.geojson`);
+  if (source) source.setData(`/data/mode-a/grid_${dataYear()}.geojson`);
   const electricitySource = state.map?.getSource("electricity-replay");
-  if (electricitySource) electricitySource.setData(`/data/mode-a/electricity_${state.year}.geojson`);
-  if (state.selectedCommit && state.selectedCommit.year !== state.year) state.selectedCommit = null;
+  if (electricitySource) electricitySource.setData(`/data/mode-a/electricity_${dataYear()}.geojson`);
+  if (state.selectedCommit && state.selectedCommit.year !== dataYear()) state.selectedCommit = null;
   state.selectedCellId = null;
   state.selectedCellFeature = null;
   updateMapStyles();
@@ -819,7 +934,7 @@ function setMapLabels(visible) {
 }
 
 function renderMetrics() {
-  const cards = state.modeA.metricsByYear[String(state.year)] || [];
+  const cards = metricCardsForYear();
   els.metricCards.innerHTML = "";
   for (const card of cards) {
     const meta = METRIC_BY_ID[card.metric] || {};
@@ -833,7 +948,7 @@ function renderMetrics() {
         <span class="metric-copy">
           <strong>${escapeHtml(card.label)}</strong>
           <span class="metric-value">${escapeHtml(card.display)}%</span>
-          <small>${escapeHtml(card.deltaDisplay)} vs 2016, ${escapeHtml(card.trend)}</small>
+          <small>${escapeHtml(card.caption || `${card.deltaDisplay} vs 2016, ${card.trend}`)}</small>
         </span>
         <svg viewBox="0 0 120 44" aria-hidden="true"><polyline points="${series}" /></svg>
       </button>
@@ -877,7 +992,9 @@ function renderCommits() {
   if (!changes.length) {
     const empty = document.createElement("div");
     empty.className = "commit-filter-note";
-    empty.textContent = "No changes match this filter for the selected year.";
+    empty.textContent = isFutureYear()
+      ? "Future simulation mode is active. Drop a building to create post-2026 scenario branches and impact stories."
+      : "No changes match this filter for the selected year.";
     els.cityCommits.append(empty);
     return;
   }
@@ -891,7 +1008,7 @@ function renderCommits() {
     row.innerHTML = `
       <span class="commit-symbol">${escapeHtml(meta.icon)}</span>
       <span class="commit-body">
-        <span class="commit-meta"><strong>${escapeHtml(commit.changeLabel)}</strong><em>${escapeHtml(commit.month || state.year)}</em></span>
+        <span class="commit-meta"><strong>${escapeHtml(commit.changeLabel)}</strong><em>${escapeHtml(commit.month || dataYear())}</em></span>
         <strong>${escapeHtml(commit.title || commit.headline)} in ${escapeHtml(commit.area || "Belfast")}</strong>
         <small>${escapeHtml(commit.detail)}</small>
         <span class="commit-foot"><span>${escapeHtml(commit.eventSourceBasis || commit.severity || "Source-backed")}</span><span>Analyse impacts</span></span>
@@ -1014,7 +1131,7 @@ async function updateSelectedCommitLayer(options = {}) {
   }
   const commitId = state.selectedCommit.id;
   try {
-    const grid = await json(`/data/mode-a/grid_${state.year}.geojson`);
+    const grid = await json(`/data/mode-a/grid_${dataYear()}.geojson`);
     if (state.selectedCommit?.id !== commitId) return;
     const wanted = new Set(state.selectedCommit.cellIds);
     const collection = {
@@ -1029,7 +1146,7 @@ async function updateSelectedCommitLayer(options = {}) {
 
 async function selectCellById(cellId, options = {}) {
   try {
-    const grid = await json(`/data/mode-a/grid_${state.year}.geojson`);
+    const grid = await json(`/data/mode-a/grid_${dataYear()}.geojson`);
     const feature = grid.features.find((item) => item.properties?.cell_id === cellId);
     if (feature) selectGridCell(feature, null, { zoom: options.zoom !== false });
   } catch (_error) {
@@ -1279,12 +1396,86 @@ function showElectricityEvidence(feature, lngLat) {
 }
 
 function fitBelfast() {
-  state.map.fitBounds(state.modeA.bbox, {
+  state.map.fitBounds(BELFAST_FOCUS_BBOX, {
     padding: { top: 60, right: 60, bottom: 170, left: 60 },
     pitch: state.pitch3d ? 54 : 18,
     bearing: state.pitch3d ? -20 : 0,
     duration: 800
   });
+}
+
+function isFutureYear(year = state.year) {
+  return Number(year) >= SIMULATION_START_YEAR;
+}
+
+function timelineTickYears() {
+  return [2016, 2020, 2024, 2026, ...Array.from({ length: SIMULATION_END_YEAR - SIMULATION_START_YEAR + 1 }, (_item, index) => SIMULATION_START_YEAR + index)];
+}
+
+function dataYear(year = state.year) {
+  return Math.min(PRESENT_BASELINE_YEAR, Math.max(HISTORICAL_START_YEAR, Number(year) || PRESENT_BASELINE_YEAR));
+}
+
+function simulationProgress(year = state.year) {
+  if (!isFutureYear(year)) return 0;
+  return Math.min(1, Math.max(0, (Number(year) - PRESENT_BASELINE_YEAR) / (SIMULATION_END_YEAR - PRESENT_BASELINE_YEAR)));
+}
+
+function metricCardsForYear() {
+  if (!isFutureYear()) return state.modeA.metricsByYear[String(state.year)] || [];
+  const baseline = state.modeA.metricsByYear[String(PRESENT_BASELINE_YEAR)] || [];
+  const progress = simulationProgress();
+  const futureAdjustments = {
+    traffic: 3.8,
+    jobs: 8.6,
+    electricity: 10.4,
+    buildings: 12.8,
+    services: 4.7
+  };
+  return baseline.map((card) => {
+    const uplift = (futureAdjustments[card.metric] || 5) * progress;
+    const display = Math.round(Number(card.display || 0) + uplift);
+    const delta = Math.round(Number(card.deltaDisplay || 0) + uplift);
+    return {
+      ...card,
+      display,
+      deltaDisplay: `+${delta}`,
+      trend: card.metric === "traffic" || card.metric === "electricity" ? "pressure" : "simulated uplift",
+      caption: `${state.year} simulated from 2026 baseline`
+    };
+  });
+}
+
+function normalizePostcodeQuery(value) {
+  const text = String(value || "").trim().toUpperCase().replace(/\s+/g, "");
+  const match = text.match(/^(BT\d{1,2})/);
+  return match ? match[1] : text;
+}
+
+function searchBelfastPostcode(value) {
+  const key = normalizePostcodeQuery(value);
+  const area = BELFAST_POSTCODE_AREAS[key];
+  if (!area) {
+    if (els.postcodeStatus) els.postcodeStatus.textContent = key.startsWith("BT") ? "Use a Belfast BT1-BT17 postcode area" : "Belfast postcode areas only";
+    return;
+  }
+  state.map.flyTo({
+    center: area.center,
+    zoom: area.zoom,
+    pitch: state.pitch3d ? 54 : 18,
+    bearing: state.pitch3d ? -18 : 0,
+    duration: 850,
+    essential: true
+  });
+  state.map.getSource("postcode-search-result")?.setData({
+    type: "FeatureCollection",
+    features: [{
+      type: "Feature",
+      properties: { label: area.label },
+      geometry: { type: "Point", coordinates: area.center }
+    }]
+  });
+  if (els.postcodeStatus) els.postcodeStatus.textContent = area.label;
 }
 
 function setStyle(style) {
@@ -1306,8 +1497,9 @@ function togglePlay() {
   clearInterval(state.timer);
   if (!state.playing) return;
   state.timer = setInterval(() => {
-    const index = state.modeA.years.indexOf(state.year);
-    state.year = state.modeA.years[(index + 1) % state.modeA.years.length];
+    const years = state.timelineYears || state.modeA.years;
+    const index = years.indexOf(state.year);
+    state.year = years[(index + 1) % years.length];
     state.selectedCommit = null;
     state.selectedCellId = null;
     state.selectedCellFeature = null;
@@ -1377,7 +1569,7 @@ document.querySelector(".change-filters")?.addEventListener("click", (event) => 
 });
 els.playButton.addEventListener("click", togglePlay);
 els.presentButton.addEventListener("click", () => {
-  state.year = 2026;
+  state.year = SIMULATION_END_YEAR;
   state.selectedCommit = null;
   state.selectedCellId = null;
   state.selectedCellFeature = null;
@@ -1395,6 +1587,10 @@ if (els.commitYearSelect) {
 els.fitTool.addEventListener("click", fitBelfast);
 els.selectTool?.addEventListener("click", resetSelection);
 els.resetSelection?.addEventListener("click", resetSelection);
+els.postcodeSearch?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  searchBelfastPostcode(els.postcodeInput?.value);
+});
 els.layersTool?.addEventListener("click", () => setView("layers"));
 els.settingsTool?.addEventListener("click", () => setView("settings"));
 els.labelsToggle?.addEventListener("change", (event) => {
@@ -1451,7 +1647,7 @@ window.BelfastGitModeA = {
     renderCommits();
   },
   selectCommit: (metric) => {
-    const commit = (state.modeA.commitsByYear[String(state.year)] || []).find((item) => item.type === metric);
+    const commit = (state.modeA.commitsByYear[String(dataYear())] || []).find((item) => item.type === metric);
     if (commit) selectCommit(commit);
   },
   setChangeFilter: (filter) => {
