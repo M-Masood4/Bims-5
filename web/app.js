@@ -520,9 +520,13 @@ function showCellEvidence(feature, lngLat) {
       <dt>Dominant Change</dt><dd>${escapeHtml(labelFor(props.dominant_metric))} ${escapeHtml(props.dominant_change)}</dd>
       <dt>Supporting Signals</dt><dd>
         <span>Development pressure ${pct(Number(props.development_pressure))}</span>
+        <span>Traffic pressure ${pct(Number(props.traffic_pressure))}</span>
         <span>Green cover ${pct(Number(props.green_cover))}</span>
+        <span>Tree canopy context ${pct(Number(props.tree_canopy_context))}</span>
         <span>Transit access ${pct(Number(props.transit_access))}</span>
         <span>Bike access ${pct(Number(props.bike_access))}</span>
+        <span>Bike trip index ${pct(Number(props.bike_trip_index))}</span>
+        <span>Civic service context ${pct(Number(props.civic_service_context))}</span>
       </dd>
       <dt>Confidence</dt><dd>${escapeHtml(props.confidence)}</dd>
       <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>

@@ -206,18 +206,120 @@ def raster_years(root: Path) -> dict[int, set[str]]:
     return found
 
 
-def support_values(cell: dict[str, Any], year: int, air_by_year: dict[int, float], population_by_year: dict[int, int]) -> dict[str, float]:
+def parse_float(value: Any) -> float | None:
+    try:
+        if value in (None, ""):
+            return None
+        return float(str(value).strip().replace('"', ""))
+    except ValueError:
+        return None
+
+
+def load_points_csv(root: Path, relative_path: str, lon_keys: list[str], lat_keys: list[str]) -> list[tuple[float, float]]:
+    path = root / relative_path
+    if not path.exists():
+        return []
+    points: list[tuple[float, float]] = []
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            lon = next((parse_float(row.get(key)) for key in lon_keys if parse_float(row.get(key)) is not None), None)
+            lat = next((parse_float(row.get(key)) for key in lat_keys if parse_float(row.get(key)) is not None), None)
+            if lon is not None and lat is not None and BELFAST_BBOX[0] <= lon <= BELFAST_BBOX[2] and BELFAST_BBOX[1] <= lat <= BELFAST_BBOX[3]:
+                points.append((lon, lat))
+    return points
+
+
+def point_density_score(point: tuple[float, float], points: list[tuple[float, float]], radius_km: float, count_for_full_score: int) -> float:
+    if not points:
+        return 0.0
+    count = sum(1 for candidate in points if distance_km(point, candidate) <= radius_km)
+    return clamp(count / count_for_full_score)
+
+
+def interpolate_yearly(raw: dict[int, float], fallback: float = 0.0) -> dict[int, float]:
+    if not raw:
+        return {year: fallback for year in YEARS}
+    known = sorted(raw)
+    values = {}
+    for year in YEARS:
+        if year in raw:
+            values[year] = raw[year]
+            continue
+        before = max([item for item in known if item <= year], default=known[0])
+        after = min([item for item in known if item >= year], default=known[-1])
+        if before == after:
+            if year < known[0]:
+                values[year] = raw[before] * 0.62
+            else:
+                values[year] = raw[before]
+        else:
+            values[year] = raw[before] + (raw[after] - raw[before]) * ((year - before) / (after - before))
+    return values
+
+
+def load_bike_trip_index(root: Path) -> tuple[dict[int, float], dict[int, int]]:
+    totals: dict[int, int] = {}
+    for path in sorted((root / "data/2016").glob("BelfastBikes_*.json")):
+        if path.stat().st_size < 10:
+            continue
+        match = re.search(r"(20\d{2})", path.name)
+        if not match:
+            continue
+        year = int(match.group(1))
+        try:
+            trips = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(trips, list):
+            continue
+        valid = sum(1 for item in trips if str(item.get("invalid", "0")) != "1")
+        totals[year] = totals.get(year, 0) + valid
+    if not totals:
+        return ({year: 0.0 for year in YEARS}, {})
+    max_total = max(totals.values()) or 1
+    normalized = {year: clamp(total / max_total) for year, total in totals.items()}
+    return interpolate_yearly(normalized, fallback=0.25), totals
+
+
+def build_static_context(root: Path, cells: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
+    tree_points = load_points_csv(root, "data/2016/Trees-Open-Data.csv", ["Longitude"], ["Latitude"])
+    bike_station_points = load_points_csv(root, "data/2016/belfast-bike-stations-updated-25-june-2021.csv", ["Longitude"], ["Latitude"])
+    pitch_points = load_points_csv(root, "data/2016/pitchesplayingfieldsdata.csv", ["LONGITUDE"], ["LATITUDE"])
+    toilet_points = load_points_csv(root, "data/2016/toiletsdata.csv", ["LONGITUDE"], ["LATITUDE"])
+    civic_points = pitch_points + toilet_points
+    context: dict[str, dict[str, float]] = {}
+    for cell in cells:
+        point = cell["center"]
+        context[cell["id"]] = {
+            "tree_density": point_density_score(point, tree_points, radius_km=0.7, count_for_full_score=85),
+            "bike_station_context": point_density_score(point, bike_station_points, radius_km=1.2, count_for_full_score=5),
+            "civic_service_context": point_density_score(point, civic_points, radius_km=1.4, count_for_full_score=5),
+            "recreation_context": point_density_score(point, pitch_points, radius_km=1.7, count_for_full_score=5),
+        }
+    return context
+
+
+def support_values(
+    cell: dict[str, Any],
+    year: int,
+    air_by_year: dict[int, float],
+    population_by_year: dict[int, int],
+    static_context: dict[str, dict[str, float]],
+    bike_trip_index: dict[int, float],
+) -> dict[str, float]:
     progress = (year - 2016) / 10
     point = cell["center"]
+    context = static_context.get(cell["id"], {})
     centre = nearest_score(point, [CENTER], 5.7)
     river = nearest_score(point, RIVER_LAGAN, 2.1)
     development = weighted_anchor_score(point, DEVELOPMENT_ZONES, 4.5)
-    bikes = nearest_score(point, BIKE_STATIONS, 3.2)
+    bikes = max(nearest_score(point, BIKE_STATIONS, 3.2), context.get("bike_station_context", 0.0))
     transit = nearest_score(point, TRANSIT_NODES, 3.8)
-    green = nearest_score(point, GREEN_ANCHORS, 3.5)
+    green = max(nearest_score(point, GREEN_ANCHORS, 3.5), context.get("tree_density", 0.0) * 0.72 + context.get("recreation_context", 0.0) * 0.28)
     deprivation = nearest_score(point, HIGH_DEPRIVATION_ANCHORS, 4.5)
     jobs = nearest_score(point, JOB_EDUCATION_ANCHORS, 4.0)
     flood = nearest_score(point, FLOOD_RISK_ANCHORS, 1.7)
+    bike_year_signal = bike_trip_index.get(year, progress)
     wave = 0.035 * math.sin((cell["row"] * 1.4 + cell["col"] * 0.7 + year * 0.4))
     pop_growth = 0.0
     if population_by_year:
@@ -229,10 +331,11 @@ def support_values(cell: dict[str, Any], year: int, air_by_year: dict[int, float
     planning_intensity = clamp(0.08 + development * (0.28 + 0.48 * progress) + river * 0.14 + wave * 0.5)
     green_cover = clamp(0.36 + green * 0.42 + river * 0.11 - development_pressure * (0.17 + 0.08 * progress) + 0.03 * math.cos(year + cell["col"]))
     transit_access = clamp(0.18 + transit * 0.48 + centre * 0.18)
-    bike_access = clamp(0.05 + bikes * (0.16 + 0.52 * min(progress, 0.65)) + centre * 0.1)
+    bike_access = clamp(0.05 + bikes * (0.16 + 0.58 * bike_year_signal) + centre * 0.08)
     road_pressure = clamp(0.14 + centre * 0.38 + development * 0.32 + (1 - green_cover) * 0.12)
     pollutant_exposure = clamp(air_by_year.get(year, 0.45) * 0.55 + road_pressure * 0.35 - green_cover * 0.12 + flood * 0.08)
-    service_access = clamp(jobs * 0.42 + transit_access * 0.34 + centre * 0.12 + bike_access * 0.12)
+    service_access = clamp(jobs * 0.38 + transit_access * 0.30 + centre * 0.10 + bike_access * 0.12 + context.get("civic_service_context", 0.0) * 0.10)
+    traffic_pressure = clamp(road_pressure * 0.74 + development_pressure * 0.16 - bike_access * 0.10 - transit_access * 0.06 + centre * 0.08)
 
     return {
         "development_pressure": development_pressure,
@@ -243,18 +346,22 @@ def support_values(cell: dict[str, Any], year: int, air_by_year: dict[int, float
         "road_pressure": road_pressure,
         "pollutant_exposure": pollutant_exposure,
         "service_access": service_access,
+        "traffic_pressure": traffic_pressure,
         "deprivation_weight": deprivation,
         "flood_risk": flood,
         "jobs_access": jobs,
         "centre_access": centre,
+        "bike_trip_index": bike_year_signal,
+        "tree_canopy_context": context.get("tree_density", 0.0),
+        "civic_service_context": context.get("civic_service_context", 0.0),
     }
 
 
 def core_metrics(support: dict[str, float], year: int, population_by_year: dict[int, int]) -> dict[str, float]:
     progress = (year - 2016) / 10
     population_pressure = clamp(0.12 + support["development_pressure"] * 0.46 + support["centre_access"] * 0.18 + support["planning_intensity"] * 0.15 + progress * 0.08)
-    mobility_strain = clamp(support["road_pressure"] * 0.42 + (1 - support["transit_access"]) * 0.22 + (1 - support["bike_access"]) * 0.18 + support["development_pressure"] * 0.14)
-    economic_opportunity = clamp(support["service_access"] * 0.52 + support["jobs_access"] * 0.24 + support["transit_access"] * 0.16 + support["bike_access"] * 0.08)
+    mobility_strain = clamp(support["traffic_pressure"] * 0.44 + (1 - support["transit_access"]) * 0.20 + (1 - support["bike_access"]) * 0.18 + support["development_pressure"] * 0.12)
+    economic_opportunity = clamp(support["service_access"] * 0.52 + support["jobs_access"] * 0.22 + support["transit_access"] * 0.14 + support["bike_access"] * 0.08 + support["civic_service_context"] * 0.04)
     environmental_exposure = clamp(support["pollutant_exposure"] * 0.45 + (1 - support["green_cover"]) * 0.24 + support["flood_risk"] * 0.18 + support["road_pressure"] * 0.13)
     fairness_score = clamp(0.50 + (economic_opportunity - mobility_strain) * 0.30 - support["deprivation_weight"] * 0.18 + support["transit_access"] * support["deprivation_weight"] * 0.16)
     return {
@@ -267,8 +374,12 @@ def core_metrics(support: dict[str, float], year: int, population_by_year: dict[
         "green_cover": round(support["green_cover"], 3),
         "bike_access": round(support["bike_access"], 3),
         "transit_access": round(support["transit_access"], 3),
+        "traffic_pressure": round(support["traffic_pressure"], 3),
         "planning_intensity": round(support["planning_intensity"], 3),
         "deprivation_weight": round(support["deprivation_weight"], 3),
+        "bike_trip_index": round(support["bike_trip_index"], 3),
+        "tree_canopy_context": round(support["tree_canopy_context"], 3),
+        "civic_service_context": round(support["civic_service_context"], 3),
     }
 
 
@@ -283,9 +394,9 @@ def metric_direction(metric: str, delta: float) -> str:
 def evidence_for(metric: str, year: int, rasters: dict[int, set[str]]) -> list[str]:
     evidence = {
         "population_pressure": ["NISRA population/census totals", "OSM building density and development-zone proxy", "Planning/local development source inventory"],
-        "mobility_strain": ["Translink stops/routes source inventory", "OSM roads/cycleways context", "Belfast Bikes historical/live source inventory"],
-        "economic_opportunity": ["NISRA census context", "OSM services, education, healthcare and commercial source layers", "Transit and job/education access proxy"],
-        "environmental_exposure": ["NI Air Belfast Centre hourly archive", "NDVI/NDBI raster source availability", "Road-pressure and River Lagan exposure proxy"],
+        "mobility_strain": ["Belfast Bikes trip snapshots by year", "Belfast bike station locations", "OSM roads/cycleways and transit context"],
+        "economic_opportunity": ["NISRA census context", "OSM services, education, healthcare and commercial source layers", "Public toilets, pitches and civic-service point data"],
+        "environmental_exposure": ["NI Air Belfast Centre hourly archive", "BCCAQ monitoring-site inventory", "NDVI/NDBI raster source availability", "Tree inventory, road-pressure and River Lagan exposure proxy"],
         "fairness_score": ["NISRA deprivation/Data Zone source plan", "Population and opportunity access weighting", "Underserved-area anchor proxy"],
     }[metric][:]
     if year in rasters:
@@ -416,11 +527,13 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
     population = load_population(root)
     census_total = load_census_total(root)
     rasters = raster_years(root)
+    bike_trip_index, bike_trip_totals = load_bike_trip_index(root)
+    static_context = build_static_context(root, cells)
     values: dict[str, dict[int, dict[str, float]]] = {}
     for cell in cells:
         values[cell["id"]] = {}
         for year in YEARS:
-            support = support_values(cell, year, air, population)
+            support = support_values(cell, year, air, population, static_context, bike_trip_index)
             values[cell["id"]][year] = core_metrics(support, year, population)
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -457,14 +570,18 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
         "commitsByYear": {str(year): commits_for_year(year, averages, rasters) for year in YEARS},
         "populationByYear": population,
         "census2021TotalPopulation": census_total,
+        "bikeTripTotalsByYear": bike_trip_totals,
+        "bikeTripIndexByYear": {str(key): round(value, 3) for key, value in bike_trip_index.items()},
         "airQualityExposureByYear": {str(key): round(value, 3) for key, value in air.items()},
         "rasterEvidenceByYear": {str(key): sorted(value) for key, value in rasters.items()},
         "sources": [
             {"name": "OpenStreetMap / Overpass local exports", "status": "local", "confidence": "medium", "note": "Buildings, roads, parks, services and development context"},
             {"name": "NI Air Belfast Centre archive", "status": "local", "confidence": "high for available year(s)", "note": "NO2, PM10 and PM2.5 exposure trend input"},
             {"name": "NISRA census and population files", "status": "local", "confidence": "high for official totals", "note": "Population pressure and fairness context"},
-            {"name": "Sentinel/Landsat NDVI/NDBI/RGB rasters", "status": "local sources", "confidence": "medium pending raster tiling", "note": "Green cover and built-up evidence anchors"},
-            {"name": "Belfast Bikes, Translink, planning/local development", "status": "inventory/online", "confidence": "proxy until imported", "note": "Contracts documented for mobility, opportunity and development pressure"},
+            {"name": "Sentinel/Landsat NDVI/NDBI/RGB rasters", "status": "local sources", "confidence": "medium pending raster tiling", "note": "2016, 2018, 2020, 2022 and 2024 raster evidence anchors"},
+            {"name": "Belfast Bikes trip and station datasets", "status": "local", "confidence": "high for sample months", "note": "Yearly mobility strain and active-travel signal"},
+            {"name": "Belfast trees, pitches and public toilets open data", "status": "local", "confidence": "medium", "note": "Green-cover, recreation and civic-service context"},
+            {"name": "BCCAQ air monitoring inventory", "status": "local", "confidence": "medium", "note": "Monitoring-site context for environmental exposure evidence"},
         ],
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

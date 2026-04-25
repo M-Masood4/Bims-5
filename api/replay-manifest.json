@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-25T14:23:32.043353+00:00",
+  "generatedAt": "2026-04-25T14:46:15.917962+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -85,9 +85,9 @@
       "year": 2016,
       "label": "2016 replay",
       "status": "source-available",
-      "summary": "3 source artifact(s) are available for ETL and comparison.",
+      "summary": "8 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 3
+      "sourceArtifactCount": 8
     },
     {
       "year": 2017,
@@ -108,10 +108,10 @@
     {
       "year": 2019,
       "label": "2019 replay",
-      "status": "pending-source",
-      "summary": "No local source artifact is present yet; add Google Earth/manual, OSM history, official statistics, or Earth observation exports.",
+      "status": "source-available",
+      "summary": "1 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 0
+      "sourceArtifactCount": 1
     },
     {
       "year": 2020,
@@ -125,41 +125,41 @@
       "year": 2021,
       "label": "2021 replay",
       "status": "source-available",
-      "summary": "3 source artifact(s) are available for ETL and comparison.",
+      "summary": "6 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 3
+      "sourceArtifactCount": 6
     },
     {
       "year": 2022,
       "label": "2022 replay",
+      "status": "source-available",
+      "summary": "5 source artifact(s) are available for ETL and comparison.",
+      "layerCount": 0,
+      "sourceArtifactCount": 5
+    },
+    {
+      "year": 2023,
+      "label": "2023 replay",
       "status": "source-available",
       "summary": "1 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
       "sourceArtifactCount": 1
     },
     {
-      "year": 2023,
-      "label": "2023 replay",
-      "status": "pending-source",
-      "summary": "No local source artifact is present yet; add Google Earth/manual, OSM history, official statistics, or Earth observation exports.",
-      "layerCount": 0,
-      "sourceArtifactCount": 0
-    },
-    {
       "year": 2024,
       "label": "2024 replay",
-      "status": "pending-source",
-      "summary": "No local source artifact is present yet; add Google Earth/manual, OSM history, official statistics, or Earth observation exports.",
+      "status": "source-available",
+      "summary": "1 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 0
+      "sourceArtifactCount": 1
     },
     {
       "year": 2025,
       "label": "2025 replay",
-      "status": "pending-source",
-      "summary": "No local source artifact is present yet; add Google Earth/manual, OSM history, official statistics, or Earth observation exports.",
+      "status": "source-available",
+      "summary": "2 source artifact(s) are available for ETL and comparison.",
       "layerCount": 0,
-      "sourceArtifactCount": 0
+      "sourceArtifactCount": 2
     },
     {
       "year": 2026,
@@ -209,7 +209,7 @@
         "sourceStatus": "derived-from-local-source"
       },
       "byteSize": 20564986,
-      "modifiedAt": "2026-04-25T14:23:30.936058+00:00"
+      "modifiedAt": "2026-04-25T14:46:14.970015+00:00"
     },
     {
       "id": "source-ni-cycleways-osm",
@@ -1088,6 +1088,36 @@
       "modifiedAt": "2026-04-25T13:16:01.487668+00:00"
     },
     {
+      "id": "bccaqmonitoring",
+      "year": 2016,
+      "label": "Bccaqmonitoring",
+      "type": "csv",
+      "path": "data/2016/BCCAQMonitoring.csv",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 4138,
+      "modifiedAt": "2026-04-25T14:42:19.545939+00:00"
+    },
+    {
+      "id": "bike-stations-updated-25-june-2021",
+      "year": 2021,
+      "label": "Belfast-Bike-Stations-Updated-25-June-2021",
+      "type": "csv",
+      "path": "data/2016/belfast-bike-stations-updated-25-june-2021.csv",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 3920,
+      "modifiedAt": "2026-04-25T14:42:19.770973+00:00"
+    },
+    {
       "id": "ndbi-2016",
       "year": 2016,
       "label": "Belfast Ndbi 2016",
@@ -1133,6 +1163,21 @@
       "modifiedAt": "2026-04-25T14:07:00.141658+00:00"
     },
     {
+      "id": "ndbi-2022",
+      "year": 2022,
+      "label": "Belfast Ndbi 2022",
+      "type": "tif",
+      "path": "data/2016/belfast_ndbi_2022.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 48342168,
+      "modifiedAt": "2026-04-25T14:42:20.713622+00:00"
+    },
+    {
       "id": "ndvi-2016",
       "year": 2016,
       "label": "Belfast Ndvi 2016",
@@ -1176,6 +1221,21 @@
       },
       "byteSize": 47530316,
       "modifiedAt": "2026-04-25T14:07:00.580258+00:00"
+    },
+    {
+      "id": "ndvi-2022",
+      "year": 2022,
+      "label": "Belfast Ndvi 2022",
+      "type": "tif",
+      "path": "data/2016/belfast_ndvi_2022.tif",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 47217608,
+      "modifiedAt": "2026-04-25T14:42:21.179392+00:00"
     },
     {
       "id": "rgb-2016",
@@ -1236,6 +1296,201 @@
       },
       "byteSize": 73839100,
       "modifiedAt": "2026-04-25T14:07:01.207737+00:00"
+    },
+    {
+      "id": "bikes-april-2022",
+      "year": 2022,
+      "label": "Belfastbikes April 2022",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_April_2022.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 6315992,
+      "modifiedAt": "2026-04-25T14:42:19.563190+00:00"
+    },
+    {
+      "id": "bikes-february-2021",
+      "year": 2021,
+      "label": "Belfastbikes February 2021",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_February_2021.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 5847565,
+      "modifiedAt": "2026-04-25T14:42:19.598637+00:00"
+    },
+    {
+      "id": "bikes-january-2025",
+      "year": 2025,
+      "label": "Belfastbikes January 2025",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_January_2025.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 3989731,
+      "modifiedAt": "2026-04-25T14:42:19.613712+00:00"
+    },
+    {
+      "id": "bikes-july-2023",
+      "year": 2023,
+      "label": "Belfastbikes July 2023",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_July_2023.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 6804200,
+      "modifiedAt": "2026-04-25T14:42:19.637608+00:00"
+    },
+    {
+      "id": "bikes-march-2024",
+      "year": 2024,
+      "label": "Belfastbikes March 2024",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_March_2024.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 3802145,
+      "modifiedAt": "2026-04-25T14:42:19.655427+00:00"
+    },
+    {
+      "id": "bikes-november-2021",
+      "year": 2021,
+      "label": "Belfastbikes November 2021",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_November_2021.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 8973769,
+      "modifiedAt": "2026-04-25T14:42:19.679660+00:00"
+    },
+    {
+      "id": "bikes-october-2022",
+      "year": 2022,
+      "label": "Belfastbikes October 2022",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_October_2022.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 8796794,
+      "modifiedAt": "2026-04-25T14:42:19.713818+00:00"
+    },
+    {
+      "id": "bikes-september-2019",
+      "year": 2019,
+      "label": "Belfastbikes September 2019",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_September_2019.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 7628850,
+      "modifiedAt": "2026-04-25T14:42:19.736030+00:00"
+    },
+    {
+      "id": "bikes-september-2025",
+      "year": 2025,
+      "label": "Belfastbikes September 2025",
+      "type": "json",
+      "path": "data/2016/BelfastBikes_September_2025.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 2,
+      "modifiedAt": "2026-04-25T14:42:19.738035+00:00"
+    },
+    {
+      "id": "bikesdata",
+      "year": 2016,
+      "label": "Belfastbikesdata",
+      "type": "json",
+      "path": "data/2016/BelfastBikesData.json",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 1161,
+      "modifiedAt": "2026-04-25T14:42:19.545939+00:00"
+    },
+    {
+      "id": "pitchesplayingfieldsdata",
+      "year": 2016,
+      "label": "Pitchesplayingfieldsdata",
+      "type": "csv",
+      "path": "data/2016/pitchesplayingfieldsdata.csv",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 3721,
+      "modifiedAt": "2026-04-25T14:42:21.179392+00:00"
+    },
+    {
+      "id": "toiletsdata",
+      "year": 2016,
+      "label": "Toiletsdata",
+      "type": "csv",
+      "path": "data/2016/toiletsdata.csv",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 947,
+      "modifiedAt": "2026-04-25T14:42:21.179392+00:00"
+    },
+    {
+      "id": "trees-open-data",
+      "year": 2016,
+      "label": "Trees-Open-Data",
+      "type": "csv",
+      "path": "data/2016/Trees-Open-Data.csv",
+      "status": "source-available",
+      "provenance": {
+        "sourceName": "Local repository source",
+        "license": "Pending source-specific attribution",
+        "sourceStatus": "source-file-present"
+      },
+      "byteSize": 6535363,
+      "modifiedAt": "2026-04-25T14:42:19.770973+00:00"
     },
     {
       "id": "census-2021-dataset",
