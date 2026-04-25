@@ -65,6 +65,20 @@ function assert(condition, message) {
   await page.locator("#studioTool").click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.activeView === "studio");
   await page.waitForFunction(() => document.querySelector("#scenarioStudio")?.textContent?.includes("2036 Scenario Studio"));
+  await page.locator("#scenarioStudio [data-studio-action='add-building']").click();
+  await page.waitForFunction(() => window.BelfastScenarioStudio?.state?.placing === true);
+  const studioDropPoint = await page.evaluate(() => {
+    const { state } = window.BelfastGitModeA;
+    const point = state.map.project([-5.905, 54.607]);
+    return { x: point.x, y: point.y };
+  });
+  await page.mouse.click(studioDropPoint.x, studioDropPoint.y);
+  await page.waitForFunction(() => Boolean(window.BelfastScenarioStudio?.state?.validation));
+  await page.waitForFunction(() => document.querySelector("#scenarioStudio")?.textContent?.includes("Placement status"));
+  await page.waitForFunction(() => {
+    const source = window.BelfastGitModeA?.state?.map?.getSource("studio-building-handles");
+    return Boolean(source && window.BelfastScenarioStudio?.state?.geometry);
+  });
   await page.locator("#studioTool").click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.activeView === "overview");
 

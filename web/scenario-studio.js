@@ -17,6 +17,7 @@
     busy: false,
     validating: false,
     error: "",
+    decision: "",
     location: null,
     geometry: null,
     validation: null,
@@ -525,6 +526,12 @@
         <strong>Critic Agent <span>${critic.humanReviewRequired ? "Planner Review" : "Review Clear"}</span></strong>
         <span>${escapeHtml((critic.warnings || [])[0] || "Uncertainty checked against deterministic outputs.")}</span>
       </div>
+      <div class="scenario-actions">
+        <button type="button" data-scenario-decision="merge">Merge scenario</button>
+        <button type="button" data-scenario-decision="revise">Revise</button>
+        <button type="button" data-scenario-decision="reject">Reject</button>
+      </div>
+      ${studioState.decision ? `<div class="scenario-decision">${escapeHtml(studioState.decision)}</div>` : ""}
       <div class="city-commit-mini">
         ${(report.city_commits || report.cityCommits || []).slice(0, 4).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
       </div>
@@ -575,6 +582,20 @@
     renderBranches();
   }
 
+  function handleReasoningClick(event) {
+    const decision = event.target.closest("[data-scenario-decision]")?.dataset.scenarioDecision;
+    if (!decision) return;
+    const selected = selectedBranch()?.name || "the recommended branch";
+    if (decision === "merge") {
+      studioState.decision = `${selected} marked for planner merge after review.`;
+    } else if (decision === "revise") {
+      studioState.decision = `${selected} kept open for revision. Adjust the building config or move the site, then rerun Gemini.`;
+    } else {
+      studioState.decision = `${selected} rejected for this scenario session.`;
+    }
+    renderReasoning();
+  }
+
   function init() {
     if (!els.panel) return;
     renderStudioPanel();
@@ -583,6 +604,7 @@
     els.panel.addEventListener("click", handlePanelClick);
     els.panel.addEventListener("change", handlePanelChange);
     els.panel.addEventListener("dragstart", handlePanelDragStart);
+    els.reasoning?.addEventListener("click", handleReasoningClick);
     els.studioTool?.addEventListener("click", () => {
       const nextView = appState()?.activeView === "studio" ? "overview" : "studio";
       window.BelfastGitModeA?.setView?.(nextView);

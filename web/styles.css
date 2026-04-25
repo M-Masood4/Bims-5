@@ -1600,6 +1600,38 @@ button {
   line-height: 1.3;
 }
 
+.scenario-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.scenario-actions button {
+  min-height: 32px;
+  border: 1px solid #cfd9e8;
+  border-radius: 7px;
+  background: #fff;
+  color: #1c3556;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.scenario-actions button:first-child {
+  border-color: var(--blue);
+  background: #eaf2ff;
+  color: var(--blue-2);
+}
+
+.scenario-decision {
+  padding: 8px 9px;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
 @media (max-width: 1260px) {
   .replay-app {
     grid-template-columns: minmax(620px, 1fr) 350px;
