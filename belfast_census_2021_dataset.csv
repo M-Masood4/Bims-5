@@ -1,0 +1,48 @@
+Category,Variable,Value
+Overview,Total Population,345418
+Overview,Number of Households,154500
+Overview,Male,169255
+Overview,Female,176163
+Overview,Population Density (per km2),2617
+Demographics,Age 0-14 years,62175
+Demographics,Age 15-39 years,128150
+Demographics,Age 40-64 years,103971
+Demographics,Age 65+ years,50776
+Ethnicity,White,320893
+Ethnicity,Chinese,4836
+Ethnicity,Indian,4490
+Ethnicity,Mixed / Multiple Ethnicities,4145
+Ethnicity,Black African,4145
+Ethnicity,Filipino,1727
+Ethnicity,Other Asian,1727
+Ethnicity,Arab,1036
+Ethnicity,Other Ethnicities,2418
+Religion,Catholic,150257
+Religion,Protestant & Other Christian,102589
+Religion,Other Religions,10363
+Religion,No Religion,74956
+Religion,Not Stated,7599
+Sexual Orientation (Aged 16+),Straight / Heterosexual,246705
+Sexual Orientation (Aged 16+),Gay or Lesbian,6515
+Sexual Orientation (Aged 16+),Bisexual,4249
+Sexual Orientation (Aged 16+),Other Sexual Orientation,850
+Sexual Orientation (Aged 16+),Prefer not to say / Not stated,24925
+Marital Status (Aged 16+),Single (Never married/civil partnership),141055
+Marital Status (Aged 16+),Married,93187
+Marital Status (Aged 16+),Civil Partnership,850
+Marital Status (Aged 16+),Separated,13312
+Marital Status (Aged 16+),Divorced / Dissolved,17561
+Marital Status (Aged 16+),Widowed / Surviving Partner,17278
+Health & Disability,Very good or Good health,271153
+Health & Disability,Bad or Very bad health,27633
+Health & Disability,Long-term health problem/disability (limiting),92227
+Health & Disability,Provide unpaid care (1+ hours/week),41450
+Labour Market & Education,Economically Active (16-64),161324
+Labour Market & Education,In Employment,150879
+Labour Market & Education,Unemployed,10445
+Labour Market & Education,Highest Qualification: Level 4 or above,109049
+Labour Market & Education,No Qualifications,39654
+Housing & Households,Owner Occupied,80340
+Housing & Households,Social Rented,37080
+Housing & Households,Private Rented,33990
+Housing & Households,No Cars or Vans in Household,52530
