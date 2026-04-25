@@ -105,7 +105,12 @@ export function buildStartRunForm(params: StartRunParams): FormData {
       tags: b.tags,
       hotspot: b.hotspot,
     }));
-    form.append("buildings", JSON.stringify(buildings));
+    const buildingsJson = JSON.stringify(buildings);
+    form.append(
+      "buildingsFile",
+      new Blob([buildingsJson], { type: "application/json" }),
+      "buildings.json",
+    );
   }
   if (params.bounds) form.append("bounds", JSON.stringify(params.bounds));
   if (params.iterations !== undefined)

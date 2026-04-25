@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 import nats as nats_lib
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.requests import Request as StarletteRequest
 
 from config import get_settings
 from db import engine
@@ -13,6 +14,13 @@ from api.scenarios import router as scenarios_router
 from api.runs import router as runs_router
 
 logging.basicConfig(level=logging.INFO)
+
+
+def configure_multipart_limits(max_part_size: int) -> None:
+    for method in (StarletteRequest.form, StarletteRequest._get_form):
+        kwdefaults = getattr(method, "__kwdefaults__", None)
+        if kwdefaults and "max_part_size" in kwdefaults:
+            kwdefaults["max_part_size"] = max_part_size
 
 
 @asynccontextmanager
@@ -37,6 +45,9 @@ TAGS_METADATA = [
         "description": "Start and monitor simulation runs within a scenario. Events stream over SSE; output files are served from NATS Object Store.",
     },
 ]
+
+settings = get_settings()
+configure_multipart_limits(settings.multipart_max_part_size_bytes)
 
 app = FastAPI(
     title="BIMS 5 Backend",

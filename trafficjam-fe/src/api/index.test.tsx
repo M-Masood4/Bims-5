@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { decodeEventStream, mapNetworkResponse } from "./decoders";
 import { api } from "./client";
+import { buildStartRunForm } from "./http";
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;
@@ -115,6 +116,42 @@ describe("api.startRun", () => {
     mockFetch.mockResolvedValueOnce(new Response(null, { status: 500 }));
     const file = new File([""], "network.xml");
     await expect(api.startRun({ scenarioId: "s1", networkFile: file })).rejects.toThrow("500");
+  });
+});
+
+describe("buildStartRunForm", () => {
+  it("sends buildings as a file part to avoid multipart field limits", async () => {
+    const file = new File(["<network/>"], "network.xml", { type: "text/xml" });
+    const form = buildStartRunForm({
+      scenarioId: "s1",
+      networkFile: file,
+      buildings: [
+        {
+          id: "b1",
+          position: [54.597, -5.93],
+          geometry: [[54.597, -5.93]],
+          type: "residential",
+          tags: { building: "residential" },
+        },
+      ],
+      bounds: { north: 54.7, south: 54.5, east: -5.8, west: -6 },
+    });
+
+    expect(form.get("buildings")).toBeNull();
+    const buildingsFile = form.get("buildingsFile");
+    expect(buildingsFile).toBeInstanceOf(File);
+    expect((buildingsFile as File).name).toBe("buildings.json");
+    expect((buildingsFile as File).type).toBe("application/json");
+    expect(JSON.parse(await (buildingsFile as File).text())).toEqual([
+      {
+        id: "b1",
+        osm_id: 0,
+        position: [54.597, -5.93],
+        geometry: [[54.597, -5.93]],
+        type: "residential",
+        tags: { building: "residential" },
+      },
+    ]);
   });
 });
 

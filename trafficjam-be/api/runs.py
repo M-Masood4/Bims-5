@@ -19,6 +19,13 @@ router = APIRouter(prefix="/scenarios", tags=["runs"])
 logger = logging.getLogger(__name__)
 
 
+async def _read_upload_text(upload: UploadFile | None) -> str | None:
+    if upload is None:
+        return None
+    content = await upload.read()
+    return content.decode("utf-8")
+
+
 @router.get(
     "/{scenario_id}/runs",
     summary="List runs",
@@ -86,6 +93,10 @@ async def start_run(
         None,
         description="JSON array of building objects used for agent plan generation",
     ),
+    buildingsFile: UploadFile | None = File(
+        None,
+        description="JSON file of building objects used for agent plan generation",
+    ),
     bounds: Optional[str] = Form(
         None,
         description="JSON object with bounding box (minLat, minLng, maxLat, maxLng)",
@@ -108,8 +119,9 @@ async def start_run(
         random_seed=randomSeed,
         note=note,
     )
+    buildings_json = await _read_upload_text(buildingsFile) or buildings
 
-    if not buildings or not bounds:
+    if not buildings_json or not bounds:
         await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(
             400, "Buildings and bounds are required for plan generation."
@@ -121,7 +133,9 @@ async def start_run(
     max_agents = plan_params.get("maxAgents", 1000)
 
     try:
-        buildings_list, bounds_dict = parse_buildings_and_bounds(buildings, bounds)
+        buildings_list, bounds_dict = parse_buildings_and_bounds(
+            buildings_json, bounds
+        )
     except Exception as e:
         await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(400, f"Invalid buildings or bounds data: {e}")
