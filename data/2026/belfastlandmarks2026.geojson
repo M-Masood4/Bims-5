@@ -1,0 +1,1008 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-25T11:49:36Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/372773761",
+        "addr:housenumber": "192",
+        "addr:postcode": "04915",
+        "addr:street": "Northport Avenue",
+        "building": "hotel",
+        "building:levels": "2",
+        "internet_access": "wlan",
+        "name": "Northport Inn",
+        "tourism": "hotel",
+        "website": "https://thenorthportinn.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9915291,
+              44.4080315
+            ],
+            [
+              -68.9914504,
+              44.407876
+            ],
+            [
+              -68.9916546,
+              44.4078163
+            ],
+            [
+              -68.9916044,
+              44.4077287
+            ],
+            [
+              -68.9916085,
+              44.4077037
+            ],
+            [
+              -68.991595,
+              44.4076912
+            ],
+            [
+              -68.9915735,
+              44.4076883
+            ],
+            [
+              -68.991552,
+              44.4076931
+            ],
+            [
+              -68.9915358,
+              44.4077037
+            ],
+            [
+              -68.9915277,
+              44.4077229
+            ],
+            [
+              -68.9915264,
+              44.407737
+            ],
+            [
+              -68.9913375,
+              44.4077923
+            ],
+            [
+              -68.9913634,
+              44.4078376
+            ],
+            [
+              -68.9913465,
+              44.4078425
+            ],
+            [
+              -68.9913891,
+              44.4079161
+            ],
+            [
+              -68.9913175,
+              44.4079398
+            ],
+            [
+              -68.9913888,
+              44.4080706
+            ],
+            [
+              -68.9915291,
+              44.4080315
+            ]
+          ]
+        ]
+      },
+      "id": "way/372773761"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/512388915",
+        "addr:city": "Belfast",
+        "addr:housenumber": "31",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "building": "yes",
+        "internet_access": "yes",
+        "name": "The Nightfall Inn",
+        "phone": "+1-207-231-2317",
+        "tourism": "guest_house",
+        "website": "http://thenightfallinn.com"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0010668,
+              44.4338052
+            ],
+            [
+              -69.0010878,
+              44.4337182
+            ],
+            [
+              -69.0008878,
+              44.4336898
+            ],
+            [
+              -69.0008817,
+              44.43374
+            ],
+            [
+              -69.0009701,
+              44.4337506
+            ],
+            [
+              -69.0009623,
+              44.4337941
+            ],
+            [
+              -69.0010668,
+              44.4338052
+            ]
+          ]
+        ]
+      },
+      "id": "way/512388915"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622987",
+        "addr:city": "Belfast",
+        "addr:housenumber": "163",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "amenity": "cinema",
+        "building": "yes",
+        "email": "info@colonialtheatre.com",
+        "fax": "+1-207-338-2159",
+        "name": "Colonial Theater",
+        "phone": "+1-207-338-1930",
+        "website": "https://colonialtheater.com/",
+        "wheelchair": "yes",
+        "wikidata": "Q42564224"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0075708,
+              44.4268971
+            ],
+            [
+              -69.0076148,
+              44.4268324
+            ],
+            [
+              -69.0077608,
+              44.4266126
+            ],
+            [
+              -69.0076181,
+              44.4265639
+            ],
+            [
+              -69.0075294,
+              44.4266958
+            ],
+            [
+              -69.0074265,
+              44.426847
+            ],
+            [
+              -69.0075708,
+              44.4268971
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622987"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638631561",
+        "addr:city": "Belfast",
+        "addr:housenumber": "10",
+        "addr:state": "ME",
+        "addr:street": "Market Street",
+        "building": "yes",
+        "name": "Belfast Historical Society",
+        "phone": "+1-207-338-9229",
+        "tourism": "museum",
+        "website": "https://www.belfastmuseum.org/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0085555,
+              44.4259807
+            ],
+            [
+              -69.0084333,
+              44.4259253
+            ],
+            [
+              -69.0083622,
+              44.4260053
+            ],
+            [
+              -69.0084845,
+              44.4260607
+            ],
+            [
+              -69.0085555,
+              44.4259807
+            ]
+          ]
+        ]
+      },
+      "id": "way/638631561"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/934135992",
+        "addr:city": "Belfast",
+        "addr:housenumber": "196",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "building": "yes",
+        "description": "Situated opposite Belfast Bay, this low-rise 1950s motel is 1.3 miles from Moose Point State Park and 3.3 miles from historic downtown Belfast.",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "name": "Gull Motel",
+        "operator": "The Gull Motel",
+        "phone": "+1-207-338-4030",
+        "tourism": "hotel",
+        "website": "http://gullmotelbelfast.us"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9715921,
+              44.43024
+            ],
+            [
+              -68.9717655,
+              44.4302008
+            ],
+            [
+              -68.9717425,
+              44.4301351
+            ],
+            [
+              -68.9713195,
+              44.4302299
+            ],
+            [
+              -68.971224,
+              44.4302438
+            ],
+            [
+              -68.9707657,
+              44.4302615
+            ],
+            [
+              -68.970771,
+              44.4303284
+            ],
+            [
+              -68.9712629,
+              44.4303158
+            ],
+            [
+              -68.9712788,
+              44.4303474
+            ],
+            [
+              -68.9713868,
+              44.4303284
+            ],
+            [
+              -68.9713709,
+              44.430288
+            ],
+            [
+              -68.9715921,
+              44.43024
+            ]
+          ]
+        ]
+      },
+      "id": "way/934135992"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/934136315",
+        "addr:city": "Belfast",
+        "addr:housenumber": "63",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Church Street",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Alden House Inn",
+        "payment:contactless": "yes",
+        "smoking": "no",
+        "tourism": "hotel",
+        "website": "https://thealdenhouse.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0032978,
+              44.4233933
+            ],
+            [
+              -69.0033907,
+              44.4233248
+            ],
+            [
+              -69.0033792,
+              44.4233168
+            ],
+            [
+              -69.0034444,
+              44.4232687
+            ],
+            [
+              -69.0034944,
+              44.4233033
+            ],
+            [
+              -69.0035938,
+              44.4232298
+            ],
+            [
+              -69.0034519,
+              44.4231317
+            ],
+            [
+              -69.003353,
+              44.4232047
+            ],
+            [
+              -69.0033697,
+              44.4232163
+            ],
+            [
+              -69.0032836,
+              44.4232798
+            ],
+            [
+              -69.0032333,
+              44.423317
+            ],
+            [
+              -69.0031223,
+              44.4232402
+            ],
+            [
+              -69.0030533,
+              44.4232911
+            ],
+            [
+              -69.0031616,
+              44.4233659
+            ],
+            [
+              -69.0032512,
+              44.4234278
+            ],
+            [
+              -69.0032978,
+              44.4233933
+            ]
+          ]
+        ]
+      },
+      "id": "way/934136315"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/936514813",
+        "addr:city": "Belfast",
+        "addr:housenumber": "40",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Pearl Street",
+        "building": "commercial",
+        "building:levels": "2",
+        "description": "An historic home restored into a 7 room bed and breakfast.",
+        "image": "https://www.jeweledturret.com/wp-content/uploads/belfast-maine-bed-and-breakfast-1024x628.jpg",
+        "name": "The Jeweled Turret Inn",
+        "phone": "+1-207-338-2304",
+        "smoking": "outside",
+        "tourism": "guest_house",
+        "website": "https://www.jeweledturret.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0040151,
+              44.4238977
+            ],
+            [
+              -69.0039057,
+              44.4238257
+            ],
+            [
+              -69.0039315,
+              44.4238073
+            ],
+            [
+              -69.0038649,
+              44.4237552
+            ],
+            [
+              -69.0037233,
+              44.4238594
+            ],
+            [
+              -69.0038907,
+              44.423982
+            ],
+            [
+              -69.0040151,
+              44.4238977
+            ]
+          ]
+        ]
+      },
+      "id": "way/936514813"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1227991096",
+        "addr:city": "Belfast",
+        "addr:housenumber": "7",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Eagle Avenue",
+        "building": "yes",
+        "name": "Colonial Gables Oceanfront Village",
+        "tourism": "hotel"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9697479,
+              44.4295718
+            ],
+            [
+              -68.9697228,
+              44.4294956
+            ],
+            [
+              -68.9690446,
+              44.4296095
+            ],
+            [
+              -68.9690697,
+              44.4296858
+            ],
+            [
+              -68.9697479,
+              44.4295718
+            ]
+          ]
+        ]
+      },
+      "id": "way/1227991096"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1376574792",
+        "addr:city": "Belfast",
+        "addr:housenumber": "44",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "historic": "building",
+        "name": "The Williamson House",
+        "start_date": "1844-01-01"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0018219,
+              44.422521
+            ],
+            [
+              -69.0017666,
+              44.4224387
+            ],
+            [
+              -69.0016709,
+              44.4224643
+            ],
+            [
+              -69.0016743,
+              44.4224706
+            ],
+            [
+              -69.0015198,
+              44.42252
+            ],
+            [
+              -69.0015119,
+              44.4225095
+            ],
+            [
+              -69.0015216,
+              44.4225078
+            ],
+            [
+              -69.0015131,
+              44.4224915
+            ],
+            [
+              -69.0015003,
+              44.4224939
+            ],
+            [
+              -69.0014784,
+              44.4224571
+            ],
+            [
+              -69.0014899,
+              44.4224538
+            ],
+            [
+              -69.0014823,
+              44.4224447
+            ],
+            [
+              -69.0014598,
+              44.4224501
+            ],
+            [
+              -69.0014582,
+              44.4224473
+            ],
+            [
+              -69.0013693,
+              44.4224712
+            ],
+            [
+              -69.0013729,
+              44.4224764
+            ],
+            [
+              -69.0013595,
+              44.4224799
+            ],
+            [
+              -69.0013735,
+              44.422506
+            ],
+            [
+              -69.0013385,
+              44.4225187
+            ],
+            [
+              -69.0013534,
+              44.4225417
+            ],
+            [
+              -69.0013105,
+              44.422557
+            ],
+            [
+              -69.0013074,
+              44.4225515
+            ],
+            [
+              -69.0012724,
+              44.4225622
+            ],
+            [
+              -69.0012763,
+              44.4225685
+            ],
+            [
+              -69.0012678,
+              44.4225709
+            ],
+            [
+              -69.0013224,
+              44.4226507
+            ],
+            [
+              -69.0014159,
+              44.4226212
+            ],
+            [
+              -69.001429,
+              44.4226468
+            ],
+            [
+              -69.0014717,
+              44.4226323
+            ],
+            [
+              -69.0014909,
+              44.4226629
+            ],
+            [
+              -69.0015749,
+              44.4226351
+            ],
+            [
+              -69.0015478,
+              44.4225898
+            ],
+            [
+              -69.0017169,
+              44.4225372
+            ],
+            [
+              -69.0017258,
+              44.422552
+            ],
+            [
+              -69.0018219,
+              44.422521
+            ]
+          ]
+        ]
+      },
+      "id": "way/1376574792"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377245363",
+        "addr:city": "Belfast",
+        "addr:housenumber": "139",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Union Street",
+        "building": "yes",
+        "check_date": "2025-04-13",
+        "guest_house": "bed_and_breakfast",
+        "internet_access": "wlan",
+        "internet_access:fee": "customers",
+        "name": "Chez Seeger",
+        "phone": "+1-207-323-5248",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9974719,
+              44.4184697
+            ],
+            [
+              -68.997443,
+              44.4184126
+            ],
+            [
+              -68.9974,
+              44.4184241
+            ],
+            [
+              -68.9973887,
+              44.4184027
+            ],
+            [
+              -68.9973489,
+              44.4184131
+            ],
+            [
+              -68.9973442,
+              44.4184048
+            ],
+            [
+              -68.9973839,
+              44.4183939
+            ],
+            [
+              -68.9973671,
+              44.4183574
+            ],
+            [
+              -68.9972143,
+              44.418392
+            ],
+            [
+              -68.9972781,
+              44.4185049
+            ],
+            [
+              -68.9973796,
+              44.4184783
+            ],
+            [
+              -68.9973869,
+              44.4184913
+            ],
+            [
+              -68.9974719,
+              44.4184697
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377245363"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829965",
+        "addr:city": "Belfast",
+        "addr:housenumber": "17",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Court Street",
+        "amenity": "theatre",
+        "building": "commercial",
+        "email": "info@belfastmaskers.com",
+        "name": "Belfast Maskers",
+        "phone": "+1-207-619-3256",
+        "website": "https://belfastmaskers.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0015309,
+              44.4235258
+            ],
+            [
+              -69.0014664,
+              44.4235764
+            ],
+            [
+              -69.0014728,
+              44.4235806
+            ],
+            [
+              -69.0012991,
+              44.4237168
+            ],
+            [
+              -69.0013719,
+              44.4237641
+            ],
+            [
+              -69.0014374,
+              44.4237127
+            ],
+            [
+              -69.0014333,
+              44.4237083
+            ],
+            [
+              -69.0014395,
+              44.4237054
+            ],
+            [
+              -69.0014428,
+              44.4237069
+            ],
+            [
+              -69.0014619,
+              44.4236956
+            ],
+            [
+              -69.0014634,
+              44.4236907
+            ],
+            [
+              -69.0015196,
+              44.4236467
+            ],
+            [
+              -69.0015317,
+              44.4236545
+            ],
+            [
+              -69.0015755,
+              44.4236202
+            ],
+            [
+              -69.0015603,
+              44.4236102
+            ],
+            [
+              -69.0015911,
+              44.4235861
+            ],
+            [
+              -69.0015769,
+              44.4235769
+            ],
+            [
+              -69.0015815,
+              44.4235733
+            ],
+            [
+              -69.0015623,
+              44.4235607
+            ],
+            [
+              -69.0015724,
+              44.4235528
+            ],
+            [
+              -69.0015309,
+              44.4235258
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829965"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/358211007",
+        "addr:city": "Belfast",
+        "addr:housenumber": "256",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "amenity": "arts_centre",
+        "description": "Contemporary arts center in the old Governor Anderson School building.",
+        "email": "info@waterfallarts.org",
+        "gnis:feature_id": "561252",
+        "name": "Waterfall Arts",
+        "phone": "+1-207-338-2222",
+        "website": "https://waterfallarts.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0138642,
+          44.4295104
+        ]
+      },
+      "id": "node/358211007"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1943695692",
+        "name": "Seascape",
+        "opening_hours": "7:30-22:00",
+        "tourism": "motel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9698398,
+          44.430271
+        ]
+      },
+      "id": "node/1943695692"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2184638538",
+        "historic": "yes",
+        "source": "NRCan-CanVec-10.0",
+        "tourism": "attraction"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -62.8773682,
+          46.0794088
+        ]
+      },
+      "id": "node/2184638538"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5010148073",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0010144,
+          44.4337492
+        ]
+      },
+      "id": "node/5010148073"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5664763128",
+        "addr:city": "Belfast",
+        "addr:housenumber": "92",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "email": "neal@nealparent.com",
+        "name": "Parent Gallery",
+        "phone": "+1-207-338-1553",
+        "tourism": "gallery",
+        "website": "https://nealparent.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0066271,
+          44.4259595
+        ]
+      },
+      "id": "node/5664763128"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665160627",
+        "addr:city": "Belfast",
+        "addr:housenumber": "191",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "contact:phone": "+1-207-338-6860",
+        "contact:website": "https://mooringscamp.com/",
+        "tourism": "camp_site"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9711283,
+          44.4295977
+        ]
+      },
+      "id": "node/5665160627"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10179248362",
+        "information": "board",
+        "tourism": "information"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0102386,
+          44.4311607
+        ]
+      },
+      "id": "node/10179248362"
+    }
+  ]
+}
