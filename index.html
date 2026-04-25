@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Belfast Futures Lab: a frontend mockup for exploring Belfast changes from 2016 to 2036."
+    />
+    <title>Belfast Futures Lab</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d0d'/%3E%3Cpath d='M8 40c10-9 17 4 27-5s14-2 21-12' fill='none' stroke='%2358b8d6' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='31' cy='31' r='8' fill='%23ffb000'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main class="app-shell">
+      <section class="hero panel reveal" aria-labelledby="page-title">
+        <div class="hero__kicker">Urban time machine · Belfast 2016 → 2036</div>
+        <div class="hero__grid">
+          <div>
+            <h1 id="page-title">Watch Belfast change, then bend its future.</h1>
+            <p>
+              Scrub through real-world inspired change from 2016 to 2026, then
+              test future interventions through 2036. Drop in homes, roads,
+              green corridors, or transit hubs and watch the city metrics react.
+            </p>
+          </div>
+          <aside class="mission-card" aria-label="Current simulation state">
+            <span class="mission-card__label">Mode</span>
+            <strong id="modeLabel">Historic playback</strong>
+            <small id="modeHint">Move the year slider beyond 2026 to unlock interventions.</small>
+          </aside>
+        </div>
+      </section>
+
+      <section class="control-strip panel reveal" style="--delay: 80ms" aria-labelledby="timeline-title">
+        <div class="year-readout">
+          <span id="yearLabel">2016</span>
+          <small id="phaseLabel">baseline recovery</small>
+        </div>
+        <div class="timeline-control">
+          <div class="timeline-copy">
+            <h2 id="timeline-title">Choose a year</h2>
+            <p>2016–2026 reviews how Belfast evolved. 2027–2036 becomes a sandbox.</p>
+          </div>
+          <label class="sr-only" for="yearRange">Simulation year</label>
+          <input id="yearRange" type="range" min="2016" max="2036" value="2016" step="1" />
+          <div class="timeline-markers" aria-hidden="true">
+            <span>2016</span>
+            <span>Now · 2026</span>
+            <span>2036</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="map-panel panel reveal" style="--delay: 160ms" aria-labelledby="map-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Live civic model</p>
+              <h2 id="map-title">Belfast as an evolving 2D organism</h2>
+            </div>
+            <button class="ghost-button" id="playButton" type="button" aria-pressed="false">Play years</button>
+          </div>
+
+          <div class="map-stage" id="mapStage">
+            <svg class="city-map" viewBox="0 0 900 620" role="img" aria-labelledby="mapSvgTitle mapSvgDescription">
+              <title id="mapSvgTitle">Stylised 2D map of Belfast simulation zones</title>
+              <desc id="mapSvgDescription">
+                River, neighbourhood cells, roads, growth zones, and scenario interventions animate as the selected year changes.
+              </desc>
+              <defs>
+                <filter id="softGlow">
+                  <feGaussianBlur stdDeviation="6" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <path class="river" d="M 20 398 C 148 338 216 404 326 350 C 432 296 520 290 642 326 C 744 356 798 306 880 236" />
+              <path class="ring-road" d="M 126 474 C 84 306 160 154 326 104 C 520 45 720 154 742 338 C 766 534 544 594 358 552 C 244 526 158 506 126 474 Z" />
+              <path class="artery artery--one" d="M 116 172 L 764 498" />
+              <path class="artery artery--two" d="M 222 548 L 692 80" />
+              <path class="artery artery--three" d="M 80 326 L 814 326" />
+
+              <g class="districts">
+                <polygon class="district district--cathedral" points="356,150 494,140 550,238 470,314 332,270" />
+                <polygon class="district district--titanic" points="542,214 704,188 774,308 664,408 544,350" />
+                <polygon class="district district--queens" points="210,324 346,286 434,378 352,500 190,466" />
+                <polygon class="district district--west" points="96,246 244,194 322,278 220,376 92,342" />
+                <polygon class="district district--south" points="388,382 544,360 638,462 530,548 374,510" />
+              </g>
+
+              <g id="interventionLayer"></g>
+              <g class="pulse-points" aria-hidden="true">
+                <circle cx="446" cy="238" r="9" />
+                <circle cx="612" cy="304" r="7" />
+                <circle cx="314" cy="398" r="8" />
+              </g>
+            </svg>
+
+            <div class="map-hud" aria-live="polite">
+              <strong id="mapStatus">Historic view loaded</strong>
+              <span id="mapNarrative">Belfast starts with modest density and pressure clustered around the city core.</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-stack">
+          <section class="panel reveal" style="--delay: 240ms" aria-labelledby="intervention-title">
+            <div class="section-heading section-heading--compact">
+              <div>
+                <p class="eyebrow">Future levers</p>
+                <h2 id="intervention-title">Add an intervention</h2>
+              </div>
+              <span class="lock-pill" id="sandboxPill">Locked until 2027</span>
+            </div>
+            <div class="toolbox" id="toolbox" aria-describedby="toolboxHint">
+              <button type="button" class="tool-card" data-tool="housing">
+                <span>Stacked homes</span>
+                <small>+ population, + local services</small>
+              </button>
+              <button type="button" class="tool-card" data-tool="road">
+                <span>Smart road</span>
+                <small>- congestion, + emissions risk</small>
+              </button>
+              <button type="button" class="tool-card" data-tool="green">
+                <span>Green corridor</span>
+                <small>+ green space, - heat</small>
+              </button>
+              <button type="button" class="tool-card" data-tool="transit">
+                <span>Transit hub</span>
+                <small>- congestion, + access</small>
+              </button>
+            </div>
+            <p class="helper" id="toolboxHint">Move to 2027 or later to test interventions through 2036.</p>
+          </section>
+
+          <section class="panel reveal" style="--delay: 320ms" aria-labelledby="metrics-title">
+            <div class="section-heading section-heading--compact">
+              <div>
+                <p class="eyebrow">Impact factors</p>
+                <h2 id="metrics-title">Simulation telemetry</h2>
+              </div>
+            </div>
+            <div class="metrics" id="metrics"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="story-panel panel reveal" style="--delay: 400ms" aria-labelledby="story-title">
+        <div>
+          <p class="eyebrow">What changed?</p>
+          <h2 id="story-title">Timeline insight</h2>
+        </div>
+        <p id="storyText">
+          2016 opens the model with cautious regeneration, pressure around central routes, and room for denser neighbourhood planning.
+        </p>
+        <div class="scenario-log" aria-label="Applied interventions">
+          <strong>Scenario log</strong>
+          <ul id="scenarioLog">
+            <li>No interventions yet. Future scenarios unlock after 2026.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <script src="script.js" defer></script>
+  </body>
+</html>
