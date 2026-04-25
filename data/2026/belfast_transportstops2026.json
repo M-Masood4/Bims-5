@@ -1,0 +1,276 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-25T11:46:31Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1362635015",
+        "public_transport": "platform",
+        "railway": "platform",
+        "train": "yes"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -69.0349367,
+            44.4554235
+          ],
+          [
+            -69.0351557,
+            44.4551468
+          ]
+        ]
+      },
+      "id": "way/1362635015"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5669553427",
+        "addr:housenumber": "22",
+        "addr:street": "Belmont Avenue",
+        "bench": "no",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Concord Bus Lines Belfast",
+        "network": "Concord Coach",
+        "public_transport": "platform",
+        "shelter": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0264299,
+          44.4225998
+        ]
+      },
+      "id": "node/5669553427"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265162",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "VOA",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0076836,
+          44.4133116
+        ]
+      },
+      "id": "node/12199265162"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265163",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "The Ambassador",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0116462,
+          44.4245356
+        ]
+      },
+      "id": "node/12199265163"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265164",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Belfast Plaza/Family Dollar",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0092403,
+          44.4251361
+        ]
+      },
+      "id": "node/12199265164"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265165",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Field Street",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0137087,
+          44.4315569
+        ]
+      },
+      "id": "node/12199265165"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265166",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Belfast Harbor",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0043779,
+          44.4277695
+        ]
+      },
+      "id": "node/12199265166"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265167",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "School Street",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.009998,
+          44.4180477
+        ]
+      },
+      "id": "node/12199265167"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265168",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Hannaford",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0183469,
+          44.4200205
+        ]
+      },
+      "id": "node/12199265168"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265169",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Reny's",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0231906,
+          44.425001
+        ]
+      },
+      "id": "node/12199265169"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265170",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Seaport",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0236436,
+          44.4189184
+        ]
+      },
+      "id": "node/12199265170"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265171",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "YMCA",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0237015,
+          44.4140619
+        ]
+      },
+      "id": "node/12199265171"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265172",
+        "bench": "yes",
+        "bin": "yes",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "lit": "yes",
+        "name": "WCGH",
+        "public_transport": "platform",
+        "ref:signed": "no",
+        "shelter": "yes",
+        "tactile_paving": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9954442,
+          44.4128546
+        ]
+      },
+      "id": "node/12199265172"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12199265173",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Waldo Hospital",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9944355,
+          44.4124118
+        ]
+      },
+      "id": "node/12199265173"
+    }
+  ]
+}

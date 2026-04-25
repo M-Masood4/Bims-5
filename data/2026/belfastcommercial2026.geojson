@@ -1,0 +1,4494 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-25T11:47:31Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208137904",
+        "addr:city": "Belfast",
+        "addr:housenumber": "123",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "amenity": "cafe",
+        "building": "yes",
+        "changing_table": "yes",
+        "cuisine": "sandwich;burger;salad",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "drink:coffee": "yes",
+        "internet_access": "wlan",
+        "name": "Belfast Co-op and Cafe",
+        "opening_hours": "Mo-Su 07:30-20:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-2532",
+        "shop": "supermarket",
+        "toilets": "yes",
+        "toilets:unisex": "yes",
+        "website": "https://belfast.coop/",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0054234,
+              44.42653
+            ],
+            [
+              -69.0056796,
+              44.4262541
+            ],
+            [
+              -69.005459,
+              44.4261497
+            ],
+            [
+              -69.0052029,
+              44.4264256
+            ],
+            [
+              -69.0054234,
+              44.42653
+            ]
+          ]
+        ]
+      },
+      "id": "way/208137904"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/231657397",
+        "addr:city": "Belfast",
+        "addr:housenumber": "95",
+        "addr:state": "ME",
+        "addr:street": "Lincolnville Avenue",
+        "brand": "Ocean State Job Lot",
+        "brand:wikidata": "Q7076076",
+        "building": "commercial",
+        "name": "Ocean State Job Lot",
+        "shop": "variety_store",
+        "short_name": "Job Lot"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0183947,
+              44.4208967
+            ],
+            [
+              -69.0191276,
+              44.4213162
+            ],
+            [
+              -69.0195803,
+              44.4209313
+            ],
+            [
+              -69.0188445,
+              44.4204909
+            ],
+            [
+              -69.0183947,
+              44.4208967
+            ]
+          ]
+        ]
+      },
+      "id": "way/231657397"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/594356803",
+        "addr:city": "Belfast",
+        "addr:housenumber": "105",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "branch": "Carquest Auto Parts of Belfast",
+        "brand": "Carquest",
+        "brand:wikidata": "Q5045948",
+        "name": "Carquest",
+        "official_name": "Carquest Auto Parts",
+        "opening_hours": "Mo-Fr 07:00-17:00; Sa 08:00-12:00",
+        "phone": "+1-207-338-1880",
+        "shop": "car_parts",
+        "website": "https://www.carquest.com/stores/me/belfast/6771"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0049171,
+              44.4255541
+            ],
+            [
+              -69.0046687,
+              44.4254099
+            ],
+            [
+              -69.0045506,
+              44.4255136
+            ],
+            [
+              -69.0047967,
+              44.4256583
+            ],
+            [
+              -69.0048139,
+              44.4256416
+            ],
+            [
+              -69.0048232,
+              44.4256451
+            ],
+            [
+              -69.0048479,
+              44.4256183
+            ],
+            [
+              -69.0049171,
+              44.4255541
+            ]
+          ]
+        ]
+      },
+      "id": "way/594356803"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622980",
+        "addr:city": "Belfast",
+        "addr:housenumber": "88",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "description": "Offers an extensive collection of imaginative, whimsical and original gifts for every occasion.",
+        "email": "deb@outonawhimsey.com",
+        "name": "Out on a Whimsey Toys",
+        "opening_hours": "Mo-Th 09:00-18:00; Fr, Sa 09:00-19:00; Su 10:00-17:00",
+        "phone": "+1-207-338-3911",
+        "shop": "toys",
+        "website": "https://outonawhimsey.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0064052,
+              44.4263311
+            ],
+            [
+              -69.0065088,
+              44.4261986
+            ],
+            [
+              -69.0062205,
+              44.4260836
+            ],
+            [
+              -69.0061169,
+              44.426216
+            ],
+            [
+              -69.0061463,
+              44.4262278
+            ],
+            [
+              -69.0064052,
+              44.4263311
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622980"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622981",
+        "addr:city": "Belfast",
+        "addr:housenumber": "147;145",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "delivery": "yes",
+        "email": "garry@conklinsmercantile.com",
+        "name": "Conklin's Mercantile",
+        "opening_hours": "Mo-Sa 09:30-17:00",
+        "phone": "+1-207-218-4040",
+        "shop": "houseware",
+        "website": "https://conklinsmainemercantile.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0068352,
+              44.4262843
+            ],
+            [
+              -69.0067227,
+              44.4264255
+            ],
+            [
+              -69.0069336,
+              44.426511
+            ],
+            [
+              -69.0069473,
+              44.4265162
+            ],
+            [
+              -69.0070566,
+              44.4263687
+            ],
+            [
+              -69.0068352,
+              44.4262843
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622981"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622982",
+        "addr:city": "Belfast",
+        "addr:housenumber": "151;149",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "name": "Glow Salon",
+        "phone": "+1-207-505-5699",
+        "reservation": "recommended",
+        "shop": "beauty",
+        "website": "https://glowsalonbelfast.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0071915,
+              44.4264134
+            ],
+            [
+              -69.0070566,
+              44.4263687
+            ],
+            [
+              -69.0069473,
+              44.4265162
+            ],
+            [
+              -69.0070855,
+              44.4265684
+            ],
+            [
+              -69.0071191,
+              44.4265148
+            ],
+            [
+              -69.0071915,
+              44.4264134
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622982"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622986",
+        "addr:city": "Belfast",
+        "addr:housenumber": "161",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "clothes": "sport",
+        "clothes:sports": "yes",
+        "name": "Side Country Sports",
+        "opening_hours": "We-Sa 10:00-18:00",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-0008",
+        "service:bicycle:rental": "yes",
+        "service:bicycle:repair": "yes",
+        "service:bicycle:retail": "yes",
+        "shop": "bicycle",
+        "website": "https://scs.bike/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0075212,
+              44.4265342
+            ],
+            [
+              -69.0074381,
+              44.4266671
+            ],
+            [
+              -69.0075294,
+              44.4266958
+            ],
+            [
+              -69.0076181,
+              44.4265639
+            ],
+            [
+              -69.0075212,
+              44.4265342
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622986"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622988",
+        "addr:city": "Belfast",
+        "addr:housenumber": "77;79",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "email": "brian@colburnshoe.com",
+        "fax": "+1-207-338-1934",
+        "name": "Colburn Shoe Store",
+        "opening_hours": "Mo-Sa 09:00-17:00; Su 10:00-15:00",
+        "payment:american_express": "yes",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:discover_card": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "phone": "+1-207-338-1934",
+        "shop": "shoes",
+        "website": "https://colburnshoe.com/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0068223,
+              44.4265896
+            ],
+            [
+              -69.0068499,
+              44.4265651
+            ],
+            [
+              -69.0069336,
+              44.426511
+            ],
+            [
+              -69.0067227,
+              44.4264255
+            ],
+            [
+              -69.0066529,
+              44.4265019
+            ],
+            [
+              -69.0068223,
+              44.4265896
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622988"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622989",
+        "addr:city": "Belfast",
+        "addr:housenumber": "76;78",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "email": "aag@allaboutgamesmaine.com",
+        "name": "All About Games",
+        "opening_hours": "Mo-Sa 10:00-17:00",
+        "phone": "+1-207-338-9984",
+        "shop": "games",
+        "website": "https://allaboutgamesmaine.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0064052,
+              44.4263311
+            ],
+            [
+              -69.0061463,
+              44.4262278
+            ],
+            [
+              -69.0060546,
+              44.4263272
+            ],
+            [
+              -69.0063203,
+              44.4264446
+            ],
+            [
+              -69.0064052,
+              44.4263311
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622989"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638622990",
+        "addr:city": "Belfast",
+        "addr:housenumber": "74",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "name": "Vinolio",
+        "opening_hours": "Mo-Sa 10:00-18:00; Su 11:00-16:00",
+        "phone": "+1-207-338-8466",
+        "shop": "deli",
+        "website": "https://vinolio.com/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0062723,
+              44.426502
+            ],
+            [
+              -69.0063203,
+              44.4264446
+            ],
+            [
+              -69.0060776,
+              44.426344
+            ],
+            [
+              -69.0060501,
+              44.4263779
+            ],
+            [
+              -69.0061498,
+              44.4264192
+            ],
+            [
+              -69.0061309,
+              44.4264425
+            ],
+            [
+              -69.0062723,
+              44.426502
+            ]
+          ]
+        ]
+      },
+      "id": "way/638622990"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624657",
+        "addr:city": "Belfast",
+        "addr:housenumber": "75",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "name": "Home Supply Center",
+        "opening_hours": "Mo-Sa 08:00-17:00",
+        "phone": "+1-207-338-1094",
+        "shop": "hardware"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0068223,
+              44.4265896
+            ],
+            [
+              -69.0066529,
+              44.4265019
+            ],
+            [
+              -69.0065622,
+              44.4266056
+            ],
+            [
+              -69.0067252,
+              44.4266785
+            ],
+            [
+              -69.00674,
+              44.4266643
+            ],
+            [
+              -69.0068223,
+              44.4265896
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624657"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624658",
+        "addr:city": "Belfast",
+        "addr:housenumber": "71",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "email": "info@greenstore.com",
+        "name": "The Green Store",
+        "opening_hours": "Mo-Su 10:00-17:00",
+        "phone": "+1-207-338-4045",
+        "shop": "gift",
+        "website": "https://greenstore.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0067252,
+              44.4266785
+            ],
+            [
+              -69.0065622,
+              44.4266056
+            ],
+            [
+              -69.0065197,
+              44.4266741
+            ],
+            [
+              -69.0066675,
+              44.4267354
+            ],
+            [
+              -69.0067252,
+              44.4266785
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624658"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624659",
+        "addr:city": "Belfast",
+        "addr:housenumber": "69",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "name": "Belfast Harbor Artisans",
+        "opening_hours": "Mo-Sa 10:00-18:00; Su 10:00-17:00",
+        "phone": "+1-207-338-2088",
+        "shop": "gift",
+        "website": "https://www.instagram.com/belfastharborartisans/?hl=en"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0066675,
+              44.4267354
+            ],
+            [
+              -69.0065197,
+              44.4266741
+            ],
+            [
+              -69.0064826,
+              44.4267199
+            ],
+            [
+              -69.00663,
+              44.4267816
+            ],
+            [
+              -69.0066675,
+              44.4267354
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624659"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624660",
+        "addr:city": "Belfast",
+        "addr:housenumber": "65",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "email": "thesaillocker@gmail.com",
+        "name": "The Sail Locker",
+        "opening_hours": "Su 10:00-16:00; Mo-Sa 10:00-17:00",
+        "phone": "+1-207-338-1729",
+        "shop": "gift",
+        "website": "https://thesaillocker.net/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0065468,
+              44.4268377
+            ],
+            [
+              -69.00663,
+              44.4267816
+            ],
+            [
+              -69.0064826,
+              44.4267199
+            ],
+            [
+              -69.0064287,
+              44.4267898
+            ],
+            [
+              -69.0065468,
+              44.4268377
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624660"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624665",
+        "addr:city": "Belfast",
+        "addr:housenumber": "50",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "email": "justineconsignment@gmail.com",
+        "name": "Justine",
+        "opening_hours": "Su 10:00-16:00; Mo-Fr 10:00-17:00",
+        "phone": "+1-207-218-1062",
+        "shop": "clothes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0058914,
+              44.4269934
+            ],
+            [
+              -69.005937,
+              44.4269372
+            ],
+            [
+              -69.0057405,
+              44.4268527
+            ],
+            [
+              -69.0057181,
+              44.4268808
+            ],
+            [
+              -69.0056972,
+              44.4269101
+            ],
+            [
+              -69.0058914,
+              44.4269934
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624665"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624667",
+        "addr:city": "Belfast",
+        "addr:housenumber": "54",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "clothes": "women",
+        "clothes:women": "yes",
+        "email": "info@coyotemoonmaine.com",
+        "name": "Coyote Moon",
+        "opening_hours": "Mo-Sa 09:00-18:00; Su 10:00-17:00",
+        "phone": "+1-207-338-5659",
+        "shop": "clothes",
+        "website": "https://coyotemoonmaine.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0060275,
+              44.4268231
+            ],
+            [
+              -69.0058331,
+              44.426742
+            ],
+            [
+              -69.0057848,
+              44.4267978
+            ],
+            [
+              -69.0059828,
+              44.4268823
+            ],
+            [
+              -69.0060275,
+              44.4268231
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624667"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624671",
+        "addr:city": "Belfast",
+        "addr:housenumber": "187",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "retail",
+        "delivery": "yes",
+        "name": "Macleod Furniture Inc",
+        "opening_hours": "Mo-Sa 08:00-17:00",
+        "phone": "+1-207-338-1240",
+        "shop": "furniture",
+        "website": "https://macleodsfurniture.com/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0087069,
+              44.4271945
+            ],
+            [
+              -69.0088663,
+              44.4269396
+            ],
+            [
+              -69.0085438,
+              44.4268367
+            ],
+            [
+              -69.008477,
+              44.4269436
+            ],
+            [
+              -69.0084306,
+              44.4269288
+            ],
+            [
+              -69.0083988,
+              44.4269797
+            ],
+            [
+              -69.0084747,
+              44.4270039
+            ],
+            [
+              -69.008414,
+              44.4271011
+            ],
+            [
+              -69.0087069,
+              44.4271945
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624671"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624677",
+        "addr:city": "Belfast",
+        "addr:housenumber": "103;105",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "clothes": "women;underwear",
+        "clothes:underwear": "yes",
+        "clothes:women": "yes",
+        "layer": "1",
+        "name": "City Drawers",
+        "opening_hours": "Mo-Sa 10:00-17:30; Su 11:00-16:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "phone": "+1-207-338-9980",
+        "shop": "clothes",
+        "website": "https://www.citydrawers.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0074283,
+              44.4258881
+            ],
+            [
+              -69.0073644,
+              44.4258477
+            ],
+            [
+              -69.0072688,
+              44.4257874
+            ],
+            [
+              -69.0072586,
+              44.425781
+            ],
+            [
+              -69.0071662,
+              44.425859
+            ],
+            [
+              -69.007346,
+              44.4259716
+            ],
+            [
+              -69.0073916,
+              44.4259363
+            ],
+            [
+              -69.0073848,
+              44.4259191
+            ],
+            [
+              -69.0074283,
+              44.4258881
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624679",
+        "addr:city": "Belfast",
+        "addr:housenumber": "99",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "description": "Offers books on subjects covered at major universities.",
+        "name": "Craig Olson Books",
+        "opening_hours": "Mo-Su 10:00-16:00",
+        "phone": "+1-207-338-2006",
+        "second_hand": "only",
+        "shop": "books",
+        "website": "https://www.olsonbooks.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0072565,
+              44.4260025
+            ],
+            [
+              -69.0071085,
+              44.4259108
+            ],
+            [
+              -69.0070647,
+              44.4259481
+            ],
+            [
+              -69.0072156,
+              44.4260336
+            ],
+            [
+              -69.0072565,
+              44.4260025
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624679"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638624681",
+        "addr:city": "Belfast",
+        "addr:housenumber": "97",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "building": "yes",
+        "description": "Member-powered statewide organization that protects farmland, supports farmers, and advances the future of farming.",
+        "email": "info@mainefarmlandtrust.org",
+        "fax": "+1-207-338-6024",
+        "name": "Maine Farmland Trust",
+        "opening_hours": "Mo-Fr 09:00-16:00",
+        "phone": "+1-207-338-6575",
+        "shop": "frame",
+        "website": "https://mainefarmlandtrust.org/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0072156,
+              44.4260336
+            ],
+            [
+              -69.0070647,
+              44.4259481
+            ],
+            [
+              -69.0070067,
+              44.426006
+            ],
+            [
+              -69.0071692,
+              44.4260737
+            ],
+            [
+              -69.0072156,
+              44.4260336
+            ]
+          ]
+        ]
+      },
+      "id": "way/638624681"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638629931",
+        "addr:city": "Belfast",
+        "addr:housenumber": "113",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "name": "Pineland Coin-Op's Inc",
+        "opening_hours": "Mo-Su 06:30-21:00",
+        "phone": "+1-207-338-3507",
+        "shop": "laundry"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0054045,
+              44.4259565
+            ],
+            [
+              -69.0052318,
+              44.4258617
+            ],
+            [
+              -69.0051276,
+              44.4259585
+            ],
+            [
+              -69.0053284,
+              44.4260687
+            ],
+            [
+              -69.0053801,
+              44.4260207
+            ],
+            [
+              -69.005352,
+              44.4260053
+            ],
+            [
+              -69.0054045,
+              44.4259565
+            ]
+          ]
+        ]
+      },
+      "id": "way/638629931"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638629951",
+        "addr:city": "Belfast",
+        "addr:housenumber": "4",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Public Safety Way",
+        "building": "yes",
+        "emergency": "psap",
+        "name": "Waldo County EMA",
+        "office": "government"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0106692,
+              44.4222531
+            ],
+            [
+              -69.0108194,
+              44.4223642
+            ],
+            [
+              -69.0112861,
+              44.4220118
+            ],
+            [
+              -69.0110366,
+              44.4218432
+            ],
+            [
+              -69.0108811,
+              44.4219466
+            ],
+            [
+              -69.0109884,
+              44.4220328
+            ],
+            [
+              -69.0106692,
+              44.4222531
+            ]
+          ]
+        ]
+      },
+      "id": "way/638629951"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638629954",
+        "addr:city": "Belfast",
+        "addr:housenumber": "2",
+        "addr:state": "ME",
+        "addr:street": "Public Safety Way",
+        "building": "yes",
+        "name": "Waldo County RCC",
+        "office": "government"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0103368,
+              44.4214573
+            ],
+            [
+              -69.0105021,
+              44.4215922
+            ],
+            [
+              -69.0106258,
+              44.4215148
+            ],
+            [
+              -69.0104605,
+              44.42138
+            ],
+            [
+              -69.0103368,
+              44.4214573
+            ]
+          ]
+        ]
+      },
+      "id": "way/638629954"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638630354",
+        "addr:city": "Belfast",
+        "addr:housenumber": "54",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Front Street",
+        "building": "yes",
+        "name": "City of Belfast Water Pollution Control Plant",
+        "office": "water_utility"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0068456,
+              44.4279042
+            ],
+            [
+              -69.006907,
+              44.4280424
+            ],
+            [
+              -69.0071063,
+              44.4279972
+            ],
+            [
+              -69.0070449,
+              44.427859
+            ],
+            [
+              -69.0068456,
+              44.4279042
+            ]
+          ]
+        ]
+      },
+      "id": "way/638630354"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638631345",
+        "addr:housenumber": "22",
+        "addr:street": "Belmont Avenue",
+        "brand": "Circle K",
+        "brand:wikidata": "Q3268010",
+        "building": "yes",
+        "check_date": "2024-12-02",
+        "cuisine": "pizza;salad;sandwich",
+        "drink:coffee": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:ssid": "CK Guest",
+        "name": "Circle K",
+        "opening_hours": "24/7",
+        "phone": "+1-207-338-0306",
+        "shop": "convenience",
+        "toilets:access": "permissive",
+        "toilets:unisex": "yes",
+        "toilets:wheelchair": "yes",
+        "website": "https://www.circlek.com/store-locator/us/belfast/22-belmont-ave/m7104"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0262341,
+              44.4226698
+            ],
+            [
+              -69.0261935,
+              44.4225174
+            ],
+            [
+              -69.0260361,
+              44.4225388
+            ],
+            [
+              -69.0260223,
+              44.4224867
+            ],
+            [
+              -69.0258695,
+              44.4225075
+            ],
+            [
+              -69.0259241,
+              44.422712
+            ],
+            [
+              -69.0262341,
+              44.4226698
+            ]
+          ]
+        ]
+      },
+      "id": "way/638631345"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638631353",
+        "brand": "Walgreens",
+        "brand:wikidata": "Q1591889",
+        "building": "yes",
+        "name": "Walgreens",
+        "shop": "chemist",
+        "website": "https://www.walgreens.com/locator/walgreens-268+main+st-belfast-me-04915/id=13615"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0189276,
+              44.4235221
+            ],
+            [
+              -69.0192328,
+              44.4234798
+            ],
+            [
+              -69.0192838,
+              44.4234262
+            ],
+            [
+              -69.0191805,
+              44.4230464
+            ],
+            [
+              -69.0188121,
+              44.4230975
+            ],
+            [
+              -69.0189276,
+              44.4235221
+            ]
+          ]
+        ]
+      },
+      "id": "way/638631353"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638631355",
+        "addr:city": "Belfast",
+        "addr:housenumber": "256",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "brand": "Rite Aid",
+        "brand:wikidata": "Q3433273",
+        "building": "commercial",
+        "name": "Rite Aid",
+        "shop": "chemist"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0182097,
+              44.4236306
+            ],
+            [
+              -69.0181087,
+              44.423278
+            ],
+            [
+              -69.0177897,
+              44.4233246
+            ],
+            [
+              -69.0178908,
+              44.4236772
+            ],
+            [
+              -69.0182097,
+              44.4236306
+            ]
+          ]
+        ]
+      },
+      "id": "way/638631355"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/639770893",
+        "addr:city": "Belfast",
+        "addr:housenumber": "25",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Front Street",
+        "building": "yes",
+        "name": "Belfast Harbormaster",
+        "office": "government",
+        "phone": "+1-207-338-1142",
+        "website": "https://cityofbelfast.org/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0040493,
+              44.4287662
+            ],
+            [
+              -69.0040921,
+              44.4287245
+            ],
+            [
+              -69.0040476,
+              44.4287012
+            ],
+            [
+              -69.0040048,
+              44.4287429
+            ],
+            [
+              -69.0040493,
+              44.4287662
+            ]
+          ]
+        ]
+      },
+      "id": "way/639770893"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/815748675",
+        "landuse": "industrial"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0147266,
+              44.4069754
+            ],
+            [
+              -69.0145576,
+              44.405956
+            ],
+            [
+              -69.0125003,
+              44.4061361
+            ],
+            [
+              -69.0125513,
+              44.4065289
+            ],
+            [
+              -69.0119693,
+              44.4065711
+            ],
+            [
+              -69.0120927,
+              44.4071881
+            ],
+            [
+              -69.012664,
+              44.4072743
+            ],
+            [
+              -69.0133292,
+              44.4072628
+            ],
+            [
+              -69.0138334,
+              44.4071402
+            ],
+            [
+              -69.0143403,
+              44.407098
+            ],
+            [
+              -69.0147266,
+              44.4069754
+            ]
+          ]
+        ]
+      },
+      "id": "way/815748675"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1200962626",
+        "building": "yes",
+        "name": "Bennett's Gems & Jewelry",
+        "shop": "jewelry"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9983113,
+              44.4332694
+            ],
+            [
+              -68.9983108,
+              44.433181
+            ],
+            [
+              -68.9981645,
+              44.4331813
+            ],
+            [
+              -68.9981655,
+              44.4332703
+            ],
+            [
+              -68.9983113,
+              44.4332694
+            ]
+          ]
+        ]
+      },
+      "id": "way/1200962626"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1200962627",
+        "addr:city": "Belfast",
+        "addr:housenumber": "45",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "building": "yes",
+        "name": "Perry's Nut House",
+        "shop": "confectionery",
+        "wikidata": "Q7169694",
+        "wikipedia": "en:Perry's Nut House"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9986316,
+              44.4332349
+            ],
+            [
+              -68.9986382,
+              44.4332354
+            ],
+            [
+              -68.9986376,
+              44.4331338
+            ],
+            [
+              -68.9985118,
+              44.4331341
+            ],
+            [
+              -68.9985122,
+              44.4332101
+            ],
+            [
+              -68.9984811,
+              44.4332102
+            ],
+            [
+              -68.9984809,
+              44.4331805
+            ],
+            [
+              -68.9983108,
+              44.433181
+            ],
+            [
+              -68.9983113,
+              44.4332694
+            ],
+            [
+              -68.9983117,
+              44.433326
+            ],
+            [
+              -68.9984864,
+              44.4333255
+            ],
+            [
+              -68.9984861,
+              44.433283
+            ],
+            [
+              -68.998625,
+              44.4332827
+            ],
+            [
+              -68.9986316,
+              44.4332349
+            ]
+          ]
+        ]
+      },
+      "id": "way/1200962627"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1200962628",
+        "building": "yes",
+        "name": "Marnée's Salon",
+        "shop": "beauty"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9986316,
+              44.4332349
+            ],
+            [
+              -68.998625,
+              44.4332827
+            ],
+            [
+              -68.998618,
+              44.4333337
+            ],
+            [
+              -68.9987114,
+              44.4333402
+            ],
+            [
+              -68.9987138,
+              44.4333226
+            ],
+            [
+              -68.998725,
+              44.4332415
+            ],
+            [
+              -68.9986382,
+              44.4332354
+            ],
+            [
+              -68.9986316,
+              44.4332349
+            ]
+          ]
+        ]
+      },
+      "id": "way/1200962628"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1200962632",
+        "landuse": "retail"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9967615,
+              44.4327369
+            ],
+            [
+              -68.9967733,
+              44.4328771
+            ],
+            [
+              -68.99677,
+              44.4329836
+            ],
+            [
+              -68.996729,
+              44.4331687
+            ],
+            [
+              -68.996729,
+              44.4332097
+            ],
+            [
+              -68.9967569,
+              44.433232
+            ],
+            [
+              -68.9967995,
+              44.4332495
+            ],
+            [
+              -68.9988532,
+              44.4335447
+            ],
+            [
+              -68.9989287,
+              44.4330164
+            ],
+            [
+              -68.9985087,
+              44.4329922
+            ],
+            [
+              -68.9982303,
+              44.432916
+            ],
+            [
+              -68.9982181,
+              44.4326268
+            ],
+            [
+              -68.9977522,
+              44.4325975
+            ],
+            [
+              -68.9967615,
+              44.4327369
+            ]
+          ]
+        ]
+      },
+      "id": "way/1200962632"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1228490269",
+        "building": "yes",
+        "contact:facebook": "https://www.facebook.com/people/Wentworth-Family-Qwik-Stop/100061611525725/",
+        "name": "Wentworth Family Qwik Stop",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0194419,
+              44.4318995
+            ],
+            [
+              -69.0193025,
+              44.431997
+            ],
+            [
+              -69.0194614,
+              44.4321129
+            ],
+            [
+              -69.0196008,
+              44.4320154
+            ],
+            [
+              -69.0194419,
+              44.4318995
+            ]
+          ]
+        ]
+      },
+      "id": "way/1228490269"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1303564541",
+        "landuse": "retail"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0054499,
+              44.4283208
+            ],
+            [
+              -69.0055116,
+              44.42834
+            ],
+            [
+              -69.0055196,
+              44.4281082
+            ],
+            [
+              -69.0054901,
+              44.4279563
+            ],
+            [
+              -69.005542,
+              44.4278993
+            ],
+            [
+              -69.0055628,
+              44.427827
+            ],
+            [
+              -69.005635,
+              44.4278171
+            ],
+            [
+              -69.0057101,
+              44.4277979
+            ],
+            [
+              -69.0059702,
+              44.4277098
+            ],
+            [
+              -69.0071638,
+              44.4275642
+            ],
+            [
+              -69.0073596,
+              44.427252
+            ],
+            [
+              -69.0068822,
+              44.4270853
+            ],
+            [
+              -69.0070968,
+              44.4267482
+            ],
+            [
+              -69.0087383,
+              44.4272673
+            ],
+            [
+              -69.0089073,
+              44.4268976
+            ],
+            [
+              -69.0082018,
+              44.4266678
+            ],
+            [
+              -69.0074998,
+              44.4264374
+            ],
+            [
+              -69.0075464,
+              44.4263616
+            ],
+            [
+              -69.007709,
+              44.4260968
+            ],
+            [
+              -69.0076085,
+              44.4259623
+            ],
+            [
+              -69.0078256,
+              44.425808
+            ],
+            [
+              -69.0078865,
+              44.4257647
+            ],
+            [
+              -69.0084846,
+              44.4261694
+            ],
+            [
+              -69.0085076,
+              44.426164
+            ],
+            [
+              -69.0089314,
+              44.4253748
+            ],
+            [
+              -69.0089073,
+              44.4252733
+            ],
+            [
+              -69.0103047,
+              44.4250664
+            ],
+            [
+              -69.0103261,
+              44.4250281
+            ],
+            [
+              -69.0097173,
+              44.424599
+            ],
+            [
+              -69.0081857,
+              44.4248691
+            ],
+            [
+              -69.0081509,
+              44.4247465
+            ],
+            [
+              -69.0073408,
+              44.425461
+            ],
+            [
+              -69.0066998,
+              44.4250243
+            ],
+            [
+              -69.0060856,
+              44.4255338
+            ],
+            [
+              -69.0057235,
+              44.4253537
+            ],
+            [
+              -69.0055286,
+              44.425588
+            ],
+            [
+              -69.0054526,
+              44.4256794
+            ],
+            [
+              -69.0047686,
+              44.4253212
+            ],
+            [
+              -69.0046989,
+              44.4253078
+            ],
+            [
+              -69.0036528,
+              44.4262694
+            ],
+            [
+              -69.0051548,
+              44.4269972
+            ],
+            [
+              -69.0051092,
+              44.4270643
+            ],
+            [
+              -69.0050824,
+              44.4270892
+            ],
+            [
+              -69.0050556,
+              44.4271773
+            ],
+            [
+              -69.005128,
+              44.4272769
+            ],
+            [
+              -69.005225,
+              44.427415
+            ],
+            [
+              -69.0047901,
+              44.4275566
+            ],
+            [
+              -69.0051253,
+              44.4279396
+            ],
+            [
+              -69.0050288,
+              44.4279971
+            ],
+            [
+              -69.0048893,
+              44.4281369
+            ],
+            [
+              -69.0049322,
+              44.4281752
+            ],
+            [
+              -69.0050878,
+              44.428248
+            ],
+            [
+              -69.0054499,
+              44.4283208
+            ]
+          ]
+        ]
+      },
+      "id": "way/1303564541"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1303564777",
+        "landuse": "retail"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.005981,
+              44.4284051
+            ],
+            [
+              -69.0053185,
+              44.4283764
+            ],
+            [
+              -69.0048839,
+              44.4282595
+            ],
+            [
+              -69.004715,
+              44.4282193
+            ],
+            [
+              -69.0045513,
+              44.4283112
+            ],
+            [
+              -69.0043636,
+              44.4285296
+            ],
+            [
+              -69.0045889,
+              44.4286292
+            ],
+            [
+              -69.0043931,
+              44.4289357
+            ],
+            [
+              -69.0045077,
+              44.4289556
+            ],
+            [
+              -69.0047015,
+              44.4289893
+            ],
+            [
+              -69.0048142,
+              44.4290123
+            ],
+            [
+              -69.0048813,
+              44.4290104
+            ],
+            [
+              -69.0049013,
+              44.4290281
+            ],
+            [
+              -69.0051884,
+              44.4290602
+            ],
+            [
+              -69.0052342,
+              44.4290581
+            ],
+            [
+              -69.0052662,
+              44.4290607
+            ],
+            [
+              -69.0052622,
+              44.4290703
+            ],
+            [
+              -69.0054325,
+              44.4290793
+            ],
+            [
+              -69.0054405,
+              44.4290142
+            ],
+            [
+              -69.0054454,
+              44.4290146
+            ],
+            [
+              -69.0055203,
+              44.4290218
+            ],
+            [
+              -69.0055209,
+              44.4290521
+            ],
+            [
+              -69.0057241,
+              44.4290666
+            ],
+            [
+              -69.0057583,
+              44.4288361
+            ],
+            [
+              -69.0059085,
+              44.4288456
+            ],
+            [
+              -69.0059676,
+              44.4286579
+            ],
+            [
+              -69.0060078,
+              44.4285028
+            ],
+            [
+              -69.005981,
+              44.4284051
+            ]
+          ]
+        ]
+      },
+      "id": "way/1303564777"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1304569451",
+        "landuse": "commercial"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0083457,
+              44.4266098
+            ],
+            [
+              -69.008359,
+              44.4266376
+            ],
+            [
+              -69.0090387,
+              44.4268616
+            ],
+            [
+              -69.0090706,
+              44.4268344
+            ],
+            [
+              -69.0091849,
+              44.4267199
+            ],
+            [
+              -69.008515,
+              44.4262636
+            ],
+            [
+              -69.0083457,
+              44.4266098
+            ]
+          ]
+        ]
+      },
+      "id": "way/1304569451"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1304572830",
+        "landuse": "industrial",
+        "man_made": "wastewater_plant",
+        "name": "City of Belfast Water Pollution Control Plant"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0076159,
+              44.4278961
+            ],
+            [
+              -69.0077138,
+              44.427582
+            ],
+            [
+              -69.0074979,
+              44.4275638
+            ],
+            [
+              -69.0073892,
+              44.427558
+            ],
+            [
+              -69.0072685,
+              44.4275504
+            ],
+            [
+              -69.0071607,
+              44.4275688
+            ],
+            [
+              -69.0059702,
+              44.4277098
+            ],
+            [
+              -69.0057101,
+              44.4277979
+            ],
+            [
+              -69.005635,
+              44.4278171
+            ],
+            [
+              -69.0056955,
+              44.4282553
+            ],
+            [
+              -69.0059583,
+              44.4282696
+            ],
+            [
+              -69.0067898,
+              44.4280934
+            ],
+            [
+              -69.0072471,
+              44.4279852
+            ],
+            [
+              -69.0076159,
+              44.4278961
+            ]
+          ]
+        ]
+      },
+      "id": "way/1304572830"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1304574874",
+        "addr:city": "Belfast",
+        "addr:housenumber": "101",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Front Street",
+        "industrial": "shipyard",
+        "landuse": "industrial",
+        "man_made": "works",
+        "name": "Front Street Shipyard",
+        "website": "https://frontstreetshipyard.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0104032,
+              44.4308772
+            ],
+            [
+              -69.0099999,
+              44.430363
+            ],
+            [
+              -69.0097909,
+              44.4300566
+            ],
+            [
+              -69.0091345,
+              44.4289288
+            ],
+            [
+              -69.009038,
+              44.4288062
+            ],
+            [
+              -69.0089173,
+              44.4286559
+            ],
+            [
+              -69.0087926,
+              44.42854
+            ],
+            [
+              -69.0086249,
+              44.4284337
+            ],
+            [
+              -69.0082548,
+              44.4282029
+            ],
+            [
+              -69.0080013,
+              44.4280784
+            ],
+            [
+              -69.0077988,
+              44.4280324
+            ],
+            [
+              -69.0076406,
+              44.42804
+            ],
+            [
+              -69.0074662,
+              44.4280717
+            ],
+            [
+              -69.006974,
+              44.4281856
+            ],
+            [
+              -69.0066508,
+              44.4282699
+            ],
+            [
+              -69.0061238,
+              44.42838
+            ],
+            [
+              -69.0060902,
+              44.4284279
+            ],
+            [
+              -69.0060446,
+              44.4287143
+            ],
+            [
+              -69.0060969,
+              44.4287421
+            ],
+            [
+              -69.0064403,
+              44.4287689
+            ],
+            [
+              -69.0068627,
+              44.4287986
+            ],
+            [
+              -69.0071685,
+              44.4288263
+            ],
+            [
+              -69.0074582,
+              44.4288886
+            ],
+            [
+              -69.0076888,
+              44.4289844
+            ],
+            [
+              -69.0080201,
+              44.4291232
+            ],
+            [
+              -69.0082467,
+              44.4292736
+            ],
+            [
+              -69.0085243,
+              44.4294297
+            ],
+            [
+              -69.0088006,
+              44.4296231
+            ],
+            [
+              -69.0089857,
+              44.4297658
+            ],
+            [
+              -69.0092378,
+              44.429965
+            ],
+            [
+              -69.0093572,
+              44.4300752
+            ],
+            [
+              -69.009447,
+              44.4301844
+            ],
+            [
+              -69.0093987,
+              44.4302274
+            ],
+            [
+              -69.0094591,
+              44.4302744
+            ],
+            [
+              -69.0096428,
+              44.4304429
+            ],
+            [
+              -69.0095771,
+              44.4304899
+            ],
+            [
+              -69.0095919,
+              44.4305578
+            ],
+            [
+              -69.0095543,
+              44.4306038
+            ],
+            [
+              -69.010084,
+              44.4310477
+            ],
+            [
+              -69.0104032,
+              44.4308772
+            ]
+          ]
+        ]
+      },
+      "id": "way/1304574874"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1341407163",
+        "addr:city": "Belfast",
+        "addr:housenumber": "30",
+        "addr:state": "ME",
+        "addr:street": "Belmont Avenue",
+        "building": "yes",
+        "name": "EBS Building Supplies, Inc.",
+        "opening_hours": "Mo-Fr 06:30-17:30; Sa 07:00-16:00; Su 08:00-16:00",
+        "phone": "+1-207-338-4080",
+        "shop": "hardware",
+        "source": "microsoft/BuildingFootprints",
+        "website": "https://ebsbuild.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0269401,
+              44.4223455
+            ],
+            [
+              -69.0269928,
+              44.4226251
+            ],
+            [
+              -69.0271088,
+              44.422614
+            ],
+            [
+              -69.0271124,
+              44.4226335
+            ],
+            [
+              -69.0275102,
+              44.4225952
+            ],
+            [
+              -69.0275026,
+              44.422555
+            ],
+            [
+              -69.0275764,
+              44.4225479
+            ],
+            [
+              -69.0275357,
+              44.4223322
+            ],
+            [
+              -69.027234,
+              44.4223612
+            ],
+            [
+              -69.0272259,
+              44.422318
+            ],
+            [
+              -69.0269401,
+              44.4223455
+            ]
+          ]
+        ]
+      },
+      "id": "way/1341407163"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1376559773",
+        "addr:city": "Belfast",
+        "addr:housenumber": "265",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Lincolnville Avenue",
+        "building": "yes",
+        "name": "Belfast Variety - Rt. 52",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0323027,
+              44.4009775
+            ],
+            [
+              -69.0323454,
+              44.4008057
+            ],
+            [
+              -69.0321856,
+              44.4007843
+            ],
+            [
+              -69.0321641,
+              44.4008902
+            ],
+            [
+              -69.0321503,
+              44.4008894
+            ],
+            [
+              -69.032146,
+              44.4009095
+            ],
+            [
+              -69.0321568,
+              44.40091
+            ],
+            [
+              -69.0321472,
+              44.4009616
+            ],
+            [
+              -69.0323027,
+              44.4009775
+            ]
+          ]
+        ]
+      },
+      "id": "way/1376559773"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1376574790",
+        "addr:city": "Belfast",
+        "addr:housenumber": "15",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "building": "yes",
+        "name": "Jack's Grocery",
+        "opening_hours": "Mo-Sa 06:00-20:30",
+        "phone": "+1-207-338-1700",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9996229,
+              44.4211514
+            ],
+            [
+              -68.9996467,
+              44.4211448
+            ],
+            [
+              -68.9996423,
+              44.4211367
+            ],
+            [
+              -68.9996811,
+              44.421126
+            ],
+            [
+              -68.9996856,
+              44.4211343
+            ],
+            [
+              -68.9997092,
+              44.4211278
+            ],
+            [
+              -68.9997061,
+              44.421122
+            ],
+            [
+              -68.9997389,
+              44.4211129
+            ],
+            [
+              -68.9997257,
+              44.4210885
+            ],
+            [
+              -68.9997459,
+              44.4210829
+            ],
+            [
+              -68.9997346,
+              44.4210618
+            ],
+            [
+              -68.9997155,
+              44.4210671
+            ],
+            [
+              -68.9997086,
+              44.4210545
+            ],
+            [
+              -68.9997277,
+              44.4210492
+            ],
+            [
+              -68.9997068,
+              44.4210106
+            ],
+            [
+              -68.9994621,
+              44.4210783
+            ],
+            [
+              -68.999513,
+              44.4211723
+            ],
+            [
+              -68.9996185,
+              44.4211431
+            ],
+            [
+              -68.9996229,
+              44.4211514
+            ]
+          ]
+        ]
+      },
+      "id": "way/1376574790"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1376574794",
+        "addr:city": "Belfast",
+        "addr:housenumber": "244",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "brand": "Ford",
+        "brand:wikidata": "Q44294",
+        "building": "yes",
+        "currency:USD": "yes",
+        "name": "Quirk Ford of Belfast",
+        "phone": "+12073381300",
+        "second_hand": "yes",
+        "service:vehicle:oil_change": "yes",
+        "service:vehicle:repairs": "yes",
+        "service:vehicle:sale": "yes",
+        "shop": "car",
+        "website": "https://www.quirkfordbelfast.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0172071,
+              44.4238951
+            ],
+            [
+              -69.0172011,
+              44.4238124
+            ],
+            [
+              -69.0171625,
+              44.4237281
+            ],
+            [
+              -69.0169721,
+              44.4237539
+            ],
+            [
+              -69.016907,
+              44.4234948
+            ],
+            [
+              -69.0164936,
+              44.4235507
+            ],
+            [
+              -69.0165321,
+              44.4237023
+            ],
+            [
+              -69.0167117,
+              44.4236807
+            ],
+            [
+              -69.016784,
+              44.423945
+            ],
+            [
+              -69.0172071,
+              44.4238951
+            ]
+          ]
+        ]
+      },
+      "id": "way/1376574794"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377696123",
+        "addr:city": "Belfast",
+        "addr:housenumber": "70",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Union Street",
+        "cuisine": "cake",
+        "name": "Let Them Eat Cake",
+        "payment:cash": "yes",
+        "shop": "confectionery"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9995373,
+              44.4229777
+            ],
+            [
+              -68.9995038,
+              44.4229139
+            ],
+            [
+              -68.9993181,
+              44.4229621
+            ],
+            [
+              -68.9993592,
+              44.4230302
+            ],
+            [
+              -68.9995373,
+              44.4229777
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377696123"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829968",
+        "addr:housenumber": "326",
+        "addr:street": "high",
+        "name": "Belfast Variety",
+        "phone": "+1-207-338-5236",
+        "shop": "variety_store"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0175239,
+              44.4337182
+            ],
+            [
+              -69.0173322,
+              44.4334331
+            ],
+            [
+              -69.0171492,
+              44.4334958
+            ],
+            [
+              -69.0172186,
+              44.4335991
+            ],
+            [
+              -69.0171249,
+              44.4336312
+            ],
+            [
+              -69.0172004,
+              44.4337436
+            ],
+            [
+              -69.0172528,
+              44.4337257
+            ],
+            [
+              -69.0172561,
+              44.4337306
+            ],
+            [
+              -69.0173241,
+              44.4337073
+            ],
+            [
+              -69.0173469,
+              44.4337412
+            ],
+            [
+              -69.0174467,
+              44.433707
+            ],
+            [
+              -69.0174673,
+              44.4337376
+            ],
+            [
+              -69.0175239,
+              44.4337182
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829968"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829969",
+        "addr:city": "Belfast",
+        "addr:housenumber": "15",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Sell 207",
+        "office": "realty"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0054732,
+              44.4282194
+            ],
+            [
+              -69.0054927,
+              44.4279963
+            ],
+            [
+              -69.0053692,
+              44.4280107
+            ],
+            [
+              -69.0053645,
+              44.4281098
+            ],
+            [
+              -69.0053559,
+              44.4282201
+            ],
+            [
+              -69.0054732,
+              44.4282194
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829969"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829970",
+        "addr:city": "Belfast",
+        "addr:housenumber": "17",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Belfast Coworking",
+        "office": "coworking"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0052405,
+              44.4282215
+            ],
+            [
+              -69.0053559,
+              44.4282201
+            ],
+            [
+              -69.0053692,
+              44.4280107
+            ],
+            [
+              -69.0052625,
+              44.4280246
+            ],
+            [
+              -69.0052405,
+              44.4282215
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829970"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829972",
+        "addr:city": "Belfast",
+        "addr:housenumber": "35",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Chocolate Drop Candy Shoppe",
+        "phone": "+1-207-338-0566",
+        "shop": "confectionery"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0059727,
+              44.4275744
+            ],
+            [
+              -69.0060376,
+              44.4275026
+            ],
+            [
+              -69.0058524,
+              44.427415
+            ],
+            [
+              -69.0057801,
+              44.427491
+            ],
+            [
+              -69.0059727,
+              44.4275744
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829972"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829973",
+        "addr:city": "Belfast",
+        "addr:housenumber": "2",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Cross Street",
+        "name": "Brambles",
+        "phone": "+1-207-338-3448",
+        "shop": "gift"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0054066,
+              44.4272462
+            ],
+            [
+              -69.0052989,
+              44.4272682
+            ],
+            [
+              -69.0053337,
+              44.4273457
+            ],
+            [
+              -69.0054366,
+              44.4273231
+            ],
+            [
+              -69.0054066,
+              44.4272462
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829973"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829977",
+        "addr:city": "Belfast",
+        "addr:housenumber": "64",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Fiddlehead Artisan Supply",
+        "opening_hours": "Mo-Sa 10:00-17:00; Su 10:00-16:00",
+        "phone": "+1-207-338-8422",
+        "shop": "fabric",
+        "website": "https://fiddleheadartisansupply.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0057953,
+              44.4265113
+            ],
+            [
+              -69.0057471,
+              44.4265653
+            ],
+            [
+              -69.0061311,
+              44.4267265
+            ],
+            [
+              -69.006186,
+              44.4266589
+            ],
+            [
+              -69.0057953,
+              44.4265113
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829977"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377829978",
+        "addr:city": "Belfast",
+        "addr:housenumber": "171",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "email": "val@heavenlybeanbags.com",
+        "name": "Heavenly Bean Bags",
+        "opening_hours": "Mo-Fr 10:00-17:00; Sa 09:00-14:00",
+        "phone": "+1-207-841-5054",
+        "shop": "furniture",
+        "website": "https://heavenlybeanbags.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0082067,
+              44.4268071
+            ],
+            [
+              -69.0080408,
+              44.4267436
+            ],
+            [
+              -69.0079282,
+              44.4269129
+            ],
+            [
+              -69.0081036,
+              44.426973
+            ],
+            [
+              -69.0082067,
+              44.4268071
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377829978"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1378071878",
+        "addr:city": "Belfast",
+        "addr:housenumber": "34",
+        "addr:state": "ME",
+        "addr:street": "Northport Avenue",
+        "building": "yes",
+        "name": "CG Bikes",
+        "opening_hours": "Mo-Sa 10:00-17:00; ",
+        "phone": "+1-207-218-1206",
+        "shop": "bicycle",
+        "website": "https://cgbikesmaine.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9980139,
+              44.4183629
+            ],
+            [
+              -68.9979456,
+              44.418241
+            ],
+            [
+              -68.9978421,
+              44.4182691
+            ],
+            [
+              -68.9979104,
+              44.4183918
+            ],
+            [
+              -68.9980139,
+              44.4183629
+            ]
+          ]
+        ]
+      },
+      "id": "way/1378071878"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1378103777",
+        "addr:city": "Belfast",
+        "addr:housenumber": "6",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Belmont Avenue",
+        "building": "yes",
+        "name": "Dutch Chevrolet Buick",
+        "opening_hours": "Mo-Fr 07:00-17:00, 09:00-18:00; Sa 07:30-12:00",
+        "shop": "car_repair"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0230316,
+              44.4232297
+            ],
+            [
+              -69.0229255,
+              44.4228455
+            ],
+            [
+              -69.0227187,
+              44.422869
+            ],
+            [
+              -69.0227334,
+              44.4229383
+            ],
+            [
+              -69.0224864,
+              44.4229683
+            ],
+            [
+              -69.0225687,
+              44.4232858
+            ],
+            [
+              -69.0230316,
+              44.4232297
+            ]
+          ]
+        ]
+      },
+      "id": "way/1378103777"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1378103786",
+        "addr:city": "Belfast",
+        "addr:housenumber": "13",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Goodwill Drive",
+        "branch": "Store: Belfast",
+        "brand": "Goodwill",
+        "brand:wikidata": "Q5583655",
+        "clothes": "men;women;children",
+        "clothes:children": "yes",
+        "clothes:men": "yes",
+        "clothes:women": "yes",
+        "name": "Goodwill",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 10:00-19:00",
+        "operator": "Goodwill Industries of Northern New England",
+        "operator:wikidata": "Q123682911",
+        "phone": "+1-207-338-8363",
+        "second_hand": "only",
+        "shop": "charity",
+        "website": "https://goodwillnne.org/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0255638,
+              44.4244386
+            ],
+            [
+              -69.0261263,
+              44.4243342
+            ],
+            [
+              -69.0261108,
+              44.4242931
+            ],
+            [
+              -69.0261857,
+              44.4242807
+            ],
+            [
+              -69.0261697,
+              44.4242299
+            ],
+            [
+              -69.0261117,
+              44.4242406
+            ],
+            [
+              -69.0260666,
+              44.4241194
+            ],
+            [
+              -69.0254864,
+              44.4242268
+            ],
+            [
+              -69.0255638,
+              44.4244386
+            ]
+          ]
+        ]
+      },
+      "id": "way/1378103786"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1451996444",
+        "addr:city": "Belfast",
+        "addr:housenumber": "35",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Swan Lake Avenue",
+        "building": "yes",
+        "opening_hours": "Mo-Fr 09:00-17:00",
+        "payment:notes": "yes",
+        "phone": "+1-207-338-2050",
+        "shop": "florist",
+        "source": "microsoft/BuildingFootprints",
+        "website": "https://www.holmesfloristandgreenhouse.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0018312,
+              44.4393526
+            ],
+            [
+              -69.0018627,
+              44.4392146
+            ],
+            [
+              -69.0014446,
+              44.439166
+            ],
+            [
+              -69.0014582,
+              44.4391063
+            ],
+            [
+              -69.001381,
+              44.4390973
+            ],
+            [
+              -69.0013712,
+              44.4391402
+            ],
+            [
+              -69.0013491,
+              44.4391377
+            ],
+            [
+              -69.0013568,
+              44.4391041
+            ],
+            [
+              -69.0011059,
+              44.4390749
+            ],
+            [
+              -69.0010851,
+              44.4391664
+            ],
+            [
+              -69.0012811,
+              44.4391891
+            ],
+            [
+              -69.0012617,
+              44.4392741
+            ],
+            [
+              -69.0012251,
+              44.4392698
+            ],
+            [
+              -69.0012211,
+              44.4392875
+            ],
+            [
+              -69.0010158,
+              44.4392636
+            ],
+            [
+              -69.0010052,
+              44.4393103
+            ],
+            [
+              -69.0010888,
+              44.43932
+            ],
+            [
+              -69.0010724,
+              44.4393919
+            ],
+            [
+              -69.0011288,
+              44.4393984
+            ],
+            [
+              -69.0011341,
+              44.439375
+            ],
+            [
+              -69.0013327,
+              44.4393981
+            ],
+            [
+              -69.0013557,
+              44.4392974
+            ],
+            [
+              -69.0018312,
+              44.4393526
+            ]
+          ]
+        ]
+      },
+      "id": "way/1451996444"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1113468932",
+        "addr:city": "Belfast",
+        "addr:housenumber": "169",
+        "addr:postcode": "04915",
+        "addr:street": "Searsport Avenue",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Smart DataMap Services",
+        "office": "company",
+        "opening_hours": "09:00-17:00",
+        "operator": "Smart DataMap Services",
+        "phone": "+1-207-619-3380",
+        "smoking": "outside",
+        "website": "www.SmartDataMap.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9758534,
+          44.4290923
+        ]
+      },
+      "id": "node/1113468932"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2824813986",
+        "addr:city": "Belfast",
+        "addr:housenumber": "94",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Eat More Cheese",
+        "opening_hours": "Mo-Sa 10:00-17:30; Su 11:00-15:00",
+        "phone": "+1-207-358-9701",
+        "shop": "cheese",
+        "website": "https://eatmorecheese.me/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0067458,
+          44.4259861
+        ]
+      },
+      "id": "node/2824813986"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3074029454",
+        "addr:city": "Belfast",
+        "addr:housenumber": "169",
+        "addr:postcode": "04915",
+        "addr:street": "Searsport Avenue",
+        "name": "Robin's Nest Consignment",
+        "phone": "+1-207-218-1167",
+        "shop": "furniture",
+        "source": "SmartDataMap.com",
+        "website": "www.Robins-Nest-Consignment.com",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9756963,
+          44.4292533
+        ]
+      },
+      "id": "node/3074029454"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3160041268",
+        "addr:city": "Belfast",
+        "addr:housenumber": "243",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "name": "Private Home Care, Inc.",
+        "note": "Private Home Care, Inc. is a personal care agency serving in-home clients in the Belfast, Me. area helping people live comfortably & independently at home.",
+        "office": "yes",
+        "phone": "+1-207-338-2100",
+        "website": "https://privatehomecareinc.com/",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0125387,
+          44.429209
+        ]
+      },
+      "id": "node/3160041268"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3917703871",
+        "addr:city": "Belfast",
+        "addr:housenumber": "14",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Belfast Area Chamber of Commerce",
+        "office": "association",
+        "phone": "+1-207-338-5900",
+        "smoking": "no",
+        "website": "https://www.belfastmaine.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0047616,
+          44.4279267
+        ]
+      },
+      "id": "node/3917703871"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5179056760",
+        "addr:city": "Belfast",
+        "addr:housenumber": "96",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "amenity": "restaurant",
+        "breakfast": "Tu-Sa 07:00-11:00",
+        "cuisine": "american;pastry;sandwich;salad",
+        "diet:vegetarian": "only",
+        "drink:beer": "yes",
+        "drink:coffee": "yes",
+        "drink:tea": "yes",
+        "drink:wine": "yes",
+        "lunch": "Tu-Sa 11:00-16:00",
+        "name": "Chase's Daily",
+        "opening_hours": "Mo 09:00-17:00; Tu-Sa 07:00-17:00; Su 08:00-14:00",
+        "phone": "+1-207-338-0555",
+        "reservation": "yes",
+        "shop": "bakery",
+        "toilets": "yes",
+        "toilets:access": "permissive",
+        "toilets:unisex": "yes",
+        "website": "https://chasesdaily.me/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0068343,
+          44.4258289
+        ]
+      },
+      "id": "node/5179056760"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5664791876",
+        "addr:city": "Belfast",
+        "addr:housenumber": "133",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "email": "heavenlyyarns@gmail.com",
+        "name": "Heavenly Yarns",
+        "opening_hours": "Mo-Th 10:00-18:00; Fr, Sa 10:00-17:00; Su 11:00-16:00",
+        "phone": "+1-207-338-8388",
+        "shop": "sewing",
+        "website": "https://heavenlysocksyarns.com/",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0062251,
+          44.426117
+        ]
+      },
+      "id": "node/5664791876"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5664920735",
+        "addr:housenumber": "138",
+        "addr:street": "Main Street",
+        "alt_name": "Verizon Wireless",
+        "brand": "Verizon",
+        "brand:wikidata": "Q919641",
+        "electronics_repair": "yes",
+        "email": "Belfast@IMwireless.net",
+        "name": "IM Wireless",
+        "opening_hours": "Mo-Fr 09:00-20:00; Sa 09:00-18:00; Su 11:00-17:00",
+        "payment:cash": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-9777",
+        "shop": "mobile_phone",
+        "website": "https://imwireless.net/locations/belfast",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0087611,
+          44.4250418
+        ]
+      },
+      "id": "node/5664920735"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665160630",
+        "addr:city": "Belfast",
+        "addr:housenumber": "152",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "name": "Tire Warehouse",
+        "opening_hours": "Mo-Sa 07:30-18:00, Su 09:00-17:00",
+        "operator": "Tire Warehouse",
+        "phone": "+1-207-338-3733",
+        "shop": "tyres",
+        "website": "https://locations.tirewarehouse.net/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9792697,
+          44.4293609
+        ]
+      },
+      "id": "node/5665160630"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665160631",
+        "addr:city": "Belfast",
+        "addr:housenumber": "5",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Stephenson Lane",
+        "name": "Broadreach Family & Community Services",
+        "office": "association",
+        "opening_hours": "Mo-Fr 08:00-16:00",
+        "phone": "+1-207-338-2200",
+        "website": "https://www.broadreachmaine.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9814747,
+          44.4293747
+        ]
+      },
+      "id": "node/5665160631"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665162924",
+        "addr:city": "Belfast",
+        "addr:housenumber": "94",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Robert and Patricia Switzer Foundation",
+        "office": "company",
+        "phone": "+1-207-338-5654",
+        "toilets": "yes",
+        "website": "https://www.switzernetwork.org",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0067186,
+          44.4260141
+        ]
+      },
+      "id": "node/5665162924"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665167121",
+        "addr:city": "Belfast",
+        "addr:housenumber": "156",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "email": "news@villagesoup.com",
+        "fax": "+1-207-594-1679",
+        "name": "The Republican Journal",
+        "office": "newspaper",
+        "opening_hours": "Mo-Fr 08:30-17:00",
+        "phone": "+1-207-338-3333",
+        "website": "https://waldo.villagesoup.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0074123,
+          44.426207
+        ]
+      },
+      "id": "node/5665167121"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665168002",
+        "addr:housenumber": "92",
+        "addr:street": "Main St (lower)",
+        "description": "Store selling occult materials and artisan oddities.",
+        "name": "Alder & Vine",
+        "opening_hours": "Mo, Th-Su 11:00-17:00",
+        "shop": "gift",
+        "website": "https://alderandvine.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0065681,
+          44.4259876
+        ]
+      },
+      "id": "node/5665168002"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665175876",
+        "addr:city": "Belfast",
+        "addr:housenumber": "96",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "name": "Rob's True Value",
+        "operator": "Rob's True Value",
+        "phone": "+1-207-338-0409",
+        "shop": "hardware"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9888367,
+          44.4312933
+        ]
+      },
+      "id": "node/5665175876"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665175877",
+        "addr:city": "Belfast",
+        "addr:housenumber": "7",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Old Searsport Avenue",
+        "name": "Lupine Cottage",
+        "operator": "Lupine Cottage",
+        "phone": "+1-207-338-4300",
+        "shop": "craft"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9927,
+          44.4327161
+        ]
+      },
+      "id": "node/5665175877"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5665180635",
+        "addr:city": "Belfast",
+        "addr:housenumber": "29",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "name": "Floral Creations & Gifts",
+        "opening_hours": "Mo-Fr 09:00-18:00; Sa 09:00-17:00; Su 10:00-14:00",
+        "operator": "Floral Creations & Gifts",
+        "phone": "+1-207-338-2688",
+        "shop": "florist"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0015455,
+          44.4337651
+        ]
+      },
+      "id": "node/5665180635"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5667218410",
+        "addr:city": "Belfast",
+        "addr:housenumber": "137",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "closed": "yes",
+        "name": "Moonbat City Baking Company",
+        "opening_hours": "Mo-Th 07:00-13:00",
+        "phone": "+1-207-218-1039",
+        "shop": "bakery",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0084738,
+          44.4255272
+        ]
+      },
+      "id": "node/5667218410"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5667226443",
+        "addr:housenumber": "138",
+        "addr:street": "Main Street",
+        "brand": "Family Dollar",
+        "brand:wikidata": "Q5433101",
+        "name": "Family Dollar",
+        "opening_hours": "Mo-Sa 08:00-21:00; Su 09:00-21:00",
+        "payment:cash": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-5617",
+        "ref": "27827",
+        "shop": "variety_store",
+        "website": "https://locations.familydollar.com/me/belfast/27827/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0085445,
+          44.4251716
+        ]
+      },
+      "id": "node/5667226443"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5667355955",
+        "addr:city": "Belfast",
+        "addr:housenumber": "31",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Front Street",
+        "name": "The Purple Baboon",
+        "opening_hours": "Mo-Su 09:00-20:00",
+        "phone": "+1-207-338-6505",
+        "shop": "gift",
+        "website": "https://www.facebook.com/The-Purple-Baboon-196324223732863/#!/The-Purple-Baboon-196324223732863/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0049124,
+          44.4283723
+        ]
+      },
+      "id": "node/5667355955"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5667764249",
+        "addr:housenumber": "109",
+        "addr:street": "Church Street",
+        "email": "leftbank@myfairpoint.net",
+        "name": "Left Bank Books",
+        "opening_hours": "Mo-Fr 09:30-17:30, 09:00-18:00; Sa 10:00-17:00; Su 11:00-16:00",
+        "phone": "+1-207-338-9009",
+        "shop": "books",
+        "toilets": "yes",
+        "toilets:access": "permissive",
+        "toilets:unisex": "yes",
+        "website": "https://leftbankbookshop.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0068728,
+          44.4253028
+        ]
+      },
+      "id": "node/5667764249"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668010818",
+        "addr:city": "Belfast",
+        "addr:housenumber": "48",
+        "addr:state": "ME",
+        "addr:street": "Marshall Wharf",
+        "name": "CoastWise Realty",
+        "opening_hours": "Mo-Sa 09:00-17:00",
+        "phone": "+1-207-338-6005",
+        "shop": "estate_agent",
+        "website": "http://coastwiserealestate.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0050004,
+          44.4289845
+        ]
+      },
+      "id": "node/5668010818"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668093060",
+        "addr:city": "Belfast",
+        "addr:housenumber": "94",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "name": "Allen Insurance and Financial",
+        "office": "insurance",
+        "opening_hours": "Mo-Fr 08:00-16:30",
+        "phone": "+1-207-338-0801",
+        "website": "https://alleninsuranceandfinancial.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.004284,
+          44.4248072
+        ]
+      },
+      "id": "node/5668093060"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668106750",
+        "addr:housenumber": "138",
+        "addr:street": "Main Street",
+        "beauty": "tanning",
+        "brand": "Sun Tan City",
+        "brand:wikidata": "Q120733136",
+        "leisure": "tanning_salon",
+        "name": "Sun Tan City",
+        "opening_hours": "Mo-Fr 08:00-21:00; Sa 08:00-20:00; Su 08:00-21:00",
+        "payment:cash": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-3357",
+        "shop": "beauty",
+        "toilets": "yes",
+        "toilets:wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0086414,
+          44.4251379
+        ]
+      },
+      "id": "node/5668106750"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668108575",
+        "addr:housenumber": "138",
+        "addr:street": "Main Street",
+        "name": "Unique of Boston",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "phone": "+1-207-338-1308",
+        "reservation": "recommended",
+        "shop": "beauty",
+        "website": "https://www.facebook.com/Unique-of-Boston-Salon-1643673189236179/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0086492,
+          44.4250878
+        ]
+      },
+      "id": "node/5668108575"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668133959",
+        "addr:city": "Belfast",
+        "addr:housenumber": "93",
+        "addr:state": "ME",
+        "addr:street": "Lincolnville Avenue",
+        "brand": "Hannaford",
+        "brand:wikidata": "Q5648760",
+        "level": "0",
+        "name": "Hannaford",
+        "opening_hours": "Mo-Sa 07:00-22:00; Su 07:00-21:00",
+        "organic": "yes",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1 207-338-5377",
+        "ref": "21056",
+        "shop": "supermarket",
+        "toilets": "yes",
+        "website": "https://stores.hannaford.com/me/belfast/8241",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0180951,
+          44.4204177
+        ]
+      },
+      "id": "node/5668133959"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668193097",
+        "addr:city": "Belfast",
+        "addr:housenumber": "9",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Beaver Street",
+        "cuisine": "cupcake;pastry",
+        "diet:gluten_free": "only",
+        "diet:vegan": "yes",
+        "drink:juice": "yes",
+        "name": "SueCakes",
+        "opening_hours": "We-Fr 08:00-16:00; Sa, Su 11:00-16:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "phone": "+1-207-218-1031",
+        "shop": "bakery",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:unisex": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0059207,
+          44.4255649
+        ]
+      },
+      "id": "node/5668193097"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5669628323",
+        "addr:city": "Belfast",
+        "addr:housenumber": "1",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Belmont Avenue",
+        "email": "gwe.belfast@gmail.com",
+        "name": "Green with Envy Salon",
+        "opening_hours": "Mo, Tu, Sa 09:00-18:00; Su 10:00-18:00; We-Fr 09:00-20:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "phone": "+1-207-338-3148",
+        "reservation": "recommended",
+        "shop": "beauty",
+        "toilets": "yes",
+        "website": "https://greenenvysalon.com/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0235843,
+          44.4245402
+        ]
+      },
+      "id": "node/5669628323"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5670197509",
+        "addr:city": "Belfast",
+        "addr:housenumber": "1",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Belmont Avenue",
+        "name": "Loyal Biscuit Co.",
+        "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-17:00; Su 11:00-16:00",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:contactless": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-930-8100",
+        "shop": "pet",
+        "website": "https://www.loyalbiscuit.com/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.023655,
+          44.424896
+        ]
+      },
+      "id": "node/5670197509"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5670199693",
+        "addr:city": "Belfast",
+        "addr:housenumber": "1",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Belmont Avenue",
+        "brand": "Champion;New Balance;Oakley;Asics;The North Face;Adidas",
+        "clothes": "sports",
+        "clothes:sports": "yes",
+        "email": "CustomerService@olympiasports.net",
+        "name": "Olympia Sports",
+        "opening_hours": "Mo-Fr 09:30-20:00; Sa 09:00-19:00; Su 10:00-18:00",
+        "payment:cash": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-0749",
+        "shop": "sports",
+        "sport": "basketball;running",
+        "website": "https://olympiasports.net/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0237194,
+          44.4249841
+        ]
+      },
+      "id": "node/5670199693"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5672976087",
+        "addr:city": "Belfast",
+        "addr:housenumber": "21",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Schoodic Drive",
+        "name": "On Process Technology",
+        "office": "company",
+        "website": "https://onprocess.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0296894,
+          44.4191677
+        ]
+      },
+      "id": "node/5672976087"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5675749051",
+        "addr:city": "Belfast",
+        "addr:housenumber": "1",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Beaver Street",
+        "name": "Belfast Barber Shop",
+        "opening_hours": "Mo, Tu, Th, Fr 09:00-17:00; Sa 09:00-13:00",
+        "phone": "+1-207-323-5663",
+        "shop": "hairdresser",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.007147,
+          44.4254335
+        ]
+      },
+      "id": "node/5675749051"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5691734403",
+        "brand": "O'Reilly Auto Parts",
+        "brand:wikidata": "Q7071951",
+        "name": "O'Reilly Auto Parts",
+        "shop": "car_parts",
+        "website": "https://locations.oreillyauto.com/me/belfast/autoparts-4520.html"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.019976,
+          44.4215253
+        ]
+      },
+      "id": "node/5691734403"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5691734421",
+        "addr:housenumber": "109",
+        "addr:street": "Church Street",
+        "name": "Opera House Video",
+        "shop": "video"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0069343,
+          44.4253298
+        ]
+      },
+      "id": "node/5691734421"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5691741521",
+        "addr:housenumber": "38",
+        "addr:street": "Starrett Drive",
+        "name": "Foster's Pets",
+        "opening_hours": "Mo-Sa 09:30-19:00, 09:00-18:00; Su 10:00-17:00",
+        "phone": "+1-207-338-4480",
+        "shop": "pet",
+        "website": "https://www.fosterspetstore.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0184943,
+          44.4214872
+        ]
+      },
+      "id": "node/5691741521"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5691752314",
+        "addr:housenumber": "1",
+        "addr:street": "Franklin St",
+        "name": "Belfast Bay Shade Company",
+        "opening_hours": "Tu-Sa 10:00-15:30",
+        "shop": "interior_decoration"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0078395,
+          44.4251861
+        ]
+      },
+      "id": "node/5691752314"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5721119034",
+        "addr:city": "Belfast",
+        "addr:housenumber": "147",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Waldo Avenue",
+        "name": "Rip Tide Smoke Shop",
+        "opening_hours": "Mo-Sa 11:00-18:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "shop": "e-cigarette"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0189838,
+          44.4325238
+        ]
+      },
+      "id": "node/5721119034"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5888515329",
+        "addr:city": "Belfast",
+        "addr:housenumber": "38",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Starrett Drive",
+        "addr:unit": "C",
+        "email": "help@midcoasttech.com",
+        "name": "Mid-Coast Tech",
+        "opening_hours": "Mo-Fr 08:30-17:30",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-236-0021",
+        "shop": "computer",
+        "website": "https://midcoasttech.com",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0181963,
+          44.4215648
+        ]
+      },
+      "id": "node/5888515329"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5981378898",
+        "addr:city": "Belfast",
+        "addr:housenumber": "39",
+        "addr:state": "ME",
+        "addr:street": "Spring Street",
+        "addr:unit": "Suite A",
+        "name": "Waldo County Registry of Probate and Court",
+        "office": "government",
+        "opening_hours": "Mo-Fr 08:00-16:00",
+        "phone": "+1-207-338-2780",
+        "website": "https://www.waldocountyme.gov/department/registry-of-probate/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0061881,
+          44.425123
+        ]
+      },
+      "id": "node/5981378898"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5981456590",
+        "addr:city": "Belfast",
+        "addr:housenumber": "125",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "name": "Ambiance",
+        "opening_hours": "We-Sa 11:00-17:30; Su 11:00-16:00",
+        "phone": "+1-207-505-0116",
+        "shop": "antiques"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0079838,
+          44.4255813
+        ]
+      },
+      "id": "node/5981456590"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5981462028",
+        "addr:city": "Belfast",
+        "addr:housenumber": "132",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Church Street",
+        "alt_name": "Edward Jones Investments",
+        "branch": "Financial Advisor: Glenn T Carlson Jr",
+        "brand": "Edward Jones",
+        "brand:wikidata": "Q5343830",
+        "name": "Edward Jones",
+        "office": "financial_advisor",
+        "opening_hours": "Mo-Fr 08:30-16:00",
+        "phone": "+1-207-338-1090",
+        "website": "https://www.edwardjones.com/glenn-carlson"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0081723,
+          44.4258108
+        ]
+      },
+      "id": "node/5981462028"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6025075201",
+        "addr:city": "Belfast",
+        "addr:housenumber": "143",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "branch": "Belfast, ME",
+        "name": "The Masiello Group",
+        "opening_hours": "Mo-Fr 09:00-17:00; Sa 11:00-14:00",
+        "phone": "+1-207-338-3500",
+        "shop": "estate_agent",
+        "website": "https://masiello.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.006803,
+          44.4263376
+        ]
+      },
+      "id": "node/6025075201"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11373044930",
+        "addr:city": "Belfast",
+        "addr:housenumber": "45",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Searsport Avenue",
+        "name": "Bennett's Gems & Jewelry",
+        "opening_hours": "Mo-Su 10:00-17:00",
+        "operator": "OWNER",
+        "payment:american_express": "yes",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:discover_card": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "phone": "+1 207-338-5530",
+        "shop": "gift",
+        "website": "https://bennettsgemsjewelry.net"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.9983638,
+          44.4332904
+        ]
+      },
+      "id": "node/11373044930"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11392608525",
+        "brand": "VIP Tires and Service",
+        "brand:wikidata": "Q7907052",
+        "name": "VIP Tires and Service",
+        "service": "repair;tyres",
+        "service:vehicle:car_repair": "yes",
+        "service:vehicle:tyres": "yes",
+        "shop": "car_repair"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.01969,
+          44.4215611
+        ]
+      },
+      "id": "node/11392608525"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13131958845",
+        "shop": "department_store"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0047432,
+          44.4255288
+        ]
+      },
+      "id": "node/13131958845"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13131958846",
+        "addr:city": "Belfast",
+        "addr:housenumber": "105",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "High Street",
+        "clothes": "women;children;denim;fashion",
+        "name": "Grasshopper Shop",
+        "opening_hours": "Mo-Fr 09:00-18:00",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1 207-218-1366",
+        "shop": "department_store",
+        "website": "https://grasshoppershop.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0047518,
+          44.425509
+        ]
+      },
+      "id": "node/13131958846"
+    }
+  ]
+}

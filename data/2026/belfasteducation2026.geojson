@@ -1,0 +1,482 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-25T11:46:31Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/766525878",
+        "addr:city": "Belfast",
+        "addr:housenumber": "25",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Lions Way",
+        "amenity": "school",
+        "mascot": "Lions",
+        "name": "Belfast Area High School",
+        "operator": "Regional School Unit 71",
+        "operator:type": "public",
+        "phone": "+1 207 338 1960",
+        "website": "https://bahs.rsu71.org/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0156234,
+              44.4289707
+            ],
+            [
+              -69.0152561,
+              44.4292124
+            ],
+            [
+              -69.0152969,
+              44.4292441
+            ],
+            [
+              -69.0153554,
+              44.4292728
+            ],
+            [
+              -69.0154294,
+              44.4292942
+            ],
+            [
+              -69.0155011,
+              44.4293301
+            ],
+            [
+              -69.0161608,
+              44.4298225
+            ],
+            [
+              -69.0162236,
+              44.4298575
+            ],
+            [
+              -69.0162664,
+              44.4298736
+            ],
+            [
+              -69.0163876,
+              44.4300837
+            ],
+            [
+              -69.016418,
+              44.430111
+            ],
+            [
+              -69.0170161,
+              44.4305588
+            ],
+            [
+              -69.0170649,
+              44.4305815
+            ],
+            [
+              -69.0171157,
+              44.4305913
+            ],
+            [
+              -69.0171657,
+              44.4305953
+            ],
+            [
+              -69.0172173,
+              44.4305839
+            ],
+            [
+              -69.0172774,
+              44.4305618
+            ],
+            [
+              -69.0174157,
+              44.430533
+            ],
+            [
+              -69.0175243,
+              44.4305232
+            ],
+            [
+              -69.0176348,
+              44.4305303
+            ],
+            [
+              -69.0177691,
+              44.4305415
+            ],
+            [
+              -69.0181762,
+              44.4305519
+            ],
+            [
+              -69.0183643,
+              44.430528
+            ],
+            [
+              -69.0186023,
+              44.430487
+            ],
+            [
+              -69.0187927,
+              44.430437
+            ],
+            [
+              -69.0189829,
+              44.4303621
+            ],
+            [
+              -69.0191208,
+              44.4302954
+            ],
+            [
+              -69.0193815,
+              44.4301186
+            ],
+            [
+              -69.019638,
+              44.4299373
+            ],
+            [
+              -69.0198527,
+              44.4297747
+            ],
+            [
+              -69.0200888,
+              44.4295639
+            ],
+            [
+              -69.0203196,
+              44.4293321
+            ],
+            [
+              -69.0206275,
+              44.4290095
+            ],
+            [
+              -69.0207525,
+              44.4288458
+            ],
+            [
+              -69.0208796,
+              44.4286546
+            ],
+            [
+              -69.0208205,
+              44.4281948
+            ],
+            [
+              -69.0207738,
+              44.4278316
+            ],
+            [
+              -69.0204942,
+              44.4278633
+            ],
+            [
+              -69.0185303,
+              44.4280658
+            ],
+            [
+              -69.018315,
+              44.4276395
+            ],
+            [
+              -69.0164695,
+              44.4278387
+            ],
+            [
+              -69.0162932,
+              44.4272262
+            ],
+            [
+              -69.0146162,
+              44.4276194
+            ],
+            [
+              -69.0148122,
+              44.4277755
+            ],
+            [
+              -69.0147638,
+              44.427806
+            ],
+            [
+              -69.0157397,
+              44.4285501
+            ],
+            [
+              -69.015416,
+              44.4287989
+            ],
+            [
+              -69.0156234,
+              44.4289707
+            ]
+          ]
+        ]
+      },
+      "id": "way/766525878"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1282645468",
+        "addr:city": "Belfast",
+        "addr:housenumber": "173",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Lincolnville Avenue",
+        "amenity": "school",
+        "name": "Troy A. Howard Middle School",
+        "operator": "Regional School Unit 71"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.0239058,
+              44.4129367
+            ],
+            [
+              -69.0260941,
+              44.4143032
+            ],
+            [
+              -69.0275696,
+              44.4137568
+            ],
+            [
+              -69.0291078,
+              44.4160817
+            ],
+            [
+              -69.0348706,
+              44.4133069
+            ],
+            [
+              -69.0312034,
+              44.4094929
+            ],
+            [
+              -69.0265044,
+              44.4116944
+            ],
+            [
+              -69.0259903,
+              44.4122365
+            ],
+            [
+              -69.024907,
+              44.4117379
+            ],
+            [
+              -69.0246834,
+              44.4120485
+            ],
+            [
+              -69.0239058,
+              44.4129367
+            ]
+          ]
+        ]
+      },
+      "id": "way/1282645468"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1358632216",
+        "addr:city": "Belfast",
+        "addr:housenumber": "31",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Elementary Avenue",
+        "amenity": "school",
+        "building": "school",
+        "name": "Captain Albert W. Stevens Elementary School",
+        "operator": "Regional School Unit 71"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -69.012356,
+              44.4182756
+            ],
+            [
+              -69.012597,
+              44.4179718
+            ],
+            [
+              -69.0127068,
+              44.4179618
+            ],
+            [
+              -69.0128735,
+              44.4180311
+            ],
+            [
+              -69.0130069,
+              44.4178674
+            ],
+            [
+              -69.0128328,
+              44.4177951
+            ],
+            [
+              -69.0128165,
+              44.417715
+            ],
+            [
+              -69.0129955,
+              44.4175026
+            ],
+            [
+              -69.0127687,
+              44.4174051
+            ],
+            [
+              -69.0125807,
+              44.4176283
+            ],
+            [
+              -69.0124722,
+              44.4176469
+            ],
+            [
+              -69.012124,
+              44.417494
+            ],
+            [
+              -69.0119984,
+              44.4176399
+            ],
+            [
+              -69.0123463,
+              44.4177927
+            ],
+            [
+              -69.0123643,
+              44.4178768
+            ],
+            [
+              -69.012167,
+              44.4181252
+            ],
+            [
+              -69.0122844,
+              44.4181728
+            ],
+            [
+              -69.01224,
+              44.4182286
+            ],
+            [
+              -69.012356,
+              44.4182756
+            ]
+          ]
+        ]
+      },
+      "id": "way/1358632216"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/358223485",
+        "addr:city": "Belfast",
+        "addr:housenumber": "9",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "School Street",
+        "amenity": "school",
+        "ele": "59",
+        "gnis:feature_id": "574312",
+        "name": "Sweetser"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.011494,
+          44.4195851
+        ]
+      },
+      "id": "node/358223485"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7231420969",
+        "addr:city": "Belfast",
+        "addr:housenumber": "19",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Merriam Drive",
+        "amenity": "school",
+        "name": "B.C.O.P.E.",
+        "operator": "Regional School Unit 71"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0231567,
+          44.4334342
+        ]
+      },
+      "id": "node/7231420969"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7231421434",
+        "addr:city": "Belfast",
+        "addr:housenumber": "14",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Swan Lake Avenue",
+        "amenity": "school",
+        "building": "school",
+        "ele": "20",
+        "gnis:feature_id": "565520",
+        "name": "East Belfast Elementary School",
+        "operator": "Regional School Unit 71"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0045676,
+          44.4371051
+        ]
+      },
+      "id": "node/7231421434"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12745510498",
+        "addr:city": "Belfast",
+        "addr:housenumber": "24",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Faith Lane",
+        "amenity": "school",
+        "name": "Emmanual Baptist Church Christian Academy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0154171,
+          44.4179309
+        ]
+      },
+      "id": "node/12745510498"
+    }
+  ]
+}

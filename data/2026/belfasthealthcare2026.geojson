@@ -1,0 +1,438 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-25T11:47:31Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/586366244",
+        "addr:city": "Belfast",
+        "addr:housenumber": "118",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Northport Avenue",
+        "amenity": "hospital",
+        "beds": "25",
+        "emergency": "yes",
+        "healthcare": "hospital",
+        "name": "Waldo Hospital",
+        "opening_hours": "24/7",
+        "operator": "MaineHealth",
+        "phone": "+1-207-338-2500",
+        "website": "https://mainehealth.org/waldo-county-general-hospital"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9944866,
+              44.4119279
+            ],
+            [
+              -68.9944411,
+              44.4119251
+            ],
+            [
+              -68.9943969,
+              44.4119293
+            ],
+            [
+              -68.9937241,
+              44.4120141
+            ],
+            [
+              -68.9927325,
+              44.412166
+            ],
+            [
+              -68.9927191,
+              44.4124055
+            ],
+            [
+              -68.9927405,
+              44.4129266
+            ],
+            [
+              -68.9929658,
+              44.4136202
+            ],
+            [
+              -68.9931697,
+              44.4136815
+            ],
+            [
+              -68.993749,
+              44.4137122
+            ],
+            [
+              -68.9943337,
+              44.413716
+            ],
+            [
+              -68.9947361,
+              44.4137275
+            ],
+            [
+              -68.9950848,
+              44.4136968
+            ],
+            [
+              -68.9954656,
+              44.413601
+            ],
+            [
+              -68.9944866,
+              44.4119279
+            ]
+          ]
+        ]
+      },
+      "id": "way/586366244"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377069400",
+        "addr:city": "Belfast",
+        "addr:housenumber": "125",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Northport Avenue",
+        "amenity": "doctors",
+        "building": "yes",
+        "healthcare": "doctor",
+        "healthcare:speciality": "nephrology",
+        "name": "MaineHealth Nephrology - Belfast",
+        "opening_hours": "Mo-Sa 08:00-18:00",
+        "phone": "+1-207-505-4080",
+        "website": "https://www.mainehealth.org/Waldo-County-General-Hospital/Services/Nephrology"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9961648,
+              44.4121459
+            ],
+            [
+              -68.9961133,
+              44.4120495
+            ],
+            [
+              -68.9960507,
+              44.4119599
+            ],
+            [
+              -68.9952083,
+              44.4122291
+            ],
+            [
+              -68.995271,
+              44.4123213
+            ],
+            [
+              -68.9953247,
+              44.4124156
+            ],
+            [
+              -68.9956045,
+              44.412325
+            ],
+            [
+              -68.9956396,
+              44.4123868
+            ],
+            [
+              -68.9957157,
+              44.4123607
+            ],
+            [
+              -68.9956769,
+              44.4123016
+            ],
+            [
+              -68.9961648,
+              44.4121459
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377069400"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377069403",
+        "addr:city": "Belfast",
+        "addr:housenumber": "119",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Northport Avenue",
+        "addr:unit": "2",
+        "amenity": "doctors",
+        "building": "yes",
+        "check_date": "2025-04-14",
+        "check_date:opening_hours": "2025-04-14",
+        "healthcare": "doctor",
+        "healthcare:speciality": "general",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "MaineHealth Pediatrics",
+        "opening_hours": "Mo-Sa 08:00-18:00",
+        "operator": "Ainsley J Price",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9966694,
+              44.4125894
+            ],
+            [
+              -68.9964101,
+              44.4121952
+            ],
+            [
+              -68.9962047,
+              44.4122595
+            ],
+            [
+              -68.9962151,
+              44.4122866
+            ],
+            [
+              -68.9961168,
+              44.4123176
+            ],
+            [
+              -68.9961498,
+              44.4123717
+            ],
+            [
+              -68.9962349,
+              44.4123458
+            ],
+            [
+              -68.9964348,
+              44.4126628
+            ],
+            [
+              -68.9966694,
+              44.4125894
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377069403"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377244419",
+        "addr:city": "Belfast",
+        "addr:housenumber": "19",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Fahy Street",
+        "amenity": "dentist",
+        "building": "yes",
+        "healthcare": "dentist",
+        "name": "Belfast Dental Care",
+        "opening_hours": "Mo-Th 08:00-16:00;",
+        "phone": "+1 207-338-3669",
+        "website": "https://belfast-dentalcare.com/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.9926723,
+              44.4119698
+            ],
+            [
+              -68.9928685,
+              44.4119428
+            ],
+            [
+              -68.9928342,
+              44.4118121
+            ],
+            [
+              -68.992735,
+              44.4118257
+            ],
+            [
+              -68.9927476,
+              44.4118783
+            ],
+            [
+              -68.9926489,
+              44.4118894
+            ],
+            [
+              -68.9926723,
+              44.4119698
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377244419"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377244425",
+        "addr:city": "Belfast",
+        "addr:housenumber": "146",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Northport Avenue",
+        "amenity": "doctors",
+        "building": "yes",
+        "healthcare": "doctor",
+        "name": "Waldo County General Hospital-Testing Center",
+        "phone": "+1-207-338-2500",
+        "website": "https://www.mainehealth.org/mainehealth-waldo-hospital/care-services-mainehealth-waldo-hospital/laboratory-services-mainehealth-waldo-hospital"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.993805,
+              44.4111549
+            ],
+            [
+              -68.9939019,
+              44.4111262
+            ],
+            [
+              -68.993837,
+              44.4109915
+            ],
+            [
+              -68.9937281,
+              44.4110229
+            ],
+            [
+              -68.9937563,
+              44.411072
+            ],
+            [
+              -68.9937148,
+              44.4110843
+            ],
+            [
+              -68.993741,
+              44.4111289
+            ],
+            [
+              -68.993784,
+              44.4111173
+            ],
+            [
+              -68.993805,
+              44.4111549
+            ]
+          ]
+        ]
+      },
+      "id": "way/1377244425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5668201079",
+        "addr:housenumber": "254",
+        "addr:street": "Main Street",
+        "amenity": "pharmacy",
+        "brand": "Rite Aid",
+        "brand:wikidata": "Q3433273",
+        "healthcare": "pharmacy",
+        "name": "Rite Aid",
+        "opening_hours": "Mo-Su 08:00-22:00",
+        "payment:cheque": "yes",
+        "payment:contactless": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-4411",
+        "website": "https://locations.riteaid.com/locations/me/belfast/254-main-street.html",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0180005,
+          44.4233397
+        ]
+      },
+      "id": "node/5668201079"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5672981475",
+        "addr:city": "Belfast",
+        "addr:housenumber": "268",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Main Street",
+        "amenity": "doctors",
+        "atm": "yes",
+        "brand": "Walgreens",
+        "brand:wikidata": "Q1591889",
+        "drive_through": "yes",
+        "healthcare": "doctor",
+        "healthcare:speciality": "community",
+        "name": "Walgreens Healthcare Clinic",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "payment:cash": "yes",
+        "payment:cheque": "yes",
+        "payment:contactless": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-207-338-6844",
+        "website": "https://www.walgreens.com/locator/walgreens-268+main+st-belfast-me-04915/id=13615",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0189036,
+          44.4231552
+        ]
+      },
+      "id": "node/5672981475"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5721212445",
+        "addr:city": "Belfast",
+        "addr:housenumber": "147",
+        "addr:postcode": "04915",
+        "addr:state": "ME",
+        "addr:street": "Waldo Avenue",
+        "addr:unit": "6922",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "healthcare:speciality": "abortion",
+        "name": "Belfast Family Planning",
+        "opening_hours": "Tu, Th 10:00-18:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0190465,
+          44.4326672
+        ]
+      },
+      "id": "node/5721212445"
+    }
+  ]
+}
