@@ -1,0 +1,3113 @@
+﻿{
+"type": "FeatureCollection",
+"features": [
+{
+  "type": "Feature",
+  "id": "node/197638273",
+  "properties": {
+    "created_by": "Potlatch 0.10b",
+    "name": "Crossnacreevy",
+    "place": "hamlet",
+    "id": "node/197638273"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8485065,
+      54.5551766
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762396",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543900",
+    "gns:DMS_LONG": "-55500",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.65",
+    "gns:LONG": "-5.916667",
+    "gns:MGRS": "30UUF1183159753",
+    "gns:N:xx:FULL_NAME": "Whitehouse Lower",
+    "gns:N:xx:FULL_NAME_ND": "Whitehouse Lower",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "WHITEHOUSELOWER",
+    "gns:RC": "1",
+    "gns:UFI": "-2611583",
+    "gns:UNI": "-3590017",
+    "name": "Whitehouse",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762396"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9158912,
+      54.6529151
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762434",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543500",
+    "gns:DMS_LONG": "-54800",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.583333",
+    "gns:LONG": "-5.8",
+    "gns:MGRS": "30UUF1906052031",
+    "gns:N:xx:FULL_NAME": "Dundonald",
+    "gns:N:xx:FULL_NAME_ND": "Dundonald",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "DUNDONALD",
+    "gns:RC": "1",
+    "gns:UFI": "-2594862",
+    "gns:UNI": "-3569534",
+    "name": "Dundonald",
+    "name:ga": "Dún Dónaill",
+    "name:mk": "Дандоналд",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "town",
+    "population": "16098",
+    "source": "gns_ni",
+    "wikidata": "Q116756",
+    "id": "node/267762434"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8105342,
+      54.5947412
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762467",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543300",
+    "gns:DMS_LONG": "-55900",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.55",
+    "gns:LONG": "-5.983333",
+    "gns:MGRS": "30UUF0705948811",
+    "gns:N:xx:FULL_NAME": "Finaghy",
+    "gns:N:xx:FULL_NAME_ND": "Finaghy",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "FINAGHY",
+    "gns:RC": "1",
+    "gns:UFI": "-2596165",
+    "gns:UNI": "-3571108",
+    "is_in:country": "Northern Ireland",
+    "name": "Finaghy",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762467"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9798357,
+      54.555559
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762520",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543500",
+    "gns:DMS_LONG": "-55000",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.583333",
+    "gns:LONG": "-5.833333",
+    "gns:MGRS": "30UUF1690752117",
+    "gns:N:xx:FULL_NAME": "Gilnahirk",
+    "gns:N:xx:FULL_NAME_ND": "Gilnahirk",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "GILNAHIRK",
+    "gns:RC": "1",
+    "gns:UFI": "-2596968",
+    "gns:UNI": "-3572120",
+    "name": "Gilnahirk",
+    "name:ga": "Éadan Ghiolla na hAdhairce",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762520"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8427049,
+      54.5839687
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762661",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543600",
+    "gns:DMS_LONG": "-55300",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.6",
+    "gns:LONG": "-5.883333",
+    "gns:MGRS": "30UUF1375354103",
+    "gns:N:xx:FULL_NAME": "Sydenham",
+    "gns:N:xx:FULL_NAME_ND": "Sydenham",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "SYDENHAM",
+    "gns:RC": "1",
+    "gns:UFI": "-2609293",
+    "gns:UNI": "-3587230",
+    "is_in:country": "Northern Ireland",
+    "name": "Sydenham",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762661"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8798789,
+      54.6040971
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762744",
+  "properties": {
+    "gns:ADM1": "R5",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543400",
+    "gns:DMS_LONG": "-55200",
+    "gns:DSG": "PPLA",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.566667",
+    "gns:LONG": "-5.866667",
+    "gns:MGRS": "30UUF1467850351",
+    "gns:N:xx:FULL_NAME": "Castlereagh",
+    "gns:N:xx:FULL_NAME_ND": "Castlereagh",
+    "gns:N:xx:MODIFY_DATE": "2004-10-06",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "CASTLEREAGH",
+    "gns:RC": "1",
+    "gns:UFI": "-2592043",
+    "gns:UNI": "-3565979",
+    "name": "Castlereagh",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267762744"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.866667,
+      54.566667
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762752",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543300",
+    "gns:DMS_LONG": "-55400",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.55",
+    "gns:LONG": "-5.9",
+    "gns:MGRS": "30UUF1244748586",
+    "gns:N:xx:FULL_NAME": "Newtownbreda",
+    "gns:N:xx:FULL_NAME_ND": "Newtownbreda",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "NEWTOWNBREDA",
+    "gns:RC": "1",
+    "gns:UFI": "-2604121",
+    "gns:UNI": "-3580890",
+    "is_in:country": "Northern Ireland",
+    "name": "Newtownbreda",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267762752"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9,
+      54.55
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762763",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543900",
+    "gns:DMS_LONG": "-54900",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.65",
+    "gns:LONG": "-5.816667",
+    "gns:MGRS": "30UUF1828159489",
+    "gns:N:xx:FULL_NAME": "Cultra",
+    "gns:N:xx:FULL_NAME_ND": "Cultra",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "CULTRA",
+    "gns:RC": "1",
+    "gns:UFI": "-2593885",
+    "gns:UNI": "-3568288",
+    "name": "Cultra",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267762763"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8112821,
+      54.6524689
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762777",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543600",
+    "gns:DMS_LONG": "-55800",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.6",
+    "gns:LONG": "-5.966667",
+    "gns:MGRS": "30UUF0837254327",
+    "gns:N:xx:FULL_NAME": "Springfield",
+    "gns:N:xx:FULL_NAME_ND": "Springfield",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "SPRINGFIELD",
+    "gns:RC": "1",
+    "gns:UFI": "-2608457",
+    "gns:UNI": "-3586218",
+    "is_in:country": "Northern Ireland",
+    "name": "Springfield",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762777"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9666746,
+      54.6000045
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762802",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543200",
+    "gns:DMS_LONG": "-55900",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.533333",
+    "gns:LONG": "-5.983333",
+    "gns:MGRS": "30UUF0698146958",
+    "gns:N:xx:FULL_NAME": "Drumbeg",
+    "gns:N:xx:FULL_NAME_ND": "Drumbeg",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "DRUMBEG",
+    "gns:RC": "1",
+    "gns:UFI": "-2594659",
+    "gns:UNI": "-3569270",
+    "is_in:country": "Northern Ireland",
+    "name": "Drumbeg",
+    "name:ga": "An Droim Beag",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "village",
+    "source": "gns_ni",
+    "id": "node/267762802"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9894925,
+      54.5327139
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762830",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543800",
+    "gns:DMS_LONG": "-54900",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.633333",
+    "gns:LONG": "-5.816667",
+    "gns:MGRS": "30UUF1820757635",
+    "gns:N:xx:FULL_NAME": "Holywood",
+    "gns:N:xx:FULL_NAME_ND": "Holywood",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "HOLYWOOD",
+    "gns:RC": "1",
+    "gns:UFI": "-2598954",
+    "gns:UNI": "-3574530",
+    "is_in": "County Down",
+    "name": "Holywood",
+    "name:ga": "Ard Mhic Nasca",
+    "name:mk": "Холивуд",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "town",
+    "source": "gns_ni",
+    "wikidata": "Q1625366",
+    "id": "node/267762830"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8361723,
+      54.6404494
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762905",
+  "properties": {
+    "created_by": "Potlatch 0.10b",
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543100",
+    "gns:DMS_LONG": "-55100",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.516667",
+    "gns:LONG": "-5.85",
+    "gns:MGRS": "30UUF1553044746",
+    "gns:N:xx:FULL_NAME": "Pipers Cross Roads",
+    "gns:N:xx:FULL_NAME_ND": "Pipers Cross Roads",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "PIPERSCROSSROADS",
+    "gns:RC": "1",
+    "gns:UFI": "-2605372",
+    "gns:UNI": "-3582407",
+    "gns:V:xx:FULL_NAME": "Pipers Cross Road",
+    "gns:V:xx:FULL_NAME_ND": "Pipers Cross Road",
+    "gns:V:xx:MODIFY_DATE": "1994-01-13",
+    "gns:V:xx:NT": "V",
+    "gns:V:xx:SORT_NAME": "PIPERSCROSSROAD",
+    "name": "Pipers Cross Roads",
+    "name:ga": "Pipers Cross Road",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267762905"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.826669,
+      54.5363275
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762911",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543700",
+    "gns:DMS_LONG": "-55600",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.616667",
+    "gns:LONG": "-5.933333",
+    "gns:MGRS": "30UUF1060256090",
+    "gns:N:xx:FULL_NAME": "Skegoniel",
+    "gns:N:xx:FULL_NAME_ND": "Skegoniel",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "SKEGONIEL",
+    "gns:RC": "1",
+    "gns:UFI": "-2607889",
+    "gns:UNI": "-3585544",
+    "gns:V:xx:FULL_NAME": "Skegoneill",
+    "gns:V:xx:FULL_NAME_ND": "Skegoneill",
+    "gns:V:xx:MODIFY_DATE": "1994-01-13",
+    "gns:V:xx:NT": "V",
+    "gns:V:xx:SORT_NAME": "SKEGONEILL",
+    "is_in": "Northern Ireland",
+    "is_in:country": "Northern Ireland",
+    "name": "Skegoniell",
+    "name:ga": "Skegoneill",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762911"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9315555,
+      54.6236214
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267762974",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543600",
+    "gns:DMS_LONG": "-55400",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.6",
+    "gns:LONG": "-5.9",
+    "gns:MGRS": "30UUF1267754147",
+    "gns:N:xx:FULL_NAME": "Ballymacarret",
+    "gns:N:xx:FULL_NAME_ND": "Ballymacarret",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "BALLYMACARRET",
+    "gns:RC": "1",
+    "gns:UFI": "-2589095",
+    "gns:UNI": "-3562328",
+    "is_in:country": "Northern Ireland",
+    "name": "Ballymacarret",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/267762974"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8974846,
+      54.5978097
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267763157",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543400",
+    "gns:DMS_LONG": "-55400",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.566667",
+    "gns:LONG": "-5.9",
+    "gns:MGRS": "30UUF1252450439",
+    "gns:N:xx:FULL_NAME": "Rosetta",
+    "gns:N:xx:FULL_NAME_ND": "Rosetta",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "ROSETTA",
+    "gns:RC": "1",
+    "gns:UFI": "-2606506",
+    "gns:UNI": "-3583812",
+    "is_in:country": "Northern Ireland",
+    "name": "Rosetta",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267763157"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.899824,
+      54.5667714
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267763184",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543500",
+    "gns:DMS_LONG": "-55100",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.583333",
+    "gns:LONG": "-5.85",
+    "gns:MGRS": "30UUF1583052161",
+    "gns:N:xx:FULL_NAME": "Knock",
+    "gns:N:xx:FULL_NAME_ND": "Knock",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "KNOCK",
+    "gns:RC": "1",
+    "gns:UFI": "-2600482",
+    "gns:UNI": "-3576373",
+    "name": "Knock",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267763184"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.85,
+      54.583333
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/267763195",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543200",
+    "gns:DMS_LONG": "-55500",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.533333",
+    "gns:LONG": "-5.916667",
+    "gns:MGRS": "30UUF1129346777",
+    "gns:N:xx:FULL_NAME": "Purdysburn",
+    "gns:N:xx:FULL_NAME_ND": "Purdysburn",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "PURDYSBURN",
+    "gns:RC": "1",
+    "gns:UFI": "-2605796",
+    "gns:UNI": "-3582947",
+    "is_in:country": "Northern Ireland",
+    "name": "Purdysburn",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "locality",
+    "source": "gns_ni",
+    "id": "node/267763195"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.916667,
+      54.533333
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/316436424",
+  "properties": {
+    "is_in": "Newtownabbey",
+    "name": "Merville Garden Village",
+    "place": "suburb",
+    "id": "node/316436424"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9143076,
+      54.6565059
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456044391",
+  "properties": {
+    "name": "Shankill",
+    "place": "suburb",
+    "id": "node/456044391"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9464366,
+      54.6037425
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456044538",
+  "properties": {
+    "name": "New Lodge",
+    "place": "suburb",
+    "wikidata": "Q4893397",
+    "wikipedia": "en:New Lodge, Belfast",
+    "id": "node/456044538"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9307639,
+      54.6101603
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456044826",
+  "properties": {
+    "name": "Andersonstown",
+    "name:ga": "Baile Andarsan",
+    "place": "suburb",
+    "source": "EEA GMES Urban Atlas",
+    "wikidata": "Q4754255",
+    "wikipedia": "en:Andersonstown",
+    "id": "node/456044826"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.987456,
+      54.5738609
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456045087",
+  "properties": {
+    "name": "Poleglass",
+    "place": "suburb",
+    "id": "node/456045087"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0218513,
+      54.5673581
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456045135",
+  "properties": {
+    "name": "Kilwee",
+    "place": "suburb",
+    "id": "node/456045135"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.014163,
+      54.5591157
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456045454",
+  "properties": {
+    "name": "Dunmurry",
+    "place": "suburb",
+    "id": "node/456045454"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0064319,
+      54.5516073
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456199763",
+  "properties": {
+    "name": "Lower Falls",
+    "place": "suburb",
+    "id": "node/456199763"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9468048,
+      54.5975135
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456200008",
+  "properties": {
+    "name": "Clonard",
+    "place": "suburb",
+    "id": "node/456200008"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.956847,
+      54.6008448
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456202197",
+  "properties": {
+    "name": "Ballymurphy",
+    "place": "suburb",
+    "id": "node/456202197"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9818666,
+      54.5940327
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456203006",
+  "properties": {
+    "name": "Turf Lodge",
+    "place": "suburb",
+    "id": "node/456203006"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9907072,
+      54.5900295
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456203730",
+  "properties": {
+    "name": "Glencairn",
+    "place": "suburb",
+    "id": "node/456203730"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9808796,
+      54.616876
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456203914",
+  "properties": {
+    "name": "Woodvale",
+    "place": "suburb",
+    "id": "node/456203914"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9617824,
+      54.6105885
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456204281",
+  "properties": {
+    "name": "Ardoyne",
+    "place": "suburb",
+    "id": "node/456204281"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9568899,
+      54.6145152
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456204909",
+  "properties": {
+    "name": "Lenadoon",
+    "name:ga": "Léana an Dúin",
+    "place": "suburb",
+    "id": "node/456204909"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0125082,
+      54.5737389
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456206541",
+  "properties": {
+    "name": "Short Strand",
+    "name:ga": "An Trá Ghearr",
+    "place": "suburb",
+    "id": "node/456206541"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9087389,
+      54.5977869
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456207550",
+  "properties": {
+    "name": "Duncairn",
+    "place": "suburb",
+    "id": "node/456207550"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9325311,
+      54.6160488
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456231147",
+  "properties": {
+    "name": "Oldpark",
+    "place": "suburb",
+    "id": "node/456231147"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.954714,
+      54.6210469
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456235654",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "is_in:city": "Belfast",
+    "name": "Ballysillan",
+    "place": "suburb",
+    "id": "node/456235654"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9651124,
+      54.628488
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456508540",
+  "properties": {
+    "name": "Sandy Row",
+    "place": "suburb",
+    "id": "node/456508540"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.937349,
+      54.5917071
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456509123",
+  "properties": {
+    "name": "Cliftonville",
+    "place": "suburb",
+    "id": "node/456509123"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9456317,
+      54.616838
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456799920",
+  "properties": {
+    "name": "Highfield",
+    "place": "suburb",
+    "id": "node/456799920"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9746415,
+      54.6013913
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456954801",
+  "properties": {
+    "name": "Twinbrook",
+    "name:ga": "Cill Uaighe",
+    "place": "suburb",
+    "id": "node/456954801"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0230088,
+      54.5511906
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/456957167",
+  "properties": {
+    "name": "Derriaghy",
+    "place": "suburb",
+    "id": "node/456957167"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0204511,
+      54.5412249
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/458025774",
+  "properties": {
+    "name": "Tiger's Bay",
+    "place": "suburb",
+    "id": "node/458025774"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9264842,
+      54.613388
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/458027424",
+  "properties": {
+    "name": "Queen's Island",
+    "place": "suburb",
+    "id": "node/458027424"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9031512,
+      54.610626
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/460374126",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Ballyskeagh",
+    "place": "village",
+    "wikidata": "Q116618",
+    "id": "node/460374126"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0052795,
+      54.5337501
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/460376664",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Milltown",
+    "place": "village",
+    "wikidata": "Q2197311",
+    "id": "node/460376664"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.04041,
+      54.5429324
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/463322838",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Upper Malone",
+    "place": "suburb",
+    "id": "node/463322838"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9682915,
+      54.5546382
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/472664785",
+  "properties": {
+    "name": "Whitewell",
+    "place": "suburb",
+    "id": "node/472664785"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9355701,
+      54.6576644
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/472665434",
+  "properties": {
+    "name": "Mount Vernon",
+    "place": "suburb",
+    "id": "node/472665434"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9294332,
+      54.6320172
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/472669833",
+  "properties": {
+    "is_in:city": "Belfast",
+    "is_in:state": "Northern Ireland",
+    "name": "Fortwilliam",
+    "place": "suburb",
+    "id": "node/472669833"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9286779,
+      54.6291605
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/472670080",
+  "properties": {
+    "name": "Greencastle",
+    "place": "suburb",
+    "id": "node/472670080"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9219316,
+      54.6437105
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/472670281",
+  "properties": {
+    "name": "Lowwood",
+    "place": "suburb",
+    "id": "node/472670281"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9235109,
+      54.6333338
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/473459766",
+  "properties": {
+    "name": "Hightown",
+    "place": "suburb",
+    "id": "node/473459766"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9782229,
+      54.6646328
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/482217438",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Balmoral",
+    "place": "suburb",
+    "id": "node/482217438"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9628796,
+      54.5671286
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/482217975",
+  "properties": {
+    "name": "Windsor",
+    "place": "suburb",
+    "id": "node/482217975"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9503998,
+      54.5786415
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/490669646",
+  "properties": {
+    "name": "Stranmillis",
+    "place": "suburb",
+    "wikidata": "Q7621649",
+    "id": "node/490669646"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9350016,
+      54.5701181
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/490671798",
+  "properties": {
+    "name": "Donegall Pass",
+    "place": "suburb",
+    "id": "node/490671798"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9285557,
+      54.5901701
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/490672474",
+  "properties": {
+    "name": "Markets",
+    "place": "suburb",
+    "id": "node/490672474"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9232873,
+      54.5950249
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/490672816",
+  "properties": {
+    "name": "Ballynafeigh",
+    "place": "suburb",
+    "id": "node/490672816"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9163707,
+      54.5774914
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/490680359",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Taughmonagh",
+    "place": "suburb",
+    "id": "node/490680359"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9684413,
+      54.5584037
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/521399884",
+  "properties": {
+    "name": "Knocknagoney",
+    "name:ga": "Cnoc na gCoiníní",
+    "place": "suburb",
+    "id": "node/521399884"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8540751,
+      54.618488
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528986479",
+  "properties": {
+    "is_in": "Belfast",
+    "name": "Hannahstown",
+    "place": "suburb",
+    "id": "node/528986479"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0295519,
+      54.5813856
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528986790",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Edenderry",
+    "place": "village",
+    "wikidata": "Q135516",
+    "id": "node/528986790"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9609556,
+      54.5404609
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528987523",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Purdysburn",
+    "place": "village",
+    "id": "node/528987523"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9306791,
+      54.539715
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528987591",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Ballylesson",
+    "name:ga": "Baile na Leasan",
+    "place": "village",
+    "wikidata": "Q84096",
+    "id": "node/528987591"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9473023,
+      54.5346763
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528988090",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Newtownbreda",
+    "place": "suburb",
+    "id": "node/528988090"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9112963,
+      54.5579013
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528990246",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Knockbreda",
+    "place": "suburb",
+    "id": "node/528990246"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8995804,
+      54.5567267
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/528990734",
+  "properties": {
+    "is_in:country": "Northern Ireland",
+    "name": "Knockbracken",
+    "place": "hamlet",
+    "id": "node/528990734"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8975813,
+      54.5401752
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/634397591",
+  "properties": {
+    "fixme": "Find exactly where this is and map it properly.",
+    "name": "Dunore Court",
+    "place": "locality",
+    "id": "node/634397591"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9353096,
+      54.6113319
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1418701024",
+  "properties": {
+    "capital": "4",
+    "is_in:country_code": "GB",
+    "is_in:iso_3166_2": "GB-NIR",
+    "name": "Belfast",
+    "name:af": "Belfast",
+    "name:am": "ቤልፋስት",
+    "name:an": "Béal Feirste",
+    "name:ar": "بلفاست",
+    "name:arz": "بلفاست",
+    "name:ast": "Belfast",
+    "name:az": "Belfast",
+    "name:azb": "بلفاست",
+    "name:be": "Белфаст",
+    "name:be-tarask": "Бэлфаст",
+    "name:bg": "Белфаст",
+    "name:bh": "बेलफास्ट",
+    "name:bn": "বেলফাস্ট",
+    "name:br": "Béal Feirste",
+    "name:bs": "Belfast",
+    "name:bxr": "Белфаст",
+    "name:ca": "Belfast",
+    "name:ceb": "Belfast",
+    "name:ckb": "بێلفاست",
+    "name:cnr": "Belfast",
+    "name:cs": "Belfast",
+    "name:cv": "Белфаст",
+    "name:cy": "Belffast",
+    "name:da": "Belfast",
+    "name:de": "Belfast",
+    "name:diq": "Belfast",
+    "name:el": "Μπέλφαστ",
+    "name:en": "Belfast",
+    "name:eo": "Belfasto",
+    "name:es": "Belfast",
+    "name:et": "Belfast",
+    "name:eu": "Belfast",
+    "name:ext": "Belfast",
+    "name:fa": "بلفاست",
+    "name:fi": "Belfast",
+    "name:fo": "Belfast",
+    "name:fr": "Belfast",
+    "name:frr": "Belfast",
+    "name:fy": "Belfast",
+    "name:ga": "Béal Feirste",
+    "name:gd": "Beul Feirste",
+    "name:gl": "Belfast",
+    "name:gn": "Belfast",
+    "name:gv": "Beeal Feirshtey",
+    "name:hak": "Belfast",
+    "name:he": "בלפסט",
+    "name:hi": "बेलफ़ास्ट",
+    "name:hr": "Belfast",
+    "name:hsb": "Belfast",
+    "name:ht": "Bèlfast",
+    "name:hu": "Belfast",
+    "name:hy": "Բելֆաստ",
+    "name:ia": "Belfast",
+    "name:id": "Belfast",
+    "name:ie": "Belfast",
+    "name:io": "Belfast",
+    "name:is": "Belfast",
+    "name:it": "Belfast",
+    "name:ja": "ベルファスト",
+    "name:jv": "Belfast",
+    "name:ka": "ბელფასტი",
+    "name:kab": "Belfast",
+    "name:kk": "Белфаст",
+    "name:kn": "ಬೆಲ್‌ಫಾಸ್ಟ್‌",
+    "name:ko": "벨파스트",
+    "name:ku": "Belfast",
+    "name:ky": "Белфаст",
+    "name:la": "Belfastum",
+    "name:li": "Belfast",
+    "name:lij": "Belfast",
+    "name:lt": "Belfastas",
+    "name:lv": "Belfāsta",
+    "name:mk": "Белфаст",
+    "name:ml": "ബെൽഫാസ്റ്റ്",
+    "name:mn": "Белфаст",
+    "name:mni": "ꯕꯦꯜꯐꯥꯁ꯭ꯠ",
+    "name:mr": "बेलफास्ट",
+    "name:ms": "Belfast",
+    "name:mt": "Belfast",
+    "name:my": "ဗဲလဖတ်မြို့",
+    "name:nan": "Belfast",
+    "name:nds-nl": "Belfast",
+    "name:nl": "Belfast",
+    "name:nn": "Belfast",
+    "name:no": "Belfast",
+    "name:nrm": "Belfast",
+    "name:oc": "Béal Feirste",
+    "name:os": "Белфаст",
+    "name:pcd": "Belfast",
+    "name:pl": "Belfast",
+    "name:pms": "Belfast",
+    "name:pnb": "بیلفاسٹ",
+    "name:ps": "بلفاست",
+    "name:pt": "Belfast",
+    "name:qu": "Belfast",
+    "name:rmy": "Belfast",
+    "name:ro": "Belfast",
+    "name:ru": "Белфаст",
+    "name:sc": "Belfast",
+    "name:scn": "Belfast",
+    "name:sco": "Bilfawst",
+    "name:sd": "بيلفاسٽ",
+    "name:sh": "Belfast",
+    "name:si": "බෙල්ෆාස්ට්",
+    "name:sk": "Belfast",
+    "name:sl": "Belfast",
+    "name:sq": "Belfast",
+    "name:sr": "Белфаст",
+    "name:sv": "Belfast",
+    "name:sw": "Belfast",
+    "name:szl": "Belfast",
+    "name:ta": "பெல்பாஸ்ட்",
+    "name:tg": "Белфаст",
+    "name:th": "เบลฟาสต์",
+    "name:tl": "Belfast",
+    "name:tr": "Belfast",
+    "name:tt": "Белфаст",
+    "name:udm": "Белфаст",
+    "name:ug": "Bélfast",
+    "name:uk": "Белфаст",
+    "name:ur": "بیلفاسٹ",
+    "name:uz": "Belfast",
+    "name:vec": "Belfast",
+    "name:vi": "Belfast",
+    "name:vls": "Belfast",
+    "name:war": "Belfast",
+    "name:wuu": "贝尔法斯特",
+    "name:yi": "בעלפאסט",
+    "name:yo": "Belfast",
+    "name:yue": "貝爾法斯特",
+    "name:zea": "Belfast",
+    "name:zh": "贝尔法斯特;貝爾法斯特",
+    "name:zh-Hans": "贝尔法斯特",
+    "name:zh-Hant": "貝爾法斯特",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "city",
+    "population": "333000",
+    "ref:LOCODE": "GBBEL",
+    "source": "gns_ni",
+    "source:population": "http://www.belfastcity.gov.uk/factsandfigures/demographics.asp",
+    "source_ref:capital": "http://comments.gmane.org/gmane.comp.gis.openstreetmap/55712",
+    "wikidata": "Q10686",
+    "wikipedia": "en:Belfast",
+    "id": "node/1418701024"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9301829,
+      54.596391
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1656141111",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543700",
+    "gns:DMS_LONG": "-55900",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.616667",
+    "gns:LONG": "-5.983333",
+    "gns:MGRS": "30UUF0737456226",
+    "gns:N:xx:FULL_NAME": "Legoniel",
+    "gns:N:xx:FULL_NAME_ND": "Legoniel",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "LEGONIEL",
+    "gns:RC": "1",
+    "gns:UFI": "-2600959",
+    "gns:UNI": "-3577204",
+    "gns:V:xx:FULL_NAME": "Ligoniel",
+    "gns:V:xx:FULL_NAME_ND": "Ligoniel",
+    "gns:V:xx:MODIFY_DATE": "1994-01-13",
+    "gns:V:xx:NT": "V",
+    "gns:V:xx:SORT_NAME": "LIGONIEL",
+    "name": "Ligoniel",
+    "name:ga": "Ligoniel",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/1656141111"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9859292,
+      54.6276914
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1705118835",
+  "properties": {
+    "name": "Abercorn Basin",
+    "place": "locality",
+    "id": "node/1705118835"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9138204,
+      54.6056321
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1717023836",
+  "properties": {
+    "name": "Willowfield",
+    "place": "suburb",
+    "id": "node/1717023836"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9043893,
+      54.5894212
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1719916074",
+  "properties": {
+    "name": "Cregagh",
+    "name:ga": "An Chreagaigh",
+    "place": "suburb",
+    "id": "node/1719916074"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8985633,
+      54.5749228
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1724172118",
+  "properties": {
+    "name": "Castlereagh",
+    "name:ga": "An Caisleán Riabhach",
+    "name:sco": "Stye Braes o Ulidia",
+    "place": "suburb",
+    "id": "node/1724172118"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8812117,
+      54.5763441
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1724172120",
+  "properties": {
+    "name": "Orangefield",
+    "place": "suburb",
+    "id": "node/1724172120"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8765707,
+      54.5888581
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/2795513332",
+  "properties": {
+    "name": "Ballyhackamore",
+    "name:ga": "Baile an Chacamair",
+    "note": "Ballyhackamore, Northern Ireland. BT4",
+    "place": "suburb",
+    "id": "node/2795513332"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8687932,
+      54.5955941
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/3015539635",
+  "properties": {
+    "is_in": "Northern Ireland",
+    "name": "Four Winds",
+    "place": "suburb",
+    "id": "node/3015539635"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8937787,
+      54.5523087
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4386905314",
+  "properties": {
+    "name": "Shore Crescent",
+    "place": "neighbourhood",
+    "id": "node/4386905314"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9220846,
+      54.6398756
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4565282322",
+  "properties": {
+    "name": "Braniel",
+    "place": "suburb",
+    "id": "node/4565282322"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8599022,
+      54.5769657
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4565282323",
+  "properties": {
+    "name": "The Village",
+    "place": "locality",
+    "id": "node/4565282323"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9545626,
+      54.5870863
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4565282444",
+  "properties": {
+    "name": "Belmont",
+    "place": "suburb",
+    "id": "node/4565282444"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8596823,
+      54.5994937
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4565337893",
+  "properties": {
+    "name": "Tullycarnet",
+    "place": "suburb",
+    "id": "node/4565337893"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8360974,
+      54.5891953
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4727745063",
+  "properties": {
+    "name": "Lagmore",
+    "place": "suburb",
+    "id": "node/4727745063"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0338061,
+      54.5512515
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/4727745064",
+  "properties": {
+    "name": "Mount Eagles",
+    "place": "suburb",
+    "id": "node/4727745064"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0476892,
+      54.5535413
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/5745255861",
+  "properties": {
+    "name": "Clarawood",
+    "place": "suburb",
+    "wikidata": "Q23891301",
+    "wikipedia": "en:Clarawood",
+    "id": "node/5745255861"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8661409,
+      54.5870073
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/5796249604",
+  "properties": {
+    "alt_name": "The Holylands",
+    "name": "The Holyland",
+    "place": "suburb",
+    "wikidata": "Q5887025",
+    "wikipedia": "en:Holyland (Belfast)",
+    "id": "node/5796249604"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9267515,
+      54.5842751
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/5796256778",
+  "properties": {
+    "name": "Upper Falls",
+    "place": "suburb",
+    "id": "node/5796256778"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9733132,
+      54.585841
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/5798966584",
+  "properties": {
+    "name": "Carrick Hill",
+    "place": "suburb",
+    "id": "node/5798966584"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.935634,
+      54.6046238
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/5799018654",
+  "properties": {
+    "name": "Queen's Quarter",
+    "place": "suburb",
+    "wikidata": "Q7270083",
+    "wikipedia": "en:Queen's Quarter, Belfast",
+    "id": "node/5799018654"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9357142,
+      54.5857761
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7260729347",
+  "properties": {
+    "name": "Titanic Quarter",
+    "place": "quarter",
+    "wikidata": "Q16985642",
+    "wikipedia": "en:Titanic Quarter",
+    "id": "node/7260729347"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9108762,
+      54.6050496
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7260729349",
+  "properties": {
+    "name": "Cathedral Quarter",
+    "place": "quarter",
+    "wikidata": "Q5052267",
+    "wikipedia": "en:Cathedral Quarter, Belfast",
+    "id": "node/7260729349"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9277351,
+      54.6025054
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7260729350",
+  "properties": {
+    "alt_name": "Smithfield And Union",
+    "name": "Library Quarter",
+    "place": "quarter",
+    "id": "node/7260729350"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9320439,
+      54.6041447
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7260729351",
+  "properties": {
+    "name": "Linen Quarter",
+    "place": "quarter",
+    "wikidata": "Q6553591",
+    "wikipedia": "en:Linen Quarter, Belfast",
+    "id": "node/7260729351"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9308893,
+      54.5944982
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7791032910",
+  "properties": {
+    "description": "Seymour Hill residential development, built on the former Seymour Hill Estate.",
+    "name": "Seymour Hill",
+    "place": "locality",
+    "id": "node/7791032910"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0102657,
+      54.5431765
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/7791033728",
+  "properties": {
+    "description": "Conway residential development, built on the former site of Conway House and Estate.",
+    "name": "Conway",
+    "place": "locality",
+    "id": "node/7791033728"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0170305,
+      54.5386572
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/8600399430",
+  "properties": {
+    "name": "Mill Valley",
+    "place": "locality",
+    "id": "node/8600399430"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9866809,
+      54.6242696
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/11756676697",
+  "properties": {
+    "name": "Bloomfield",
+    "place": "suburb",
+    "id": "node/11756676697"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8864913,
+      54.5938327
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/11811532824",
+  "properties": {
+    "alt_name": "Broadway;",
+    "name": "The Village",
+    "place": "suburb",
+    "wikidata": "Q5295638",
+    "wikipedia": "en:Donegall Road",
+    "id": "node/11811532824"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9535287,
+      54.5878201
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12004699634",
+  "properties": {
+    "gns:ADM1": "00",
+    "gns:CC1": "UK",
+    "gns:DMS_LAT": "543600",
+    "gns:DMS_LONG": "-55300",
+    "gns:DSG": "PPL",
+    "gns:FC": "P",
+    "gns:JOG": "NN30-04",
+    "gns:LAT": "54.6",
+    "gns:LONG": "-5.883333",
+    "gns:MGRS": "30UUF1375354103",
+    "gns:N:xx:FULL_NAME": "Sydenham",
+    "gns:N:xx:FULL_NAME_ND": "Sydenham",
+    "gns:N:xx:MODIFY_DATE": "1994-01-13",
+    "gns:N:xx:NT": "N",
+    "gns:N:xx:SORT_NAME": "SYDENHAM",
+    "gns:RC": "1",
+    "gns:UFI": "-2609293",
+    "gns:UNI": "-3587230",
+    "is_in:country": "Northern Ireland",
+    "name": "Strandtown",
+    "note": "Import of NI places and POIs from GNS Dataset",
+    "place": "suburb",
+    "source": "gns_ni",
+    "id": "node/12004699634"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8793724,
+      54.6006429
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12050215535",
+  "properties": {
+    "name": "Smithfield",
+    "place": "neighbourhood",
+    "id": "node/12050215535"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9342643,
+      54.6017492
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12253851382",
+  "properties": {
+    "name": "Whiterock",
+    "place": "suburb",
+    "id": "node/12253851382"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9749508,
+      54.5917873
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229611",
+  "properties": {
+    "name": "Westland",
+    "place": "suburb",
+    "id": "node/12854229611"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9472057,
+      54.6256591
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229612",
+  "properties": {
+    "name": "Little America",
+    "place": "neighbourhood",
+    "id": "node/12854229612"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9406294,
+      54.624467
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229613",
+  "properties": {
+    "name": "Parkmount",
+    "place": "neighbourhood",
+    "id": "node/12854229613"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.926569,
+      54.6382269
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229614",
+  "properties": {
+    "name": "Chichester Park",
+    "place": "neighbourhood",
+    "id": "node/12854229614"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9414919,
+      54.6311514
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229615",
+  "properties": {
+    "name": "Newington",
+    "place": "neighbourhood",
+    "id": "node/12854229615"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9367707,
+      54.6167983
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854229616",
+  "properties": {
+    "name": "Dunmore",
+    "place": "neighbourhood",
+    "id": "node/12854229616"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.935277,
+      54.6212506
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854256987",
+  "properties": {
+    "name": "Cherryvalley",
+    "place": "neighbourhood",
+    "id": "node/12854256987"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8527258,
+      54.5885689
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12854256988",
+  "properties": {
+    "name": "Ravenhill",
+    "place": "suburb",
+    "id": "node/12854256988"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9112167,
+      54.585687
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/12878827206",
+  "properties": {
+    "name": "Downview",
+    "place": "neighbourhood",
+    "id": "node/12878827206"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9365535,
+      54.6413626
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13027220294",
+  "properties": {
+    "name": "Ryan Park",
+    "place": "hamlet",
+    "id": "node/13027220294"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.8622192,
+      54.5641041
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13037984658",
+  "properties": {
+    "name": "Torrens",
+    "place": "neighbourhood",
+    "id": "node/13037984658"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9519727,
+      54.6175649
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13037984659",
+  "properties": {
+    "name": "Upper Ardoyne",
+    "place": "neighbourhood",
+    "id": "node/13037984659"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9637334,
+      54.6188138
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13037984661",
+  "properties": {
+    "name": "Thornberry",
+    "place": "suburb",
+    "id": "node/13037984661"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9922738,
+      54.6269587
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13043171623",
+  "properties": {
+    "name": "Lower Ormeau",
+    "place": "neighbourhood",
+    "id": "node/13043171623"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9236651,
+      54.587154
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057154537",
+  "properties": {
+    "name": "Mountcollyer",
+    "place": "neighbourhood",
+    "id": "node/13057154537"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9276542,
+      54.6158792
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177348",
+  "properties": {
+    "name": "Lower Ormeau",
+    "place": "suburb",
+    "id": "node/13057177348"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9237906,
+      54.5874982
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177349",
+  "properties": {
+    "name": "Hammer",
+    "place": "neighbourhood",
+    "id": "node/13057177349"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9470569,
+      54.606151
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177350",
+  "properties": {
+    "name": "Peter's Hill",
+    "place": "neighbourhood",
+    "id": "node/13057177350"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9400669,
+      54.6039536
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177351",
+  "properties": {
+    "name": "Northwood",
+    "place": "neighbourhood",
+    "id": "node/13057177351"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9249054,
+      54.6234606
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177352",
+  "properties": {
+    "name": "Seaview",
+    "place": "neighbourhood",
+    "id": "node/13057177352"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9290896,
+      54.6254547
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177353",
+  "properties": {
+    "name": "Sliverstream",
+    "place": "neighbourhood",
+    "id": "node/13057177353"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.970902,
+      54.6273083
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13057177354",
+  "properties": {
+    "name": "Mountainhill",
+    "place": "neighbourhood",
+    "id": "node/13057177354"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9811572,
+      54.6285714
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13156072790",
+  "properties": {
+    "name": "Sailortown",
+    "place": "suburb",
+    "id": "node/13156072790"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9200203,
+      54.6086923
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13192299130",
+  "properties": {
+    "is_in": "Newtownabbey",
+    "name": "Longlands",
+    "place": "neighbourhood",
+    "id": "node/13192299130"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9280982,
+      54.6553976
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13192299132",
+  "properties": {
+    "name": "Arthur",
+    "place": "neighbourhood",
+    "id": "node/13192299132"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9265688,
+      54.6538028
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13192299133",
+  "properties": {
+    "name": "Felden",
+    "place": "neighbourhood",
+    "id": "node/13192299133"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9244767,
+      54.6528625
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13192299134",
+  "properties": {
+    "name": "Bawnmore",
+    "place": "neighbourhood",
+    "id": "node/13192299134"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.920786,
+      54.6515155
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13226486067",
+  "properties": {
+    "name": "Fairyknowe",
+    "place": "neighbourhood",
+    "id": "node/13226486067"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9368923,
+      54.6590396
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13226856762",
+  "properties": {
+    "name": "Whitecity",
+    "place": "neighbourhood",
+    "id": "node/13226856762"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9306405,
+      54.65195
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13227714515",
+  "properties": {
+    "name": "Longwood Retail Park",
+    "place": "neighbourhood",
+    "id": "node/13227714515"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9181026,
+      54.6534659
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13230122188",
+  "properties": {
+    "name": "Big Wood",
+    "place": "locality",
+    "id": "node/13230122188"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9218515,
+      54.5568076
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13231736954",
+  "properties": {
+    "name": "Old Mill",
+    "place": "neighbourhood",
+    "id": "node/13231736954"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9225836,
+      54.6530658
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13231736956",
+  "properties": {
+    "name": "Vandyck",
+    "place": "neighbourhood",
+    "id": "node/13231736956"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9286137,
+      54.6494917
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13231736957",
+  "properties": {
+    "name": "Graymount",
+    "place": "neighbourhood",
+    "id": "node/13231736957"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.923083,
+      54.6450563
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13231736958",
+  "properties": {
+    "name": "Downview",
+    "place": "neighbourhood",
+    "id": "node/13231736958"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9322105,
+      54.6375267
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989139",
+  "properties": {
+    "name": "Orby",
+    "place": "neighbourhood",
+    "id": "node/13256989139"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.887216,
+      54.585689
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989140",
+  "properties": {
+    "name": "Wheatfield",
+    "place": "neighbourhood",
+    "id": "node/13256989140"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9701012,
+      54.6207452
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989141",
+  "properties": {
+    "name": "Edenderry",
+    "place": "neighbourhood",
+    "id": "node/13256989141"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9458292,
+      54.6095205
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989142",
+  "properties": {
+    "name": "Crescent",
+    "place": "neighbourhood",
+    "id": "node/13256989142"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9343273,
+      54.5873627
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989143",
+  "properties": {
+    "name": "Botanic",
+    "place": "neighbourhood",
+    "id": "node/13256989143"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.933151,
+      54.5885017
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989144",
+  "properties": {
+    "name": "Woodstock",
+    "place": "suburb",
+    "id": "node/13256989144"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9041475,
+      54.592451
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989145",
+  "properties": {
+    "name": "Carlisle Circus",
+    "place": "neighbourhood",
+    "id": "node/13256989145"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9356524,
+      54.608211
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989146",
+  "properties": {
+    "name": "Sunningdale",
+    "place": "neighbourhood",
+    "id": "node/13256989146"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.952831,
+      54.6306821
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13256989147",
+  "properties": {
+    "name": "Joanmount",
+    "place": "neighbourhood",
+    "id": "node/13256989147"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9605574,
+      54.6274348
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13270167864",
+  "properties": {
+    "locality": "subtownland",
+    "name": "Aughnabrack",
+    "place": "locality",
+    "source:name": "British war office map",
+    "id": "node/13270167864"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -6.0389336,
+      54.6495489
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13325119836",
+  "properties": {
+    "name": "Ben Madigan",
+    "place": "neighbourhood",
+    "id": "node/13325119836"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9372907,
+      54.6510974
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13475199300",
+  "properties": {
+    "name": "Black Ridge",
+    "place": "suburb",
+    "id": "node/13475199300"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9977068,
+      54.5854906
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13475224501",
+  "properties": {
+    "name": "Lyndhurst",
+    "place": "neighbourhood",
+    "id": "node/13475224501"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9827817,
+      54.6093292
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13532882417",
+  "properties": {
+    "name": "The Bone",
+    "place": "neighbourhood",
+    "id": "node/13532882417"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9566683,
+      54.6163129
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13546513121",
+  "properties": {
+    "name": "Lower Malone",
+    "place": "suburb",
+    "id": "node/13546513121"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9402654,
+      54.5784222
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13565650619",
+  "properties": {
+    "name": "Whitehouse",
+    "place": "suburb",
+    "id": "node/13565650619"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9071507,
+      54.6573825
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13756258289",
+  "properties": {
+    "name": "CIty Quays",
+    "place": "neighbourhood",
+    "id": "node/13756258289"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9207953,
+      54.6045931
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/13756258290",
+  "properties": {
+    "name": "Clarendon Dock",
+    "place": "neighbourhood",
+    "id": "node/13756258290"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -5.9198301,
+      54.6066648
+    ]
+  }
+}
+]
+}
