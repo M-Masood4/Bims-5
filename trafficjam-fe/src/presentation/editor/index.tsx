@@ -79,7 +79,7 @@ export function Editor({
 
   const { pushToUndoStack, undo, canUndo, clearUndoStack } = useUndoStack();
 
-  const { isDirty, isSaving, showSaved, markDirty } = useNetworkPersistence({
+  const { isDirty, isSaving, showSaved, save, markDirty } = useNetworkPersistence({
     activeScenario,
     network: activeNetwork,
     baseNetwork: autoNetwork ?? null,
@@ -225,6 +225,7 @@ export function Editor({
         isDirty={isDirty}
         isSaving={isSaving}
         showSaved={showSaved}
+        onSave={save}
       />
       {status && !isDirty && !isSaving && !showSaved && (
         <StatusBar message={status} />
@@ -236,6 +237,7 @@ export function Editor({
           network={activeNetwork}
           onLaunch={handleLaunch}
           onClose={handleCloseDialog}
+          onBeforeLaunch={save}
           initialValues={rerunInitialValues}
         />
       )}

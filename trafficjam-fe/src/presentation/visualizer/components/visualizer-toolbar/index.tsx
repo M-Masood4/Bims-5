@@ -40,7 +40,7 @@ export function VisualizerToolbar({
         active={showLinkVolume}
         onClick={onToggleLinkVolume}
         icon={<Layers size={14} />}
-        label="Link Volume"
+        label="Traffic Heatmap"
       />
       <ToggleButton
         active={showAnalytics}

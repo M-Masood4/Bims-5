@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Play, Loader2 } from "lucide-react";
 import styles from "./launch-dialog.module.css";
 import { useSimulation } from "@/hooks/use-simulation";
-import type { Scenario, Network } from "@/types";
+import type { Building, Scenario, Network } from "@/types";
 import { calculateBounds } from "@/utils";
 import { networkToMatsim } from "@/utils/matsim-serializer";
 import { Dialog } from "@/components";
@@ -20,6 +20,7 @@ interface LaunchDialogProps {
   network: Network | null;
   onLaunch: (info: { scenarioId: string; runId: string }) => void;
   onClose: () => void;
+  onBeforeLaunch?: () => Promise<void> | void;
   initialValues?: LaunchInitialValues;
 }
 
@@ -29,14 +30,46 @@ interface LaunchForm {
   note: string;
 }
 
+function getNetworkPositions(network: Network): [number, number][] {
+  const nodePositions = Array.from(network.nodes.values()).map(
+    (node) => node.position,
+  );
+  if (nodePositions.length > 0) return nodePositions;
+
+  return Array.from(network.links.values()).flatMap((link) => link.geometry);
+}
+
+function buildSyntheticBuildings(network: Network): Building[] {
+  const positions = getNetworkPositions(network);
+  const sampled = positions.filter((_, index) => index % 8 === 0).slice(0, 48);
+
+  return sampled.map((position, index) => {
+    const isResidential = index % 4 !== 0;
+    return {
+      id: `synthetic-building-${index}`,
+      position,
+      geometry: [position],
+      type: isResidential ? "residential" : "retail",
+      tags: isResidential
+        ? { building: "residential" }
+        : { building: "retail", shop: "clothes" },
+    };
+  });
+}
+
+function getSimulationBuildings(network: Network): Building[] {
+  const buildings = network.buildings
+    ? Array.from(network.buildings.values())
+    : [];
+  return buildings.length > 0 ? buildings : buildSyntheticBuildings(network);
+}
+
 function prepareSimulationData(network: Network) {
   const xml = networkToMatsim(network);
   const networkFile = new File([xml], "network.xml", {
     type: "application/xml",
   });
-  const buildings = network.buildings
-    ? Array.from(network.buildings.values())
-    : [];
+  const buildings = getSimulationBuildings(network);
   const bounds = calculateBounds(network);
   return { networkFile, buildings, bounds };
 }
@@ -46,6 +79,7 @@ export function LaunchDialog({
   network,
   onLaunch,
   onClose,
+  onBeforeLaunch,
   initialValues,
 }: LaunchDialogProps) {
   const queryClient = useQueryClient();
@@ -61,50 +95,41 @@ export function LaunchDialog({
   });
 
   const onSubmit = useCallback(
-    (data: LaunchForm) => {
+    async (data: LaunchForm) => {
       if (!network || !activeScenario) return;
       setError(null);
 
       try {
+        await onBeforeLaunch?.();
+
         const { networkFile, buildings, bounds } =
           prepareSimulationData(network);
 
-        start.mutate(
-          {
-            scenarioId: activeScenario.id,
-            networkFile,
-            buildings,
-            bounds,
-            iterations: data.iterations,
-            randomSeed:
-              data.randomSeed !== undefined && !isNaN(data.randomSeed)
-                ? data.randomSeed
-                : undefined,
-            note: data.note || undefined,
-          },
-          {
-            onSuccess: (responseData) => {
-              queryClient.invalidateQueries({ queryKey: ["runs"] });
-              onLaunch({
-                scenarioId: responseData.scenarioId,
-                runId: responseData.runId,
-              });
-            },
-            onError: (err) =>
-              setError(
-                err instanceof Error
-                  ? err.message
-                  : "Failed to start simulation",
-              ),
-          },
-        );
+        const responseData = await start.mutateAsync({
+          scenarioId: activeScenario.id,
+          networkFile,
+          buildings,
+          bounds,
+          iterations: data.iterations,
+          randomSeed:
+            data.randomSeed !== undefined && !isNaN(data.randomSeed)
+              ? data.randomSeed
+              : undefined,
+          note: data.note || undefined,
+        });
+
+        await queryClient.invalidateQueries({ queryKey: ["runs"] });
+        onLaunch({
+          scenarioId: responseData.scenarioId,
+          runId: responseData.runId,
+        });
       } catch (e) {
         setError(
-          e instanceof Error ? e.message : "Failed to prepare simulation",
+          e instanceof Error ? e.message : "Failed to start simulation",
         );
       }
     },
-    [network, activeScenario, start, onLaunch, queryClient],
+    [network, activeScenario, onBeforeLaunch, start, queryClient, onLaunch],
   );
 
   const dialogTitle = (
@@ -116,6 +141,9 @@ export function LaunchDialog({
 
   const buildingCount = network?.buildings?.size ?? 0;
   const hasNoBuildings = buildingCount === 0;
+  const syntheticBuildingCount = network
+    ? buildSyntheticBuildings(network).length
+    : 0;
 
   const dialogFooter = (
     <>
@@ -125,7 +153,7 @@ export function LaunchDialog({
       <button
         className={styles.launchButton}
         onClick={handleSubmit(onSubmit)}
-        disabled={start.isPending || !network || !activeScenario || hasNoBuildings}
+        disabled={start.isPending || !network || !activeScenario}
         type="button"
       >
         {start.isPending ? (
@@ -180,8 +208,9 @@ export function LaunchDialog({
 
         {hasNoBuildings && (
           <p className={styles.error}>
-            No buildings found in this area. Run the Belfast OSM data loader
-            first, then reload the map.
+            No building footprints were loaded, so this run will use {" "}
+            {syntheticBuildingCount} generated Belfast demand anchors from the
+            road network. Re-run the Belfast OSM data loader for richer plans.
           </p>
         )}
         {error && <p className={styles.error}>{error}</p>}

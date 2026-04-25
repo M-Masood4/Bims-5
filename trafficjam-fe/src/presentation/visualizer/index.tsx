@@ -1,4 +1,10 @@
-import { DeckGL, TripsLayer, ScatterplotLayer, PathLayer } from "deck.gl";
+import {
+  DeckGL,
+  TripsLayer,
+  ScatterplotLayer,
+  PathLayer,
+  HeatmapLayer,
+} from "deck.gl";
 import { Map } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MAPBOX_TOKEN } from "../../constants/map";
@@ -22,6 +28,11 @@ interface VisualizerProps {
   scenarioId: string;
   runId: string;
   onBack: () => void;
+}
+
+interface HeatmapPoint {
+  position: [number, number];
+  weight: number;
 }
 
 function useLayers(trips: Trip[], simulation: SimulationTimeState) {
@@ -49,10 +60,58 @@ function useLayers(trips: Trip[], simulation: SimulationTimeState) {
   ];
 }
 
-function useStaticLayers(show: boolean, linkVolume?: LinkVolumeParsed[]) {
-  if (!show || !linkVolume?.length) return [];
+function buildHeatmapPoints(
+  linkVolume: LinkVolumeParsed[] | undefined,
+  trips: Trip[],
+): HeatmapPoint[] {
+  if (linkVolume?.length) {
+    return linkVolume.flatMap((link) =>
+      link.coordinates.map((position) => ({
+        position,
+        weight: Math.max(1, link.vol_car),
+      })),
+    );
+  }
 
-  const maxVol = Math.max(...linkVolume.map((d) => d.vol_car));
+  return trips.flatMap((trip) =>
+    trip.path.map((position) => ({
+      position,
+      weight: 1,
+    })),
+  );
+}
+
+function useStaticLayers(
+  show: boolean,
+  linkVolume: LinkVolumeParsed[] | undefined,
+  trips: Trip[],
+) {
+  const heatmapData = buildHeatmapPoints(linkVolume, trips);
+
+  if (!show || heatmapData.length === 0) return [];
+
+  const heatmapLayer = new HeatmapLayer<HeatmapPoint>({
+    id: "belfast-traffic-heatmap",
+    data: heatmapData,
+    getPosition: (d) => d.position,
+    getWeight: (d) => d.weight,
+    radiusPixels: 55,
+    intensity: 1.4,
+    threshold: 0.03,
+    aggregation: "SUM",
+    colorRange: [
+      [33, 102, 172, 0],
+      [103, 169, 207, 150],
+      [209, 229, 240, 185],
+      [253, 219, 199, 210],
+      [239, 138, 98, 230],
+      [178, 24, 43, 245],
+    ],
+  });
+
+  if (!linkVolume?.length) return [heatmapLayer];
+
+  const maxVol = Math.max(1, ...linkVolume.map((d) => d.vol_car));
 
   const getColor = (vol: number) => {
     const normalized = Math.min(vol / maxVol, 1);
@@ -73,6 +132,7 @@ function useStaticLayers(show: boolean, linkVolume?: LinkVolumeParsed[]) {
   };
 
   return [
+    heatmapLayer,
     new PathLayer<LinkVolumeParsed>({
       id: "link-volume",
       data: linkVolume,
@@ -95,7 +155,7 @@ export function Visualizer({ scenarioId, runId, onBack }: VisualizerProps) {
   const simulation = useSimulationTime(liveTrips);
   const { data: linkVolume } = useLinkVolumes(scenarioId, runId);
 
-  const staticLayers = useStaticLayers(showLinkVolume, linkVolume);
+  const staticLayers = useStaticLayers(showLinkVolume, linkVolume, liveTrips);
   const layers = [...staticLayers, ...useLayers(liveTrips, simulation)];
 
   return (

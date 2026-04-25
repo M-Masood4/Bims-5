@@ -1,6 +1,6 @@
 .PHONY: help build run stop restart logs shell clean \
 	nats-build nats-run nats-stop nats-restart nats-logs nats-clean \
-	up down up-build ps all-logs clean-local rebuild \
+	ensure-local-env seed-map-data up down up-build ps all-logs clean-local rebuild \
 	coolify-up coolify-down coolify-up-build coolify-ps coolify-logs
 
 ############################
@@ -62,6 +62,10 @@ NATS_CONTAINER = bims5-nats
 NATS_PORT = 4222
 NATS_MONITOR_PORT = 8222
 
+FRONTEND_ENV = trafficjam-fe/.env
+FRONTEND_ENV_EXAMPLE = trafficjam-fe/.env.example
+COMPOSE_LOCAL = docker compose -f docker-compose.local.yml
+
 
 nats-build: ## build the NATS JetStream image
 	docker build -t $(NATS_IMAGE) -f $(NATS_DOCKERFILE) .
@@ -91,29 +95,49 @@ nats-clean: nats-stop ## nukes the NATS data volume
 ##@ Docker Compose — Local Dev
 ############################
 
-up: ## start all local services
-	docker compose -f docker-compose.local.yml up -d
+ensure-local-env: ## create missing local env files from examples
+	@if [ ! -f $(FRONTEND_ENV) ]; then \
+		cp $(FRONTEND_ENV_EXAMPLE) $(FRONTEND_ENV); \
+		echo "Created $(FRONTEND_ENV) from $(FRONTEND_ENV_EXAMPLE). Update VITE_MAPBOX_TOKEN for map rendering."; \
+	fi
+	@token=$$(awk -F= '/^VITE_MAPBOX_TOKEN=/{print substr($$0, index($$0,"=")+1)}' $(FRONTEND_ENV)); \
+	if [ -z "$$token" ]; then token="YOUR_MAPBOX_TOKEN_HERE"; fi; \
+	{ \
+		printf 'VITE_MAPBOX_TOKEN=%s\n' "$$token"; \
+		printf 'VITE_MAP_DATA_SERVICE_URL=http://localhost:8000\n'; \
+		printf 'VITE_TRAFFICJAM_BE_URL=http://localhost:8001\n'; \
+	} > $(FRONTEND_ENV); \
+	echo "Ensured $(FRONTEND_ENV) uses local Docker services for rebuild."
 
-up-build: ## build and start all local services
-	docker compose -f docker-compose.local.yml up -d --build
+seed-map-data: ## load Belfast OSM map data into local PostGIS
+	$(COMPOSE_LOCAL) up -d db
+	$(COMPOSE_LOCAL) build map-data
+	$(COMPOSE_LOCAL) run --rm map-data python load_belfast.py
+
+up: ensure-local-env ## start all local services
+	$(COMPOSE_LOCAL) up -d
+
+up-build: ensure-local-env ## build and start all local services
+	$(COMPOSE_LOCAL) up -d --build
 
 down: ## stop all local services
-	docker compose -f docker-compose.local.yml down
+	$(COMPOSE_LOCAL) down
 
 ps: ## show status of local services
-	docker compose -f docker-compose.local.yml ps
+	$(COMPOSE_LOCAL) ps
 
 all-logs: ## tail logs from local services
-	docker compose -f docker-compose.local.yml logs -f
+	$(COMPOSE_LOCAL) logs -f
 
 clean-local: ## stop local services and delete all volumes (wipes db)
-	docker compose -f docker-compose.local.yml down -v
+	$(COMPOSE_LOCAL) down -v
 
-rebuild: ## stop, rebuild all images, and restart local services
-	docker compose -f docker-compose.local.yml down
+rebuild: ensure-local-env ## stop, rebuild all images, and restart local services
+	$(COMPOSE_LOCAL) down
 	-docker stop $(NATS_CONTAINER)
 	-docker rm $(NATS_CONTAINER)
-	docker compose -f docker-compose.local.yml up -d --build
+	$(MAKE) seed-map-data
+	$(COMPOSE_LOCAL) up -d --build
 
 ############################
 ##@ Docker Compose — Coolify

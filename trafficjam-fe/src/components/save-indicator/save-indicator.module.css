@@ -50,6 +50,28 @@
   color: #cbd5e1;
 }
 
+.saveButton {
+  margin-left: 2px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(253, 128, 93, 0.18);
+  color: #fed7aa;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.saveButton:hover {
+  background: rgba(253, 128, 93, 0.3);
+  border-color: rgba(253, 128, 93, 0.5);
+  color: white;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

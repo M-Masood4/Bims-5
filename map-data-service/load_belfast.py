@@ -15,6 +15,7 @@ data and reloads fresh from OSM, so it is safe to re-run.
 
 import json
 import os
+from pathlib import Path
 
 import osmnx as ox
 import psycopg2
@@ -31,6 +32,7 @@ DATABASE_URL = _raw.replace("postgresql+asyncpg://", "postgresql://").replace(
 PLACE = "Belfast, Northern Ireland, United Kingdom"
 NORTH, SOUTH, EAST, WEST = 54.65, 54.55, -5.81, -6.05
 OVERPASS_URL = "https://overpass.kumi.systems/api/interpreter"
+MIGRATIONS_DIR = Path(__file__).resolve().parent / "migrations"
 
 
 def _str(val) -> str | None:
@@ -101,6 +103,13 @@ def load_road_network(cur):
         link_id += 1
 
     print(f"  Road network loaded ({link_id - 1} links).")
+
+
+def apply_migrations(cur, pattern: str = "*.sql"):
+    print("Applying map-data schema migrations...")
+    for migration in sorted(MIGRATIONS_DIR.glob(pattern)):
+        print(f"  {migration.name}")
+        cur.execute(migration.read_text())
 
 
 def load_buildings(cur):
@@ -213,13 +222,14 @@ def main():
     cur = conn.cursor()
 
     try:
-        cur.execute("CREATE EXTENSION IF NOT EXISTS postgis;")
+        apply_migrations(cur, "001_*.sql")
         print("Clearing existing data...")
         cur.execute("TRUNCATE TABLE transport_routes, buildings, links, nodes CASCADE;")
 
         load_road_network(cur)
         load_buildings(cur)
         load_transport_routes(cur)
+        apply_migrations(cur, "002_*.sql")
 
         conn.commit()
         print("\nBelfast OSM data loaded successfully.")

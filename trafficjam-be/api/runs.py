@@ -110,6 +110,7 @@ async def start_run(
     )
 
     if not buildings or not bounds:
+        await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(
             400, "Buildings and bounds are required for plan generation."
         )
@@ -144,8 +145,10 @@ async def start_run(
     run_id = str(run.id)
 
     if not networkFile.filename:
+        await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(400, "Network file is required")
     if not networkFile.content_type:
+        await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(400, "Network file content type is required")
 
     try:

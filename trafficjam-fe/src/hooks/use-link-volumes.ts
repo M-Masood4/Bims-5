@@ -20,10 +20,13 @@ function parseLineString(wktString: string): [number, number][] {
   const match = wktString.match(/LINESTRING\s*\(\s*(.*)\s*\)/i);
   if (!match) return [];
 
-  return match[1].split(",").map((coord) => {
-    const [lon, lat] = coord.trim().split(/\s+/);
-    return [parseFloat(lon), parseFloat(lat)] as [number, number];
-  });
+  return match[1]
+    .split(",")
+    .map((coord) => {
+      const [lon, lat] = coord.trim().split(/\s+/);
+      return [parseFloat(lon), parseFloat(lat)] as [number, number];
+    })
+    .filter(([lon, lat]) => Number.isFinite(lon) && Number.isFinite(lat));
 }
 
 export interface LinkVolumeParsed extends LinkVolume {
@@ -39,8 +42,6 @@ export function useLinkVolumes(scenarioId: string, runId: string) {
         queryKey[1] as string,
         queryKey[2] as string,
       );
-      console.log(raw.length);
-
       return raw
         .filter((l) => !!l.geometry)
         .map((l) => {
@@ -48,8 +49,11 @@ export function useLinkVolumes(scenarioId: string, runId: string) {
             ...l,
             coordinates: parseLineString(l.geometry!),
           };
-        });
+        })
+        .filter((l) => l.coordinates.length >= 2);
     },
+    retry: (failureCount) => failureCount < 60,
+    retryDelay: 5_000,
     staleTime: Infinity,
   });
 }

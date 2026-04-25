@@ -13,6 +13,12 @@ def parse_buildings_and_bounds(
 ) -> tuple[list[Building], dict]:
     buildings = [Building.model_validate(b) for b in json.loads(buildings_json)]
     bounds = json.loads(bounds_json)
+    bounds = {
+        "north": bounds.get("north", bounds.get("maxLat")),
+        "south": bounds.get("south", bounds.get("minLat")),
+        "east": bounds.get("east", bounds.get("maxLng")),
+        "west": bounds.get("west", bounds.get("minLng")),
+    }
     return buildings, bounds
 
 
