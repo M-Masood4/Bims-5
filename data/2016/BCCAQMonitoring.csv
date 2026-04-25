@@ -1,0 +1,45 @@
+Location Name,x-coordinate ,y-coordinate,Sampler height above ground level (meters),Type,Pollutants measured,Location type,Diffusion analysis lab
+Belfast Centre AURN site Lombard Street,333898,374358,2.5m,automatic air monitoring station,"Nitrogen dioxide, sulphur dioxide, carbon monoxide, ozone and particulate matter (PM10 and PM2.5)",urban centre,N/A
+Belfast Ormeau Road,334272,373012,1.3m,automatic air monitoring station,Nitrogen dioxide,roadside,N/A
+Belfast Ballyhackamore,337911,373972,1.3m,automatic air monitoring station,Nitrogen dioxide,roadside,N/A
+Belfast Stockman’s Lane,331010,371252,2.5m,automatic air monitoring station,Nitrogen dioxide and Particular Matter (PM10),roadside,N/A
+Belfast Westlink Roden Street,332617,373431,2.5m,automatic air monitoring station,Nitrogen dioxide and Particular Matter (PM10),roadside,N/A
+Royal Victoria Hospital,332522,373708,-,diffusion tube,Nitrogen dioxide,urban background,Gradko
+Black's Road,329782,369522,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+61 Cromac Street,334220,373853,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Ravenhill Road,335014,373942,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Queen's Bridge,334630,374385,-,diffusion tube,Nitrogen dioxide,urban background,Gradko
+North Road,337551,374151,-,diffusion tube,Nitrogen dioxide,urban background,Gradko
+Donegall Square South,333837,373950,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Short Strand,334980,374254,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+301 Ormeau Road,334504,372176,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Knock Road,338718,373918,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Great George's Street,333981,375102,-,diffusion tube,Nitrogen dioxide,kerbside,Gradko
+Lisburn Road,332114,371492,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Shaftesbury Square,333594,373283,-,diffusion tube,Nitrogen dioxide,kerbside,Gradko
+Lombard Street,333898,374358,-,diffusion tube,Nitrogen dioxide,urban centre,Gradko
+Albert Clock,334212,374489,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Stockman's Lane,331007,371254,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Ballyhackamore,337911,373972,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Whitewell Road,333230,380877,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Donegall Road,333022,373122,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Grosvenor Road and Falls Road,332252,373878,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Falls Road and Glenn Road,330716,372519,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Station Road,337252,375555,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Upper Malone Road,332544,370283,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Great Victoria Street,333548,373772,-,diffusion tube,Nitrogen dioxide,kerbside,Gradko
+College Square East,333498,374241,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Chichester Street,334147,374123,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Cromac Street  & Ormeau Avenue,334085,373542,-,diffusion tube,Nitrogen dioxide,kerbside,Gradko
+Ormeau Road (junction with Ravenhill Road),334943,371342,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Upper Newtownards Road & Hollywood Road,336519,374233,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Crumlin Road,333132,375306,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+228 Antrim Road,333288,376143,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Shore Road (Ivan Street),334174,376384,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+York Street,334214,375638,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Rosetta Court,334967,371166,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Strand Walk,335044,374393,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Custom House Square,334214,374452,-,diffusion tube,Nitrogen dioxide,kerbside,Gradko
+Glenmachan Street,331999,372881,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Albert Street,333069,374055,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
+Westlink Roden Street site,332606,373436,-,diffusion tube,Nitrogen dioxide,roadside,Gradko
