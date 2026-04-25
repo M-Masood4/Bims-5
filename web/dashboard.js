@@ -499,6 +499,12 @@
           map: state.map,
           onMetrics: updateTrafficSimStats,
         });
+        // Preload the authoritative Belfast OSM road network so the road
+        // planner snaps the candidate road onto real streets — instead of
+        // a synthetic lattice fallback that drew lines through buildings.
+        if (typeof window.TrafficSim.preloadOsm === 'function') {
+          window.TrafficSim.preloadOsm('/api/layers/2026/source-ni-roads-osm');
+        }
       }
     });
 
@@ -887,7 +893,8 @@
       !!building &&
       !!scenario &&
       !!scenario.baselineBranch &&
-      !branch._scenarioPending;
+      !branch._scenarioPending &&
+      !state.isRunningSim;
     els.scenarioDiffBtn.hidden = !ready;
     if (ready) {
       const year = scenarioDiffYear();
@@ -925,7 +932,11 @@
     requestAnimationFrame(tick);
   }
 
-  function addRoadItem(start, end) {
+  // Add a road item to the active branch. `path` is an optional polyline
+  // [[lng,lat], ...] following real OSM streets — when present, start/end
+  // are the path endpoints and the renderer + traffic sim treat the whole
+  // polyline as the road.
+  function addRoadItem(start, end, path) {
     const branch = activeBranch();
     if (branch.locked) {
       toast('Baseline is locked.', 'warn');
@@ -938,8 +949,9 @@
       start: start,
       end: end,
       color: '#f59e0b',
-      label: 'New Road'
+      label: 'New Road',
     };
+    if (Array.isArray(path) && path.length >= 2) item.path = path;
     branch.items.push(item);
     branch.scenarioResult = null;
     branch.scenarioStaged = true;
@@ -990,13 +1002,20 @@
 
     visible.forEach(it => {
       if (it.type === 'road') {
+        // Roads with a `path` polyline follow real OSM streets — render the
+        // whole polyline so the new road traces the road network instead of
+        // cutting across blocks.
+        const coords = (Array.isArray(it.path) && it.path.length >= 2) ? it.path : [it.start, it.end];
         roads.features.push({
           type: 'Feature',
           properties: { id: it.id, color: it.color, label: it.label },
-          geometry: { type: 'LineString', coordinates: [it.start, it.end] }
+          geometry: { type: 'LineString', coordinates: coords }
         });
-        // Add label point at midpoint
-        const mid = [(it.start[0] + it.end[0]) / 2, (it.start[1] + it.end[1]) / 2];
+        // Label sits at the polyline's middle vertex (or the midpoint of a
+        // straight 2-point road).
+        const midIdx = Math.floor(coords.length / 2);
+        const mid = (coords.length >= 3) ? coords[midIdx]
+                  : [(coords[0][0] + coords[1][0]) / 2, (coords[0][1] + coords[1][1]) / 2];
         points.features.push({
           type: 'Feature',
           properties: { id: it.id, type: 'road-label', color: it.color, label: it.label },
@@ -2233,9 +2252,11 @@
       // Only meaningful in simulation years (when user-added roads count).
       return;
     }
-    // Wait a beat for the flyTo to settle so OSM tiles are in viewport before
-    // we sample junctions from queryRenderedFeatures.
-    setTimeout(() => {
+
+    // The planner needs the authoritative Belfast OSM road network loaded
+    // so the candidate road snaps to real streets rather than the synthetic
+    // lattice. Wait for the preload before placing junctions.
+    function tryArm() {
       const nodes = window.TrafficSim.findJunctionNodes(centreCoord, 14, 0.5);
       if (!nodes.length) {
         showPlanRoadHint('No nearby junctions found here — try a denser postcode');
@@ -2247,7 +2268,20 @@
       roadPlanner.pickedIds = [];
       paintJunctions();
       showPlanRoadHint('Click two glowing junctions to plan a road');
-    }, 850);
+    }
+
+    if (window.TrafficSim.isOsmLoaded && !window.TrafficSim.isOsmLoaded()) {
+      showPlanRoadHint('Loading Belfast road network…');
+      const promise = window.TrafficSim.preloadOsm
+        ? window.TrafficSim.preloadOsm('/api/layers/2026/source-ni-roads-osm')
+        : Promise.resolve();
+      promise.then(() => setTimeout(tryArm, 200))
+             .catch(() => showPlanRoadHint('Could not load road data — check your connection'));
+      return;
+    }
+
+    // Wait a beat for the flyTo to settle, then arm.
+    setTimeout(tryArm, 600);
   }
 
   function onJunctionClick(e) {
@@ -2280,12 +2314,26 @@
       // Auto-create a planning branch so the baseline stays untouched.
       createBranch('Road Plan', '#22d3ee', 'baseline');
     }
-    addRoadItem(a, b);
+    // Snap the candidate to a path along real OSM streets so we never draw
+    // through buildings. Falls back to a straight line only if the graph
+    // can't produce a connected route between the two junctions.
+    let path = null;
+    if (window.TrafficSim && typeof window.TrafficSim.findOsmPath === 'function') {
+      const segs = window.TrafficSim.findOsmPath(a, b);
+      if (segs && segs.length) {
+        path = window.TrafficSim.pathToPolyline(segs);
+      }
+    }
+    if (!path) {
+      toast('Could not snap to streets — try junctions a bit closer together.', 'warn');
+      return;
+    }
+    addRoadItem(path[0], path[path.length - 1], path);
     // Track the freshly placed item so runRoadComparison knows which one is
     // the candidate.
     const fresh = activeBranch().items[activeBranch().items.length - 1];
     if (fresh) roadPlanner.candidateRoadItemId = fresh.id;
-    showPlanRoadHint('Road planned — click "Plan New Road" again to run impact analysis');
+    showPlanRoadHint('Road planned — running impact analysis…');
     setTimeout(() => { runRoadComparison(); }, 250);
   }
 
@@ -2331,16 +2379,22 @@
     }
 
     // Build the segment graph for the branch *without* the candidate, then
-    // run with it appended as source:'candidate'.
+    // run with it appended as source:'candidate'. If the candidate has a
+    // multi-point path along real streets, expand it into a chain of small
+    // segments so the simulation routes vehicles step-by-step.
     const baseSegments = window.TrafficSim.segmentsForBranch({
       items: branch.items.filter(it => it.id !== cand.id),
     });
-    const candidate = {
-      id: 'candidate-' + cand.id,
-      a: cand.start,
-      b: cand.end,
-      source: 'candidate',
-    };
+    const candPath = (Array.isArray(cand.path) && cand.path.length >= 2) ? cand.path : [cand.start, cand.end];
+    const candidate = [];
+    for (let i = 0; i + 1 < candPath.length; i++) {
+      candidate.push({
+        id: 'candidate-' + cand.id + '-' + i,
+        a: candPath[i],
+        b: candPath[i + 1],
+        source: 'candidate',
+      });
+    }
 
     openRoadCompareModal();
     if (els.roadCompareName) els.roadCompareName.textContent = cand.label || 'New Road';
@@ -2765,6 +2819,7 @@
     if (feat.canPlace) {
       state.selectedPostcode = feat;
       showSearchStatus((feat.postcode || feat.normalizedPostcode) + ' selected · Add Building enabled');
+      if (state.year < START_YEAR) setYear(START_YEAR);
       setView('3D');
     } else {
       state.selectedPostcode = null;
@@ -3895,22 +3950,31 @@
     }
     stats.innerHTML = SCENARIO_DIFF_LENSES.map(lens => {
       const before = mean(beforeFeatures.map(f => scenarioDiffMetricValue(f, lens)));
-      const after = mean(afterFeatures.map(f => scenarioDiffMetricValue(f, lens)));
-      const diff = after - before;
-      const flat = Math.abs(diff) < 0.001;
+      const directAfter = mean(afterFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+      let diff = mean(afterFeatures.map(f => scenarioDeltaValue(f, lens)));
+      if (!Number.isFinite(diff) || Math.abs(diff) < 0.000001) diff = directAfter - before;
+      const after = before + diff;
+      const flat = Math.abs(diff) < 0.00005;
       const isGood = flat ? false : (lens.goodDirection === 'up' ? diff > 0 : diff < 0);
       const cls = flat ? 'flat' : (isGood ? 'up' : 'down');
       const sign = diff > 0 ? '+' : '';
+      const deltaPts = diff * 100;
       return '<div class="diff-stat lens" style="--lens-color:' + lens.color + '">' +
         '<div class="name">' + lens.label + '</div>' +
         '<div class="vals">' +
-          '<span class="before">' + (clamp(before, 0, 1.5) * 100).toFixed(0) + '</span>' +
+          '<span class="before">' + fmtScenarioIndex(before, deltaPts) + '</span>' +
           '<span class="arrow">&rarr;</span>' +
-          '<span class="after">' + (clamp(after, 0, 1.5) * 100).toFixed(0) + '</span>' +
+          '<span class="after">' + fmtScenarioIndex(after, deltaPts) + '</span>' +
         '</div>' +
-        '<div class="delta-line ' + cls + '">' + (flat ? 'no change' : sign + (diff * 100).toFixed(1) + ' pts') + '</div>' +
+        '<div class="delta-line ' + cls + '">' + (flat ? 'no change' : sign + deltaPts.toFixed(Math.abs(deltaPts) < 1 ? 2 : 1) + ' pts') + '</div>' +
         '</div>';
     }).join('');
+  }
+
+  function fmtScenarioIndex(value, deltaPts) {
+    const pct = clamp(value, 0, 1.5) * 100;
+    const decimals = Math.abs(deltaPts) > 0 && Math.abs(deltaPts) < 1 ? 2 : 0;
+    return pct.toFixed(decimals).replace(/\.0+$/, '');
   }
 
   function renderScenarioDiffEvidence(scenario, scenarioBranch, branch, year) {
@@ -3966,7 +4030,10 @@
           const props = f.properties || {};
           const value = Number(props.traffic) || 0;
           const diff = scenarioDeltaValue(f, trafficLens);
-          const color = side === 'before' ? ramp_RedGreen(1 - clamp(value, 0, 1)) : scenarioDeltaColour(diff, trafficLens);
+          const neutralAffected = Math.abs(diff) < 0.00005;
+          const color = side === 'before'
+            ? ramp_RedGreen(1 - clamp(value, 0, 1))
+            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, trafficLens));
           const opacity = side === 'before'
             ? clamp(0.12 + value * 0.7, 0.14, 0.82)
             : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);

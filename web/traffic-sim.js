@@ -88,47 +88,183 @@
     setSegments([...sampleOsmSegments(), ...userRoads]);
   }
 
-  // Pull OSM road context from the existing mapbox source, sampled to keep
-  // vehicle count manageable. Falls back to a synthetic Belfast lattice when
-  // OSM isn't loaded yet.
-  function sampleOsmSegments() {
-    if (!state.map) return syntheticBelfastSegments();
-    const sourceId = 'source-ni-roads-osm';
-    if (!state.map.getSource(sourceId)) return syntheticBelfastSegments();
+  // ----- Real OSM road network ---------------------------------------------
+  // The dashboard publishes a GeoJSON file of all Belfast roads via the
+  // replay manifest. Loading it once here gives us authoritative geometry
+  // for the candidate-road snapping and vehicle simulation, instead of the
+  // synthetic lattice that produced the buildings-spanning straight lines
+  // the user flagged.
+  //
+  // segments are stored in a coarse spatial grid keyed on ~110m cells so we
+  // can pull a city-block-radius slice in O(k) instead of scanning the
+  // whole graph (~70k segments) on every junction lookup.
+  let osmAllSegments = null;       // Array<{id, a, b, source:'osm', highway}>
+  let osmGrid = null;              // Map<gridKey, Array<segIndex>>
+  let osmLoadPromise = null;
+  const OSM_CELL = 0.001;          // ≈110m at this latitude
 
-    let feats = [];
-    try {
-      const layers = state.map.getStyle().layers
-        .filter(l => l.source === sourceId)
-        .map(l => l.id);
-      if (layers.length) {
-        feats = state.map.queryRenderedFeatures({ layers });
-      } else {
-        // querySourceFeatures requires source-layer for vector tilesets;
-        // OSM source here is geojson without source-layer
-        feats = state.map.querySourceFeatures(sourceId);
-      }
-    } catch (e) { feats = []; }
+  function osmGridKey(coord) {
+    return Math.round(coord[0] / OSM_CELL) + '|' + Math.round(coord[1] / OSM_CELL);
+  }
 
-    if (!feats.length) return syntheticBelfastSegments();
+  function indexSegmentInGrid(idx, coord) {
+    const k = osmGridKey(coord);
+    let arr = osmGrid.get(k);
+    if (!arr) { arr = []; osmGrid.set(k, arr); }
+    arr.push(idx);
+  }
 
-    const out = [];
-    let id = 0;
-    const stride = Math.max(1, Math.floor(feats.length / 200));
-    for (let i = 0; i < feats.length; i += stride) {
-      const g = feats[i].geometry;
-      if (!g) continue;
-      const lines = g.type === 'LineString' ? [g.coordinates]
-                  : g.type === 'MultiLineString' ? g.coordinates : [];
-      lines.forEach(coords => {
-        for (let j = 0; j + 1 < coords.length; j++) {
-          out.push({ id: 'osm-' + (id++), a: coords[j], b: coords[j + 1], source: 'osm' });
-          if (out.length > 600) return;
+  // Highway tags we route vehicles on — drop pedestrian / cycle / footway.
+  const DRIVABLE = new Set([
+    'motorway', 'motorway_link',
+    'trunk', 'trunk_link',
+    'primary', 'primary_link',
+    'secondary', 'secondary_link',
+    'tertiary', 'tertiary_link',
+    'unclassified',
+    'residential',
+    'living_street',
+    'service',
+    'road',
+  ]);
+
+  function preloadOsm(url) {
+    if (osmAllSegments) return Promise.resolve(osmAllSegments);
+    if (osmLoadPromise) return osmLoadPromise;
+    osmLoadPromise = fetch(url, { cache: 'force-cache' })
+      .then(r => { if (!r.ok) throw new Error('osm fetch ' + r.status); return r.json(); })
+      .then(data => {
+        const segs = [];
+        const grid = new Map();
+        const feats = (data && data.features) || [];
+        for (let i = 0; i < feats.length; i++) {
+          const f = feats[i];
+          const g = f.geometry;
+          if (!g) continue;
+          const hw = (f.properties && f.properties.highway) || '';
+          if (!DRIVABLE.has(hw)) continue;
+          const coordSets = g.type === 'LineString' ? [g.coordinates]
+                          : g.type === 'MultiLineString' ? g.coordinates : [];
+          for (let cs = 0; cs < coordSets.length; cs++) {
+            const coords = coordSets[cs];
+            for (let j = 0; j + 1 < coords.length; j++) {
+              const idx = segs.length;
+              segs.push({
+                id: 'osm-' + idx,
+                a: coords[j],
+                b: coords[j + 1],
+                source: 'osm',
+                highway: hw,
+              });
+              const k1 = osmGridKey(coords[j]);
+              const k2 = osmGridKey(coords[j + 1]);
+              let bucket = grid.get(k1);
+              if (!bucket) { bucket = []; grid.set(k1, bucket); }
+              bucket.push(idx);
+              if (k2 !== k1) {
+                bucket = grid.get(k2);
+                if (!bucket) { bucket = []; grid.set(k2, bucket); }
+                bucket.push(idx);
+              }
+            }
+          }
         }
+        osmGrid = grid;
+        osmAllSegments = segs;
+        return segs;
+      })
+      .catch(err => {
+        console.warn('TrafficSim: failed to preload OSM roads, falling back to synthetic grid', err);
+        osmAllSegments = [];
+        osmGrid = new Map();
+        return osmAllSegments;
       });
-      if (out.length > 600) break;
+    return osmLoadPromise;
+  }
+
+  function isOsmLoaded() { return Array.isArray(osmAllSegments) && osmAllSegments.length > 0; }
+
+  // Pull OSM segments within `radiusKm` of `centre`. Used by the planner —
+  // we don't need every road in Belfast on every junction lookup, only the
+  // ones around the searched postcode.
+  function osmSegmentsNear(centre, radiusKm) {
+    if (!isOsmLoaded()) return [];
+    const cellsPerKm = Math.ceil(1 / OSM_CELL / 110); // crude but good enough
+    const reach = Math.max(1, Math.ceil(radiusKm * cellsPerKm));
+    const cx = Math.round(centre[0] / OSM_CELL);
+    const cy = Math.round(centre[1] / OSM_CELL);
+    const seen = new Set();
+    const out = [];
+    for (let dx = -reach; dx <= reach; dx++) {
+      for (let dy = -reach; dy <= reach; dy++) {
+        const bucket = osmGrid.get((cx + dx) + '|' + (cy + dy));
+        if (!bucket) continue;
+        for (let i = 0; i < bucket.length; i++) {
+          const idx = bucket[i];
+          if (seen.has(idx)) continue;
+          seen.add(idx);
+          out.push(osmAllSegments[idx]);
+        }
+      }
     }
     return out;
+  }
+
+  // Public sampling — used by the simulator. Pulls a generous slice around
+  // the map centre so the swarm has plenty of road to drive on. Falls back
+  // to the synthetic lattice ONLY if neither the loaded geojson nor the
+  // mapbox source can give us anything (offline / failed fetch).
+  function sampleOsmSegments() {
+    // Prefer the preloaded, authoritative GeoJSON
+    if (isOsmLoaded()) {
+      const centre = (state.map && state.map.getCenter)
+        ? [state.map.getCenter().lng, state.map.getCenter().lat]
+        : [-5.93, 54.597];
+      // 1.2km radius = a few hundred segments around the viewport
+      const near = osmSegmentsNear(centre, 1.2);
+      if (near.length) return near;
+    }
+    // Fallback: try the rendered mapbox source (less authoritative — only
+    // returns features actually drawn in the current viewport).
+    if (state.map) {
+      const sourceId = 'source-ni-roads-osm';
+      if (state.map.getSource(sourceId)) {
+        let feats = [];
+        try {
+          const layers = state.map.getStyle().layers
+            .filter(l => l.source === sourceId)
+            .map(l => l.id);
+          if (layers.length) {
+            feats = state.map.queryRenderedFeatures({ layers });
+          } else {
+            feats = state.map.querySourceFeatures(sourceId);
+          }
+        } catch (e) { feats = []; }
+        if (feats.length) {
+          const out = [];
+          let id = 0;
+          const stride = Math.max(1, Math.floor(feats.length / 200));
+          for (let i = 0; i < feats.length; i += stride) {
+            const g = feats[i].geometry;
+            if (!g) continue;
+            const lines = g.type === 'LineString' ? [g.coordinates]
+                        : g.type === 'MultiLineString' ? g.coordinates : [];
+            lines.forEach(coords => {
+              for (let j = 0; j + 1 < coords.length; j++) {
+                out.push({ id: 'osm-' + (id++), a: coords[j], b: coords[j + 1], source: 'osm' });
+                if (out.length > 600) return;
+              }
+            });
+            if (out.length > 600) break;
+          }
+          if (out.length) return out;
+        }
+      }
+    }
+    // Last resort — never used for road planning (the dashboard now blocks
+    // the planner until preloadOsm resolves), but kept so the swarm still
+    // animates if everything else fails.
+    return syntheticBelfastSegments();
   }
 
   // Synthetic Belfast lattice — used when OSM context isn't ready yet so the
@@ -435,7 +571,13 @@
     if (!Array.isArray(centre) || centre.length !== 2) return [];
     count = count || 14;
     radiusKm = radiusKm || 0.6;
-    const segs = sampleOsmSegments();
+    // Prefer the loaded OSM geojson — it's the authoritative source for
+    // junction coordinates. sampleOsmSegments() only returns the slice near
+    // the map's current centre, which can leave us with too few endpoints
+    // around a postcode the user just searched far from the centre.
+    const segs = isOsmLoaded()
+      ? osmSegmentsNear(centre, Math.max(radiusKm * 1.5, 0.8))
+      : sampleOsmSegments();
     if (!segs.length) return [];
     // Bucket endpoints to ~10m grid so near-duplicates merge into one node.
     const cell = 0.0001; // ≈11m at this latitude
@@ -487,6 +629,131 @@
     }));
   }
 
+  // ---- Shortest path along the OSM road graph -----------------------------
+  // Given two coordinates (typically picked junctions), finds a sequence of
+  // sampled OSM segments that connect them. The candidate "new road" is then
+  // built from this sequence so it follows actual streets instead of cutting
+  // diagonally through buildings.
+  //
+  // Returns an array of {a, b, source, length} segments forming a connected
+  // path from `from` to `to`. Returns null if no path exists within budget.
+  function findOsmPath(from, to, opts) {
+    opts = opts || {};
+    // Pull a generous slice of OSM around the midpoint so Dijkstra has a
+    // dense, connected graph to work with. Otherwise we'd be limited to
+    // whichever roads happened to be in the rendered viewport.
+    let segs;
+    if (opts.segments && opts.segments.length) {
+      segs = opts.segments;
+    } else if (isOsmLoaded()) {
+      const mid = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
+      const reach = Math.max(0.6, distMetres(from, to) / 1000 * 1.2 + 0.4);
+      segs = osmSegmentsNear(mid, reach);
+    } else {
+      segs = sampleOsmSegments();
+    }
+    if (!segs.length) return null;
+
+    // Bucket all endpoints into a spatial grid (~11m cells) so we can
+    // discover edges that share a node by spatial proximity rather than
+    // exact coordinate equality.
+    const cell = 0.0001;
+    function key(coord) {
+      return Math.round(coord[0] / cell) + ',' + Math.round(coord[1] / cell);
+    }
+    const nodeIndex = new Map();   // key -> nodeId
+    const nodes = [];              // [{coord:[lng,lat]}]
+    function nodeFor(coord) {
+      const k = key(coord);
+      let id = nodeIndex.get(k);
+      if (id == null) {
+        id = nodes.length;
+        nodeIndex.set(k, id);
+        nodes.push({ coord: coord });
+      }
+      return id;
+    }
+    // Adjacency: nodeId -> [{to: nodeId, w: length, seg: {a,b,source}}]
+    const adj = [];
+    for (let i = 0; i < segs.length; i++) {
+      const s = segs[i];
+      const u = nodeFor(s.a);
+      const v = nodeFor(s.b);
+      const w = Math.max(20, distMetres(s.a, s.b));
+      while (adj.length <= Math.max(u, v)) adj.push([]);
+      adj[u].push({ to: v, w: w, seg: { a: s.a, b: s.b, source: s.source || 'osm' } });
+      adj[v].push({ to: u, w: w, seg: { a: s.b, b: s.a, source: s.source || 'osm' } });
+    }
+    if (!adj.length) return null;
+
+    // Snap from/to to the nearest known node within ~80m
+    function snap(coord) {
+      let best = -1, bestKm = Infinity;
+      for (let i = 0; i < nodes.length; i++) {
+        const dx = (nodes[i].coord[0] - coord[0]) * M_PER_DEG_LNG;
+        const dy = (nodes[i].coord[1] - coord[1]) * M_PER_DEG_LAT;
+        const km = Math.hypot(dx, dy) / 1000;
+        if (km < bestKm) { bestKm = km; best = i; }
+      }
+      return (bestKm <= 0.1) ? best : -1;
+    }
+    const src = snap(from);
+    const dst = snap(to);
+    if (src < 0 || dst < 0 || src === dst) return null;
+
+    // Plain Dijkstra. Graph is small (a few hundred nodes), so a simple
+    // priority-queue implemented as a sorted array is plenty fast.
+    const dist = new Array(nodes.length).fill(Infinity);
+    const prev = new Array(nodes.length).fill(null);
+    dist[src] = 0;
+    const queue = [{ id: src, d: 0 }];
+    let visited = 0;
+    while (queue.length) {
+      // pop min
+      let mi = 0;
+      for (let i = 1; i < queue.length; i++) if (queue[i].d < queue[mi].d) mi = i;
+      const cur = queue.splice(mi, 1)[0];
+      if (cur.d > dist[cur.id]) continue;
+      if (cur.id === dst) break;
+      const edges = adj[cur.id] || [];
+      for (let j = 0; j < edges.length; j++) {
+        const e = edges[j];
+        const nd = cur.d + e.w;
+        if (nd < dist[e.to]) {
+          dist[e.to] = nd;
+          prev[e.to] = { from: cur.id, edge: e };
+          queue.push({ id: e.to, d: nd });
+        }
+      }
+      if (++visited > 4000) break; // safety budget
+    }
+    if (dist[dst] === Infinity) return null;
+
+    // Walk prev back from dst → src to recover the path of edges.
+    const path = [];
+    let cursor = dst;
+    while (prev[cursor]) {
+      const step = prev[cursor];
+      path.unshift({
+        a: step.edge.seg.a,
+        b: step.edge.seg.b,
+        source: step.edge.seg.source,
+        length: step.edge.w,
+      });
+      cursor = step.from;
+    }
+    return path;
+  }
+
+  // Convenience: turn a path (array of segments) into an array of points
+  // [[lng,lat], ...] for rendering as a polyline.
+  function pathToPolyline(path) {
+    if (!path || !path.length) return [];
+    const pts = [path[0].a];
+    for (let i = 0; i < path.length; i++) pts.push(path[i].b);
+    return pts;
+  }
+
   // Run a head-to-head simulation with and without a candidate road. Both
   // runs use the same RNG seed and starting positions so the only variable
   // is the road graph. Returns aggregated metrics + per-segment occupancy
@@ -494,10 +761,18 @@
   function runComparison(opts) {
     opts = opts || {};
     const baseSegments = (opts.baseSegments || []).map(s => Object.assign({}, s));
-    const candidate = opts.candidate;
-    const allSegments = candidate
-      ? baseSegments.concat([Object.assign({}, candidate, { id: candidate.id || 'cand-1' })])
-      : baseSegments.slice();
+    // candidate can be a single segment {a,b,source,id} or an array of them
+    // (for multi-segment "new road" that follows OSM streets).
+    const candidateRaw = opts.candidate;
+    const candidates = !candidateRaw ? []
+      : Array.isArray(candidateRaw) ? candidateRaw
+      : [candidateRaw];
+    const allSegments = baseSegments.concat(
+      candidates.map((c, i) => Object.assign({}, c, {
+        id: c.id || ('cand-' + i),
+        source: 'candidate',
+      }))
+    );
 
     const density = clampInt(opts.density, 1, 600);
     const speedMul = Math.max(0.1, Math.min(3, opts.speed || 1));
@@ -648,10 +923,27 @@
   }
 
   // Build segment array for a branch (OSM context + user roads, no candidate).
+  // Roads with a `path` polyline expand into a chain of sub-segments so the
+  // sim routes vehicles along the actual street alignment.
   function segmentsForBranch(branch) {
-    const userRoads = (branch && branch.items || [])
-      .filter(it => it.type === 'road' && Array.isArray(it.start) && Array.isArray(it.end))
-      .map(it => ({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user' }));
+    const userRoads = [];
+    const items = (branch && branch.items) || [];
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      if (it.type !== 'road') continue;
+      if (Array.isArray(it.path) && it.path.length >= 2) {
+        for (let j = 0; j + 1 < it.path.length; j++) {
+          userRoads.push({
+            id: 'u-' + it.id + '-' + j,
+            a: it.path[j],
+            b: it.path[j + 1],
+            source: 'user',
+          });
+        }
+      } else if (Array.isArray(it.start) && Array.isArray(it.end)) {
+        userRoads.push({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user' });
+      }
+    }
     return [...sampleOsmSegments(), ...userRoads];
   }
 
@@ -667,7 +959,10 @@
   const CMP_LAYER_NEW_GLOW = 'traffic-sim-compare-new-glow';
 
   function ensureCompareLayers() {
-    if (!state.map || !state.map.isStyleLoaded || !state.map.isStyleLoaded()) return false;
+    // We need a map; the style doesn't have to be fully loaded — addSource /
+    // addLayer queue safely once the basic 'load' event has fired and
+    // state.map is non-null.
+    if (!state.map) return false;
     if (!state.map.getSource(CMP_SOURCE_ID)) {
       state.map.addSource(CMP_SOURCE_ID, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
     }
@@ -759,11 +1054,19 @@
         });
       }
     }
-    if (candidate && candidate.a && candidate.b) {
+    // candidate can be a single {a,b} or an array of segments (multi-step
+    // path along real streets). Render each step so the new road traces the
+    // OSM geometry instead of a straight line through buildings.
+    const candList = !candidate ? []
+      : Array.isArray(candidate) ? candidate
+      : [candidate];
+    for (let i = 0; i < candList.length; i++) {
+      const c = candList[i];
+      if (!c || !c.a || !c.b) continue;
       features.push({
         type: 'Feature',
         properties: { kind: 'new' },
-        geometry: { type: 'LineString', coordinates: [candidate.a, candidate.b] },
+        geometry: { type: 'LineString', coordinates: [c.a, c.b] },
       });
     }
     const src = state.map.getSource(CMP_SOURCE_ID);
@@ -789,10 +1092,14 @@
     getMetrics: function () { return Object.assign({}, state.metrics); },
     isRunning: function () { return state.running; },
     findJunctionNodes: findJunctionNodes,
+    findOsmPath: findOsmPath,
+    pathToPolyline: pathToPolyline,
     runComparison: runComparison,
     segmentsForBranch: segmentsForBranch,
     sampleOsmSegments: sampleOsmSegments,
     showComparisonOverlay: showComparisonOverlay,
     clearComparisonOverlay: clearComparisonOverlay,
+    preloadOsm: preloadOsm,
+    isOsmLoaded: isOsmLoaded,
   };
 })();
