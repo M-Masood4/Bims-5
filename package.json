@@ -1,0 +1,10 @@
+{
+  "name": "belfast-replay-ui-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lightweight local UI/API scaffold for the Belfast historical replay data.",
+  "scripts": {
+    "start": "node server.js",
+    "verify": "node scripts/verify-manifest.js"
+  }
+}
