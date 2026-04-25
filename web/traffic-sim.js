@@ -655,6 +655,128 @@
     return [...sampleOsmSegments(), ...userRoads];
   }
 
+  // ----- comparison overlay (the on-map "diff heatmap") --------------------
+  // Mirrors the look of the historical Traffic lens: thick coloured lines
+  // along the road network showing where the candidate road relieves or
+  // worsens congestion. Lives on the main map, not in the modal.
+
+  const CMP_SOURCE_ID  = 'traffic-sim-compare-overlay';
+  const CMP_LAYER_BG   = 'traffic-sim-compare-bg';
+  const CMP_LAYER_LINE = 'traffic-sim-compare-line';
+  const CMP_LAYER_NEW  = 'traffic-sim-compare-new';
+  const CMP_LAYER_NEW_GLOW = 'traffic-sim-compare-new-glow';
+
+  function ensureCompareLayers() {
+    if (!state.map || !state.map.isStyleLoaded || !state.map.isStyleLoaded()) return false;
+    if (!state.map.getSource(CMP_SOURCE_ID)) {
+      state.map.addSource(CMP_SOURCE_ID, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    }
+    // Soft underlay to make coloured deltas pop against the dark basemap
+    if (!state.map.getLayer(CMP_LAYER_BG)) {
+      state.map.addLayer({
+        id: CMP_LAYER_BG,
+        type: 'line',
+        source: CMP_SOURCE_ID,
+        filter: ['!=', ['get', 'kind'], 'new'],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 11],
+          'line-color': '#020617',
+          'line-opacity': 0.55,
+        },
+      });
+    }
+    if (!state.map.getLayer(CMP_LAYER_LINE)) {
+      state.map.addLayer({
+        id: CMP_LAYER_LINE,
+        type: 'line',
+        source: CMP_SOURCE_ID,
+        filter: ['!=', ['get', 'kind'], 'new'],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 11, 2.4, 16, 7],
+          // delta < 0 → relief (green ramp); delta > 0 → worse (red ramp)
+          'line-color': ['interpolate', ['linear'], ['get', 'delta'],
+            -0.40, '#16a34a',
+            -0.10, '#86efac',
+             0.00, '#94a3b8',
+             0.10, '#fb923c',
+             0.40, '#dc2626'],
+          'line-opacity': ['interpolate', ['linear'], ['abs', ['get', 'delta']], 0, 0.35, 0.4, 0.95],
+        },
+      });
+    }
+    if (!state.map.getLayer(CMP_LAYER_NEW_GLOW)) {
+      state.map.addLayer({
+        id: CMP_LAYER_NEW_GLOW,
+        type: 'line',
+        source: CMP_SOURCE_ID,
+        filter: ['==', ['get', 'kind'], 'new'],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 11, 14, 16, 24],
+          'line-color': '#22d3ee',
+          'line-opacity': 0.18,
+          'line-blur': 4,
+        },
+      });
+      state.map.addLayer({
+        id: CMP_LAYER_NEW,
+        type: 'line',
+        source: CMP_SOURCE_ID,
+        filter: ['==', ['get', 'kind'], 'new'],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 9],
+          'line-color': '#22d3ee',
+          'line-dasharray': [2, 1.4],
+          'line-opacity': 0.95,
+        },
+      });
+    }
+    return true;
+  }
+
+  // Render the segmentDeltas + the candidate road as a persistent overlay.
+  // Pass null/empty to clear.
+  function showComparisonOverlay(segmentDeltas, candidate) {
+    if (!ensureCompareLayers()) {
+      // Try once more after the next styledata tick.
+      if (state.map && state.map.once) {
+        state.map.once('styledata', () => showComparisonOverlay(segmentDeltas, candidate));
+      }
+      return false;
+    }
+    const features = [];
+    if (segmentDeltas && segmentDeltas.length) {
+      for (let i = 0; i < segmentDeltas.length; i++) {
+        const s = segmentDeltas[i];
+        if (Math.abs(s.delta) < 0.02 && Math.abs(s.afterRatio) < 0.05) continue; // hide quiet roads
+        features.push({
+          type: 'Feature',
+          properties: { kind: 'segment', delta: s.delta, after: s.afterRatio, source: s.source || 'osm' },
+          geometry: { type: 'LineString', coordinates: [s.a, s.b] },
+        });
+      }
+    }
+    if (candidate && candidate.a && candidate.b) {
+      features.push({
+        type: 'Feature',
+        properties: { kind: 'new' },
+        geometry: { type: 'LineString', coordinates: [candidate.a, candidate.b] },
+      });
+    }
+    const src = state.map.getSource(CMP_SOURCE_ID);
+    if (src) src.setData({ type: 'FeatureCollection', features: features });
+    return true;
+  }
+
+  function clearComparisonOverlay() {
+    if (!state.map) return;
+    const src = state.map.getSource(CMP_SOURCE_ID);
+    if (src) src.setData({ type: 'FeatureCollection', features: [] });
+  }
+
   window.TrafficSim = {
     init: init,
     start: start,
@@ -670,5 +792,7 @@
     runComparison: runComparison,
     segmentsForBranch: segmentsForBranch,
     sampleOsmSegments: sampleOsmSegments,
+    showComparisonOverlay: showComparisonOverlay,
+    clearComparisonOverlay: clearComparisonOverlay,
   };
 })();

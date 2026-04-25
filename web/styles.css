@@ -1029,6 +1029,64 @@ button:focus-visible, [role="button"]:focus-visible {
 .rc-verdict-net-congestion { background: rgba(239,68,68,0.18); color: #f87171; }
 .rc-verdict-mixed-effect { background: rgba(148,163,184,0.18); color: #cbd5e1; }
 
+/* Floating legend that sits on the map after the diff heatmap is painted */
+.congestion-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 6;
+  background: rgba(7, 16, 31, 0.92);
+  border: 1px solid rgba(34, 211, 238, 0.32);
+  border-radius: 8px;
+  padding: 9px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text);
+  min-width: 168px;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
+  animation: rcPulseIn 240ms ease-out;
+}
+.congestion-legend .cl-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.congestion-legend .cl-clear {
+  width: 18px; height: 18px;
+  border: none; background: transparent;
+  color: var(--text-mute); font-size: 16px; line-height: 1;
+  cursor: pointer; padding: 0;
+}
+.congestion-legend .cl-clear:hover { color: #fff; }
+.congestion-legend .cl-ramp {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  height: 9px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.congestion-legend .cl-step { display: block; height: 100%; }
+.congestion-legend .cl-ramp-labels {
+  display: flex; justify-content: space-between;
+  font-size: 9.5px; color: var(--text-mute);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.congestion-legend .cl-row {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.congestion-legend .cl-sw {
+  display: inline-block;
+  width: 14px; height: 4px; border-radius: 2px;
+}
+.congestion-legend .cl-sw-new {
+  background: #22d3ee;
+  box-shadow: 0 0 0 1px rgba(34,211,238,0.4);
+}
+
 @media (max-width: 720px) {
   .rc-stats { grid-template-columns: repeat(2, 1fr); }
   .rc-maps { grid-template-columns: 1fr; }

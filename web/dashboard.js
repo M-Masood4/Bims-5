@@ -677,20 +677,36 @@
     addItemAt(state.activeTool, lng, lat);
   }
 
+  // Roads can ONLY be placed by clicking two junction nodes that the road
+  // planner has discovered around a postcode search. Free-click placement
+  // is disabled — the simulation needs both endpoints to land on a real OSM
+  // road junction so vehicles can actually route through them.
   function handleRoadClick(lng, lat) {
-    if (!state.pendingRoadStart) {
-      state.pendingRoadStart = [lng, lat];
-      els.cursorHintText.textContent = 'Click the road end-point';
-      els.cursorHint.hidden = false;
+    if (!roadPlanner.armed) {
+      toast('Search a postcode first — the planner will reveal junctions you can connect.', 'warn');
+      if (els.postcodeInput) els.postcodeInput.focus();
       return;
     }
-    const start = state.pendingRoadStart;
-    const end = [lng, lat];
-    state.pendingRoadStart = null;
-    addRoadItem(start, end);
-    if (state.activeTool === 'road') {
-      els.cursorHintText.textContent = TOOL_LABELS.road;
+    // Snap-to-nearest-junction: if the click is within ~50m of an unpicked
+    // junction, treat it like a junction click. Otherwise nudge the user.
+    const nearest = nearestJunction([lng, lat], 0.06);
+    if (!nearest) {
+      toast('Click one of the glowing junction circles to place an end-point.', 'warn');
+      return;
     }
+    onJunctionClick({ features: [{ properties: { id: nearest.id } }] });
+  }
+
+  function nearestJunction(coord, maxKm) {
+    if (!window.TrafficSim || !roadPlanner.junctions.length) return null;
+    let best = null, bestKm = Infinity;
+    for (const j of roadPlanner.junctions) {
+      const dx = (j.coord[0] - coord[0]) * 111320 * Math.cos(coord[1] * Math.PI / 180);
+      const dy = (j.coord[1] - coord[1]) * 111320;
+      const km = Math.hypot(dx, dy) / 1000;
+      if (km < bestKm) { bestKm = km; best = j; }
+    }
+    return (best && bestKm <= maxKm) ? best : null;
   }
 
   // ---------- ITEM CRUD ----------
@@ -1220,6 +1236,14 @@
         // Toggle off if already active
         if (t === 'building' && (!state.selectedPostcode || !state.selectedPostcode.canPlace)) {
           toast('Search a full Belfast postcode first. BT7 can zoom; BT7 1NN can place.', 'warn');
+          if (els.postcodeInput) els.postcodeInput.focus();
+          return;
+        }
+        // Roads now flow through the postcode → junction picker. If the
+        // planner isn't armed yet, push the user to the search box rather
+        // than letting them free-click points that won't sit on real roads.
+        if (t === 'road' && !roadPlanner.armed) {
+          toast('Search a postcode — junctions you can connect will appear on the map.', 'warn');
           if (els.postcodeInput) els.postcodeInput.focus();
           return;
         }
@@ -2254,32 +2278,75 @@
     openRoadCompareModal();
     if (els.roadCompareName) els.roadCompareName.textContent = cand.label || 'New Road';
 
-    // Yield to the browser so the modal paints, then run.
+    // Kick off the live vehicle swarm on the main map so the user *sees*
+    // the simulation run on real OSM roads while the headless comparison
+    // computes in the background.
+    const wasRunning = window.TrafficSim.isRunning();
+    if (!wasRunning) {
+      startTrafficSim({ auto: true });
+    } else {
+      window.TrafficSim.refreshSegments();
+    }
+
+    // Yield to the browser so the modal paints + vehicles start moving,
+    // then run the headless comparison and paint the diff heatmap.
     setTimeout(() => {
-      setRoadCompareProgress('Running baseline (without new road)…', 0.25);
-      // Two synchronous runs back-to-back — each takes ~50ms with default
-      // density. We split them into two setTimeout-delayed steps so the UI
-      // can show the progress bar incrementing.
+      setRoadCompareProgress('Simulating without the new road…', 0.25);
       setTimeout(() => {
-        const result = window.TrafficSim.runComparison({
-          baseSegments: baseSegments,
-          candidate: candidate,
-          density: Number(els.trafficSimDensity ? els.trafficSimDensity.value : 80),
-          speed: Number(els.trafficSimSpeed ? els.trafficSimSpeed.value : 1),
-          durationSeconds: 6,
-          seed: 0xb1f55, // stable seed so before/after share spawn positions
-        });
-        setRoadCompareProgress('Comparing…', 0.9);
+        setRoadCompareProgress('Simulating with the new road…', 0.55);
         setTimeout(() => {
-          if (!result) {
-            toast('Could not run comparison — load the OSM map first', 'warn');
-            if (els.roadCompareModal) els.roadCompareModal.hidden = true;
-            return;
-          }
-          renderRoadCompareResult(result, cand);
-        }, 200);
-      }, 200);
-    }, 80);
+          const result = window.TrafficSim.runComparison({
+            baseSegments: baseSegments,
+            candidate: candidate,
+            density: Number(els.trafficSimDensity ? els.trafficSimDensity.value : 80),
+            speed: Number(els.trafficSimSpeed ? els.trafficSimSpeed.value : 1),
+            durationSeconds: 6,
+            seed: 0xb1f55, // stable seed so before/after share spawn positions
+          });
+          setRoadCompareProgress('Painting congestion diff…', 0.9);
+          setTimeout(() => {
+            if (!result) {
+              toast('Could not run comparison — load the OSM map first', 'warn');
+              if (els.roadCompareModal) els.roadCompareModal.hidden = true;
+              return;
+            }
+            // Persistent on-map heatmap — mirrors the historical Traffic
+            // lens look. Stays visible after the modal closes.
+            window.TrafficSim.showComparisonOverlay(result.segmentDeltas, candidate);
+            renderRoadCompareResult(result, cand);
+            showCongestionLegend();
+          }, 250);
+        }, 700);
+      }, 700);
+    }, 200);
+  }
+
+  // Floating legend + Clear button for the on-map congestion-delta heatmap.
+  let congestionLegendEl = null;
+  function showCongestionLegend() {
+    if (congestionLegendEl) { congestionLegendEl.style.display = 'flex'; return; }
+    const wrap = document.createElement('div');
+    wrap.className = 'congestion-legend';
+    wrap.innerHTML =
+      '<div class="cl-head"><strong>Congestion change</strong>' +
+        '<button class="cl-clear" type="button" title="Clear overlay">&times;</button></div>' +
+      '<div class="cl-ramp">' +
+        '<span class="cl-step" style="background:#16a34a"></span>' +
+        '<span class="cl-step" style="background:#86efac"></span>' +
+        '<span class="cl-step" style="background:#94a3b8"></span>' +
+        '<span class="cl-step" style="background:#fb923c"></span>' +
+        '<span class="cl-step" style="background:#dc2626"></span>' +
+      '</div>' +
+      '<div class="cl-ramp-labels"><span>Relieved</span><span>Worsened</span></div>' +
+      '<div class="cl-row"><span class="cl-sw cl-sw-new"></span> New road</div>';
+    const canvas = document.querySelector('.map-canvas') || document.body;
+    canvas.appendChild(wrap);
+    congestionLegendEl = wrap;
+    wrap.querySelector('.cl-clear').addEventListener('click', clearCongestionOverlay);
+  }
+  function clearCongestionOverlay() {
+    if (window.TrafficSim) window.TrafficSim.clearComparisonOverlay();
+    if (congestionLegendEl) congestionLegendEl.style.display = 'none';
   }
 
   // ---------- Render the result ----------

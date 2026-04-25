@@ -80,19 +80,30 @@ function fail(msg) { throw new Error(msg); }
   }, null, { timeout: 15000 });
 
   // Pull the rendered numbers
-  const res = await page.evaluate(() => ({
-    speedBefore: document.getElementById("rcSpeedBefore")?.textContent,
-    speedAfter:  document.getElementById("rcSpeedAfter")?.textContent,
-    speedDelta:  document.getElementById("rcSpeedDelta")?.textContent,
-    congBefore:  document.getElementById("rcCongBefore")?.textContent,
-    congAfter:   document.getElementById("rcCongAfter")?.textContent,
-    flowBefore:  document.getElementById("rcFlowBefore")?.textContent,
-    flowAfter:   document.getElementById("rcFlowAfter")?.textContent,
-    usage:       document.getElementById("rcUsage")?.textContent,
-    summary:     document.getElementById("roadCompareSummary")?.textContent,
-    beforeSegs:  document.querySelectorAll("#roadCompareMapBefore line").length,
-    afterSegs:   document.querySelectorAll("#roadCompareMapAfter line").length,
-  }));
+  const res = await page.evaluate(() => {
+    const map = window.BelfastDashboard.state.map;
+    return {
+      speedBefore: document.getElementById("rcSpeedBefore")?.textContent,
+      speedAfter:  document.getElementById("rcSpeedAfter")?.textContent,
+      speedDelta:  document.getElementById("rcSpeedDelta")?.textContent,
+      congBefore:  document.getElementById("rcCongBefore")?.textContent,
+      congAfter:   document.getElementById("rcCongAfter")?.textContent,
+      flowBefore:  document.getElementById("rcFlowBefore")?.textContent,
+      flowAfter:   document.getElementById("rcFlowAfter")?.textContent,
+      usage:       document.getElementById("rcUsage")?.textContent,
+      summary:     document.getElementById("roadCompareSummary")?.textContent,
+      beforeSegs:  document.querySelectorAll("#roadCompareMapBefore line").length,
+      afterSegs:   document.querySelectorAll("#roadCompareMapAfter line").length,
+      // New: live swarm + on-map heatmap
+      swarmRunning: window.TrafficSim.isRunning(),
+      swarmVehicles: window.TrafficSim.getMetrics().vehicles,
+      hasCmpSrc: !!map.getSource("traffic-sim-compare-overlay"),
+      hasCmpLayer: !!map.getLayer("traffic-sim-compare-line"),
+      cmpFeatures: map.getSource("traffic-sim-compare-overlay")?._data?.features?.length ?? -1,
+      legendShown: !!document.querySelector(".congestion-legend"),
+      hasClearBtn: !!document.querySelector(".congestion-legend .cl-clear"),
+    };
+  });
   console.log("  ", JSON.stringify(res, null, 2));
 
   function notEmpty(label, v) {
@@ -112,6 +123,46 @@ function fail(msg) { throw new Error(msg); }
   if (res.afterSegs  < 5) fail("after mini-map has <5 segments: " + res.afterSegs);
   // After mini-map should have at least one extra line (the candidate dashed line)
   if (res.afterSegs <= res.beforeSegs) fail("after map should have >= before + candidate, got before=" + res.beforeSegs + " after=" + res.afterSegs);
+
+  // Live swarm + on-map congestion-delta heatmap should be present
+  if (!res.swarmRunning) fail("vehicle swarm should be running on the main map during the comparison");
+  if (res.swarmVehicles < 10) fail("swarm should have spawned vehicles, got " + res.swarmVehicles);
+  if (!res.hasCmpSrc) fail("on-map comparison source missing");
+  if (!res.hasCmpLayer) fail("on-map comparison layer missing");
+  if (res.cmpFeatures < 5) fail("comparison overlay has <5 features: " + res.cmpFeatures);
+  if (!res.legendShown) fail("legend should be visible after the diff is painted");
+  if (!res.hasClearBtn) fail("legend clear button missing");
+
+  // Clear button should hide the overlay
+  console.log("→ verify clear button");
+  await page.evaluate(() => document.querySelector(".congestion-legend .cl-clear").click());
+  await new Promise(r => setTimeout(r, 200));
+  const cleared = await page.evaluate(() => ({
+    cmpFeatures: window.BelfastDashboard.state.map.getSource("traffic-sim-compare-overlay")?._data?.features?.length ?? -1,
+    legendVisible: (document.querySelector(".congestion-legend")?.style?.display ?? '') !== 'none',
+  }));
+  if (cleared.cmpFeatures !== 0) fail("overlay not cleared, " + cleared.cmpFeatures + " features remain");
+  if (cleared.legendVisible) fail("legend should hide after clear");
+
+  // Free-click road placement should be locked when planner isn't armed
+  console.log("→ verify road tool is gated to postcode flow");
+  const gated = await page.evaluate(() => {
+    // Disarm the planner
+    if (typeof window.BelfastDashboard.activeBranch === 'function') {
+      // simulate "fresh" page condition: clear armed state via the DOM cancel button if present
+    }
+    // Click the Road tool button directly. Without an armed planner this
+    // should NOT activate the tool.
+    const btn = Array.from(document.querySelectorAll(".modify-btn")).find(b => b.getAttribute("data-tool") === "road");
+    if (!btn) return { ok: false, why: "Road button missing" };
+    // Disarm the planner by simulating cancel
+    const cancel = document.getElementById("planRoadCancel");
+    if (cancel) cancel.click();
+    btn.click();
+    return { ok: true, activeTool: window.BelfastDashboard.state.activeTool };
+  });
+  if (!gated.ok) fail("road tool gating: " + gated.why);
+  if (gated.activeTool === "road") fail("Road tool activated without an armed planner");
 
   // No critical console errors
   const ignored = ["mapbox", "favicon", "ResizeObserver", "Manifest", "tile", "WebGL", "404"];
