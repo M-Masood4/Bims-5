@@ -65,20 +65,9 @@
   <!-- ========== MAIN GRID ========== -->
   <div class="main">
 
-    <!-- 1: TIMEFRAME -->
-    <div class="panel">
-      <div class="panel-title">1. Choose Timeframe</div>
-      <div class="timeframe-scroll">
-        <div class="tf-heading">Historical Data</div>
-        <ul class="year-list" id="historicalYears"></ul>
-        <div class="tf-heading">Simulation Mode</div>
-        <ul class="year-list" id="simulationYears"></ul>
-      </div>
-    </div>
-
-    <!-- 2: ADD / MODIFY -->
+    <!-- 1: ADD / MODIFY -->
     <div class="panel modify-panel-host">
-      <div class="panel-title">2. Add / Modify</div>
+      <div class="panel-title">1. Add / Modify</div>
       <div class="panel-sub" id="modifySub">Pick an element, then click on the map to place it</div>
 
       <div class="modify-list" id="modifyList">
@@ -146,6 +135,34 @@
           <span id="tagName">Baseline</span>
           <span class="tag-year" id="tagYear">2026</span>
         </div>
+        <div class="map-search" id="mapSearch">
+          <form id="postcodeForm" autocomplete="off">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="postcodeInput" type="search" placeholder="Search postcode (BT1, BT7...)" maxlength="20" />
+            <button type="submit">Go</button>
+          </form>
+          <div class="map-search-status" id="mapSearchStatus" hidden></div>
+          <ul class="map-search-suggest" id="mapSearchSuggest" hidden></ul>
+        </div>
+
+        <!-- Predicted impact heatmap controls (sim mode only) -->
+        <div class="impact-lens" id="impactLens" hidden>
+          <div class="impact-lens-head">
+            <span class="impact-lens-title">Predicted Impact</span>
+            <span class="impact-lens-year" id="impactLensYear">+0 yrs</span>
+          </div>
+          <div class="impact-lens-tabs" id="impactLensTabs"></div>
+          <div class="impact-lens-legend" id="impactLensLegend"></div>
+        </div>
+
+        <!-- Similar historical events overlay -->
+        <div class="similar-events" id="similarEvents" hidden>
+          <div class="similar-events-head">
+            <span>Similar Past Events</span>
+            <span class="similar-events-conf" id="similarEventsConf"></span>
+          </div>
+          <div class="similar-events-list" id="similarEventsList"></div>
+        </div>
       </div>
 
       <div class="timeline-bar">
@@ -164,6 +181,9 @@
         </div>
         <button class="tl-btn" id="tlNext" type="button" title="Next year">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="tl-btn collapse-btn" id="collapseBtn" type="button" title="Collapse panels for more map space">
+          <svg id="collapseIcon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>
     </div>
@@ -185,9 +205,9 @@
       <button class="about-btn" id="aboutBtn" type="button">Project Info</button>
     </div>
 
-    <!-- 6: BRANCHES -->
+    <!-- 5: BRANCHES -->
     <div class="panel branches-panel">
-      <h3>3. Scenario Branches</h3>
+      <h3>2. Scenario Branches</h3>
       <div class="panel-sub">Create and manage different simulation paths</div>
       <button class="new-branch-btn" id="newBranchBtn" type="button">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -209,9 +229,9 @@
       </div>
     </div>
 
-    <!-- 8: SIMULATE & COMPARE -->
+    <!-- 7: SIMULATE & COMPARE -->
     <div class="panel compare-panel">
-      <h3>4. Simulate &amp; Compare</h3>
+      <h3>3. Simulate &amp; Compare</h3>
       <div class="panel-sub">Run simulation and compare results</div>
 
       <button class="run-btn" id="runBtn" type="button">
@@ -222,6 +242,35 @@
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
       </button>
+
+      <!-- Roads / Traffic Simulator (lightweight, in-page) -->
+      <div class="traffic-sim-section" id="trafficSimSection">
+        <div class="traffic-sim-head">
+          <span class="traffic-sim-title">Roads &amp; Traffic Sim</span>
+          <button class="traffic-sim-toggle" id="trafficSimToggle" type="button" aria-pressed="false">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="trafficSimToggleLabel">Start</span>
+          </button>
+        </div>
+        <div class="traffic-sim-controls">
+          <label class="traffic-sim-row">
+            <span>Density</span>
+            <input id="trafficSimDensity" type="range" min="0" max="220" step="10" value="80" />
+            <span class="traffic-sim-val" id="trafficSimDensityVal">80</span>
+          </label>
+          <label class="traffic-sim-row">
+            <span>Speed</span>
+            <input id="trafficSimSpeed" type="range" min="0.4" max="2.5" step="0.1" value="1.0" />
+            <span class="traffic-sim-val" id="trafficSimSpeedVal">1.0×</span>
+          </label>
+        </div>
+        <div class="traffic-sim-stats" id="trafficSimStats" hidden>
+          <div><span>Vehicles</span><b id="trafficSimVehicles">0</b></div>
+          <div><span>Avg speed</span><b id="trafficSimSpeedStat">0 m/s</b></div>
+          <div><span>Congested</span><b id="trafficSimCongested">0%</b></div>
+        </div>
+        <div class="traffic-sim-hint">Animates vehicles over OSM roads + roads you place. Toggles on automatically when running a simulation.</div>
+      </div>
 
       <div class="active-info">
         <div class="active-row"><span>Active Branch</span><span>Year</span></div>
@@ -346,6 +395,8 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+<script src="/impact-predictor.js"></script>
+<script src="/traffic-sim.js"></script>
 <script src="/dashboard.js"></script>
 </body>
 </html>

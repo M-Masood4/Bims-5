@@ -32,9 +32,10 @@
   --footer-h: 44px;
   --gap: 10px;
   --pad: 10px;
-  --col1: 168px;
-  --col2: 188px;
-  --col4: 244px;
+  --col1: 188px;
+  --col2: 244px;
+  --col-map-l: 1fr;
+  --col-map-r: 1fr;
   --row-bottom: 230px;
 }
 
@@ -134,13 +135,17 @@ button:focus-visible, [role="button"]:focus-visible {
 
 .main {
   display: grid;
-  grid-template-columns: var(--col1) var(--col2) 1fr var(--col4);
+  grid-template-columns: var(--col1) var(--col-map-l) var(--col-map-r) var(--col2);
   grid-template-rows: 1fr var(--row-bottom);
   gap: var(--gap);
   padding: var(--pad);
   overflow: hidden;
   min-height: 0;
 }
+/* Map panel takes the two middle columns so the original 4-column footer
+   layout (About | Branches | Branch Timeline | Compare) keeps fitting
+   after the timeframe sidebar was removed. */
+.main > .map-panel { grid-column: 2 / span 2; }
 
 .panel {
   background: var(--panel);
@@ -745,6 +750,113 @@ button:focus-visible, [role="button"]:focus-visible {
   transition: color 0.12s;
 }
 .export-btn:hover { color: var(--text); }
+
+/* ============== TRAFFIC SIM PANEL ============== */
+.traffic-sim-section {
+  margin-top: 12px;
+  padding: 10px;
+  background: linear-gradient(140deg, rgba(34,211,238,0.05), rgba(59,130,246,0.04));
+  border: 1px solid rgba(34,211,238,0.18);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.traffic-sim-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.traffic-sim-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; color: #67e8f9;
+}
+.traffic-sim-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px;
+  background: rgba(34,211,238,0.12);
+  border: 1px solid rgba(34,211,238,0.32);
+  color: #a5f3fc;
+  font-size: 11px; font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.traffic-sim-toggle:hover { background: rgba(34,211,238,0.20); border-color: rgba(34,211,238,0.48); }
+.traffic-sim-toggle.active {
+  background: rgba(239,68,68,0.16);
+  border-color: rgba(239,68,68,0.42);
+  color: #fecaca;
+}
+.traffic-sim-toggle.active svg {
+  /* swap play arrow for stop square */
+  display: none;
+}
+.traffic-sim-toggle.active::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.traffic-sim-controls {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.traffic-sim-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.traffic-sim-row input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  background: rgba(80,120,180,0.25);
+  border-radius: 2px;
+  outline: none;
+}
+.traffic-sim-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px;
+  background: #22d3ee;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(34,211,238,0.6);
+}
+.traffic-sim-row input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px;
+  background: #22d3ee;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.traffic-sim-val {
+  font-variant-numeric: tabular-nums;
+  font-size: 10.5px; color: #cbd5e1;
+  text-align: right;
+}
+.traffic-sim-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(80,120,180,0.18);
+}
+.traffic-sim-stats > div {
+  display: flex; flex-direction: column; gap: 1px;
+  font-size: 9.5px; color: var(--text-mute);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.traffic-sim-stats b {
+  font-size: 12px; color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.traffic-sim-hint {
+  font-size: 10px; color: var(--text-mute);
+  line-height: 1.35;
+  padding-top: 4px;
+}
 
 /* ============== BOTTOM NAV ============== */
 .bottomnav {
@@ -1353,3 +1465,260 @@ button:focus-visible, [role="button"]:focus-visible {
 .diff-evidence a:hover { text-decoration: underline; }
 .diff-evidence ul { margin: 6px 0 0 16px; padding: 0; }
 .diff-evidence li { margin-bottom: 3px; }
+
+/* ============== POSTCODE SEARCH ============== */
+.map-search {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 4;
+  width: 260px;
+  font-family: 'Outfit', sans-serif;
+}
+.map-search form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 6px 10px;
+  background: rgba(15, 28, 50, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-2);
+  border-radius: 7px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+.map-search form:focus-within {
+  border-color: rgba(96,165,250,0.6);
+  box-shadow: 0 4px 18px rgba(59,130,246,0.25);
+}
+.map-search svg { color: var(--text-mute); flex-shrink: 0; }
+.map-search input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+  font-size: 11.5px;
+  padding: 3px 0;
+  font-family: inherit;
+}
+.map-search input::placeholder { color: var(--text-mute); }
+.map-search button {
+  padding: 4px 9px;
+  background: rgba(59,130,246,0.18);
+  border: 1px solid rgba(59,130,246,0.35);
+  border-radius: 5px;
+  color: var(--blue-2);
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.map-search button:hover { background: rgba(59,130,246,0.3); }
+.map-search-status {
+  margin-top: 4px;
+  padding: 5px 9px;
+  background: rgba(15, 28, 50, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+.map-search-status.error { color: var(--red); border-color: rgba(239,68,68,0.3); }
+.map-search-status[hidden] { display: none !important; }
+.map-search-suggest {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 4px;
+  background: rgba(15, 28, 50, 0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.map-search-suggest[hidden] { display: none !important; }
+.map-search-suggest li {
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--text);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.map-search-suggest li:hover { background: rgba(255,255,255,0.06); }
+.map-search-suggest li small { color: var(--text-dim); display: block; font-size: 9.5px; margin-top: 1px; }
+
+/* ============== COLLAPSED BOTTOM ROW ============== */
+.collapse-btn {
+  margin-left: 4px;
+  transition: color 0.12s;
+}
+.collapse-btn svg { transition: transform 0.18s; }
+.collapse-btn:hover { color: var(--blue-2); }
+.app.bottom-collapsed .main {
+  grid-template-rows: 1fr 0px;
+}
+/* Hide the four bottom-row panels (About + Branches + Branch Timeline + Compare). */
+.app.bottom-collapsed .main > .panel:nth-of-type(n+4) {
+  display: none;
+}
+.app.bottom-collapsed .collapse-btn svg { transform: rotate(180deg); }
+.app.bottom-collapsed .collapse-btn { color: var(--blue-2); background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.4); }
+
+/* ============== PREDICTED IMPACT LENS (sim mode) ============== */
+.impact-lens {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 226px;
+  background: rgba(8, 16, 32, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  z-index: 5;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168, 85, 247, 0.08);
+  animation: lensFadeIn 0.35s ease-out;
+}
+@keyframes lensFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.impact-lens-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.impact-lens-title {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.1px; text-transform: uppercase;
+  color: var(--purple-2);
+}
+.impact-lens-year {
+  font-size: 10px; font-weight: 600;
+  color: var(--purple-2);
+  background: rgba(168, 85, 247, 0.15);
+  padding: 2px 6px; border-radius: 4px;
+}
+.impact-lens-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.impact-lens-tab {
+  border: 1px solid rgba(80, 120, 180, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-dim);
+  border-radius: 5px;
+  padding: 5px 2px;
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.12s;
+  text-align: center;
+}
+.impact-lens-tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+.impact-lens-tab.active {
+  color: #fff;
+  background: rgba(168, 85, 247, 0.22);
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+}
+.impact-lens-legend {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.impact-lens-bar {
+  flex: 1; height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, transparent 0%, currentColor 100%);
+  opacity: 0.85;
+}
+.impact-lens-confidence {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(80, 120, 180, 0.2);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.impact-lens-confidence-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.impact-lens-confidence-dot.high { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+.impact-lens-confidence-dot.medium { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+.impact-lens-confidence-dot.low { background: #fb923c; box-shadow: 0 0 6px #fb923c; }
+
+/* ============== SIMILAR HISTORICAL EVENTS OVERLAY ============== */
+.similar-events {
+  position: absolute;
+  bottom: 70px;
+  right: 14px;
+  width: 254px;
+  background: rgba(8, 16, 32, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  z-index: 5;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  animation: lensFadeIn 0.4s ease-out;
+}
+.similar-events-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--cyan-2);
+}
+.similar-events-conf { font-size: 9.5px; opacity: 0.75; }
+.similar-events-list { display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto; }
+.similar-events-list::-webkit-scrollbar { width: 3px; }
+.similar-events-list::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 2px; }
+.similar-event {
+  background: rgba(34, 211, 238, 0.05);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.similar-event:hover {
+  background: rgba(34, 211, 238, 0.13);
+  border-color: rgba(34, 211, 238, 0.45);
+  transform: translateX(2px);
+}
+.similar-event-title {
+  font-size: 11px; font-weight: 500; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.similar-event-meta {
+  font-size: 9.5px; color: var(--text-dim);
+  display: flex; gap: 6px; margin-top: 2px;
+}
+.similar-event-meta .se-year {
+  color: var(--cyan-2);
+  background: rgba(34, 211, 238, 0.12);
+  padding: 1px 5px; border-radius: 3px;
+  font-weight: 600;
+}
+.similar-event-meta .se-dist { opacity: 0.7; }
+
+/* Pulse animation when a building is placed */
+@keyframes ripplePulse {
+  0% { fill-opacity: 0; }
+  50% { fill-opacity: 0.7; }
+  100% { fill-opacity: var(--ripple-target-op, 0.35); }
+}
+

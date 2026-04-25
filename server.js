@@ -7,8 +7,32 @@ const scenarioStudio = require("./lib/scenario-studio");
 const rootDir = __dirname;
 const webDir = path.join(rootDir, "web");
 const manifestPath = path.join(rootDir, "api", "replay-manifest.json");
+const eventsCatalogPath = path.join(rootDir, "data", "derived", "2026", "belfast_infrastructure_events_2016_2026.json");
 const port = Number(process.env.PORT || 5173);
 loadLocalEnv(path.join(rootDir, ".env.local"));
+
+let eventsCache = null;
+let eventsByYearSignal = null;
+function loadEventsCatalog() {
+  if (eventsCache) return eventsCache;
+  if (!fs.existsSync(eventsCatalogPath)) return null;
+  try {
+    const raw = fs.readFileSync(eventsCatalogPath, "utf8");
+    const json = JSON.parse(raw);
+    eventsCache = json;
+    eventsByYearSignal = {};
+    (json.events || []).forEach((ev) => {
+      if (!ev || !ev.year || !ev.signal) return;
+      const k = ev.year + "|" + ev.signal;
+      if (!eventsByYearSignal[k]) eventsByYearSignal[k] = [];
+      eventsByYearSignal[k].push(ev);
+    });
+    return eventsCache;
+  } catch (e) {
+    console.warn("events catalog load failed", e.message);
+    return null;
+  }
+}
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -934,6 +958,44 @@ const server = http.createServer((req, res) => {
       scenarioStudio: true,
       geminiConfigured: Boolean(geminiKey())
     });
+    return;
+  }
+
+  if (pathname === "/api/events") {
+    try {
+      loadEventsCatalog();
+      if (!eventsByYearSignal) {
+        sendJson(res, 500, { error: "Events catalog unavailable" });
+        return;
+      }
+      const params = requestUrl.searchParams;
+      const year = params.get("year");
+      const signal = params.get("signal");
+      const limit = Math.max(0, Math.min(5000, parseInt(params.get("limit") || "0", 10) || 0));
+      let arr;
+      if (year && signal) {
+        arr = eventsByYearSignal[year + "|" + signal] || [];
+      } else if (year) {
+        arr = [];
+        ["traffic", "jobs", "electricity", "buildings", "services"].forEach((s) => {
+          const k = year + "|" + s;
+          if (eventsByYearSignal[k]) arr = arr.concat(eventsByYearSignal[k]);
+        });
+      } else if (signal) {
+        arr = [];
+        Object.keys(eventsByYearSignal).forEach((k) => {
+          if (k.endsWith("|" + signal)) arr = arr.concat(eventsByYearSignal[k]);
+        });
+      } else {
+        sendJson(res, 400, { error: "year or signal query required" });
+        return;
+      }
+      const total = arr.length;
+      const events = limit > 0 ? arr.slice(0, limit) : arr;
+      sendJson(res, 200, { year: year || null, signal: signal || null, total: total, count: events.length, events: events });
+    } catch (error) {
+      sendJson(res, 500, { error: "Could not load events", detail: error.message });
+    }
     return;
   }
 
