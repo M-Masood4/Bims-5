@@ -1,0 +1,3064 @@
+{
+  "catalog_version": "0.1.0",
+  "contracts": {
+    "source_manifest_schema": "schemas/source_manifest.schema.json",
+    "sql_model": "schemas/replay_spatial_model.sql"
+  },
+  "dataset_count": 22,
+  "datasets": [
+    {
+      "dataset_id": "belfast_ndbi_2016",
+      "format": "tif",
+      "layer_kind": "raster_indicator_ndbi",
+      "raster_summary": {
+        "file_name": "belfast_ndbi_2016.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 41994015,
+      "source_path": "2016/belfast_ndbi_2016.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_ndvi_2018",
+      "format": "tif",
+      "layer_kind": "raster_indicator_ndvi",
+      "raster_summary": {
+        "file_name": "belfast_ndvi_2018.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 47378843,
+      "source_path": "2016/belfast_ndvi_2018.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_rgb_2016",
+      "format": "tif",
+      "layer_kind": "raster_basemap_rgb",
+      "raster_summary": {
+        "file_name": "belfast_rgb_2016.tif",
+        "metadata_strategy": "file_stats_and_tiff_header_only",
+        "tiff_magic": 43,
+        "tiff_parse_note": "classic_tiff_header_not_detected"
+      },
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 67838658,
+      "source_path": "2016/belfast_rgb_2016.tif",
+      "source_year": 2016
+    },
+    {
+      "dataset_id": "belfast_bridges_2026",
+      "format": "geojson",
+      "layer_kind": "road_network",
+      "sha256": {
+        "status": "computed",
+        "value": "9c5ffde8466deeb20261721a672711716c3c2af31bebef1dfedb3559ca880edd"
+      },
+      "size_bytes": 19321,
+      "source_path": "2026/belfast_bridges_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1017462,
+          44.3942358,
+          -68.9887003,
+          44.482988
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 24,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 24,
+            "name": "LineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "High Street",
+        "osm_id_count": 24,
+        "property_keys_top": [
+          {
+            "count": 24,
+            "name": "@id"
+          },
+          {
+            "count": 24,
+            "name": "bridge"
+          },
+          {
+            "count": 24,
+            "name": "highway"
+          },
+          {
+            "count": 24,
+            "name": "layer"
+          },
+          {
+            "count": 21,
+            "name": "name"
+          },
+          {
+            "count": 17,
+            "name": "tiger:cfcc"
+          },
+          {
+            "count": 17,
+            "name": "tiger:county"
+          },
+          {
+            "count": 16,
+            "name": "tiger:name_base"
+          },
+          {
+            "count": 14,
+            "name": "surface"
+          },
+          {
+            "count": 12,
+            "name": "tiger:name_type"
+          },
+          {
+            "count": 11,
+            "name": "tiger:reviewed"
+          },
+          {
+            "count": 8,
+            "name": "ref"
+          },
+          {
+            "count": 6,
+            "name": "tiger:name_base_1"
+          },
+          {
+            "count": 5,
+            "name": "lanes"
+          },
+          {
+            "count": 4,
+            "name": "NHS"
+          },
+          {
+            "count": 4,
+            "name": "maxspeed"
+          },
+          {
+            "count": 3,
+            "name": "expressway"
+          },
+          {
+            "count": 3,
+            "name": "lit"
+          },
+          {
+            "count": 3,
+            "name": "motor_vehicle"
+          },
+          {
+            "count": 3,
+            "name": "oneway"
+          },
+          {
+            "count": 3,
+            "name": "segregated"
+          },
+          {
+            "count": 3,
+            "name": "tiger:zip_left"
+          },
+          {
+            "count": 2,
+            "name": "bicycle"
+          },
+          {
+            "count": 2,
+            "name": "bridge:structure"
+          },
+          {
+            "count": 2,
+            "name": "name_1"
+          },
+          {
+            "count": 2,
+            "name": "tiger:zip_right"
+          },
+          {
+            "count": 1,
+            "name": "abandoned:railway"
+          },
+          {
+            "count": 1,
+            "name": "bridge:movable"
+          },
+          {
+            "count": 1,
+            "name": "cycleway"
+          },
+          {
+            "count": 1,
+            "name": "description"
+          },
+          {
+            "count": 1,
+            "name": "electrified"
+          },
+          {
+            "count": 1,
+            "name": "foot"
+          },
+          {
+            "count": 1,
+            "name": "gauge"
+          },
+          {
+            "count": 1,
+            "name": "material"
+          },
+          {
+            "count": 1,
+            "name": "note:old_railway_operator"
+          },
+          {
+            "count": 1,
+            "name": "old_railway_operator"
+          },
+          {
+            "count": 1,
+            "name": "portage"
+          },
+          {
+            "count": 1,
+            "name": "railway"
+          },
+          {
+            "count": 1,
+            "name": "service"
+          },
+          {
+            "count": 1,
+            "name": "tiger:name_base_2"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/11484665",
+          "way/58868645",
+          "way/58868650",
+          "way/101821770",
+          "way/101822040"
+        ],
+        "timestamp": "2026-04-25T11:45:33Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_buildings_2026",
+      "format": "geojson",
+      "layer_kind": "building_footprint",
+      "sha256": {
+        "status": "computed",
+        "value": "30309cd10a6b4b9a33028f9cf6af66fed95c77d72d6aa128b96e847da8ea2d4a"
+      },
+      "size_bytes": 1609421,
+      "source_path": "2026/belfast_buildings_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1109119,
+          44.4007843,
+          -62.8756285,
+          46.0581013
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1498,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 1498,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Troy A. Howard Middle School",
+        "osm_id_count": 1498,
+        "property_keys_top": [
+          {
+            "count": 1498,
+            "name": "@id"
+          },
+          {
+            "count": 1498,
+            "name": "building"
+          },
+          {
+            "count": 933,
+            "name": "source"
+          },
+          {
+            "count": 889,
+            "name": "addr:street"
+          },
+          {
+            "count": 883,
+            "name": "addr:city"
+          },
+          {
+            "count": 883,
+            "name": "addr:state"
+          },
+          {
+            "count": 878,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 551,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 108,
+            "name": "name"
+          },
+          {
+            "count": 67,
+            "name": "phone"
+          },
+          {
+            "count": 61,
+            "name": "website"
+          },
+          {
+            "count": 51,
+            "name": "opening_hours"
+          },
+          {
+            "count": 46,
+            "name": "amenity"
+          },
+          {
+            "count": 38,
+            "name": "addr:unit"
+          },
+          {
+            "count": 34,
+            "name": "shop"
+          },
+          {
+            "count": 25,
+            "name": "aeroway"
+          },
+          {
+            "count": 19,
+            "name": "wheelchair"
+          },
+          {
+            "count": 14,
+            "name": "email"
+          },
+          {
+            "count": 13,
+            "name": "cuisine"
+          },
+          {
+            "count": 13,
+            "name": "operator"
+          },
+          {
+            "count": 12,
+            "name": "internet_access"
+          },
+          {
+            "count": 9,
+            "name": "brand"
+          },
+          {
+            "count": 9,
+            "name": "brand:wikidata"
+          },
+          {
+            "count": 8,
+            "name": "drink:coffee"
+          },
+          {
+            "count": 8,
+            "name": "payment:cash"
+          },
+          {
+            "count": 8,
+            "name": "tourism"
+          },
+          {
+            "count": 7,
+            "name": "toilets"
+          },
+          {
+            "count": 6,
+            "name": "building:levels"
+          },
+          {
+            "count": 6,
+            "name": "description"
+          },
+          {
+            "count": 6,
+            "name": "internet_access:fee"
+          },
+          {
+            "count": 6,
+            "name": "payment:credit_cards"
+          },
+          {
+            "count": 6,
+            "name": "takeaway"
+          },
+          {
+            "count": 6,
+            "name": "toilets:unisex"
+          },
+          {
+            "count": 5,
+            "name": "denomination"
+          },
+          {
+            "count": 5,
+            "name": "happy_hours"
+          },
+          {
+            "count": 5,
+            "name": "healthcare"
+          },
+          {
+            "count": 5,
+            "name": "layer"
+          },
+          {
+            "count": 5,
+            "name": "man_made"
+          },
+          {
+            "count": 5,
+            "name": "religion"
+          },
+          {
+            "count": 4,
+            "name": "check_date"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/17591116",
+          "relation/17876147",
+          "relation/17888092",
+          "relation/19856453",
+          "way/208083751"
+        ],
+        "timestamp": "2026-04-25T11:40:26Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_cycleways_2026",
+      "format": "geojson",
+      "layer_kind": "active_travel_network",
+      "sha256": {
+        "status": "computed",
+        "value": "200e955f17baa4a8efdb0c9822dacb479aaee726da4b632382c9e15585dbf3a5"
+      },
+      "size_bytes": 1631884,
+      "source_path": "2026/belfast_cycleways_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -70.8192444,
+          43.0783199,
+          -67.2254626,
+          45.1918619
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 37,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 35,
+            "name": "LineString"
+          },
+          {
+            "count": 2,
+            "name": "MultiLineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "East Coast Greenway (ME)",
+        "osm_id_count": 37,
+        "property_keys_top": [
+          {
+            "count": 37,
+            "name": "@id"
+          },
+          {
+            "count": 35,
+            "name": "highway"
+          },
+          {
+            "count": 33,
+            "name": "name"
+          },
+          {
+            "count": 31,
+            "name": "cycleway"
+          },
+          {
+            "count": 31,
+            "name": "tiger:cfcc"
+          },
+          {
+            "count": 31,
+            "name": "tiger:county"
+          },
+          {
+            "count": 31,
+            "name": "tiger:name_base"
+          },
+          {
+            "count": 31,
+            "name": "tiger:name_type"
+          },
+          {
+            "count": 26,
+            "name": "tiger:reviewed"
+          },
+          {
+            "count": 20,
+            "name": "tiger:zip_left"
+          },
+          {
+            "count": 19,
+            "name": "maxspeed"
+          },
+          {
+            "count": 15,
+            "name": "tiger:zip_right"
+          },
+          {
+            "count": 13,
+            "name": "surface"
+          },
+          {
+            "count": 13,
+            "name": "tiger:name_base_1"
+          },
+          {
+            "count": 12,
+            "name": "ref"
+          },
+          {
+            "count": 8,
+            "name": "@relations"
+          },
+          {
+            "count": 7,
+            "name": "name_1"
+          },
+          {
+            "count": 7,
+            "name": "tiger:name_type_1"
+          },
+          {
+            "count": 6,
+            "name": "tiger:name_base_2"
+          },
+          {
+            "count": 5,
+            "name": "NHS"
+          },
+          {
+            "count": 4,
+            "name": "bicycle"
+          },
+          {
+            "count": 3,
+            "name": "foot"
+          },
+          {
+            "count": 3,
+            "name": "horse"
+          },
+          {
+            "count": 3,
+            "name": "lanes"
+          },
+          {
+            "count": 3,
+            "name": "motor_vehicle"
+          },
+          {
+            "count": 3,
+            "name": "smoothness"
+          },
+          {
+            "count": 2,
+            "name": "cycle_network"
+          },
+          {
+            "count": 2,
+            "name": "network"
+          },
+          {
+            "count": 2,
+            "name": "oneway"
+          },
+          {
+            "count": 2,
+            "name": "route"
+          },
+          {
+            "count": 2,
+            "name": "source"
+          },
+          {
+            "count": 2,
+            "name": "type"
+          },
+          {
+            "count": 2,
+            "name": "wikidata"
+          },
+          {
+            "count": 1,
+            "name": "access"
+          },
+          {
+            "count": 1,
+            "name": "bridge"
+          },
+          {
+            "count": 1,
+            "name": "colour"
+          },
+          {
+            "count": 1,
+            "name": "cycleway:left"
+          },
+          {
+            "count": 1,
+            "name": "cycleway:right"
+          },
+          {
+            "count": 1,
+            "name": "incline"
+          },
+          {
+            "count": 1,
+            "name": "lanes:backward"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/1770834",
+          "relation/1770874",
+          "way/11488547",
+          "way/58868647",
+          "way/58868650"
+        ],
+        "timestamp": "2026-04-25T11:43:30Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_green_spaces_2026",
+      "format": "geojson",
+      "layer_kind": "land_cover",
+      "sha256": {
+        "status": "computed",
+        "value": "64fd26538de62235c59e1c7e153ff96af001b0b70924d05bc3d94dfe675025b0"
+      },
+      "size_bytes": 690453,
+      "source_path": "2026/belfast_green_spaces_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.106611,
+          44.3843949,
+          -62.7499816,
+          46.125
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 40,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 37,
+            "name": "Polygon"
+          },
+          {
+            "count": 3,
+            "name": "MultiPolygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Hurd's Pond Wildlife Management Area",
+        "osm_id_count": 40,
+        "property_keys_top": [
+          {
+            "count": 40,
+            "name": "@id"
+          },
+          {
+            "count": 20,
+            "name": "leisure"
+          },
+          {
+            "count": 19,
+            "name": "name"
+          },
+          {
+            "count": 12,
+            "name": "natural"
+          },
+          {
+            "count": 11,
+            "name": "source"
+          },
+          {
+            "count": 8,
+            "name": "landuse"
+          },
+          {
+            "count": 6,
+            "name": "operator"
+          },
+          {
+            "count": 5,
+            "name": "type"
+          },
+          {
+            "count": 4,
+            "name": "access"
+          },
+          {
+            "count": 3,
+            "name": "addr:city"
+          },
+          {
+            "count": 3,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 3,
+            "name": "addr:state"
+          },
+          {
+            "count": 3,
+            "name": "addr:street"
+          },
+          {
+            "count": 3,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 2,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 2,
+            "name": "ele"
+          },
+          {
+            "count": 2,
+            "name": "garden:type"
+          },
+          {
+            "count": 1,
+            "name": "boundary"
+          },
+          {
+            "count": 1,
+            "name": "leaf_cycle"
+          },
+          {
+            "count": 1,
+            "name": "leaf_type"
+          },
+          {
+            "count": 1,
+            "name": "note"
+          },
+          {
+            "count": 1,
+            "name": "protected_area"
+          },
+          {
+            "count": 1,
+            "name": "protection_title"
+          },
+          {
+            "count": 1,
+            "name": "religion"
+          },
+          {
+            "count": 1,
+            "name": "wikidata"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/2799542",
+          "relation/6594722",
+          "relation/18562282",
+          "relation/18611834",
+          "relation/18687482"
+        ],
+        "timestamp": "2026-04-25T11:44:30Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_major_roads_2026",
+      "format": "geojson",
+      "layer_kind": "road_network",
+      "sha256": {
+        "status": "computed",
+        "value": "fe3825ddcb04a94f2df7a824919e1fc48859455a99ba14657c336c744fe3ed06"
+      },
+      "size_bytes": 226755,
+      "source_path": "2026/belfast_major_roads_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1256936,
+          44.3750592,
+          -62.8204381,
+          46.079476
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 160,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 160,
+            "name": "LineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belmont Avenue",
+        "osm_id_count": 160,
+        "property_keys_top": [
+          {
+            "count": 160,
+            "name": "@id"
+          },
+          {
+            "count": 160,
+            "name": "highway"
+          },
+          {
+            "count": 143,
+            "name": "name"
+          },
+          {
+            "count": 126,
+            "name": "tiger:cfcc"
+          },
+          {
+            "count": 126,
+            "name": "tiger:county"
+          },
+          {
+            "count": 120,
+            "name": "tiger:name_base"
+          },
+          {
+            "count": 108,
+            "name": "tiger:name_type"
+          },
+          {
+            "count": 97,
+            "name": "tiger:reviewed"
+          },
+          {
+            "count": 94,
+            "name": "surface"
+          },
+          {
+            "count": 87,
+            "name": "ref"
+          },
+          {
+            "count": 67,
+            "name": "lanes"
+          },
+          {
+            "count": 62,
+            "name": "maxspeed"
+          },
+          {
+            "count": 57,
+            "name": "tiger:name_base_1"
+          },
+          {
+            "count": 45,
+            "name": "oneway"
+          },
+          {
+            "count": 42,
+            "name": "NHS"
+          },
+          {
+            "count": 35,
+            "name": "tiger:zip_left"
+          },
+          {
+            "count": 31,
+            "name": "cycleway"
+          },
+          {
+            "count": 28,
+            "name": "tiger:zip_right"
+          },
+          {
+            "count": 22,
+            "name": "name_1"
+          },
+          {
+            "count": 19,
+            "name": "expressway"
+          },
+          {
+            "count": 18,
+            "name": "tiger:name_base_2"
+          },
+          {
+            "count": 11,
+            "name": "bridge"
+          },
+          {
+            "count": 11,
+            "name": "layer"
+          },
+          {
+            "count": 9,
+            "name": "tiger:name_type_1"
+          },
+          {
+            "count": 8,
+            "name": "lanes:backward"
+          },
+          {
+            "count": 8,
+            "name": "lanes:forward"
+          },
+          {
+            "count": 8,
+            "name": "source"
+          },
+          {
+            "count": 4,
+            "name": "shoulder"
+          },
+          {
+            "count": 4,
+            "name": "turn:lanes:backward"
+          },
+          {
+            "count": 3,
+            "name": "portage"
+          },
+          {
+            "count": 3,
+            "name": "source:maxspeed"
+          },
+          {
+            "count": 3,
+            "name": "turn:lanes:forward"
+          },
+          {
+            "count": 2,
+            "name": "alt_name"
+          },
+          {
+            "count": 2,
+            "name": "sidewalk"
+          },
+          {
+            "count": 1,
+            "name": "bicycle"
+          },
+          {
+            "count": 1,
+            "name": "cycleway:left"
+          },
+          {
+            "count": 1,
+            "name": "cycleway:right"
+          },
+          {
+            "count": 1,
+            "name": "embankment"
+          },
+          {
+            "count": 1,
+            "name": "junction"
+          },
+          {
+            "count": 1,
+            "name": "lanes:both_ways"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/11483444",
+          "way/11486500",
+          "way/11486532",
+          "way/11486533",
+          "way/11486535"
+        ],
+        "timestamp": "2026-04-25T11:42:28Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_roads_2026",
+      "format": "geojson",
+      "layer_kind": "road_network",
+      "sha256": {
+        "status": "computed",
+        "value": "9eca652ae304e05ff2d7403b5f08cc4c96ee8b49daddd7c80ce2a5baccbc0835"
+      },
+      "size_bytes": 1397533,
+      "source_path": "2026/belfast_roads_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1301875,
+          44.3717481,
+          -62.8204381,
+          46.079476
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1369,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 1369,
+            "name": "LineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Edgecomb Road",
+        "osm_id_count": 1369,
+        "property_keys_top": [
+          {
+            "count": 1369,
+            "name": "@id"
+          },
+          {
+            "count": 1369,
+            "name": "highway"
+          },
+          {
+            "count": 495,
+            "name": "name"
+          },
+          {
+            "count": 432,
+            "name": "service"
+          },
+          {
+            "count": 382,
+            "name": "tiger:cfcc"
+          },
+          {
+            "count": 382,
+            "name": "tiger:county"
+          },
+          {
+            "count": 336,
+            "name": "tiger:reviewed"
+          },
+          {
+            "count": 311,
+            "name": "surface"
+          },
+          {
+            "count": 300,
+            "name": "tiger:name_base"
+          },
+          {
+            "count": 283,
+            "name": "tiger:name_type"
+          },
+          {
+            "count": 143,
+            "name": "footway"
+          },
+          {
+            "count": 101,
+            "name": "tiger:zip_left"
+          },
+          {
+            "count": 87,
+            "name": "ref"
+          },
+          {
+            "count": 82,
+            "name": "crossing"
+          },
+          {
+            "count": 78,
+            "name": "lanes"
+          },
+          {
+            "count": 78,
+            "name": "oneway"
+          },
+          {
+            "count": 75,
+            "name": "tiger:zip_right"
+          },
+          {
+            "count": 74,
+            "name": "access"
+          },
+          {
+            "count": 72,
+            "name": "crossing:markings"
+          },
+          {
+            "count": 71,
+            "name": "tiger:name_base_1"
+          },
+          {
+            "count": 67,
+            "name": "maxspeed"
+          },
+          {
+            "count": 53,
+            "name": "source"
+          },
+          {
+            "count": 42,
+            "name": "NHS"
+          },
+          {
+            "count": 37,
+            "name": "name_1"
+          },
+          {
+            "count": 31,
+            "name": "cycleway"
+          },
+          {
+            "count": 31,
+            "name": "tiger:source"
+          },
+          {
+            "count": 31,
+            "name": "tiger:tlid"
+          },
+          {
+            "count": 31,
+            "name": "tiger:upload_uuid"
+          },
+          {
+            "count": 26,
+            "name": "layer"
+          },
+          {
+            "count": 24,
+            "name": "bridge"
+          },
+          {
+            "count": 23,
+            "name": "bicycle"
+          },
+          {
+            "count": 23,
+            "name": "tiger:name_type_1"
+          },
+          {
+            "count": 19,
+            "name": "expressway"
+          },
+          {
+            "count": 18,
+            "name": "tiger:name_base_2"
+          },
+          {
+            "count": 12,
+            "name": "motor_vehicle"
+          },
+          {
+            "count": 10,
+            "name": "foot"
+          },
+          {
+            "count": 10,
+            "name": "lit"
+          },
+          {
+            "count": 10,
+            "name": "portage"
+          },
+          {
+            "count": 10,
+            "name": "segregated"
+          },
+          {
+            "count": 9,
+            "name": "crossing:signals"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/11483208",
+          "way/11483212",
+          "way/11483230",
+          "way/11483271",
+          "way/11483278"
+        ],
+        "timestamp": "2026-04-25T11:41:30Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_transportstops2026",
+      "format": "json",
+      "layer_kind": "pt_stop",
+      "sha256": {
+        "status": "computed",
+        "value": "8fd6ec8d4f02ce451125ebf4a319ef593d04894c2d46435934613b779fc98044"
+      },
+      "size_bytes": 6389,
+      "source_path": "2026/belfast_transportstops2026.json",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0351557,
+          44.4124118,
+          -68.9944355,
+          44.4554235
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 14,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 13,
+            "name": "Point"
+          },
+          {
+            "count": 1,
+            "name": "LineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Concord Bus Lines Belfast",
+        "osm_id_count": 14,
+        "property_keys_top": [
+          {
+            "count": 14,
+            "name": "@id"
+          },
+          {
+            "count": 14,
+            "name": "public_transport"
+          },
+          {
+            "count": 13,
+            "name": "bus"
+          },
+          {
+            "count": 13,
+            "name": "highway"
+          },
+          {
+            "count": 13,
+            "name": "name"
+          },
+          {
+            "count": 2,
+            "name": "bench"
+          },
+          {
+            "count": 2,
+            "name": "shelter"
+          },
+          {
+            "count": 1,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 1,
+            "name": "addr:street"
+          },
+          {
+            "count": 1,
+            "name": "bin"
+          },
+          {
+            "count": 1,
+            "name": "lit"
+          },
+          {
+            "count": 1,
+            "name": "network"
+          },
+          {
+            "count": 1,
+            "name": "railway"
+          },
+          {
+            "count": 1,
+            "name": "ref:signed"
+          },
+          {
+            "count": 1,
+            "name": "tactile_paving"
+          },
+          {
+            "count": 1,
+            "name": "train"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/1362635015",
+          "node/5669553427",
+          "node/12199265162",
+          "node/12199265163",
+          "node/12199265164"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z"
+      }
+    },
+    {
+      "dataset_id": "belfast_water_2026",
+      "format": "geojson",
+      "layer_kind": "land_cover",
+      "sha256": {
+        "status": "computed",
+        "value": "33285784aed815d65753f9cfd4fa4259a0fa33e8914a610a9df2886fb1022c11"
+      },
+      "size_bytes": 445544,
+      "source_path": "2026/belfast_water_2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1335598,
+          44.2777695,
+          -62.847329,
+          46.0825515
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 107,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 77,
+            "name": "LineString"
+          },
+          {
+            "count": 29,
+            "name": "Polygon"
+          },
+          {
+            "count": 1,
+            "name": "MultiLineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Goose River",
+        "osm_id_count": 107,
+        "property_keys_top": [
+          {
+            "count": 107,
+            "name": "@id"
+          },
+          {
+            "count": 79,
+            "name": "waterway"
+          },
+          {
+            "count": 58,
+            "name": "source"
+          },
+          {
+            "count": 45,
+            "name": "name"
+          },
+          {
+            "count": 28,
+            "name": "natural"
+          },
+          {
+            "count": 23,
+            "name": "@relations"
+          },
+          {
+            "count": 14,
+            "name": "water"
+          },
+          {
+            "count": 12,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 11,
+            "name": "canoe"
+          },
+          {
+            "count": 9,
+            "name": "tidal"
+          },
+          {
+            "count": 8,
+            "name": "wikidata"
+          },
+          {
+            "count": 7,
+            "name": "wikipedia"
+          },
+          {
+            "count": 6,
+            "name": "ele"
+          },
+          {
+            "count": 6,
+            "name": "intermittent"
+          },
+          {
+            "count": 6,
+            "name": "ref:US:NID"
+          },
+          {
+            "count": 4,
+            "name": "boat"
+          },
+          {
+            "count": 4,
+            "name": "tunnel"
+          },
+          {
+            "count": 3,
+            "name": "layer"
+          },
+          {
+            "count": 3,
+            "name": "type"
+          },
+          {
+            "count": 2,
+            "name": "open_water"
+          },
+          {
+            "count": 1,
+            "name": "alt_name"
+          },
+          {
+            "count": 1,
+            "name": "destination"
+          },
+          {
+            "count": 1,
+            "name": "loc_name"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/5501165",
+          "relation/16293479",
+          "relation/19252632",
+          "way/134976742",
+          "way/134976748"
+        ],
+        "timestamp": "2026-04-25T11:44:30Z"
+      }
+    },
+    {
+      "dataset_id": "belfastboudnary2026",
+      "format": "geojson",
+      "layer_kind": "zone_boundary",
+      "sha256": {
+        "status": "computed",
+        "value": "23f72830a7e69832284aabff0b9afb5bbda9b783cfce6bc4bb07649f73a175f7"
+      },
+      "size_bytes": 49166,
+      "source_path": "2026/belfastboudnary2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1182822,
+          44.3674294,
+          -62.8520031,
+          46.0833889
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 4,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 2,
+            "name": "Point"
+          },
+          {
+            "count": 2,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belfast",
+        "osm_id_count": 4,
+        "property_keys_top": [
+          {
+            "count": 4,
+            "name": "@id"
+          },
+          {
+            "count": 2,
+            "name": "@relations"
+          },
+          {
+            "count": 2,
+            "name": "admin_level"
+          },
+          {
+            "count": 2,
+            "name": "boundary"
+          },
+          {
+            "count": 2,
+            "name": "name"
+          },
+          {
+            "count": 2,
+            "name": "source"
+          },
+          {
+            "count": 2,
+            "name": "type"
+          },
+          {
+            "count": 1,
+            "name": "border_type"
+          },
+          {
+            "count": 1,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 1,
+            "name": "land_area"
+          },
+          {
+            "count": 1,
+            "name": "name:mic"
+          },
+          {
+            "count": 1,
+            "name": "population"
+          },
+          {
+            "count": 1,
+            "name": "population:date"
+          },
+          {
+            "count": 1,
+            "name": "source:population"
+          },
+          {
+            "count": 1,
+            "name": "wikidata"
+          },
+          {
+            "count": 1,
+            "name": "wikipedia"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/132579",
+          "relation/12078739",
+          "node/158823967",
+          "node/2184634461"
+        ],
+        "timestamp": "2026-04-25T11:50:39Z"
+      }
+    },
+    {
+      "dataset_id": "belfastcommercial2026",
+      "format": "geojson",
+      "layer_kind": "planning_or_land_market",
+      "sha256": {
+        "status": "computed",
+        "value": "c2e13ac1f850c6073adcd9959415c76e9b903f26bcb36a779be842adcbf8da6d"
+      },
+      "size_bytes": 110390,
+      "source_path": "2026/belfastcommercial2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0323454,
+          44.4007843,
+          -68.9756963,
+          44.4393984
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 100,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 55,
+            "name": "Polygon"
+          },
+          {
+            "count": 45,
+            "name": "Point"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belfast Co-op and Cafe",
+        "osm_id_count": 100,
+        "property_keys_top": [
+          {
+            "count": 100,
+            "name": "@id"
+          },
+          {
+            "count": 93,
+            "name": "name"
+          },
+          {
+            "count": 87,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 87,
+            "name": "addr:street"
+          },
+          {
+            "count": 77,
+            "name": "shop"
+          },
+          {
+            "count": 76,
+            "name": "addr:city"
+          },
+          {
+            "count": 74,
+            "name": "addr:state"
+          },
+          {
+            "count": 70,
+            "name": "phone"
+          },
+          {
+            "count": 66,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 61,
+            "name": "opening_hours"
+          },
+          {
+            "count": 60,
+            "name": "website"
+          },
+          {
+            "count": 38,
+            "name": "building"
+          },
+          {
+            "count": 18,
+            "name": "wheelchair"
+          },
+          {
+            "count": 17,
+            "name": "email"
+          },
+          {
+            "count": 17,
+            "name": "payment:cash"
+          },
+          {
+            "count": 16,
+            "name": "office"
+          },
+          {
+            "count": 15,
+            "name": "brand"
+          },
+          {
+            "count": 14,
+            "name": "brand:wikidata"
+          },
+          {
+            "count": 11,
+            "name": "payment:debit_cards"
+          },
+          {
+            "count": 9,
+            "name": "payment:credit_cards"
+          },
+          {
+            "count": 8,
+            "name": "toilets"
+          },
+          {
+            "count": 7,
+            "name": "landuse"
+          },
+          {
+            "count": 7,
+            "name": "operator"
+          },
+          {
+            "count": 6,
+            "name": "clothes"
+          },
+          {
+            "count": 6,
+            "name": "payment:cheque"
+          },
+          {
+            "count": 5,
+            "name": "cuisine"
+          },
+          {
+            "count": 5,
+            "name": "toilets:unisex"
+          },
+          {
+            "count": 4,
+            "name": "branch"
+          },
+          {
+            "count": 4,
+            "name": "description"
+          },
+          {
+            "count": 4,
+            "name": "reservation"
+          },
+          {
+            "count": 4,
+            "name": "toilets:access"
+          },
+          {
+            "count": 3,
+            "name": "clothes:women"
+          },
+          {
+            "count": 3,
+            "name": "drink:coffee"
+          },
+          {
+            "count": 3,
+            "name": "fax"
+          },
+          {
+            "count": 3,
+            "name": "internet_access"
+          },
+          {
+            "count": 3,
+            "name": "second_hand"
+          },
+          {
+            "count": 3,
+            "name": "source"
+          },
+          {
+            "count": 2,
+            "name": "addr:unit"
+          },
+          {
+            "count": 2,
+            "name": "alt_name"
+          },
+          {
+            "count": 2,
+            "name": "amenity"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/208137904",
+          "way/231657397",
+          "way/594356803",
+          "way/638622980",
+          "way/638622981"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z"
+      }
+    },
+    {
+      "dataset_id": "belfastdevelopmentland2026",
+      "format": "geojson",
+      "layer_kind": "planning_or_land_market",
+      "sha256": {
+        "status": "computed",
+        "value": "8e45a1443e92346d92ebe872bfc73aff9077ec610d8ec5fed9f3d3c97c7b79ba"
+      },
+      "size_bytes": 1008,
+      "source_path": "2026/belfastdevelopmentland2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -68.9965736,
+          44.4215222,
+          -68.9964546,
+          44.4216125
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 1,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 1,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "osm_id_count": 1,
+        "property_keys_top": [
+          {
+            "count": 1,
+            "name": "@id"
+          },
+          {
+            "count": 1,
+            "name": "building"
+          },
+          {
+            "count": 1,
+            "name": "construction"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/1376567556"
+        ],
+        "timestamp": "2026-04-25T11:48:36Z"
+      }
+    },
+    {
+      "dataset_id": "belfasteducation2026",
+      "format": "geojson",
+      "layer_kind": "poi",
+      "sha256": {
+        "status": "computed",
+        "value": "63ebeba532b2ecfaf6d8388ffeee785d36f37831f48d9afffae31c282002a007"
+      },
+      "size_bytes": 11080,
+      "source_path": "2026/belfasteducation2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0348706,
+          44.4094929,
+          -69.0045676,
+          44.4371051
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 7,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 4,
+            "name": "Point"
+          },
+          {
+            "count": 3,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belfast Area High School",
+        "osm_id_count": 7,
+        "property_keys_top": [
+          {
+            "count": 7,
+            "name": "@id"
+          },
+          {
+            "count": 7,
+            "name": "addr:city"
+          },
+          {
+            "count": 7,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 7,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 7,
+            "name": "addr:state"
+          },
+          {
+            "count": 7,
+            "name": "addr:street"
+          },
+          {
+            "count": 7,
+            "name": "amenity"
+          },
+          {
+            "count": 7,
+            "name": "name"
+          },
+          {
+            "count": 5,
+            "name": "operator"
+          },
+          {
+            "count": 2,
+            "name": "building"
+          },
+          {
+            "count": 2,
+            "name": "ele"
+          },
+          {
+            "count": 2,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 1,
+            "name": "mascot"
+          },
+          {
+            "count": 1,
+            "name": "operator:type"
+          },
+          {
+            "count": 1,
+            "name": "phone"
+          },
+          {
+            "count": 1,
+            "name": "website"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/766525878",
+          "way/1282645468",
+          "way/1358632216",
+          "node/358223485",
+          "node/7231420969"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z"
+      }
+    },
+    {
+      "dataset_id": "belfasthealthcare2026",
+      "format": "geojson",
+      "layer_kind": "poi",
+      "sha256": {
+        "status": "computed",
+        "value": "b45f734a0fa84b525780c814222822e6b8b0037ef08c6809ab34b4f3b0a84216"
+      },
+      "size_bytes": 11201,
+      "source_path": "2026/belfasthealthcare2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0190465,
+          44.4109915,
+          -68.9926489,
+          44.4326672
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 8,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 5,
+            "name": "Polygon"
+          },
+          {
+            "count": 3,
+            "name": "Point"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Waldo Hospital",
+        "osm_id_count": 8,
+        "property_keys_top": [
+          {
+            "count": 8,
+            "name": "@id"
+          },
+          {
+            "count": 8,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 8,
+            "name": "addr:street"
+          },
+          {
+            "count": 8,
+            "name": "amenity"
+          },
+          {
+            "count": 8,
+            "name": "healthcare"
+          },
+          {
+            "count": 8,
+            "name": "name"
+          },
+          {
+            "count": 7,
+            "name": "addr:city"
+          },
+          {
+            "count": 7,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 7,
+            "name": "addr:state"
+          },
+          {
+            "count": 7,
+            "name": "opening_hours"
+          },
+          {
+            "count": 6,
+            "name": "phone"
+          },
+          {
+            "count": 6,
+            "name": "website"
+          },
+          {
+            "count": 4,
+            "name": "building"
+          },
+          {
+            "count": 4,
+            "name": "healthcare:speciality"
+          },
+          {
+            "count": 3,
+            "name": "wheelchair"
+          },
+          {
+            "count": 2,
+            "name": "addr:unit"
+          },
+          {
+            "count": 2,
+            "name": "brand"
+          },
+          {
+            "count": 2,
+            "name": "brand:wikidata"
+          },
+          {
+            "count": 2,
+            "name": "operator"
+          },
+          {
+            "count": 2,
+            "name": "payment:cheque"
+          },
+          {
+            "count": 2,
+            "name": "payment:contactless"
+          },
+          {
+            "count": 2,
+            "name": "payment:debit_cards"
+          },
+          {
+            "count": 1,
+            "name": "atm"
+          },
+          {
+            "count": 1,
+            "name": "beds"
+          },
+          {
+            "count": 1,
+            "name": "check_date"
+          },
+          {
+            "count": 1,
+            "name": "check_date:opening_hours"
+          },
+          {
+            "count": 1,
+            "name": "drive_through"
+          },
+          {
+            "count": 1,
+            "name": "emergency"
+          },
+          {
+            "count": 1,
+            "name": "internet_access"
+          },
+          {
+            "count": 1,
+            "name": "internet_access:fee"
+          },
+          {
+            "count": 1,
+            "name": "payment:cash"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/586366244",
+          "way/1377069400",
+          "way/1377069403",
+          "way/1377244419",
+          "way/1377244425"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z"
+      }
+    },
+    {
+      "dataset_id": "belfastlandmarks2026",
+      "format": "geojson",
+      "layer_kind": "poi",
+      "sha256": {
+        "status": "computed",
+        "value": "f6c3d2fd258d504dca0b36b78a93931d674a3aeabd84fd5c8932c7d393752709"
+      },
+      "size_bytes": 23659,
+      "source_path": "2026/belfastlandmarks2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0138642,
+          44.4076883,
+          -62.8773682,
+          46.0794088
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 18,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 11,
+            "name": "Polygon"
+          },
+          {
+            "count": 7,
+            "name": "Point"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Northport Inn",
+        "osm_id_count": 18,
+        "property_keys_top": [
+          {
+            "count": 18,
+            "name": "@id"
+          },
+          {
+            "count": 14,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 14,
+            "name": "addr:street"
+          },
+          {
+            "count": 14,
+            "name": "name"
+          },
+          {
+            "count": 14,
+            "name": "tourism"
+          },
+          {
+            "count": 13,
+            "name": "addr:city"
+          },
+          {
+            "count": 13,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 13,
+            "name": "addr:state"
+          },
+          {
+            "count": 11,
+            "name": "building"
+          },
+          {
+            "count": 10,
+            "name": "website"
+          },
+          {
+            "count": 9,
+            "name": "phone"
+          },
+          {
+            "count": 5,
+            "name": "internet_access"
+          },
+          {
+            "count": 4,
+            "name": "email"
+          },
+          {
+            "count": 3,
+            "name": "amenity"
+          },
+          {
+            "count": 3,
+            "name": "description"
+          },
+          {
+            "count": 3,
+            "name": "internet_access:fee"
+          },
+          {
+            "count": 2,
+            "name": "building:levels"
+          },
+          {
+            "count": 2,
+            "name": "historic"
+          },
+          {
+            "count": 2,
+            "name": "smoking"
+          },
+          {
+            "count": 1,
+            "name": "check_date"
+          },
+          {
+            "count": 1,
+            "name": "contact:phone"
+          },
+          {
+            "count": 1,
+            "name": "contact:website"
+          },
+          {
+            "count": 1,
+            "name": "fax"
+          },
+          {
+            "count": 1,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 1,
+            "name": "guest_house"
+          },
+          {
+            "count": 1,
+            "name": "image"
+          },
+          {
+            "count": 1,
+            "name": "information"
+          },
+          {
+            "count": 1,
+            "name": "opening_hours"
+          },
+          {
+            "count": 1,
+            "name": "operator"
+          },
+          {
+            "count": 1,
+            "name": "payment:contactless"
+          },
+          {
+            "count": 1,
+            "name": "source"
+          },
+          {
+            "count": 1,
+            "name": "start_date"
+          },
+          {
+            "count": 1,
+            "name": "wheelchair"
+          },
+          {
+            "count": 1,
+            "name": "wikidata"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/372773761",
+          "way/512388915",
+          "way/638622987",
+          "way/638631561",
+          "way/934135992"
+        ],
+        "timestamp": "2026-04-25T11:49:36Z"
+      }
+    },
+    {
+      "dataset_id": "belfastlanduse2026",
+      "format": "geojson",
+      "layer_kind": "land_cover",
+      "sha256": {
+        "status": "computed",
+        "value": "bd07b67540987b6bedaeb292746c7abcb6432af59d145e47f6e43c649c6186b1"
+      },
+      "size_bytes": 39605,
+      "source_path": "2026/belfastlanduse2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0891954,
+          44.405956,
+          -62.8753686,
+          46.0791285
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 24,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 24,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Grove Cemetery",
+        "osm_id_count": 24,
+        "property_keys_top": [
+          {
+            "count": 24,
+            "name": "@id"
+          },
+          {
+            "count": 24,
+            "name": "landuse"
+          },
+          {
+            "count": 5,
+            "name": "name"
+          },
+          {
+            "count": 3,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 2,
+            "name": "addr:city"
+          },
+          {
+            "count": 2,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 2,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 2,
+            "name": "addr:state"
+          },
+          {
+            "count": 2,
+            "name": "addr:street"
+          },
+          {
+            "count": 2,
+            "name": "ele"
+          },
+          {
+            "count": 2,
+            "name": "man_made"
+          },
+          {
+            "count": 1,
+            "name": "industrial"
+          },
+          {
+            "count": 1,
+            "name": "note"
+          },
+          {
+            "count": 1,
+            "name": "religion"
+          },
+          {
+            "count": 1,
+            "name": "source"
+          },
+          {
+            "count": 1,
+            "name": "website"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/167678711",
+          "way/208142449",
+          "way/815748675",
+          "way/1112597979",
+          "way/1112736778"
+        ],
+        "timestamp": "2026-04-25T11:48:36Z"
+      }
+    },
+    {
+      "dataset_id": "belfastplaces2026",
+      "format": "geojson",
+      "layer_kind": "poi",
+      "sha256": {
+        "status": "computed",
+        "value": "0f2f5be9455ab7b8e69ccaf92754496822c10accfa902e23dd9fd7d32a2dfce5"
+      },
+      "size_bytes": 3987312,
+      "source_path": "2026/belfastplaces2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1003154,
+          44.4014649,
+          -61.9707663,
+          47.0589738
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 14,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 12,
+            "name": "Point"
+          },
+          {
+            "count": 1,
+            "name": "MultiPolygon"
+          },
+          {
+            "count": 1,
+            "name": "Polygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Prince Edward Island",
+        "osm_id_count": 14,
+        "property_keys_top": [
+          {
+            "count": 14,
+            "name": "@id"
+          },
+          {
+            "count": 13,
+            "name": "place"
+          },
+          {
+            "count": 12,
+            "name": "name"
+          },
+          {
+            "count": 10,
+            "name": "ele"
+          },
+          {
+            "count": 10,
+            "name": "gnis:feature_id"
+          },
+          {
+            "count": 3,
+            "name": "wikidata"
+          },
+          {
+            "count": 2,
+            "name": "wikipedia"
+          },
+          {
+            "count": 1,
+            "name": "@relations"
+          },
+          {
+            "count": 1,
+            "name": "addr:city"
+          },
+          {
+            "count": 1,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 1,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 1,
+            "name": "addr:state"
+          },
+          {
+            "count": 1,
+            "name": "addr:street"
+          },
+          {
+            "count": 1,
+            "name": "admin_level"
+          },
+          {
+            "count": 1,
+            "name": "alt_name:cs"
+          },
+          {
+            "count": 1,
+            "name": "alt_name:gd"
+          },
+          {
+            "count": 1,
+            "name": "capital"
+          },
+          {
+            "count": 1,
+            "name": "name:ckb"
+          },
+          {
+            "count": 1,
+            "name": "name:cs"
+          },
+          {
+            "count": 1,
+            "name": "name:es"
+          },
+          {
+            "count": 1,
+            "name": "name:etymology:wikidata"
+          },
+          {
+            "count": 1,
+            "name": "name:etymology:wikipedia"
+          },
+          {
+            "count": 1,
+            "name": "name:fr"
+          },
+          {
+            "count": 1,
+            "name": "name:gd"
+          },
+          {
+            "count": 1,
+            "name": "name:gd:etymology:wikidata"
+          },
+          {
+            "count": 1,
+            "name": "name:gd:etymology:wikipedia"
+          },
+          {
+            "count": 1,
+            "name": "name:ko"
+          },
+          {
+            "count": 1,
+            "name": "name:la"
+          },
+          {
+            "count": 1,
+            "name": "name:mic"
+          },
+          {
+            "count": 1,
+            "name": "name:nl"
+          },
+          {
+            "count": 1,
+            "name": "name:sr"
+          },
+          {
+            "count": 1,
+            "name": "name:zh"
+          },
+          {
+            "count": 1,
+            "name": "name:zh-Hant"
+          },
+          {
+            "count": 1,
+            "name": "population"
+          },
+          {
+            "count": 1,
+            "name": "population:date"
+          },
+          {
+            "count": 1,
+            "name": "source"
+          },
+          {
+            "count": 1,
+            "name": "source:population"
+          },
+          {
+            "count": 1,
+            "name": "type"
+          },
+          {
+            "count": 1,
+            "name": "wikipedia:en"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/3958665",
+          "way/1376569206",
+          "node/158805809",
+          "node/158809547",
+          "node/158810675"
+        ],
+        "timestamp": "2026-04-25T11:49:36Z"
+      }
+    },
+    {
+      "dataset_id": "belfastpublicservices2026",
+      "format": "geojson",
+      "layer_kind": "poi",
+      "sha256": {
+        "status": "computed",
+        "value": "2d67f5d175ac00cb14df2f1a8a369e58ee76cd8dcbeaf97c3e2ee32aa6cd0313"
+      },
+      "size_bytes": 25714,
+      "source_path": "2026/belfastpublicservices2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0238381,
+          44.4119521,
+          -68.9814742,
+          44.4317927
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 12,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 10,
+            "name": "Polygon"
+          },
+          {
+            "count": 2,
+            "name": "Point"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belfast Free Library",
+        "osm_id_count": 12,
+        "property_keys_top": [
+          {
+            "count": 12,
+            "name": "@id"
+          },
+          {
+            "count": 12,
+            "name": "addr:city"
+          },
+          {
+            "count": 12,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 12,
+            "name": "addr:state"
+          },
+          {
+            "count": 12,
+            "name": "addr:street"
+          },
+          {
+            "count": 12,
+            "name": "amenity"
+          },
+          {
+            "count": 12,
+            "name": "name"
+          },
+          {
+            "count": 11,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 7,
+            "name": "building"
+          },
+          {
+            "count": 7,
+            "name": "phone"
+          },
+          {
+            "count": 6,
+            "name": "opening_hours"
+          },
+          {
+            "count": 6,
+            "name": "website"
+          },
+          {
+            "count": 2,
+            "name": "operator"
+          },
+          {
+            "count": 2,
+            "name": "operator:type"
+          },
+          {
+            "count": 2,
+            "name": "social_facility:for"
+          },
+          {
+            "count": 2,
+            "name": "wheelchair"
+          },
+          {
+            "count": 1,
+            "name": "contact:facebook"
+          },
+          {
+            "count": 1,
+            "name": "description"
+          },
+          {
+            "count": 1,
+            "name": "email"
+          },
+          {
+            "count": 1,
+            "name": "fax"
+          },
+          {
+            "count": 1,
+            "name": "internet_access"
+          },
+          {
+            "count": 1,
+            "name": "internet_access:fee"
+          },
+          {
+            "count": 1,
+            "name": "operator:wikidata"
+          },
+          {
+            "count": 1,
+            "name": "social_facility"
+          },
+          {
+            "count": 1,
+            "name": "source"
+          },
+          {
+            "count": 1,
+            "name": "toilets"
+          },
+          {
+            "count": 1,
+            "name": "toilets:unisex"
+          },
+          {
+            "count": 1,
+            "name": "toilets:wheelchair"
+          },
+          {
+            "count": 1,
+            "name": "townhall:type"
+          }
+        ],
+        "sample_feature_ids": [
+          "way/215916157",
+          "way/638629948",
+          "way/639261926",
+          "way/1144541267",
+          "way/1282175322"
+        ],
+        "timestamp": "2026-04-25T11:47:31Z"
+      }
+    },
+    {
+      "dataset_id": "belfasttransitroutes2026",
+      "format": "geojson",
+      "layer_kind": "pt_route",
+      "sha256": {
+        "status": "computed",
+        "value": "74aa551f7a2b3c489d3af11d152e07003815515560622114dcf9e5cf02ad52d9"
+      },
+      "size_bytes": 42313,
+      "source_path": "2026/belfasttransitroutes2026.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.0299353,
+          44.4118489,
+          -68.9942982,
+          44.4317903
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 13,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 12,
+            "name": "Point"
+          },
+          {
+            "count": 1,
+            "name": "MultiLineString"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Belfast DASH",
+        "osm_id_count": 13,
+        "property_keys_top": [
+          {
+            "count": 13,
+            "name": "@id"
+          },
+          {
+            "count": 12,
+            "name": "@relations"
+          },
+          {
+            "count": 1,
+            "name": "name"
+          },
+          {
+            "count": 1,
+            "name": "route"
+          },
+          {
+            "count": 1,
+            "name": "type"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/18088912",
+          "node/12199265171",
+          "node/12199265170",
+          "node/12199265168",
+          "node/12199265167"
+        ],
+        "timestamp": "2026-04-25T11:46:31Z"
+      }
+    },
+    {
+      "dataset_id": "exportbuildings",
+      "format": "geojson",
+      "layer_kind": "building_footprint",
+      "sha256": {
+        "reason": "file_larger_than_hash_max_bytes",
+        "status": "skipped"
+      },
+      "size_bytes": 110224684,
+      "source_path": "2026/exportbuildings.geojson",
+      "source_year": 2026,
+      "vector_summary": {
+        "bbox": [
+          -69.1109119,
+          44.4007843,
+          -5.8100227,
+          54.6647886
+        ],
+        "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+        "feature_count": 141981,
+        "generator": "overpass-turbo",
+        "geometry_types": [
+          {
+            "count": 141970,
+            "name": "Polygon"
+          },
+          {
+            "count": 11,
+            "name": "MultiPolygon"
+          }
+        ],
+        "json_type": "FeatureCollection",
+        "name": "Architecture, Civil Engineering, Planning. School Natural & Built Environment.",
+        "osm_id_count": 141981,
+        "property_keys_top": [
+          {
+            "count": 141981,
+            "name": "@id"
+          },
+          {
+            "count": 141981,
+            "name": "building"
+          },
+          {
+            "count": 43727,
+            "name": "addr:street"
+          },
+          {
+            "count": 16568,
+            "name": "addr:housenumber"
+          },
+          {
+            "count": 8303,
+            "name": "addr:city"
+          },
+          {
+            "count": 7144,
+            "name": "building:levels"
+          },
+          {
+            "count": 6371,
+            "name": "house"
+          },
+          {
+            "count": 5533,
+            "name": "roof:shape"
+          },
+          {
+            "count": 4225,
+            "name": "roof:material"
+          },
+          {
+            "count": 3901,
+            "name": "building:material"
+          },
+          {
+            "count": 2597,
+            "name": "roof:orientation"
+          },
+          {
+            "count": 1843,
+            "name": "name"
+          },
+          {
+            "count": 1344,
+            "name": "addr:postcode"
+          },
+          {
+            "count": 1277,
+            "name": "source"
+          },
+          {
+            "count": 1134,
+            "name": "building:colour"
+          },
+          {
+            "count": 1128,
+            "name": "amenity"
+          },
+          {
+            "count": 987,
+            "name": "roof:colour"
+          },
+          {
+            "count": 883,
+            "name": "addr:state"
+          },
+          {
+            "count": 685,
+            "name": "roof:levels"
+          },
+          {
+            "count": 534,
+            "name": "height"
+          },
+          {
+            "count": 397,
+            "name": "shop"
+          },
+          {
+            "count": 349,
+            "name": "operator"
+          },
+          {
+            "count": 343,
+            "name": "website"
+          },
+          {
+            "count": 335,
+            "name": "man_made"
+          },
+          {
+            "count": 313,
+            "name": "addr:housename"
+          },
+          {
+            "count": 279,
+            "name": "building:flats"
+          },
+          {
+            "count": 270,
+            "name": "brand"
+          },
+          {
+            "count": 268,
+            "name": "shelter_type"
+          },
+          {
+            "count": 262,
+            "name": "religion"
+          },
+          {
+            "count": 248,
+            "name": "brand:wikidata"
+          },
+          {
+            "count": 242,
+            "name": "bench"
+          },
+          {
+            "count": 232,
+            "name": "denomination"
+          },
+          {
+            "count": 215,
+            "name": "layer"
+          },
+          {
+            "count": 211,
+            "name": "addr:flats"
+          },
+          {
+            "count": 206,
+            "name": "bin"
+          },
+          {
+            "count": 198,
+            "name": "phone"
+          },
+          {
+            "count": 183,
+            "name": "opening_hours"
+          },
+          {
+            "count": 159,
+            "name": "check_date"
+          },
+          {
+            "count": 152,
+            "name": "content"
+          },
+          {
+            "count": 151,
+            "name": "brand:wikipedia"
+          }
+        ],
+        "sample_feature_ids": [
+          "relation/157029",
+          "relation/335617",
+          "relation/1919989",
+          "relation/2117411",
+          "relation/2119642"
+        ],
+        "timestamp": "2026-04-25T11:36:22Z"
+      }
+    }
+  ],
+  "incoming_source_manifests": [],
+  "input_root": "data",
+  "replay_years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "study_area": "Belfast"
+}
