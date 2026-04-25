@@ -232,15 +232,23 @@ function addModeALayers() {
       minzoom: 10,
       paint: {
         "fill-extrusion-color": [
-          "interpolate",
-          ["linear"],
-          ["coalesce", ["to-number", ["get", "replay_height_m"]], 8],
-          4,
-          "#94a3b8",
-          24,
+          "match",
+          ["get", "architecture_period"],
+          "waterfront-contemporary",
           "#0f766e",
-          60,
-          "#0f172a"
+          "city-centre-infill",
+          "#2563eb",
+          "mixed-use-infill",
+          "#7c3aed",
+          "large-commercial-industrial",
+          "#f97316",
+          "civic-commercial-block",
+          "#64748b",
+          "established-mid-rise",
+          "#475569",
+          "traditional-low-rise",
+          "#94a3b8",
+          "#64748b"
         ],
         "fill-extrusion-height": ["*", ["coalesce", ["to-number", ["get", "replay_height_m"]], 8], 1],
         "fill-extrusion-opacity": 0.44
@@ -501,6 +509,7 @@ function updateMapStyles() {
   }
 
   if (state.map.getLayer("replay-buildings")) {
+    state.map.setFilter("replay-buildings", ["<=", ["to-number", ["get", "replay_first_visible_year"]], state.year]);
     state.map.setLayoutProperty("replay-buildings", "visibility", state.layers.buildings ? "visible" : "none");
     state.map.setPaintProperty("replay-buildings", "fill-extrusion-height", [
       "*",

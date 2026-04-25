@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-25T14:49:21.523753+00:00",
+  "generatedAt": "2026-04-25T14:51:25.624965+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -213,8 +213,8 @@
         "license": "ODbL",
         "sourceStatus": "derived-from-local-source"
       },
-      "byteSize": 20564986,
-      "modifiedAt": "2026-04-25T14:49:20.024896+00:00"
+      "byteSize": 26589724,
+      "modifiedAt": "2026-04-25T14:51:23.756515+00:00"
     },
     {
       "id": "source-ni-cycleways-osm",

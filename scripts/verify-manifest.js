@@ -79,6 +79,11 @@ const buildingLayer = manifest.layers.find((layer) => layer.id === "belfast-ni-b
 assert(buildingLayer, "3D Belfast NI building layer is required.");
 assert(buildingLayer?.mode === "fill-extrusion", "Building layer must render as fill-extrusion.");
 assert((buildingLayer?.featureCount || 0) >= 10000, "Building layer should include a substantial interactive feature set.");
+const buildingSource = readJson(buildingLayer.path);
+const buildingProps = buildingSource.features[0]?.properties || {};
+assert(Number.isInteger(buildingProps.replay_first_visible_year), "Building features must include replay_first_visible_year.");
+assert(buildingProps.architecture_period, "Building features must include architecture_period.");
+assert(buildingSource.features.some((feature) => feature.properties?.replay_first_visible_year > 2016), "Building replay should include later-year mapped/proxy additions.");
 const electricityLayer = manifest.layers.find((layer) => layer.category === "electricity");
 assert(electricityLayer, "Belfast electricity OSM context layer is required.");
 

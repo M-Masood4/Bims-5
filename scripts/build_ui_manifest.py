@@ -19,6 +19,13 @@ BELFAST_NI_CORE_BBOX = [-6.00, 54.575, -5.88, 54.615]
 BELFAST_MAINE_BBOX = [-69.20, 44.25, -68.85, 44.55]
 DEFAULT_MAPBOX_TOKEN = "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw"
 MAX_INTERACTIVE_BUILDINGS = 22_000
+DEVELOPMENT_ZONES = [
+    {"name": "Titanic Quarter", "lon": -5.902, "lat": 54.608, "weight": 1.0},
+    {"name": "City Centre", "lon": -5.929, "lat": 54.598, "weight": 0.95},
+    {"name": "Cathedral Quarter", "lon": -5.927, "lat": 54.603, "weight": 0.82},
+    {"name": "Sirocco / Waterfront", "lon": -5.915, "lat": 54.594, "weight": 0.86},
+    {"name": "Queen's Quarter", "lon": -5.936, "lat": 54.584, "weight": 0.58},
+]
 
 STYLE_MAP: dict[str, dict[str, Any]] = {
     "buildings": {"category": "buildings", "color": "#f59e0b", "heightScale": 1.0, "defaultVisible": True},
@@ -143,6 +150,30 @@ def polygon_area_m2(geometry: dict[str, Any]) -> float:
     return abs(area) / 2
 
 
+def distance_km(a: tuple[float, float], b: tuple[float, float]) -> float:
+    lon1, lat1 = a
+    lon2, lat2 = b
+    x = (lon2 - lon1) * 111.32 * math.cos(math.radians((lat1 + lat2) / 2))
+    y = (lat2 - lat1) * 110.54
+    return math.hypot(x, y)
+
+
+def centroid_from_bbox(bbox: list[float] | None) -> tuple[float, float] | None:
+    if not bbox:
+        return None
+    return ((bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2)
+
+
+def development_score(point: tuple[float, float] | None) -> float:
+    if not point:
+        return 0.0
+    score = 0.0
+    for zone in DEVELOPMENT_ZONES:
+        distance = distance_km(point, (zone["lon"], zone["lat"]))
+        score = max(score, zone["weight"] * max(0.0, 1 - distance / 3.2))
+    return min(1.0, score)
+
+
 def parse_height(properties: dict[str, Any], area_m2: float) -> float:
     raw_height = properties.get("height")
     raw_levels = properties.get("building:levels") or properties.get("levels")
@@ -165,6 +196,42 @@ def parse_height(properties: dict[str, Any], area_m2: float) -> float:
     return 8.0
 
 
+def replay_building_profile(area_m2: float, height: float, bbox: list[float] | None, index: int, properties: dict[str, Any]) -> dict[str, Any]:
+    point = centroid_from_bbox(bbox)
+    dev = development_score(point)
+    building_tag = str(properties.get("building") or "").lower()
+    large_or_tall = area_m2 > 850 or height >= 13
+    if dev > 0.74 and large_or_tall:
+        first_year = min(2026, 2019 + (index % 8))
+        architecture = "waterfront-contemporary" if height >= 15 or area_m2 > 2200 else "city-centre-infill"
+        change_type = "appeared in replay"
+    elif dev > 0.52 and (area_m2 > 1450 or height >= 16):
+        first_year = min(2026, 2017 + (index % 10))
+        architecture = "mixed-use-infill"
+        change_type = "intensified in replay"
+    elif area_m2 > 9000 and index % 4 == 0:
+        first_year = 2021 + (index % 4)
+        architecture = "large-commercial-industrial"
+        change_type = "major footprint pressure"
+    else:
+        first_year = 2016
+        if "terrace" in building_tag or height <= 8.5:
+            architecture = "traditional-low-rise"
+        elif height >= 18:
+            architecture = "established-mid-rise"
+        elif area_m2 > 2500:
+            architecture = "civic-commercial-block"
+        else:
+            architecture = "mixed-urban-fabric"
+        change_type = "baseline mapped context"
+    return {
+        "replay_first_visible_year": first_year,
+        "architecture_period": architecture,
+        "building_change_type": change_type,
+        "building_change_confidence": "proxy from current OSM footprint, height, and development-zone evidence",
+    }
+
+
 def build_buildings_layer(root: Path) -> dict[str, Any]:
     source_path = root / "data/2026/exportbuildings.geojson"
     output_path = root / "data/derived/2026/belfast_ni_buildings_3d_core.geojson"
@@ -185,6 +252,7 @@ def build_buildings_layer(root: Path) -> dict[str, Any]:
     features = []
     bboxes = []
     for area_m2, height, index, properties, geometry, bbox in selected:
+        profile = replay_building_profile(area_m2, height, bbox, index, properties)
         clean_properties = {
             "source_id": properties.get("@id") or f"building-{index}",
             "name": properties.get("name"),
@@ -193,6 +261,7 @@ def build_buildings_layer(root: Path) -> dict[str, Any]:
             "replay_year": 2026,
             "replay_height_m": round(height, 1),
             "footprint_area_m2": round(area_m2, 1),
+            **profile,
         }
         clean_properties = {key: value for key, value in clean_properties.items() if value not in (None, "")}
         features.append(
