@@ -1,0 +1,2839 @@
+{
+  "total_count": 21,
+  "results": [
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-capacity-map",
+      "dataset_uid": "da_jjn39s",
+      "has_records": false,
+      "features": [],
+      "attachments": [],
+      "alternative_exports": [],
+      "data_visible": true,
+      "fields": [],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Capacity Map",
+          "description": "\u003Cp\u003ELink in reference to NIE Networks Capacity Map\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Capacity"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-03-10T17:03:08+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": false,
+          "data_processed": null,
+          "metadata_processed": "2026-03-10T17:03:13.686000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": null,
+          "bbox": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": "https://www.nienetworks.co.uk/connections/capacity-map",
+          "records_count": 0,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": "IRREG"
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Capacity Map",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ELink in reference to NIE Networks Capacity Map\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-03-10T17:03:08+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-power-flow-controllers",
+      "dataset_uid": "da_wddpgx",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00009_nie_networks_assets_power_flow_controllers_redacted_pdf",
+          "title": "DGA-DRA-002-00009 - NIE Networks - Assets - Power Flow Controllers-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-power-flow-controllers/attachments/dga_dra_002_00009_nie_networks_assets_power_flow_controllers_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "id": true,
+            "sortable": true
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Power Flow Controllers",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIE) - List of Power Flow Controllers\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:02+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:02+00:00",
+          "metadata_processed": "2026-04-25T14:15:02.949000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-7.43068054318428, 54.8525082087144],
+                  [-7.63259530998766, 54.8525082087144],
+                  [-7.63259530998766, 54.3671336537227],
+                  [-7.43068054318428, 54.3671336537227],
+                  [-7.43068054318428, 54.8525082087144]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 2,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Power Flow Controllers",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIE) - List of Power Flow Controllers\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:02+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-transmission-circuit-breakers",
+      "dataset_uid": "da_o5li8e",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00001_nie_networks_assets_transmission_circuit_breakers_redacted_pdf",
+          "title": "DGA-DRA-002-00001 - NIE Networks - Assets - Transmission Circuit Breakers-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-transmission-circuit-breakers/attachments/dga_dra_002_00001_nie_networks_assets_transmission_circuit_breakers_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true,
+            "id": true
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "rated_voltage",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "facetsort": "-count",
+            "sortable": true,
+            "disjunctive": true,
+            "decimals": 1
+          },
+          "label": "Rated Voltage",
+          "type": "double"
+        },
+        {
+          "name": "rated_voltage_unit_of_measurement",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Rated Voltage Unit of Measurement",
+          "type": "text"
+        },
+        {
+          "name": "rated_current",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true,
+            "facetsort": "-count"
+          },
+          "label": "Rated Current",
+          "type": "int"
+        },
+        {
+          "name": "rated_current_unit_of_measurement",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Rated Current Unit of Measurement",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Transmission Circuit Breakers",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Transmission Circuit Breakers\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset",
+            "Transmission"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:04+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:04+00:00",
+          "metadata_processed": "2026-04-25T14:15:04.165000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-5.76817866414785, 55.1091894507408],
+                  [-7.73135407827795, 55.1091894507408],
+                  [-7.73135407827795, 54.3671336537227],
+                  [-5.76817866414785, 54.3671336537227],
+                  [-5.76817866414785, 55.1091894507408]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 310,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Transmission Circuit Breakers",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Transmission Circuit Breakers\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:04+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-capacitor-banks",
+      "dataset_uid": "da_p98lh9",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00016_nie_networks_assets_capacitor_banks_redacted_pdf",
+          "title": "DGA-DRA-002-00016 - NIE Networks - Assets - Capacitor Banks-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-capacitor-banks/attachments/dga_dra_002_00016_nie_networks_assets_capacitor_banks_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true,
+            "id": true
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Postcode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Capacitor Banks",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIE) - List of Capacitor Banks\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:04+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:04+00:00",
+          "metadata_processed": "2026-04-25T14:15:04.306000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-5.87823548354209, 55.1971115497872],
+                  [-7.56011213175952, 55.1971115497872],
+                  [-7.56011213175952, 54.0712947165594],
+                  [-5.87823548354209, 54.0712947165594],
+                  [-5.87823548354209, 55.1971115497872]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 13,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Capacitor Banks",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIE) - List of Capacitor Banks\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:04+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-lv-switchgear",
+      "dataset_uid": "da_wni3f3",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true,
+            "id": true
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "rated_current",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true,
+            "facetsort": "-count"
+          },
+          "label": "Rated Current",
+          "type": "int"
+        },
+        {
+          "name": "rated_current_unit_of_measurement",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Rated Current Unit of Measurement",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Postcode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - LV Switchgear",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of LV Switchgear\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:21+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:21+00:00",
+          "metadata_processed": "2026-04-25T14:15:21.352000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-5.43835672549903, 55.2936470601708],
+                  [-8.09502214193344, 55.2936470601708],
+                  [-8.09502214193344, 54.0107034053654],
+                  [-5.43835672549903, 54.0107034053654],
+                  [-5.43835672549903, 55.2936470601708]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 20910,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - LV Switchgear",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of LV Switchgear\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:21+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-secondary-transformers",
+      "dataset_uid": "da_xagk7n",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00007_nie_networks_assets_secondary_transformers_redacted_pdf",
+          "title": "DGA-DRA-002-00007 - NIE Networks - Assets - Secondary Transformers-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-secondary-transformers/attachments/dga_dra_002_00007_nie_networks_assets_secondary_transformers_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true,
+            "id": true
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true,
+            "facetsort": "-alphanum"
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "nominal_rating",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true,
+            "decimals": 1
+          },
+          "label": "Nominal Rating",
+          "type": "double"
+        },
+        {
+          "name": "nominal_rating_unit_of_measurement",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Nominal Rating Unit of Measurement",
+          "type": "text"
+        },
+        {
+          "name": "rated_primary_voltage",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Rated Primary Voltage",
+          "type": "int"
+        },
+        {
+          "name": "rated_primary_voltage_unit_of_measurement",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Rated Primary Voltage Unit of Measurement",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Secondary Transformers",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Secondary Transformers\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset",
+            "Transformer"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:16:07+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:16:07+00:00",
+          "metadata_processed": "2026-04-25T14:16:07.754000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-4.70736810006201, 55.301595912315],
+                  [-10.8595096785575, 55.301595912315],
+                  [-10.8595096785575, 51.2225892115384],
+                  [-4.70736810006201, 51.2225892115384],
+                  [-4.70736810006201, 55.301595912315]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 81423,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Secondary Transformers",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Secondary Transformers\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:16:07+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "dataset-of-datasets",
+      "dataset_uid": "da_z1zid3",
+      "has_records": true,
+      "features": [
+        "timeserie",
+        "analyze"
+      ],
+      "attachments": [],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "dataset_id",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Dataset identifier",
+          "type": "text"
+        },
+        {
+          "name": "federated",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Federated dataset",
+          "type": "boolean"
+        },
+        {
+          "name": "title",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Title",
+          "type": "text"
+        },
+        {
+          "name": "description",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Description",
+          "type": "text"
+        },
+        {
+          "name": "theme",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Themes",
+          "type": "text"
+        },
+        {
+          "name": "keyword",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Keywords",
+          "type": "text"
+        },
+        {
+          "name": "license",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "License",
+          "type": "text"
+        },
+        {
+          "name": "language",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Language",
+          "type": "text"
+        },
+        {
+          "name": "timezone",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Timezone",
+          "type": "text"
+        },
+        {
+          "name": "modified",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Modified",
+          "type": "datetime"
+        },
+        {
+          "name": "data_processed",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Data processed",
+          "type": "datetime"
+        },
+        {
+          "name": "metadata_processed",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Metadata processed",
+          "type": "datetime"
+        },
+        {
+          "name": "publisher",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Publisher",
+          "type": "text"
+        },
+        {
+          "name": "references",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Reference",
+          "type": "text"
+        },
+        {
+          "name": "attributions",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Attributions",
+          "type": "text"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Dataset of Datasets",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - Dataset of Datasets\u003Cbr/\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Dataset of datasets"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2024-03-22T08:21:03+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2024-03-22T08:21:03+00:00",
+          "metadata_processed": "2024-03-22T08:21:03.508000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": null,
+          "bbox": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 19,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Dataset of Datasets",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - Dataset of Datasets\u003Cbr/\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2024-03-22T08:21:03+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-sites-bulk-supply-points",
+      "dataset_uid": "da_gtetkk",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00006_nie_networks_assets_sites_bulk_supply_points_redacted_pdf",
+          "title": "DGA-DRA-002-00006 - NIE Networks - Assets - Sites - Bulk Supply Points-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-sites-bulk-supply-points/attachments/dga_dra_002_00006_nie_networks_assets_sites_bulk_supply_points_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Type",
+          "type": "text"
+        },
+        {
+          "name": "site_voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Voltage",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Sites - Bulk Supply Points",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Bulk Supply Points\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Site",
+            "Substation"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:02+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:02+00:00",
+          "metadata_processed": "2026-04-25T14:15:03.029000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-5.67229405045509, 55.147845572792],
+                  [-7.73135407827795, 55.147845572792],
+                  [-7.73135407827795, 54.1627371730283],
+                  [-5.67229405045509, 54.1627371730283],
+                  [-5.67229405045509, 55.147845572792]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 47,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Sites - Bulk Supply Points",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Bulk Supply Points\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:02+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nie-networks-assets-sites-grid-supply-points",
+      "dataset_uid": "da_kpa7vd",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [
+        {
+          "id": "dga_dra_002_00005_nie_networks_assets_sites_grid_supply_points_redacted_pdf",
+          "title": "DGA-DRA-002-00005 - NIE Networks - Assets - Sites - Grid Supply Points-REDACTED.pdf",
+          "mimetype": "application/pdf",
+          "url": "https://nienetworks.opendatasoft.com/api/explore/v2.1/catalog/datasets/nie-networks-assets-sites-grid-supply-points/attachments/dga_dra_002_00005_nie_networks_assets_sites_grid_supply_points_redacted_pdf"
+        }
+      ],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count",
+            "sortable": true
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Type",
+          "type": "text"
+        },
+        {
+          "name": "site_voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Voltage",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town_city",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIE Networks - Assets - Sites - Grid Supply Points",
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Grid Supply Points\u003Cbr\u003E\u003C/p\u003E",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Site",
+            "Substation"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:15:03+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:15:03+00:00",
+          "metadata_processed": "2026-04-25T14:15:03.293000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-5.76817866414785, 55.0425004307181],
+                  [-7.24498492665589, 55.0425004307181],
+                  [-7.24498492665589, 54.3700320320204],
+                  [-5.76817866414785, 54.3700320320204],
+                  [-5.76817866414785, 55.0425004307181]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 10,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIE Networks - Assets - Sites - Grid Supply Points",
+          "alternative": null,
+          "subject": null,
+          "description": "\u003Cp\u003ENorthern Ireland Electricity Networks (NIEN) - List of Grid Supply Points\u003Cbr\u003E\u003C/p\u003E",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:15:03+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    },
+    {
+      "visibility": "domain",
+      "dataset_id": "nienetworksassetsall",
+      "dataset_uid": "da_qko93h",
+      "has_records": true,
+      "features": [
+        "analyze",
+        "geo"
+      ],
+      "attachments": [],
+      "alternative_exports": [],
+      "data_visible": false,
+      "fields": [
+        {
+          "name": "license_area",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "License Area",
+          "type": "text"
+        },
+        {
+          "name": "asset_description",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Asset Description",
+          "type": "text"
+        },
+        {
+          "name": "asset_number",
+          "description": null,
+          "annotations": {
+            "id": true,
+            "sortable": true,
+            "facetsort": "-count"
+          },
+          "label": "Asset Number",
+          "type": "text"
+        },
+        {
+          "name": "voltage",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Voltage",
+          "type": "text"
+        },
+        {
+          "name": "asset_type",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Asset Type",
+          "type": "text"
+        },
+        {
+          "name": "year_of_manufacture",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Year of Manufacture",
+          "type": "text"
+        },
+        {
+          "name": "serial_number",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facetsort": "-count"
+          },
+          "label": "Serial Number",
+          "type": "text"
+        },
+        {
+          "name": "site_functional_location",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facetsort": "-count"
+          },
+          "label": "Site Functional Location",
+          "type": "text"
+        },
+        {
+          "name": "site_name",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Name",
+          "type": "text"
+        },
+        {
+          "name": "site_street",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site Street",
+          "type": "text"
+        },
+        {
+          "name": "site_town",
+          "description": null,
+          "annotations": {
+            "facet": true,
+            "sortable": true,
+            "disjunctive": true
+          },
+          "label": "Site Town",
+          "type": "text"
+        },
+        {
+          "name": "site_county",
+          "description": null,
+          "annotations": {
+            "sortable": true,
+            "facet": true,
+            "disjunctive": true
+          },
+          "label": "Site County",
+          "type": "text"
+        },
+        {
+          "name": "site_postcode",
+          "description": null,
+          "annotations": {
+            "sortable": true
+          },
+          "label": "Site PostCode",
+          "type": "text"
+        },
+        {
+          "name": "site_longitude_x_irish_grid",
+          "description": null,
+          "annotations": {
+            "facetsort": "-count"
+          },
+          "label": "Site Longitude (X) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_latitude_y_irish_grid",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site Latitude (Y) - Irish Grid",
+          "type": "double"
+        },
+        {
+          "name": "site_geopoint",
+          "description": null,
+          "annotations": {
+
+          },
+          "label": "Site_geopoint",
+          "type": "geo_point_2d"
+        }
+      ],
+      "metas": {
+        "default": {
+          "title": "NIENetworksAssetsAll",
+          "description": "Northern Ireland Electricity Networks (NIEN) - List of combined assets",
+          "theme": [
+            "NIE Networks Datasets"
+          ],
+          "keyword": [
+            "Asset"
+          ],
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "language": "en",
+          "metadata_languages": [
+            "en"
+          ],
+          "timezone": "Europe/London",
+          "modified": "2026-04-25T14:16:31+00:00",
+          "modified_updates_on_metadata_change": true,
+          "modified_updates_on_data_change": true,
+          "data_processed": "2026-04-25T14:16:31+00:00",
+          "metadata_processed": "2026-04-25T14:16:31.279000+00:00",
+          "geographic_reference": [
+            "uk_40_n92000002"
+          ],
+          "geographic_reference_auto": false,
+          "territory": [
+            "Northern Ireland"
+          ],
+          "geometry_types": [
+            "Point"
+          ],
+          "bbox": {
+            "type": "Feature",
+            "geometry": {
+              "coordinates": [
+                [
+                  [-4.70736810006201, 55.301595912315],
+                  [-10.8595096785575, 55.301595912315],
+                  [-10.8595096785575, 51.2225892115384],
+                  [-4.70736810006201, 51.2225892115384],
+                  [-4.70736810006201, 55.301595912315]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "properties": {
+
+            }
+          },
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "references": null,
+          "records_count": 117757,
+          "attributions": null,
+          "source_domain": null,
+          "source_domain_title": null,
+          "source_domain_address": null,
+          "source_dataset": null,
+          "shared_catalog": null,
+          "federated": false,
+          "parent_domain": null,
+          "update_frequency": null
+        },
+        "dublin-core": {
+          "title": "NIENetworksAssetsAll",
+          "alternative": null,
+          "subject": null,
+          "description": "Northern Ireland Electricity Networks (NIEN) - List of combined assets",
+          "abstract": null,
+          "tableOfContent": null,
+          "type": null,
+          "language": null,
+          "coverage": null,
+          "spatial": null,
+          "temporal_start": null,
+          "temporal_end": null,
+          "relation": null,
+          "source": null,
+          "replaces": null,
+          "references": null,
+          "requires": null,
+          "conformsTo": null,
+          "hasFormat": null,
+          "hasPart": null,
+          "hasVersion": null,
+          "isFormatOf": null,
+          "isPartOf": null,
+          "isVersionOf": null,
+          "isReferencedBy": null,
+          "isReplacedBy": null,
+          "isRequiredBy": null,
+          "contributor": null,
+          "creator": null,
+          "publisher": "Northern Ireland Electricity Networks Limited",
+          "rights": null,
+          "accessRights": null,
+          "license": "CC BY 4.0",
+          "date_start": null,
+          "date_end": null,
+          "available_start": null,
+          "available_end": null,
+          "created": null,
+          "dateAccepted": null,
+          "dateCopyrighted": null,
+          "dateSubmitted": null,
+          "issued": null,
+          "modified": "2026-04-25T14:16:31+00:00",
+          "valid_start": null,
+          "valid_end": null,
+          "format": null,
+          "extent": null,
+          "medium": null,
+          "identifier": null,
+          "bibliographicCitation": null,
+          "rightsHolder": null,
+          "accrualMethod": null,
+          "accrualPeriodicity": null,
+          "accrualPolicy": null,
+          "audience": null,
+          "educationLevel": null,
+          "instructionalMethod": null,
+          "mediator": null,
+          "provenance": null
+        }
+      }
+    }
+  ]
+}
