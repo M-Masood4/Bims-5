@@ -1,6 +1,7 @@
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
+const childProcess = require("child_process");
 const scenarioStudio = require("./lib/scenario-studio");
 
 const rootDir = __dirname;
@@ -785,6 +786,18 @@ function loadManifest() {
   return JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 }
 
+function currentBranch() {
+  try {
+    return childProcess.execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+      cwd: rootDir,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+  } catch (_error) {
+    return process.env.RENDER_GIT_BRANCH || process.env.BRANCH || "unknown";
+  }
+}
+
 function safeResolve(baseDir, requestPath) {
   const cleanPath = decodeURIComponent(requestPath.split("?")[0]);
   const resolved = path.resolve(baseDir, cleanPath.replace(/^\/+/, ""));
@@ -866,7 +879,7 @@ const server = http.createServer((req, res) => {
   if (pathname === "/api/health") {
     sendJson(res, 200, {
       ok: true,
-      branch: "2016to2026",
+      branch: currentBranch(),
       manifest: fs.existsSync(manifestPath),
       scenarioStudio: true,
       geminiConfigured: Boolean(geminiKey())
