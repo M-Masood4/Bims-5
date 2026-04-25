@@ -1,0 +1,17 @@
+$ tsc && vite build
+NODE_ENV=production is not supported in the .env file. Only NODE_ENV=development is supported to create a development build of your project. If you need to set process.env.NODE_ENV, you can set it in the Vite config instead.
+rolldown-vite v7.2.5 building client environment for production...
+[2Ktransforming...✓ 3808 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           0.40 kB │ gzip:   0.27 kB
+dist/assets/index-DCgFiKir.css           66.46 kB │ gzip:  11.13 kB
+dist/assets/webgl-device-C66Vufrk.js      0.06 kB │ gzip:   0.08 kB
+dist/assets/mapbox-gl-B0Q3pqib.js     1,643.48 kB │ gzip: 446.58 kB
+dist/assets/index-B1amPJF2.js         1,685.65 kB │ gzip: 488.60 kB
+[plugin builtin:reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 500ms

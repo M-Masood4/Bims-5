@@ -1,6 +1,7 @@
 import Papa from "papaparse";
 import { ungzip } from "pako";
 import { ENDPOINTS, type EndpointKey } from "./endpoints";
+import { chunkRunBuildings } from "./buildings-payload";
 import type { StartRunParams } from "./raw-types";
 import type { LngLatBounds } from "../types";
 
@@ -96,16 +97,18 @@ export function buildStartRunForm(params: StartRunParams): FormData {
   const form = new FormData();
   form.append("networkFile", params.networkFile);
   if (params.buildings) {
-    const buildings = params.buildings.map((b) => ({
-      id: b.id,
-      osm_id: 0,
-      position: b.position,
-      geometry: b.geometry || [b.position],
-      type: b.type,
-      tags: b.tags,
-      hotspot: b.hotspot,
-    }));
-    form.append("buildings", JSON.stringify(buildings));
+    const buildingsChunks = chunkRunBuildings(params.buildings);
+    form.append("buildingsTransport", "file-parts-v1");
+    form.append("buildingsSchemaVersion", "1");
+    form.append("buildingsPartCount", buildingsChunks.length.toString());
+    buildingsChunks.forEach((chunk, index) => {
+      form.append(
+        "buildingsFiles",
+        new File([JSON.stringify(chunk)], `buildings-part-${index}.json`, {
+          type: "application/json",
+        }),
+      );
+    });
   }
   if (params.bounds) form.append("bounds", JSON.stringify(params.bounds));
   if (params.iterations !== undefined)

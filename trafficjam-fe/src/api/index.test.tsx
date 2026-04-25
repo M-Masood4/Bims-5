@@ -1,6 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { decodeEventStream, mapNetworkResponse } from "./decoders";
 import { api } from "./client";
+import {
+  RUN_BUILDINGS_PART_BYTE_BUDGET,
+  RUN_BUILDINGS_LIMIT_ERROR,
+  chunkRunBuildingRecords,
+  chunkRunBuildings,
+  serializeRunBuilding,
+} from "./buildings-payload";
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;
@@ -70,7 +77,7 @@ describe("decodeEventStream", () => {
   it("handles chunked delivery", async () => {
     const event = { time: 100, type: "entered link", vehicle: "v1", link: "l1" };
     const full = `data: ${JSON.stringify(event)}\n`;
-    const mid = Math.floor(full.length / 2);
+    const mid = Math.floor(new TextEncoder().encode(full).byteLength / 2);
 
     const stream = new ReadableStream({
       start(controller) {
@@ -111,10 +118,144 @@ describe("api.startRun", () => {
     expect(result).toEqual({ scenarioId: "s1", runId: "r1", simulationId: "sim1", status: "RUNNING" });
   });
 
+  it("sends chunked buildings file parts and preserves scalar fields", async () => {
+    const raw = { scenario_id: "s1", run_id: "r1", simulation_id: "sim1", status: "RUNNING" };
+    mockFetch.mockResolvedValueOnce(jsonResponse(raw));
+
+    const file = new File(["<network/>"], "network.xml", { type: "text/xml" });
+    const buildings = [
+      {
+        id: "b1",
+        position: [10.5, 52.3] as [number, number],
+        geometry: [[10.6, 52.4]] as [number, number][],
+        type: "residential" as const,
+        tags: { name: "Block A", building: "yes" },
+        hotspot: { label: "HQ", trafficPercentage: 42, agentTypes: ["car"] },
+      },
+      {
+        id: "b2",
+        position: [10.7, 52.5] as [number, number],
+        geometry: [[10.8, 52.6]] as [number, number][],
+        type: "supermarket" as const,
+        tags: { name: "Block B", building: "yes" },
+      },
+    ];
+
+    await api.startRun({
+      scenarioId: "s1",
+      networkFile: file,
+      buildings,
+      bounds: { north: 1, south: 0, east: 2, west: 3 },
+      iterations: 10,
+      randomSeed: 123,
+      note: "hello",
+    });
+
+    const [, init] = mockFetch.mock.calls[0];
+    const body = init.body as FormData;
+    const chunks = chunkRunBuildings(buildings);
+
+    expect(body.get("networkFile")).toBeInstanceOf(File);
+    expect(body.get("buildings")).toBeNull();
+    expect(body.get("buildingsTransport")).toBe("file-parts-v1");
+    expect(body.get("buildingsSchemaVersion")).toBe("1");
+    expect(body.get("buildingsPartCount")).toBe(String(chunks.length));
+    expect(body.get("bounds")).toBe(JSON.stringify({ north: 1, south: 0, east: 2, west: 3 }));
+    expect(body.get("iterations")).toBe("10");
+    expect(body.get("randomSeed")).toBe("123");
+    expect(body.get("note")).toBe("hello");
+
+    const files = body.getAll("buildingsFiles");
+    expect(files).toHaveLength(chunks.length);
+
+    for (let index = 0; index < files.length; index += 1) {
+      const part = files[index];
+      expect(part).toBeInstanceOf(File);
+      expect((part as File).name).toBe(`buildings-part-${index}.json`);
+      expect((part as File).type).toBe("application/json");
+      expect(await (part as Blob).text()).toBe(JSON.stringify(chunks[index]));
+    }
+  });
+
   it("throws on non-ok response", async () => {
     mockFetch.mockResolvedValueOnce(new Response(null, { status: 500 }));
     const file = new File([""], "network.xml");
     await expect(api.startRun({ scenarioId: "s1", networkFile: file })).rejects.toThrow("500");
+  });
+});
+
+describe("run building payload utilities", () => {
+  const makeBuilding = (id: string, size = 0) => ({
+    id,
+    position: [10.5, 52.3] as [number, number],
+    geometry: [[10.6, 52.4]] as [number, number][],
+    type: "residential" as const,
+    tags: {
+      name: size > 0 ? `${id}-${"x".repeat(size)}` : id,
+      building: "yes",
+      shop: undefined as unknown as string,
+      amenity: undefined as unknown as string,
+    },
+    hotspot: { label: "HQ", trafficPercentage: 42, agentTypes: ["car"] },
+  });
+
+  it("serializes run buildings without geometry or osm_id", () => {
+    const serialized = serializeRunBuilding(makeBuilding("b1"));
+
+    expect(serialized).toEqual({
+      id: "b1",
+      position: [10.5, 52.3],
+      type: "residential",
+      tags: {
+        name: "b1",
+        building: "yes",
+        shop: undefined,
+        amenity: undefined,
+      },
+      hotspot: { label: "HQ", trafficPercentage: 42, agentTypes: ["car"] },
+    });
+    expect(serialized).not.toHaveProperty("geometry");
+    expect(serialized).not.toHaveProperty("osm_id");
+  });
+
+  it("preserves building order when chunking", () => {
+    const records = chunkRunBuildings([makeBuilding("b1"), makeBuilding("b2"), makeBuilding("b3")]);
+    expect(records.flat().map((record) => record.id)).toEqual(["b1", "b2", "b3"]);
+  });
+
+  it("keeps each chunk within the byte budget and is deterministic", () => {
+    const buildings = [
+      makeBuilding("b1", 75000),
+      makeBuilding("b2", 75000),
+      makeBuilding("b3", 75000),
+      makeBuilding("b4", 75000),
+      makeBuilding("b5", 75000),
+      makeBuilding("b6", 75000),
+      makeBuilding("b7", 75000),
+      makeBuilding("b8", 75000),
+      makeBuilding("b9", 75000),
+      makeBuilding("b10", 75000),
+      makeBuilding("b11", 75000),
+      makeBuilding("b12", 75000),
+      makeBuilding("b13", 75000),
+    ];
+
+    const chunksA = chunkRunBuildings(buildings);
+    const chunksB = chunkRunBuildingRecords(buildings.map(serializeRunBuilding));
+
+    expect(chunksA).toEqual(chunksB);
+    expect(chunksA.length).toBeGreaterThan(1);
+
+    for (const chunk of chunksA) {
+      const bytes = new TextEncoder().encode(JSON.stringify(chunk)).byteLength;
+      expect(bytes).toBeLessThanOrEqual(RUN_BUILDINGS_PART_BYTE_BUDGET);
+    }
+  });
+
+  it("throws the exact multipart limit error for a single impossible record", () => {
+    const oversized = makeBuilding("b1", 1200000);
+
+    expect(() => chunkRunBuildings([oversized])).toThrow(RUN_BUILDINGS_LIMIT_ERROR);
   });
 });
 
@@ -307,4 +448,3 @@ describe("api.fetchNetwork", () => {
     expect(network.nodes.get("1")).toEqual({ id: "1", position: [52.3, 10.5], connectionCount: 2 });
   });
 });
-

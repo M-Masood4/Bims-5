@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import uuid
 from typing import Optional
@@ -10,13 +11,22 @@ from sse_starlette import EventSourceResponse
 
 from adapters.simengine import SimulationEnginePort
 from agents.config import AgentConfig
-from agents.plans.population import generate_plans_xml, parse_buildings_and_bounds
+from agents.plans.population import (
+    generate_plans_xml,
+    parse_bounds,
+    parse_buildings_and_bounds,
+    reassemble_run_buildings,
+)
 from consumers import EventConsumer
 from db import RunRepository, RunStatus, ScenarioRepository
 from dependencies import get_run_repo, get_scenario_repo, get_sim_engine
 
 router = APIRouter(prefix="/scenarios", tags=["runs"])
 logger = logging.getLogger(__name__)
+
+BUILDINGS_PART_HARD_LIMIT_BYTES = 1048576
+BUILDINGS_TRANSPORT_FILE_PARTS_V1 = "file-parts-v1"
+BUILDINGS_SCHEMA_VERSION = 1
 
 
 @router.get(
@@ -84,7 +94,31 @@ async def start_run(
     ),
     buildings: Optional[str] = Form(
         None,
-        description="JSON array of building objects used for agent plan generation",
+        description=(
+            "Legacy compatibility fallback. JSON array of building objects used for "
+            "agent plan generation. Prefer the file-parts-v1 multipart transport via "
+            "buildingsFiles for any payload approaching 1MB."
+        ),
+    ),
+    buildingsFiles: list[UploadFile] = File(
+        default_factory=list,
+        description=(
+            "Repeated JSON file parts for the file-parts-v1 transport. Each part must "
+            "be <= 1048576 bytes. Filenames should be `buildings-part-<index>.json` so "
+            "ordering is deterministic on reassembly."
+        ),
+    ),
+    buildingsTransport: Optional[str] = Form(
+        None,
+        description="Transport identifier for buildings payload. Use `file-parts-v1` for the new contract.",
+    ),
+    buildingsSchemaVersion: Optional[int] = Form(
+        None,
+        description="Schema version for the buildings payload contract. Currently must be 1 when transport is file-parts-v1.",
+    ),
+    buildingsPartCount: Optional[int] = Form(
+        None,
+        description="Number of `buildingsFiles` parts the client sent. Must equal len(buildingsFiles) when transport is file-parts-v1.",
     ),
     bounds: Optional[str] = Form(
         None,
@@ -102,6 +136,41 @@ async def start_run(
     except ValueError:
         raise HTTPException(400, "Invalid scenario ID")
 
+    prebuilt_buildings: Optional[list] = None
+
+    if buildingsTransport == BUILDINGS_TRANSPORT_FILE_PARTS_V1:
+        if buildingsSchemaVersion != BUILDINGS_SCHEMA_VERSION:
+            raise HTTPException(400, "Unsupported buildingsSchemaVersion")
+        if buildingsPartCount is None or buildingsPartCount != len(buildingsFiles):
+            raise HTTPException(
+                400, "buildingsPartCount does not match buildingsFiles count"
+            )
+
+        validated_parts: list[tuple[str, bytes]] = []
+        for f in buildingsFiles:
+            content = await f.read()
+            if len(content) > BUILDINGS_PART_HARD_LIMIT_BYTES:
+                raise HTTPException(
+                    413, "buildingsFiles part exceeds 1048576 bytes"
+                )
+            validated_parts.append((f.filename or "", content))
+
+        try:
+            prebuilt_buildings = reassemble_run_buildings(validated_parts)
+        except Exception as e:
+            raise HTTPException(400, f"Invalid buildingsFiles payload: {e}")
+    elif buildingsTransport is not None:
+        raise HTTPException(400, "Unsupported buildingsTransport")
+
+    if prebuilt_buildings is None and (not buildings or not bounds):
+        raise HTTPException(
+            400, "Buildings and bounds are required for plan generation."
+        )
+    if prebuilt_buildings is not None and not bounds:
+        raise HTTPException(
+            400, "Buildings and bounds are required for plan generation."
+        )
+
     run = await run_repo.create_run(
         parsed_scenario_id,
         iterations=iterations,
@@ -109,19 +178,17 @@ async def start_run(
         note=note,
     )
 
-    if not buildings or not bounds:
-        await run_repo.update_status(run.id, RunStatus.FAILED)
-        raise HTTPException(
-            400, "Buildings and bounds are required for plan generation."
-        )
-
     scenario = await scenario_repo.get_scenario(parsed_scenario_id)
     plan_params = (scenario.plan_params or {}) if scenario else {}
     agent_config = AgentConfig.from_plan_params(plan_params)
     max_agents = plan_params.get("maxAgents", 1000)
 
     try:
-        buildings_list, bounds_dict = parse_buildings_and_bounds(buildings, bounds)
+        if prebuilt_buildings is not None:
+            buildings_list = prebuilt_buildings
+            bounds_dict = parse_bounds(bounds) if bounds else {}
+        else:
+            buildings_list, bounds_dict = parse_buildings_and_bounds(buildings, bounds)
     except Exception as e:
         await run_repo.update_status(run.id, RunStatus.FAILED)
         raise HTTPException(400, f"Invalid buildings or bounds data: {e}")

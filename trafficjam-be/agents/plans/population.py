@@ -1,5 +1,6 @@
 import json
 from io import StringIO
+from typing import Iterable
 
 from agents.agent_creation import create_agents_from_network
 from agents.config import AgentConfig
@@ -20,6 +21,62 @@ def parse_buildings_and_bounds(
         "west": bounds.get("west", bounds.get("minLng")),
     }
     return buildings, bounds
+
+
+def reassemble_run_buildings(
+    parts: Iterable[tuple[str, bytes]],
+) -> list[Building]:
+    """Reassemble file-parts-v1 building parts into Building models.
+
+    Each part is the bytes of a JSON array of run-building records shaped
+    `{id, position, type, tags, hotspot}`. Parts are sorted by filename so
+    the deterministic frontend order is preserved. Backend Building models
+    are reconstructed with `osm_id=0` and `geometry=[position]` because the
+    plan generator does not read building geometry; this keeps simulation
+    behavior unchanged while staying under the multipart byte ceiling.
+    """
+    ordered = sorted(parts, key=lambda item: item[0])
+    records: list[dict] = []
+    for filename, content in ordered:
+        try:
+            decoded = json.loads(content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            raise ValueError(f"Invalid JSON in {filename or '<unnamed>'}: {e}") from e
+        if not isinstance(decoded, list):
+            raise ValueError(
+                f"Building part {filename or '<unnamed>'} must be a JSON array"
+            )
+        records.extend(decoded)
+
+    buildings: list[Building] = []
+    for index, raw in enumerate(records):
+        if not isinstance(raw, dict):
+            raise ValueError(f"Building record at index {index} must be an object")
+        position = raw.get("position")
+        if not isinstance(position, (list, tuple)) or len(position) != 2:
+            raise ValueError(
+                f"Building record at index {index} missing valid `position`"
+            )
+        merged = {
+            "osm_id": raw.get("osm_id", 0),
+            "geometry": raw.get("geometry") or [tuple(position)],
+            **raw,
+        }
+        merged["position"] = tuple(position)
+        merged["geometry"] = [tuple(p) for p in merged["geometry"]]
+        buildings.append(Building.model_validate(merged))
+
+    return buildings
+
+
+def parse_bounds(bounds_json: str) -> dict:
+    bounds = json.loads(bounds_json)
+    return {
+        "north": bounds.get("north", bounds.get("maxLat")),
+        "south": bounds.get("south", bounds.get("minLat")),
+        "east": bounds.get("east", bounds.get("maxLng")),
+        "west": bounds.get("west", bounds.get("minLng")),
+    }
 
 
 def generate_plans_xml(

@@ -1,0 +1,4 @@
+Command: bunx vitest run src/api/index.test.tsx
+Result: 1 file passed, 24 tests passed.
+Command: lsp_diagnostics on changed files
+Result: no diagnostics found.

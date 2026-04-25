@@ -1,0 +1,55 @@
+{
+  "active_plan": "/Users/james/Documents/Hackathons/Bims-5/.sisyphus/plans/mapbox-part-size-limit.md",
+  "started_at": "2026-04-25T18:34:16.962Z",
+  "session_ids": [
+    "ses_23a49e1c8ffeEPNBBPbXuHVoZm",
+    "ses_23a0ed43bffeMUlCivjuaWtGFJ",
+    "ses_23a0ed433ffel5A2n3pBVXAMRU",
+    "ses_23a0ed432ffeH0XicfRYrStBbm"
+  ],
+  "plan_name": "mapbox-part-size-limit",
+  "session_origins": {
+    "ses_23a49e1c8ffeEPNBBPbXuHVoZm": "direct",
+    "ses_23a0ed43bffeMUlCivjuaWtGFJ": "appended",
+    "ses_23a0ed433ffel5A2n3pBVXAMRU": "appended",
+    "ses_23a0ed432ffeH0XicfRYrStBbm": "appended"
+  },
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "Add a run-specific building payload serializer and byte-budget utility",
+      "session_id": "ses_23a0aa5edffe5DYbqPSfAi1bf0",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-25T18:49:27.806Z"
+    },
+    "todo:2": {
+      "task_key": "todo:2",
+      "task_label": "2",
+      "task_title": "Replace the legacy `buildings` text field with deterministic JSON file parts",
+      "session_id": "ses_23a0234bfffeap4MDLdz8mhRuM",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-25T18:56:09.457Z"
+    },
+    "todo:3": {
+      "task_key": "todo:3",
+      "task_label": "3",
+      "task_title": "Surface launch-time payload errors cleanly in the simulation dialog",
+      "session_id": "ses_239fe5c44ffe6xEG6CkE0n71Ot",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-low",
+      "updated_at": "2026-04-25T19:01:22.749Z"
+    },
+    "todo:4": {
+      "task_key": "todo:4",
+      "task_label": "4",
+      "task_title": "Add the new backend multipart contract and validate it before run creation",
+      "session_id": "ses_239e66683ffeBviHLQy0IBhaC3",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-25T19:25:17.159Z"
+    }
+  }
+}
