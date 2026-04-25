@@ -1,6 +1,7 @@
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
+const scenarioStudio = require("./lib/scenario-studio");
 
 const rootDir = __dirname;
 const webDir = path.join(rootDir, "web");
@@ -63,7 +64,13 @@ function readRequestBody(req, limitBytes = 64_000) {
 }
 
 function geminiKey() {
-  return process.env.GEMINI_API_KEY || process.env.gemini_api || process.env.GEMINI_API || process.env.GOOGLE_API_KEY || "";
+  return process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
+    process.env.GEMINI_KEY ||
+    process.env.gemini_api ||
+    process.env.GEMINI_API ||
+    process.env.GOOGLE_API_KEY ||
+    "";
 }
 
 function fallbackCommitExplanation(payload) {
@@ -81,6 +88,241 @@ function extractGeminiText(payload) {
     .map((part) => part.text || "")
     .join("\n")
     .trim();
+}
+
+function extractJsonFromText(text) {
+  const raw = String(text || "").trim();
+  if (!raw) throw new Error("Gemini returned an empty response.");
+  try {
+    return JSON.parse(raw);
+  } catch (_error) {
+    const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (fenced) return JSON.parse(fenced[1]);
+    const startObject = raw.indexOf("{");
+    const startArray = raw.indexOf("[");
+    const start = startObject === -1 ? startArray : startArray === -1 ? startObject : Math.min(startObject, startArray);
+    const end = raw.lastIndexOf(raw[start] === "[" ? "]" : "}");
+    if (start >= 0 && end > start) return JSON.parse(raw.slice(start, end + 1));
+    throw new Error("Gemini did not return valid JSON.");
+  }
+}
+
+async function readJsonRequest(req, limitBytes = 512_000) {
+  const raw = await readRequestBody(req, limitBytes);
+  return raw ? JSON.parse(raw) : {};
+}
+
+async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutputTokens = 1400 }) {
+  const apiKey = geminiKey();
+  if (!apiKey) {
+    const error = new Error("Gemini API key is required for Scenario Studio. Add GEMINI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY to .env.local.");
+    error.statusCode = 503;
+    throw error;
+  }
+  const model = process.env.GEMINI_SCENARIO_MODEL || process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-goog-api-key": apiKey
+    },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature,
+        maxOutputTokens,
+        responseMimeType: "application/json",
+        thinkingConfig: { thinkingBudget: 0 }
+      }
+    })
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    const error = new Error(`${agentName} Gemini call failed with ${response.status}${detail ? `: ${detail.slice(0, 240)}` : ""}`);
+    error.statusCode = 502;
+    throw error;
+  }
+  const payload = await response.json();
+  const text = extractGeminiText(payload);
+  try {
+    return { model, json: extractJsonFromText(text), rawText: text };
+  } catch (parseError) {
+    const snippet = text ? ` Response started: ${text.replace(/\s+/g, " ").slice(0, 180)}` : "";
+    const error = new Error(`${agentName} did not return valid JSON: ${parseError.message}.${snippet}`);
+    error.statusCode = 502;
+    throw error;
+  }
+}
+
+function compactBuilding(building) {
+  return {
+    location: building.location,
+    config: building.config,
+    delivery: building.delivery,
+    validation: building.validation
+  };
+}
+
+function compactSiteContext(siteContext) {
+  return {
+    validation: siteContext.validation,
+    nearestCellId: siteContext.nearestCellId,
+    deprivationWeight: siteContext.deprivationWeight,
+    baselineMetrics: siteContext.baselineMetrics,
+    nearbyTransport: siteContext.nearbyTransport,
+    nearbyServices: siteContext.nearbyServices,
+    greenContext: siteContext.greenContext,
+    floodOrWaterContext: siteContext.floodOrWaterContext
+  };
+}
+
+function compactBranches(branches) {
+  return (branches || []).map((branch) => ({
+    name: branch.name,
+    objective: branch.objective,
+    description: branch.description,
+    metrics: branch.metrics,
+    diffFromBaseline: branch.diffFromBaseline,
+    score: branch.score,
+    recommended: branch.recommended,
+    interventions: (branch.interventions || []).map((item) => ({
+      type: item.type || item.interventionType,
+      mode: item.mode,
+      size: item.size || item.config?.size,
+      buildingType: item.buildingType || item.building_type || item.config?.buildingType,
+      affordabilityMix: item.affordabilityMix || item.affordability_mix || item.config?.affordabilityMix,
+      rationale: item.rationale
+    }))
+  }));
+}
+
+function requireKeys(object, keys, label) {
+  for (const key of keys) {
+    if (object?.[key] === undefined) throw new Error(`${label} missing required key: ${key}`);
+  }
+  return object;
+}
+
+function coordinatorPrompt(payload, building) {
+  return [
+    "You are the Coordinator Agent for Replay Belfast's 2036 Scenario Studio.",
+    "Your job is to orchestrate a multi-agent city simulation workflow.",
+    "Rules:",
+    "- Do not calculate final metrics.",
+    "- Do not invent numeric impacts.",
+    "- Decide which specialist agents are needed.",
+    "- Return only structured JSON.",
+    "- Prioritise transparent, auditable planning.",
+    "Return this JSON shape:",
+    "{\"next_steps\":[\"validate_site\",\"gather_site_context\",\"generate_scenario_variants\",\"run_simulations\",\"critique_results\",\"summarise\"],\"required_agents\":[\"Site Agent\",\"Mobility Agent\",\"Economy Agent\",\"Energy Agent\",\"Fairness Agent\",\"Environment Agent\",\"Critic Agent\",\"Reporter Agent\"],\"active_scenario\":\"Housing Growth\"}",
+    "Input:",
+    JSON.stringify({
+      event: "building_dropped",
+      active_scenario: payload.active_scenario || payload.activeScenario || "Housing Growth",
+      building: compactBuilding(building)
+    })
+  ].join("\n");
+}
+
+function siteAgentPrompt(building, siteContext) {
+  return [
+    "You are the Site Agent for Replay Belfast.",
+    "Use the provided deterministic validation and site context. Do not override invalid constraints.",
+    "Return only JSON with: site_status, site_label, warnings, positive_factors, confidence.",
+    "Input:",
+    JSON.stringify({
+      building: compactBuilding(building),
+      site_context: compactSiteContext(siteContext)
+    })
+  ].join("\n");
+}
+
+function variantPrompt(building, siteContext, specialistSeeds = []) {
+  return [
+    "You are the Scenario Variant Agent.",
+    "Given a proposed building intervention in Belfast, create 5-6 executable scenario branches:",
+    "1. User Proposal",
+    "2. Traffic-Safe Variant",
+    "3. Jobs-Optimised Variant",
+    "4. Fairness-First Variant",
+    "5. Green-Mitigation Variant",
+    "6. Optional Balanced branch",
+    "Rules:",
+    "- Do not create final impact numbers.",
+    "- Gemini decides what to test; the deterministic simulation engine calculates impacts later.",
+    "- Each branch must be executable by the deterministic simulation engine.",
+    "- Each branch must contain only supported intervention types: building, mobility_corridor, green_corridor, opportunity_hub.",
+    "- Include assumptions clearly.",
+    "- Return only JSON.",
+    "Schema:",
+    "{\"scenario_variants\":[{\"branchName\":\"Original Housing Proposal\",\"objective\":\"user_proposal|traffic_mitigation|jobs_optimised|fairness_first|green_mitigation|balanced\",\"description\":\"short\",\"interventions\":[{\"type\":\"building|mobility_corridor|green_corridor|opportunity_hub\",\"size\":\"small|medium|large|custom\",\"buildingType\":\"apartments|mixed_use|office|community\",\"affordabilityMix\":\"market|affordable|social|student\",\"mode\":\"transit_first\",\"radius_m\":700,\"rationale\":\"short\"}],\"assumptions\":[\"short\"]}]}",
+    "Input:",
+    JSON.stringify({
+      building: compactBuilding(building),
+      site_context: compactSiteContext(siteContext),
+      specialist_context: specialistSeeds
+    })
+  ].join("\n");
+}
+
+function specialistPrompt(building, siteContext) {
+  return [
+    "You are a panel of specialist Gemini agents for Replay Belfast.",
+    "Agents: Population Agent, Mobility Agent, Economy Agent, Energy Agent, Environment Agent, Fairness Agent.",
+    "Use only the building and site context. Do not invent final simulation metrics.",
+    "For each agent, return a short structured recommendation that can inform scenario branches.",
+    "Return only JSON with this shape:",
+    "{\"agents\":[{\"agent\":\"Mobility Agent\",\"risk\":\"low|medium|medium-high|high\",\"opportunity\":\"low|medium|high\",\"reason\":\"short\",\"recommended_variant\":{}}]}",
+    "Input:",
+    JSON.stringify({
+      building: compactBuilding(building),
+      site_context: compactSiteContext(siteContext)
+    })
+  ].join("\n");
+}
+
+function criticPrompt(simulation, siteContext) {
+  return [
+    "You are the Simulation Critic Agent.",
+    "You receive deterministic simulation outputs for several Belfast 2036 branches.",
+    "Your job:",
+    "- Identify weak assumptions.",
+    "- Flag uncertain or overconfident claims.",
+    "- Recommend which branch is most balanced.",
+    "- Decide if human planner review is required.",
+    "Rules:",
+    "- Never change metric values.",
+    "- Never invent new metrics.",
+    "- Explain uncertainty clearly.",
+    "Return only JSON with this shape:",
+    "{\"confidenceLabel\":\"low|medium|medium-high|high\",\"humanReviewRequired\":true,\"warnings\":[\"short\"],\"unsupportedClaims\":[\"short\"],\"recommendedBranch\":\"branch name\",\"recommendations\":[\"short\"]}",
+    "Input:",
+    JSON.stringify({
+      site_context: compactSiteContext(siteContext),
+      branches: compactBranches(simulation.branches),
+      recommended_by_score: simulation.recommendedBranch
+    })
+  ].join("\n");
+}
+
+function reporterPrompt(simulation, critic) {
+  return [
+    "You are the Reporter Agent for Replay Belfast.",
+    "Turn deterministic simulation results into a clear explanation for planners and residents.",
+    "Rules:",
+    "- Use only provided metrics.",
+    "- Do not invent numbers.",
+    "- Produce short city commits.",
+    "- Explain who benefits and what trade-offs remain.",
+    "Return only JSON with this shape:",
+    "{\"headline\":\"short\",\"summary\":\"short\",\"city_commits\":[\"+ short\",\"! short\"],\"recommendations\":[\"short\"],\"warnings\":[\"short\"]}",
+    "Input:",
+    JSON.stringify({
+      branches: compactBranches(simulation.branches),
+      critic_notes: critic
+    })
+  ].join("\n");
 }
 
 async function handleGeminiCommitExplanation(req, res) {
@@ -145,6 +387,243 @@ async function handleGeminiCommitExplanation(req, res) {
   }
 }
 
+async function handleParseBuildingIntent(req, res) {
+  try {
+    const payload = await readJsonRequest(req);
+    const promptText = String(payload.prompt || "");
+    const gemini = await callGeminiJson({
+      agentName: "Building Intent Parser",
+      temperature: 0.15,
+      maxOutputTokens: 500,
+      prompt: [
+        "You are the building-intent parser for Replay Belfast.",
+        "Parse the user's request into one building intervention. Return only JSON.",
+        "Allowed size: small, medium, large, custom.",
+        "Allowed buildingType: apartments, mixed_use, office, community.",
+        "Allowed affordabilityMix: market, affordable, social, student.",
+        "Known Belfast places include Titanic Quarter, Cathedral Quarter, City Centre, Queen's Quarter, Waterfront, Belfast Harbour, Falls, Shankill, East Belfast.",
+        "Return shape:",
+        "{\"type\":\"building\",\"location_name\":\"Titanic Quarter\",\"size\":\"large\",\"buildingType\":\"apartments\",\"affordabilityMix\":\"affordable\"}",
+        "Prompt:",
+        promptText
+      ].join("\n")
+    });
+    const parsed = requireKeys(gemini.json, ["type", "size", "buildingType", "affordabilityMix"], "Building intent");
+    const known = scenarioStudio.parseBuildingIntentFallback(`${parsed.location_name || ""} ${promptText}`);
+    sendJson(res, 200, {
+      ok: true,
+      geminiRequired: true,
+      model: gemini.model,
+      type: "building",
+      location_name: parsed.location_name || known.location_name,
+      location: parsed.location || known.location || null,
+      size: parsed.size === "custom" || scenarioStudio.SIZE_PRESETS[parsed.size] ? parsed.size : "medium",
+      buildingType: scenarioStudio.TYPE_PRESETS[parsed.buildingType] ? parsed.buildingType : scenarioStudio.canonicalBuildingType(parsed.buildingType),
+      affordabilityMix: scenarioStudio.AFFORDABILITY_PRESETS[parsed.affordabilityMix] ? parsed.affordabilityMix : scenarioStudio.canonicalAffordability(parsed.affordabilityMix)
+    });
+  } catch (error) {
+    sendJson(res, error.statusCode || 502, {
+      ok: false,
+      geminiRequired: true,
+      error: "Could not parse building intent with Gemini",
+      detail: error.message
+    });
+  }
+}
+
+async function handleValidatePlacement(req, res) {
+  try {
+    const payload = await readJsonRequest(req);
+    const validation = scenarioStudio.validatePlacement(payload, rootDir);
+    const siteContext = scenarioStudio.getSiteContext({ ...payload, validation }, rootDir);
+    sendJson(res, validation.status === "invalid" ? 422 : 200, {
+      ...validation,
+      siteContext
+    });
+  } catch (error) {
+    sendJson(res, 400, { error: "Could not validate placement", detail: error.message });
+  }
+}
+
+async function handleGenerateBuildingVariants(req, res) {
+  try {
+    const payload = await readJsonRequest(req);
+    const building = scenarioStudio.createBuildingIntervention(payload.building || payload, rootDir);
+    const siteContext = payload.siteContext || scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation: building.validation }, rootDir);
+    const specialists = payload.specialistAgents || [];
+    const gemini = await callGeminiJson({
+      agentName: "Scenario Variant Agent",
+      temperature: 0.35,
+      maxOutputTokens: 3500,
+      prompt: variantPrompt(building, siteContext, specialists)
+    });
+    const variants = scenarioStudio.sanitizeScenarioVariants(gemini.json, building, rootDir, { strict: true });
+    sendJson(res, 200, {
+      ok: true,
+      geminiRequired: true,
+      model: gemini.model,
+      variants,
+      scenario_variants: variants
+    });
+  } catch (error) {
+    sendJson(res, error.statusCode || 502, {
+      ok: false,
+      geminiRequired: true,
+      error: "Could not generate scenario variants with Gemini",
+      detail: error.message
+    });
+  }
+}
+
+async function handleRunMultipleSimulations(req, res) {
+  try {
+    const payload = await readJsonRequest(req, 1_500_000);
+    if (!Array.isArray(payload.branches) && !Array.isArray(payload.variants)) {
+      sendJson(res, 400, {
+        error: "Simulation branches are required",
+        detail: "Call /api/agents/generate-building-variants or /api/scenario-studio/run so Gemini decides what to test before deterministic simulation runs."
+      });
+      return;
+    }
+    const result = scenarioStudio.runMultipleSimulations(payload, rootDir);
+    sendJson(res, 200, result);
+  } catch (error) {
+    sendJson(res, 400, { error: "Could not run deterministic simulations", detail: error.message });
+  }
+}
+
+async function handleExplainSimulation(req, res) {
+  try {
+    const payload = await readJsonRequest(req, 1_500_000);
+    const simulation = payload.simulation || { branches: payload.branches || [] };
+    const critic = payload.criticNotes || payload.critic || {};
+    const gemini = await callGeminiJson({
+      agentName: "Reporter Agent",
+      temperature: 0.3,
+      maxOutputTokens: 2500,
+      prompt: reporterPrompt(simulation, critic)
+    });
+    const report = requireKeys(gemini.json, ["headline", "summary", "city_commits", "recommendations"], "Reporter Agent response");
+    sendJson(res, 200, {
+      ok: true,
+      geminiRequired: true,
+      model: gemini.model,
+      ...report
+    });
+  } catch (error) {
+    sendJson(res, error.statusCode || 502, {
+      ok: false,
+      geminiRequired: true,
+      error: "Could not explain simulation with Gemini",
+      detail: error.message
+    });
+  }
+}
+
+async function handleScenarioStudioRun(req, res) {
+  try {
+    const payload = await readJsonRequest(req, 1_500_000);
+    const building = scenarioStudio.createBuildingIntervention(payload.building || payload, rootDir);
+    const validation = scenarioStudio.validatePlacement({ location: building.location, geometry: building.geometry, config: building.config }, rootDir);
+    const siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
+
+    if (validation.status === "invalid") {
+      sendJson(res, 422, {
+        ok: false,
+        geminiRequired: true,
+        error: "Placement is invalid",
+        validation,
+        siteContext
+      });
+      return;
+    }
+
+    const coordinatorGemini = await callGeminiJson({
+      agentName: "Scenario Coordinator Agent",
+      temperature: 0.15,
+      maxOutputTokens: 1200,
+      prompt: coordinatorPrompt(payload, building)
+    });
+    const coordinator = requireKeys(coordinatorGemini.json, ["next_steps", "required_agents"], "Coordinator Agent response");
+
+    const siteGemini = await callGeminiJson({
+      agentName: "Site Agent",
+      temperature: 0.2,
+      maxOutputTokens: 900,
+      prompt: siteAgentPrompt(building, siteContext)
+    });
+    const siteAgent = requireKeys(siteGemini.json, ["site_status", "site_label", "warnings", "positive_factors", "confidence"], "Site Agent response");
+
+    const specialistGemini = await callGeminiJson({
+      agentName: "Specialist Impact Agents",
+      temperature: 0.25,
+      maxOutputTokens: 3500,
+      prompt: specialistPrompt(building, siteContext)
+    });
+    const specialistAgents = Array.isArray(specialistGemini.json.agents) ? specialistGemini.json.agents : null;
+    if (!specialistAgents?.length) throw new Error("Specialist agents response must include an agents array.");
+
+    const variantGemini = await callGeminiJson({
+      agentName: "Scenario Variant Agent",
+      temperature: 0.35,
+      maxOutputTokens: 4000,
+      prompt: variantPrompt(building, siteContext, specialistAgents)
+    });
+    const variants = scenarioStudio.sanitizeScenarioVariants(variantGemini.json, building, rootDir, { strict: true });
+    const simulation = scenarioStudio.runMultipleSimulations({
+      scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
+      building,
+      variants
+    }, rootDir);
+
+    const criticGemini = await callGeminiJson({
+      agentName: "Simulation Critic Agent",
+      temperature: 0.2,
+      maxOutputTokens: 2500,
+      prompt: criticPrompt(simulation, siteContext)
+    });
+    const critic = requireKeys(criticGemini.json, ["confidenceLabel", "humanReviewRequired", "warnings", "unsupportedClaims", "recommendedBranch", "recommendations"], "Critic Agent response");
+
+    const reporterGemini = await callGeminiJson({
+      agentName: "Reporter Agent",
+      temperature: 0.3,
+      maxOutputTokens: 2500,
+      prompt: reporterPrompt(simulation, critic)
+    });
+    const report = requireKeys(reporterGemini.json, ["headline", "summary", "city_commits", "recommendations"], "Reporter Agent response");
+
+    sendJson(res, 200, {
+      ok: true,
+      geminiRequired: true,
+      models: {
+        coordinator: coordinatorGemini.model,
+        site: siteGemini.model,
+        specialists: specialistGemini.model,
+        variants: variantGemini.model,
+        critic: criticGemini.model,
+        reporter: reporterGemini.model
+      },
+      coordinator,
+      building,
+      validation,
+      siteContext,
+      siteAgent,
+      specialistAgents,
+      variants,
+      simulation,
+      critic,
+      report
+    });
+  } catch (error) {
+    sendJson(res, error.statusCode || 502, {
+      ok: false,
+      geminiRequired: true,
+      error: "Gemini scenario workflow failed",
+      detail: error.message
+    });
+  }
+}
+
 function loadManifest() {
   return JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 }
@@ -188,6 +667,36 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "POST" && pathname === "/api/agents/parse-building-intent") {
+    handleParseBuildingIntent(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/building/validate-placement") {
+    handleValidatePlacement(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/agents/generate-building-variants") {
+    handleGenerateBuildingVariants(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/simulation/run-multiple") {
+    handleRunMultipleSimulations(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/agents/explain-simulation") {
+    handleExplainSimulation(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/scenario-studio/run") {
+    handleScenarioStudioRun(req, res);
+    return;
+  }
+
   if (pathname === "/api/manifest" || pathname === "/api/replay-manifest.json") {
     try {
       sendJson(res, 200, loadManifest());
@@ -201,7 +710,9 @@ const server = http.createServer((req, res) => {
     sendJson(res, 200, {
       ok: true,
       branch: "2016to2026",
-      manifest: fs.existsSync(manifestPath)
+      manifest: fs.existsSync(manifestPath),
+      scenarioStudio: true,
+      geminiConfigured: Boolean(geminiKey())
     });
     return;
   }

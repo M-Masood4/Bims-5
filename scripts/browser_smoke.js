@@ -49,7 +49,7 @@ function assert(condition, message) {
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
   assert(loaded.commits === 5, "Default change list should show all infrastructure changes.");
   assert(loaded.toggles >= 3, "Filtered product layer toggles did not render.");
-  assert(loaded.navButtons === 5, "Product navigation buttons did not render.");
+  assert(loaded.navButtons === 6, "Product navigation buttons did not render.");
   assert(loaded.electricity, "Electricity replay layer did not render.");
   assert(loaded.selectionLayer, "Commit selection highlight layer did not render.");
   assert(JSON.stringify(loaded.metrics) === JSON.stringify(["traffic", "jobs", "electricity", "buildings", "services"]), "Browser metric registry is not the required five-signal set.");
@@ -62,11 +62,13 @@ function assert(condition, message) {
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.metric === expected, label.toLowerCase());
   }
 
-  for (const view of ["commits", "diff", "compare", "evidence", "overview"]) {
+  for (const view of ["commits", "diff", "compare", "studio", "evidence", "overview"]) {
     await page.locator(`.icon-nav button[data-view="${view}"]`).click();
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.activeView === expected, view);
     if (view === "commits") {
       await page.waitForFunction(() => document.querySelectorAll(".commit").length === 5);
+    } else if (view === "studio") {
+      await page.waitForFunction(() => !document.querySelector("#scenarioStudio")?.hidden && document.querySelector("#scenarioStudio")?.textContent?.includes("2036 Scenario Studio"));
     }
   }
 

@@ -38,6 +38,7 @@
         <button type="button" data-view="commits"><span>C</span>Changes</button>
         <button type="button" data-view="diff"><span>D</span>Impact</button>
         <button type="button" data-view="compare"><span>Y</span>Compare</button>
+        <button type="button" data-view="studio"><span>S</span>Studio</button>
         <button type="button" data-view="evidence"><span>E</span>Evidence</button>
       </aside>
 
@@ -61,6 +62,8 @@
         </div>
 
         <section id="viewPanel" class="floating-card view-panel" hidden></section>
+
+        <section id="scenarioStudio" class="floating-card scenario-studio" aria-label="2036 Scenario Studio"></section>
 
         <div class="floating-card map-legend">
           <strong>Change intensity</strong>
@@ -118,6 +121,26 @@
 
         <div id="cityCommits" class="commit-list"></div>
 
+        <section class="panel-card scenario-branches-card">
+          <h3>Scenario Branches</h3>
+          <div id="scenarioBranches" class="scenario-branches">
+            <div class="empty-state">
+              <strong>No proposed building yet</strong>
+              <span>Open Studio, drop a building, then Generate simulations to compare 2036 futures.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-card agent-reasoning-card">
+          <h3>Agent Reasoning</h3>
+          <div id="agentReasoning" class="agent-reasoning">
+            <div class="empty-state">
+              <strong>Gemini agents ready</strong>
+              <span>Coordinator, specialist, critic, and reporter outputs appear after a simulation run.</span>
+            </div>
+          </div>
+        </section>
+
         <section class="panel-card selected-card">
           <h3>Selected Change</h3>
           <div id="selectedChange" class="selected-change">
@@ -137,5 +160,6 @@
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
     <script src="/app.js"></script>
+    <script src="/scenario-studio.js"></script>
   </body>
 </html>
