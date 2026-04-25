@@ -160,6 +160,14 @@
 
   function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES[0]; }
 
+  const SCENARIO_DIFF_LENSES = [
+    { id: 'traffic', label: 'Traffic', source: 'traffic', color: '#fb923c', goodDirection: 'down' },
+    { id: 'jobs', label: 'Jobs', source: 'jobs', color: '#a855f7', goodDirection: 'up' },
+    { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDirection: 'down' },
+    { id: 'buildings', label: 'Buildings', source: 'population', color: '#3b82f6', goodDirection: 'up' },
+    { id: 'services', label: 'Services', source: 'services', color: '#22c55e', goodDirection: 'up' }
+  ];
+
   const els = {};
 
   // ---------- HELPERS ----------
@@ -229,7 +237,7 @@
 
   function metricsFromScenario(branch, year) {
     if (!branch || branch.locked) return null;
-    const result = branch.scenarioResult || state.lastScenarioResult;
+    const result = branch.scenarioResult;
     if (!result || !result.timelineByYear) return null;
     const target = result.timelineByYear[String(year)];
     if (!target) return null;
@@ -374,7 +382,7 @@
       'inspectModal', 'inspectTitle', 'inspectBody',
       'diffModal', 'diffTitle', 'diffBody', 'diffMeta', 'diffYearBefore', 'diffYearAfter',
       'lensTabs', 'collapseBtn',
-      'mapSearch', 'postcodeForm', 'postcodeInput', 'mapSearchStatus', 'mapSearchSuggest',
+      'mapSearch', 'postcodeForm', 'postcodeInput', 'mapSearchStatus', 'mapSearchSuggest', 'scenarioDiffBtn',
       'branchMenu', 'nodeMenu',
       'toast', 'topNav', 'viewToggle', 'aboutBtn', 'helpBtn', 'settingsBtn',
       'impactLens', 'impactLensTabs', 'impactLensYear', 'impactLensLegend',
@@ -484,6 +492,7 @@
       renderItemsOnMap();
       if (isHistoricalMode()) renderHistoricalMapLayers();
       else { updateImpactRipples(); updateImpactLensUI(); }
+      updateScenarioDiffButton();
       // Hand the map to the traffic-sim engine so it can draw vehicle layers.
       if (window.TrafficSim) {
         window.TrafficSim.init({
@@ -753,12 +762,13 @@
     branch.items.push(item);
     branch.forecastObjective = objectiveForBranch(branch);
     branch.scenarioResult = null;
+    branch.scenarioStaged = true;
+    if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     state.lastPlacedItemId = item.id;
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     triggerEpicentrePulse(item);
-    toast('Added ' + item.label + ' at ' + item.postcode);
-    runScenarioForBranch(branch, item);
+    toast('Staged ' + item.label + ' at ' + item.postcode + '. Click Run Simulation to calculate the forecast.');
   }
 
   function addItemAt(type, lng, lat) {
@@ -792,6 +802,9 @@
       item.label = 'Infrastructure';
     }
     branch.items.push(item);
+    branch.scenarioResult = null;
+    branch.scenarioStaged = true;
+    if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     state.lastPlacedItemId = item.id;
     afterChange();
     if (item.type === 'building') triggerEpicentrePulse(item);
@@ -823,11 +836,13 @@
         if (!res.ok || json.ok === false) throw new Error(json.detail || json.error || ('scenario ' + res.status));
         branch.scenarioResult = json;
         branch.forecastObjective = objectiveForBranch(branch);
+        branch.scenarioStaged = false;
         state.lastScenarioResult = json;
         renderImpact();
         renderBranches();
         updateImpactRipples();
         updateImpactLensUI();
+        updateScenarioDiffButton();
         return json;
       })
       .catch(err => {
@@ -839,6 +854,46 @@
         saveState();
       });
     return branch._scenarioPending;
+  }
+
+  function selectedScenarioBuilding(branch) {
+    return branch && (branch.items || []).find(it => it.type === 'building' && it.postcode);
+  }
+
+  function scenarioResultForBranch(branch) {
+    return branch && branch.scenarioResult && branch.scenarioResult.timelineByYear ? branch.scenarioResult : null;
+  }
+
+  function scenarioDiffYear() {
+    return clamp(isSimYear(state.year) ? state.year : FINAL_YEAR, START_YEAR, FINAL_YEAR);
+  }
+
+  function selectedForecastScenarioBranch(scenario, branch) {
+    const branches = scenario && Array.isArray(scenario.scenarioBranches) ? scenario.scenarioBranches : [];
+    if (!branches.length) return null;
+    const objective = branch && (branch.forecastObjective || objectiveForBranch(branch));
+    return branches.find(b => b.objective === objective) ||
+      branches.find(b => b.name === scenario.recommendedBranch) ||
+      branches[0];
+  }
+
+  function updateScenarioDiffButton() {
+    if (!els.scenarioDiffBtn) return;
+    const branch = activeBranch();
+    const building = selectedScenarioBuilding(branch);
+    const scenario = scenarioResultForBranch(branch);
+    const ready = state.mode === 'simulation' &&
+      state.view === '3D' &&
+      !!building &&
+      !!scenario &&
+      !!scenario.baselineBranch &&
+      !branch._scenarioPending;
+    els.scenarioDiffBtn.hidden = !ready;
+    if (ready) {
+      const year = scenarioDiffYear();
+      els.scenarioDiffBtn.textContent = 'View Diff';
+      els.scenarioDiffBtn.title = 'Open no-build vs with-building 3D diff for ' + (building.postcode || 'selected postcode') + ' in ' + year;
+    }
   }
 
   // Briefly amp up the epicentre dot's pulse value, then settle to its
@@ -886,6 +941,9 @@
       label: 'New Road'
     };
     branch.items.push(item);
+    branch.scenarioResult = null;
+    branch.scenarioStaged = true;
+    if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     afterChange();
     toast('Added Road segment to ' + branch.name);
   }
@@ -897,6 +955,8 @@
     branch.items = branch.items.filter(it => it.id !== itemId);
     if (branch.items.length !== before) {
       branch.scenarioResult = null;
+      branch.scenarioStaged = true;
+      if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
       afterChange();
       toast('Item removed', 'warn');
     }
@@ -1136,6 +1196,7 @@
       updateImpactRipples();
       updateImpactLensUI();
     }
+    updateScenarioDiffButton();
     saveState();
   }
 
@@ -1396,6 +1457,7 @@
     renderBranches();
     renderImpact();
     renderItemsOnMap();
+    updateScenarioDiffButton();
     saveState();
   }
 
@@ -1483,6 +1545,7 @@
     renderBranches();
     renderImpact();
     renderItemsOnMap();
+    updateScenarioDiffButton();
     toast('Deleted branch', 'warn');
     saveState();
   }
@@ -1812,7 +1875,7 @@
     if (!els.compareModal || !els.compareBody) return;
     const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
     els.compareYear.textContent = target;
-    const scenario = activeBranch().scenarioResult || state.lastScenarioResult;
+    const scenario = activeBranch().scenarioResult;
     if (scenario && scenario.timelineByYear && scenario.timelineByYear[String(target)]) {
       renderScenarioCompareModal(scenario, target);
       els.compareModal.hidden = false;
@@ -1954,8 +2017,11 @@
       state.isRunningSim = false;
       if (els.runBtn) els.runBtn.classList.remove('running');
       if (els.runBtnLabel) els.runBtnLabel.textContent = 'Run Simulation';
+      updateScenarioDiffButton();
       return;
     }
+    setView('3D');
+    updateScenarioDiffButton();
     // Kick off the in-page traffic flow visualisation alongside the year
     // animation. Auto-stops when the sim ends (toggle still works manually).
     const trafficWasRunning = window.TrafficSim && window.TrafficSim.isRunning();
@@ -1977,6 +2043,7 @@
         // Stop on 2036, show outcome
         const m = metricsForBranchYear(branch, FINAL_YEAR);
         const popDelta = m.population - METRICS[0].baseline;
+        updateScenarioDiffButton();
         toast('Simulation complete — projected ' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population by 2036');
         // If we auto-started the traffic sim, gracefully stop it after a beat
         if (window.TrafficSim && state._trafficAutoStarted) {
@@ -2519,7 +2586,7 @@
       baselineYear: BASE_YEAR,
       forecastYears: SIM_YEARS,
       baseline: METRICS.reduce((acc, m) => { acc[m.id] = m.baseline; return acc; }, {}),
-      scenarioResult: branch.scenarioResult || state.lastScenarioResult || null
+      scenarioResult: branch.scenarioResult || null
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -2556,6 +2623,7 @@
       }
       if (isHistoricalMode()) renderHistoricalMapLayers();
     }
+    updateScenarioDiffButton();
     saveState();
   }
 
@@ -2634,6 +2702,7 @@
       updateImpactRipples();
       updateImpactLensUI();
     }
+    updateScenarioDiffButton();
     saveState();
   }
 
@@ -2787,6 +2856,7 @@
         if (state.map.getSource('impact-epicentres')) state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
       }
     }
+    updateScenarioDiffButton();
     syncTopNavForMode();
   }
 
@@ -3729,6 +3799,265 @@
 
   let diffMaps = { before: null, after: null };
 
+  function setDiffSideLabels(beforeLabel, afterLabel) {
+    const beforeHead = document.querySelector('#diffMapBefore')?.closest('.diff-side')?.querySelector('.diff-side-head span:last-child');
+    const afterHead = document.querySelector('#diffMapAfter')?.closest('.diff-side')?.querySelector('.diff-side-head span:last-child');
+    if (beforeHead) beforeHead.textContent = beforeLabel;
+    if (afterHead) afterHead.textContent = afterLabel;
+  }
+
+  async function openScenarioDiffModal() {
+    if (!els.diffModal) return;
+    const branch = activeBranch();
+    const scenario = scenarioResultForBranch(branch);
+    const building = selectedScenarioBuilding(branch);
+    if (!scenario || !building) {
+      toast('Run the simulation before opening a diff.', 'warn');
+      updateScenarioDiffButton();
+      return;
+    }
+
+    const year = scenarioDiffYear();
+    const scenarioBranch = selectedForecastScenarioBranch(scenario, branch);
+    const beforeFc = scenario.baselineBranch && scenario.baselineBranch.affectedCellsByYear
+      ? scenario.baselineBranch.affectedCellsByYear[String(year)]
+      : null;
+    const afterFc = scenarioBranch && scenarioBranch.affectedCellsByYear
+      ? scenarioBranch.affectedCellsByYear[String(year)]
+      : (scenario.affectedCellsByYear && scenario.affectedCellsByYear[String(year)]);
+    if (!beforeFc || !afterFc) {
+      toast('No forecast cell data for ' + year + '.', 'warn');
+      return;
+    }
+
+    closeDiffMaps();
+    setView('3D');
+    document.getElementById('diffYearBefore').textContent = 'No-build ' + year;
+    document.getElementById('diffYearAfter').textContent = 'With build ' + year;
+    setDiffSideLabels('baseline', 'scenario');
+    document.getElementById('diffTitle').textContent = 'Scenario diff: ' + (building.postcode || 'selected postcode');
+
+    const meta = document.getElementById('diffMeta');
+    const branchName = scenarioBranch ? (scenarioBranch.name || scenarioBranch.branchName || 'Selected branch') : branch.name;
+    const confidence = scenarioBranch ? scenarioBranch.confidence : (scenario.confidence || 'medium');
+    meta.innerHTML = '<strong>' + escapeHtml(building.postcode || 'Selected postcode') + '</strong>' +
+      '<small>Before is the 2025 baseline carried forward as the no-build forecast. After is the selected branch with the staged building applied through ' + year + '.</small>' +
+      '<div style="margin-top:6px">' +
+        '<span class="pill">' + escapeHtml(branch.name) + '</span>' +
+        '<span class="pill">' + escapeHtml(branchName) + '</span>' +
+        '<span class="pill">Confidence: ' + escapeHtml(confidence) + '</span>' +
+        '<span class="pill">Model: ' + escapeHtml(scenario.modelVersion || 'forecast') + '</span>' +
+      '</div>';
+
+    els.diffModal.hidden = false;
+    renderScenarioDiffStats(beforeFc, afterFc);
+    renderScenarioDiffEvidence(scenario, scenarioBranch, branch, year);
+
+    const maps = await Promise.all([
+      buildScenarioDiffMap('before', beforeFc, building, year, false),
+      buildScenarioDiffMap('after', afterFc, building, year, true)
+    ]);
+    if (maps[0] && maps[1]) syncScenarioDiffCameras(maps[0], maps[1]);
+  }
+
+  function closeDiffMaps() {
+    if (diffMaps.before) { try { diffMaps.before.remove(); } catch (_) {} diffMaps.before = null; }
+    if (diffMaps.after) { try { diffMaps.after.remove(); } catch (_) {} diffMaps.after = null; }
+  }
+
+  function scenarioDiffMetricValue(feature, lens) {
+    const props = feature && feature.properties ? feature.properties : {};
+    const raw = props[lens.source];
+    return Number.isFinite(Number(raw)) ? Number(raw) : 0;
+  }
+
+  function scenarioDeltaValue(feature, lens) {
+    const props = feature && feature.properties ? feature.properties : {};
+    const deltas = props.deltas || {};
+    const raw = deltas[lens.source];
+    return Number.isFinite(Number(raw)) ? Number(raw) : 0;
+  }
+
+  function scenarioDeltaColour(diff, lens) {
+    if (Math.abs(diff) < 0.001) return '#64748b';
+    const isGood = lens.goodDirection === 'up' ? diff > 0 : diff < 0;
+    return isGood ? '#22c55e' : '#ef4444';
+  }
+
+  function renderScenarioDiffStats(beforeFc, afterFc) {
+    const stats = document.getElementById('diffStats');
+    if (!stats) return;
+    const beforeFeatures = beforeFc && beforeFc.features ? beforeFc.features : [];
+    const afterFeatures = afterFc && afterFc.features ? afterFc.features : [];
+    if (!beforeFeatures.length || !afterFeatures.length) {
+      stats.innerHTML = '<div class="branch-empty">No cell data for the selected scenario.</div>';
+      return;
+    }
+    stats.innerHTML = SCENARIO_DIFF_LENSES.map(lens => {
+      const before = mean(beforeFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+      const after = mean(afterFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+      const diff = after - before;
+      const flat = Math.abs(diff) < 0.001;
+      const isGood = flat ? false : (lens.goodDirection === 'up' ? diff > 0 : diff < 0);
+      const cls = flat ? 'flat' : (isGood ? 'up' : 'down');
+      const sign = diff > 0 ? '+' : '';
+      return '<div class="diff-stat lens" style="--lens-color:' + lens.color + '">' +
+        '<div class="name">' + lens.label + '</div>' +
+        '<div class="vals">' +
+          '<span class="before">' + (clamp(before, 0, 1.5) * 100).toFixed(0) + '</span>' +
+          '<span class="arrow">&rarr;</span>' +
+          '<span class="after">' + (clamp(after, 0, 1.5) * 100).toFixed(0) + '</span>' +
+        '</div>' +
+        '<div class="delta-line ' + cls + '">' + (flat ? 'no change' : sign + (diff * 100).toFixed(1) + ' pts') + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderScenarioDiffEvidence(scenario, scenarioBranch, branch, year) {
+    const evNode = document.getElementById('diffEvidence');
+    if (!evNode) return;
+    const evidence = []
+      .concat(scenarioBranch && Array.isArray(scenarioBranch.evidence) ? scenarioBranch.evidence : [])
+      .concat(Array.isArray(scenario.evidence) ? scenario.evidence : []);
+    const warnings = Array.isArray(scenario.warnings) ? scenario.warnings : [];
+    const trace = Array.isArray(scenario.agentTrace) ? scenario.agentTrace : [];
+    let html = '<strong>Scenario evidence</strong>';
+    html += '<div>Numeric impacts come from the trained forecast artifact and deterministic planners. Gemini-style agents explain branches and risks only.</div>';
+    html += '<div style="margin-top:6px">Year: ' + year + ' &middot; Branch: ' + escapeHtml(branch.name) + '</div>';
+    if (evidence.length) {
+      html += '<ul>' + evidence.slice(0, 6).map(line => '<li>' + escapeHtml(line) + '</li>').join('') + '</ul>';
+    }
+    if (warnings.length) {
+      html += '<div style="margin-top:6px;color:var(--amber)">Warnings: ' + warnings.slice(0, 3).map(escapeHtml).join(' &middot; ') + '</div>';
+    }
+    if (trace.length) {
+      html += '<div style="margin-top:6px">Agents: ' + trace.slice(0, 5).map(t => escapeHtml(t.agent + ' - ' + t.summary)).join('<br>') + '</div>';
+    }
+    evNode.innerHTML = html;
+  }
+
+  async function buildScenarioDiffMap(side, grid, building, year, showBuilding) {
+    const containerId = side === 'before' ? 'diffMapBefore' : 'diffMapAfter';
+    const container = document.getElementById(containerId);
+    if (!container) return null;
+    container.innerHTML = '';
+    const mp = state.manifest && state.manifest.mapbox;
+    if (!mp || !mp.token || !window.mapboxgl) return null;
+
+    mapboxgl.accessToken = mp.token;
+    const center = [Number(building.lng), Number(building.lat)];
+    const map = new mapboxgl.Map({
+      container: container,
+      style: mp.style || 'mapbox://styles/mapbox/dark-v11',
+      center: center,
+      zoom: 15.9,
+      pitch: 64,
+      bearing: -24,
+      antialias: true,
+      attributionControl: false,
+      interactive: true
+    });
+    diffMaps[side] = map;
+
+    return new Promise(resolve => {
+      map.on('load', () => {
+        const trafficLens = SCENARIO_DIFF_LENSES[0];
+        const features = (grid && grid.features) ? grid.features.map(f => {
+          const props = f.properties || {};
+          const value = Number(props.traffic) || 0;
+          const diff = scenarioDeltaValue(f, trafficLens);
+          const color = side === 'before' ? ramp_RedGreen(1 - clamp(value, 0, 1)) : scenarioDeltaColour(diff, trafficLens);
+          const opacity = side === 'before'
+            ? clamp(0.12 + value * 0.7, 0.14, 0.82)
+            : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
+          return Object.assign({}, f, {
+            properties: Object.assign({}, props, {
+              __color: color,
+              __opacity: opacity
+            })
+          });
+        }) : [];
+        const refLayerId = (() => {
+          const ls = map.getStyle().layers || [];
+          for (const l of ls) if (l.type === 'symbol') return l.id;
+          return undefined;
+        })();
+        map.addSource('cells', { type: 'geojson', data: { type: 'FeatureCollection', features: features } });
+        map.addLayer({
+          id: 'cells-fill',
+          type: 'fill',
+          source: 'cells',
+          paint: { 'fill-color': ['get', '__color'], 'fill-opacity': ['get', '__opacity'] }
+        }, refLayerId);
+        map.addLayer({
+          id: 'cells-line',
+          type: 'line',
+          source: 'cells',
+          paint: { 'line-color': 'rgba(226,232,240,0.16)', 'line-width': 0.45 }
+        }, refLayerId);
+
+        const markerFeature = { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: center } };
+        map.addSource('site', { type: 'geojson', data: { type: 'FeatureCollection', features: [markerFeature] } });
+        map.addLayer({
+          id: 'site-glow',
+          type: 'circle',
+          source: 'site',
+          paint: { 'circle-radius': showBuilding ? 30 : 24, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-opacity': 0.2, 'circle-blur': 1.2 }
+        });
+        map.addLayer({
+          id: 'site-circle',
+          type: 'circle',
+          source: 'site',
+          paint: { 'circle-radius': 8, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
+        });
+
+        if (showBuilding) {
+          const ring = squareRing(center[0], center[1], Math.max(28, Math.sqrt((building.buildingConfig && building.buildingConfig.footprintSqm) || 900)));
+          map.addSource('scenario-building', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [{
+                type: 'Feature',
+                properties: {
+                  color: building.color || '#a855f7',
+                  height: building.height || ((building.buildingConfig && building.buildingConfig.floors || 8) * 3.8)
+                },
+                geometry: { type: 'Polygon', coordinates: [ring] }
+              }]
+            }
+          });
+          map.addLayer({
+            id: 'scenario-building-extrusion',
+            type: 'fill-extrusion',
+            source: 'scenario-building',
+            paint: {
+              'fill-extrusion-color': ['get', 'color'],
+              'fill-extrusion-height': ['get', 'height'],
+              'fill-extrusion-base': 0,
+              'fill-extrusion-opacity': 0.9
+            }
+          }, refLayerId);
+        }
+        resolve(map);
+      });
+      map.on('error', () => resolve(map));
+    });
+  }
+
+  function syncScenarioDiffCameras(beforeMap, afterMap) {
+    let syncing = false;
+    function mirror(src, dst) {
+      if (syncing || !src || !dst) return;
+      syncing = true;
+      const c = src.getCenter();
+      dst.jumpTo({ center: [c.lng, c.lat], zoom: src.getZoom(), bearing: src.getBearing(), pitch: src.getPitch() });
+      requestAnimationFrame(() => { syncing = false; });
+    }
+    beforeMap.on('move', () => mirror(beforeMap, afterMap));
+    afterMap.on('move', () => mirror(afterMap, beforeMap));
+  }
+
   async function openDiffModal(eventId) {
     if (!els.diffModal) return;
     const ev = (state.eventsForYearCache || []).find(e => e.id === eventId);
@@ -3738,8 +4067,10 @@
     const yearBefore = Math.max(2016, yearAfter - 1);
     const lens = lensDef(state.lens);
 
+    closeDiffMaps();
     document.getElementById('diffYearBefore').textContent = yearBefore;
     document.getElementById('diffYearAfter').textContent = yearAfter;
+    setDiffSideLabels('before', 'after');
     document.getElementById('diffTitle').textContent = ev.title || 'Event';
 
     const meta = document.getElementById('diffMeta');
@@ -3770,8 +4101,7 @@
 
   function closeDiffModal() {
     if (els.diffModal) els.diffModal.hidden = true;
-    if (diffMaps.before) { try { diffMaps.before.remove(); } catch (_) {} diffMaps.before = null; }
-    if (diffMaps.after) { try { diffMaps.after.remove(); } catch (_) {} diffMaps.after = null; }
+    closeDiffMaps();
   }
 
   async function buildDiffMap(side, grid, ev, year) {
@@ -4179,6 +4509,7 @@
     if (els.runBtn) els.runBtn.addEventListener('click', runSimulation);
     if (els.compareBtn) els.compareBtn.addEventListener('click', openCompareModal);
     if (els.exportBtn) els.exportBtn.addEventListener('click', exportResults);
+    if (els.scenarioDiffBtn) els.scenarioDiffBtn.addEventListener('click', openScenarioDiffModal);
     if (els.aboutBtn) els.aboutBtn.addEventListener('click', () => {
       toast('Belfast 2016-2036 Simulation Studio — built with Mapbox + open source data', 'warn');
     });
@@ -4282,6 +4613,7 @@
       runSimulation: runSimulation,
       openCompareModal: openCompareModal,
       openDiffModal: openDiffModal,
+      openScenarioDiffModal: openScenarioDiffModal,
       selectEvent: selectEvent,
       createBranch: createBranch,
       deleteBranch: deleteBranch,

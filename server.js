@@ -209,21 +209,25 @@ function fallbackScenarioStudioResponse(payload, building, validation, siteConte
   const coordinator = scenarioStudio.buildCoordinatorPlan(payload);
   const specialistAgents = scenarioStudio.buildSpecialistRecommendations({ building, siteContext });
   const variants = scenarioStudio.generateFallbackVariants({ building, siteContext }, rootDir).scenarioVariants;
-  const simulation = scenarioStudio.runMultipleSimulations({
+  const forecast = scenarioStudio.runForecastScenario({
     scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
+    postcode: payload.postcode || building.postcode,
+    resolvedPostcode: payload.resolvedPostcode || building.resolvedPostcode,
     building,
     variants
   }, rootDir);
+  const simulation = forecast.simulation;
   const critic = scenarioStudio.critiqueSimulation({
-    branches: simulation.branches,
+    branches: forecast.branches,
     siteContext,
-    recommendedBranch: simulation.recommendedBranch
+    recommendedBranch: forecast.recommendedBranch
   });
   const report = scenarioStudio.reportSimulation({
-    branches: simulation.branches,
+    branches: forecast.branches,
     criticNotes: critic
   });
   return {
+    ...forecast,
     ok: true,
     geminiRequired: false,
     fallback: true,
@@ -650,7 +654,10 @@ async function handleParseBuildingIntent(req, res) {
 async function handleValidatePlacement(req, res) {
   try {
     const payload = await readJsonRequest(req);
-    const validation = scenarioStudio.validatePlacement(payload, rootDir);
+    const validation = scenarioStudio.validatePlacement({
+      ...payload,
+      requireResolvedPostcode: Boolean(payload.requireResolvedPostcode || payload.require_resolved_postcode)
+    }, rootDir);
     const siteContext = scenarioStudio.getSiteContext({ ...payload, validation }, rootDir);
     sendJson(res, validation.status === "invalid" ? 422 : 200, {
       ...validation,
@@ -658,6 +665,23 @@ async function handleValidatePlacement(req, res) {
     });
   } catch (error) {
     sendJson(res, 400, { error: "Could not validate placement", detail: error.message });
+  }
+}
+
+function handleResolvePostcode(req, res, requestUrl) {
+  try {
+    const postcode = requestUrl.searchParams.get("postcode") || requestUrl.searchParams.get("q") || "";
+    if (!postcode.trim()) {
+      sendJson(res, 400, { error: "postcode query is required" });
+      return;
+    }
+    const resolved = scenarioStudio.resolvePostcode(postcode, rootDir);
+    sendJson(res, 200, {
+      ok: resolved.precision !== "invalid",
+      ...resolved
+    });
+  } catch (error) {
+    sendJson(res, 400, { error: "Could not resolve postcode", detail: error.message });
   }
 }
 
@@ -695,17 +719,15 @@ async function handleGenerateBuildingVariants(req, res) {
 async function handleRunMultipleSimulations(req, res) {
   try {
     const payload = await readJsonRequest(req, 1_500_000);
-    if (!Array.isArray(payload.branches) && !Array.isArray(payload.variants)) {
-      sendJson(res, 400, {
-        error: "Simulation branches are required",
-        detail: "Call /api/agents/generate-building-variants or /api/scenario-studio/run so Gemini decides what to test before deterministic simulation runs."
-      });
-      return;
-    }
     const result = scenarioStudio.runMultipleSimulations(payload, rootDir);
     sendJson(res, 200, result);
   } catch (error) {
-    sendJson(res, 400, { error: "Could not run deterministic simulations", detail: error.message });
+    sendJson(res, error.statusCode || 400, {
+      error: "Could not run deterministic simulations",
+      detail: error.message,
+      postcode: error.postcode,
+      validation: error.validation
+    });
   }
 }
 
@@ -745,8 +767,34 @@ async function handleScenarioStudioRun(req, res) {
   let siteContext = null;
   try {
     payload = await readJsonRequest(req, 1_500_000);
-    building = scenarioStudio.createBuildingIntervention(payload.building || payload, rootDir);
-    validation = scenarioStudio.validatePlacement({ location: building.location, geometry: building.geometry, config: building.config }, rootDir);
+    const resolvedPostcode = payload.resolvedPostcode || payload.postcodeResolution || scenarioStudio.resolvePostcode(payload.postcode || payload.building?.postcode || "", rootDir);
+    if (!resolvedPostcode.canPlace) {
+      sendJson(res, 422, {
+        ok: false,
+        geminiRequired: false,
+        error: "A full Belfast postcode is required before placing a building",
+        postcode: resolvedPostcode,
+        warnings: resolvedPostcode.warnings || []
+      });
+      return;
+    }
+    building = scenarioStudio.createBuildingIntervention({
+      ...(payload.building || payload),
+      postcode: resolvedPostcode.postcode,
+      resolvedPostcode,
+      location: payload.building?.location || resolvedPostcode.location,
+      startYear: payload.startYear || 2026,
+      completionYear: payload.horizonYear || 2036,
+      requireResolvedPostcode: true
+    }, rootDir);
+    validation = scenarioStudio.validatePlacement({
+      location: building.location,
+      geometry: building.geometry,
+      config: building.config,
+      postcode: resolvedPostcode.postcode,
+      resolvedPostcode,
+      requireResolvedPostcode: true
+    }, rootDir);
     siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
 
     if (validation.status === "invalid") {
@@ -756,6 +804,45 @@ async function handleScenarioStudioRun(req, res) {
         error: "Placement is invalid",
         validation,
         siteContext
+      });
+      return;
+    }
+
+    const useGemini = Boolean(geminiKey());
+    if (!useGemini) {
+      const forecast = scenarioStudio.runForecastScenario({
+        ...payload,
+        postcode: resolvedPostcode.postcode,
+        resolvedPostcode,
+        building
+      }, rootDir);
+      const critic = scenarioStudio.critiqueSimulation({
+        branches: forecast.branches,
+        siteContext,
+        recommendedBranch: forecast.recommendedBranch
+      });
+      const report = scenarioStudio.reportSimulation({
+        branches: forecast.branches,
+        criticNotes: critic
+      });
+      sendJson(res, 200, {
+        ...forecast,
+        ok: true,
+        geminiRequired: false,
+        fallback: true,
+        fallbackReason: "No Gemini key configured; deterministic local scenario workflow used.",
+        coordinator: scenarioStudio.buildCoordinatorPlan(payload),
+        siteAgent: {
+          site_status: validation.status,
+          site_label: validation.siteLabel || validation.site_label,
+          warnings: validation.warnings || [],
+          positive_factors: validation.positiveFactors || validation.positive_factors || [],
+          confidence: validation.confidence || "medium"
+        },
+        specialistAgents: scenarioStudio.buildSpecialistRecommendations({ building, siteContext }),
+        variants: scenarioStudio.generateFallbackVariants({ building, siteContext }, rootDir).scenarioVariants,
+        critic,
+        report
       });
       return;
     }
@@ -796,11 +883,15 @@ async function handleScenarioStudioRun(req, res) {
       prompt: variantPrompt(building, siteContext, specialistAgents)
     });
     const variants = scenarioStudio.sanitizeScenarioVariants(variantGemini.json, building, rootDir, { strict: true });
-    const simulation = scenarioStudio.runMultipleSimulations({
+    const forecast = scenarioStudio.runForecastScenario({
+      ...payload,
       scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
+      postcode: resolvedPostcode.postcode,
+      resolvedPostcode,
       building,
       variants
     }, rootDir);
+    const simulation = forecast.simulation;
 
     const criticGemini = await callGeminiJson({
       agentName: "Simulation Critic Agent",
@@ -821,6 +912,7 @@ async function handleScenarioStudioRun(req, res) {
     const report = requireKeys(reporterGemini.json, ["headline", "summary", "city_commits", "recommendations"], "Reporter Agent response");
 
     sendJson(res, 200, {
+      ...forecast,
       ok: true,
       geminiRequired: true,
       models: {
@@ -851,7 +943,9 @@ async function handleScenarioStudioRun(req, res) {
       ok: false,
       geminiRequired: Boolean(geminiKey()),
       error: "Scenario workflow failed",
-      detail: error.message
+      detail: error.message,
+      postcode: error.postcode,
+      validation: error.validation
     });
   }
 }
@@ -911,6 +1005,11 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "GET" && pathname === "/api/postcode/resolve") {
+    handleResolvePostcode(req, res, requestUrl);
+    return;
+  }
+
   if (req.method === "POST" && pathname === "/api/agents/parse-building-intent") {
     handleParseBuildingIntent(req, res);
     return;
@@ -956,6 +1055,8 @@ const server = http.createServer((req, res) => {
       branch: currentBranch(),
       manifest: fs.existsSync(manifestPath),
       scenarioStudio: true,
+      forecastModel: fs.existsSync(path.join(webDir, "data", "mode-a", "forecast_model.json")),
+      baseline2025Forecast: fs.existsSync(path.join(webDir, "data", "mode-a", "baseline_2025_forecast.json")),
       geminiConfigured: Boolean(geminiKey())
     });
     return;
