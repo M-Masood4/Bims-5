@@ -33,6 +33,7 @@ function assert(condition, message) {
     lensTabs: document.querySelectorAll(".lens-tab").length,
     commits: document.querySelectorAll(".commit").length,
     toggles: document.querySelectorAll(".switch-row").length,
+    navButtons: document.querySelectorAll(".icon-nav button[data-view]").length,
     layout: Boolean(document.querySelector(".topbar") && document.querySelector(".icon-nav") && document.querySelector(".bottom-deck") && document.querySelector(".selected-card")),
     canvas: Boolean(document.querySelector(".mapboxgl-canvas")),
     year: document.querySelector("#currentYearLabel")?.textContent?.trim(),
@@ -46,8 +47,9 @@ function assert(condition, message) {
   assert(loaded.layout, "Reference-style replay layout did not render.");
   assert(loaded.metricCards === 5, "Five metric cards did not render.");
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
-  assert(loaded.commits === 5, "Five city commits did not render.");
-  assert(loaded.toggles === 6, "The six product layer toggles did not render.");
+  assert(loaded.commits === 1, "Default filtered commit view should show one selected-signal commit.");
+  assert(loaded.toggles >= 3, "Filtered product layer toggles did not render.");
+  assert(loaded.navButtons === 9, "Product navigation buttons did not render.");
   assert(loaded.electricity, "Electricity replay layer did not render.");
   assert(loaded.selectionLayer, "Commit selection highlight layer did not render.");
   assert(JSON.stringify(loaded.metrics) === JSON.stringify(["traffic", "jobs", "electricity", "buildings", "services"]), "Browser metric registry is not the required five-signal set.");
@@ -60,7 +62,18 @@ function assert(condition, message) {
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.metric === expected, label.toLowerCase());
   }
 
-  for (let index = 0; index < 6; index += 1) {
+  for (const view of ["signals", "commits", "diff", "layers", "compare", "evidence", "scenarios", "settings", "overview"]) {
+    await page.locator(`.icon-nav button[data-view="${view}"]`).click();
+    await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.activeView === expected, view);
+    if (view === "commits") {
+      await page.waitForFunction(() => document.querySelectorAll(".commit").length === 5);
+    }
+  }
+  await page.locator('.icon-nav button[data-view="layers"]').click();
+  await page.waitForSelector(".layer-card", { state: "visible", timeout: 5000 });
+
+  const toggleCount = await page.locator(".switch-row").count();
+  for (let index = 0; index < toggleCount; index += 1) {
     await page.locator(".switch-row").nth(index).click();
     await page.waitForTimeout(80);
     await page.locator(".switch-row").nth(index).click();
@@ -76,6 +89,8 @@ function assert(condition, message) {
   await page.locator("#playButton").click();
   await page.waitForTimeout(1200);
   await page.locator("#playButton").click();
+  await page.locator(".lens-tab", { hasText: "Traffic" }).click();
+  await page.waitForFunction(() => window.BelfastGitModeA?.state?.metric === "traffic");
 
   await page.locator("#yearSlider").evaluate((slider) => {
     slider.value = "2023";

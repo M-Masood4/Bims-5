@@ -34,18 +34,18 @@
       </header>
 
       <aside class="icon-nav" aria-label="Product navigation">
-        <button class="active" type="button"><span>O</span>Overview</button>
-        <button type="button"><span>S</span>Signals</button>
-        <button type="button"><span>C</span>Commit Log</button>
-        <button type="button"><span>D</span>Impact Diff</button>
-        <button type="button"><span>L</span>Layers</button>
-        <button type="button"><span>Y</span>Compare Years</button>
-        <button type="button"><span>E</span>Evidence</button>
-        <button type="button"><span>B</span>Scenarios</button>
-        <button type="button"><span>S</span>Settings</button>
+        <button class="active" type="button" data-view="overview"><span>O</span>Overview</button>
+        <button type="button" data-view="signals"><span>S</span>Signals</button>
+        <button type="button" data-view="commits"><span>C</span>Commit Log</button>
+        <button type="button" data-view="diff"><span>D</span>Impact Diff</button>
+        <button type="button" data-view="layers"><span>L</span>Layers</button>
+        <button type="button" data-view="compare"><span>Y</span>Compare Years</button>
+        <button type="button" data-view="evidence"><span>E</span>Evidence</button>
+        <button type="button" data-view="scenarios"><span>B</span>Scenarios</button>
+        <button type="button" data-view="settings"><span>S</span>Settings</button>
         <div class="nav-bottom">
-          <label><input type="checkbox" checked> Labels</label>
-          <label><input type="checkbox" checked> Legend</label>
+          <label><input id="labelsToggle" type="checkbox" checked> Labels</label>
+          <label><input id="legendToggle" type="checkbox" checked> Legend</label>
         </div>
       </aside>
 
@@ -54,6 +54,7 @@
 
         <section class="floating-card layer-card" aria-label="Map layers">
           <header><strong>Signal Layers</strong><span id="sourceTotal">Loading</span></header>
+          <p id="filterHint" class="filter-hint">Only layers relevant to the selected signal are shown.</p>
           <div id="layerToggles" class="switch-list"></div>
           <div class="basemap-row">
             <button id="lightMap" class="active" type="button">Standard</button>
@@ -68,6 +69,8 @@
           <button id="layersTool" type="button" title="Layers">L</button>
           <button id="settingsTool" type="button" title="Settings">S</button>
         </div>
+
+        <section id="viewPanel" class="floating-card view-panel" hidden></section>
 
         <div class="floating-card map-legend">
           <strong>Change intensity</strong>

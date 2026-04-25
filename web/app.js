@@ -8,24 +8,23 @@ const state = {
   map: null,
   year: 2026,
   metric: "traffic",
+  activeView: "overview",
   selectedCommit: null,
   playing: false,
   timer: null,
   pitch3d: true,
+  labelsVisible: true,
+  legendVisible: true,
   layers: {
-    traffic: true,
-    jobs: true,
-    electricity: true,
-    buildings: true,
-    services: true,
     change_heatmap: true,
     roads: true,
-    services_context: true,
-    electricity_context: true,
-    boundaries: true,
-    transit: true,
-    green: true,
-    water: true
+    buildings: false,
+    services_context: false,
+    electricity_context: false,
+    boundaries: false,
+    transit: false,
+    green: false,
+    water: false
   }
 };
 
@@ -49,7 +48,18 @@ const els = {
   evidencePanel: document.querySelector("#evidencePanel"),
   evidencePopover: document.querySelector("#evidencePopover"),
   legendMetric: document.querySelector("#legendMetric"),
-  commitYearSelect: document.querySelector("#commitYearSelect")
+  commitYearSelect: document.querySelector("#commitYearSelect"),
+  app: document.querySelector(".replay-app"),
+  iconNav: document.querySelector(".icon-nav"),
+  rightPanel: document.querySelector(".right-panel"),
+  layerCard: document.querySelector(".layer-card"),
+  viewPanel: document.querySelector("#viewPanel"),
+  labelsToggle: document.querySelector("#labelsToggle"),
+  legendToggle: document.querySelector("#legendToggle"),
+  mapLegend: document.querySelector(".map-legend"),
+  layersTool: document.querySelector("#layersTool"),
+  settingsTool: document.querySelector("#settingsTool"),
+  selectTool: document.querySelector("#selectTool")
 };
 
 const LENS_REGISTRY = [
@@ -101,16 +111,23 @@ const LENS_REGISTRY = [
 ];
 
 const CONTEXT_REGISTRY = [
-  { id: "change_heatmap", label: "Traffic heatmap", icon: "HT", description: "selected signal intensity" },
-  { id: "roads", label: "Road additions", icon: "RD", description: "OSM roads, bridges and access corridors" },
-  { id: "buildings", label: "Building additions", icon: "BD", description: "3D building skeleton by replay year" },
-  { id: "services_context", label: "Service access", icon: "SV", description: "health, education and civic anchors" },
-  { id: "electricity_context", label: "Electricity network", icon: "EL", description: "power lines, substations and load proxy" },
-  { id: "boundaries", label: "District boundaries", icon: "BX", description: "replay grid and local context" }
+  { id: "change_heatmap", label: "Signal heatmap", icon: "HT", description: "selected signal intensity", signals: REQUIRED_METRICS, always: true },
+  { id: "roads", label: "Road additions", icon: "RD", description: "OSM roads, bridges and access corridors", signals: ["traffic", "jobs"] },
+  { id: "buildings", label: "Building additions", icon: "BD", description: "3D building skeleton by replay year", signals: ["buildings", "electricity"] },
+  { id: "services_context", label: "Service access", icon: "SV", description: "health, education and civic anchors", signals: ["jobs", "services"] },
+  { id: "electricity_context", label: "Electricity network", icon: "EL", description: "power lines, substations and load proxy", signals: ["electricity"] },
+  { id: "boundaries", label: "Grid boundaries", icon: "BX", description: "replay grid and local context", signals: REQUIRED_METRICS, advanced: true }
 ];
 
 const METRIC_BY_ID = Object.fromEntries(LENS_REGISTRY.map((metric) => [metric.id, metric]));
 const CONTEXT_LAYER_IDS = new Map();
+const SIGNAL_LAYER_PRESETS = {
+  traffic: { change_heatmap: true, roads: true, buildings: false, services_context: false, electricity_context: false, boundaries: false, transit: false, green: false, water: false },
+  jobs: { change_heatmap: true, roads: false, buildings: false, services_context: true, electricity_context: false, boundaries: false, transit: true, green: false, water: false },
+  electricity: { change_heatmap: true, roads: false, buildings: false, services_context: false, electricity_context: true, boundaries: false, transit: false, green: false, water: false },
+  buildings: { change_heatmap: true, roads: false, buildings: true, services_context: false, electricity_context: false, boundaries: true, transit: false, green: false, water: false },
+  services: { change_heatmap: true, roads: false, buildings: false, services_context: true, electricity_context: false, boundaries: false, transit: false, green: true, water: false }
+};
 
 function formatNumber(value) {
   return Number.isFinite(value) ? value.toLocaleString() : "0";
@@ -143,6 +160,31 @@ async function json(url, options) {
 function createLayerGroup(category) {
   if (!CONTEXT_LAYER_IDS.has(category)) CONTEXT_LAYER_IDS.set(category, []);
   return CONTEXT_LAYER_IDS.get(category);
+}
+
+function applySignalPreset(metric) {
+  const preset = SIGNAL_LAYER_PRESETS[metric] || SIGNAL_LAYER_PRESETS.traffic;
+  state.layers = { ...state.layers, ...preset };
+}
+
+function layerBelongsToSignal(item) {
+  return item.always || item.signals?.includes(state.metric);
+}
+
+function visibleContextItems() {
+  if (["layers", "settings"].includes(state.activeView)) return CONTEXT_REGISTRY;
+  return CONTEXT_REGISTRY.filter((item) => layerBelongsToSignal(item));
+}
+
+function signalCommit(metric = state.metric) {
+  return (state.modeA?.commitsByYear?.[String(state.year)] || []).find((commit) => commit.type === metric);
+}
+
+function focusRightPanel(selector) {
+  const target = document.querySelector(selector);
+  if (!target || !els.rightPanel) return;
+  const top = Math.max(0, target.offsetTop - els.rightPanel.offsetTop - 12);
+  els.rightPanel.scrollTo({ top, behavior: "smooth" });
 }
 
 async function loadData() {
@@ -308,8 +350,8 @@ function addVectorContextLayers() {
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
             "line-color": color,
-            "line-width": layer.category === "roads" ? 2.4 : layer.category === "transit" ? 2.7 : 1.5,
-            "line-opacity": layer.category === "roads" ? 0.78 : 0.72
+            "line-width": layer.category === "roads" ? 1.45 : layer.category === "transit" ? 2.1 : 1.25,
+            "line-opacity": layer.category === "roads" ? 0.48 : 0.58
           }
         });
       }
@@ -326,10 +368,10 @@ function addVectorContextLayers() {
           filter: ["match", ["geometry-type"], ["Point", "MultiPoint"], true, false],
           paint: {
             "circle-color": color,
-            "circle-radius": layer.category === "services" ? 4.6 : layer.category === "transit" ? 4.2 : 3.2,
+            "circle-radius": layer.category === "services" ? 3.6 : layer.category === "transit" ? 3.3 : 2.8,
             "circle-stroke-color": "#ffffff",
-            "circle-stroke-width": 1,
-            "circle-opacity": 0.84
+            "circle-stroke-width": 0.8,
+            "circle-opacity": 0.68
           }
         });
       }
@@ -467,7 +509,7 @@ function gridPaint() {
       1,
       high
     ],
-    "fill-opacity": state.layers.change_heatmap === false ? 0 : 0.42
+    "fill-opacity": state.layers.change_heatmap === false ? 0 : 0.30
   };
 }
 
@@ -476,6 +518,105 @@ function renderAll() {
   renderToggles();
   renderTimeline();
   renderYear();
+  setView(state.activeView);
+}
+
+function setView(view) {
+  state.activeView = view;
+  els.app?.setAttribute("data-view", view);
+  els.app?.classList.toggle("show-layer-card", ["signals", "layers", "settings"].includes(view));
+  els.app?.classList.toggle("focus-map", view === "overview");
+  document.querySelectorAll(".icon-nav button[data-view]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.view === view);
+  });
+  renderToggles();
+  renderViewPanel();
+  renderCommits();
+
+  if (view === "overview") {
+    fitBelfast();
+  } else if (view === "signals") {
+    els.layerCard?.focus?.();
+  } else if (view === "commits") {
+    focusRightPanel(".panel-header");
+  } else if (view === "diff") {
+    const commit = state.selectedCommit || signalCommit();
+    if (commit) selectCommit(commit, { keepView: true });
+    focusRightPanel(".selected-card");
+  } else if (view === "layers" || view === "settings") {
+    renderToggles();
+  } else if (view === "compare") {
+    renderComparePanel();
+  } else if (view === "evidence") {
+    if (!state.selectedCommit) {
+      const commit = signalCommit();
+      if (commit) selectCommit(commit, { keepView: true });
+    }
+    focusRightPanel(".evidence-card");
+  } else if (view === "scenarios") {
+    state.year = 2026;
+    renderYear();
+  }
+}
+
+function renderViewPanel() {
+  if (!els.viewPanel) return;
+  if (state.activeView === "signals") {
+    const metric = METRIC_BY_ID[state.metric];
+    els.viewPanel.hidden = false;
+    els.viewPanel.innerHTML = `
+      <strong>${escapeHtml(metric.label)} signal</strong>
+      <p>${escapeHtml(metric.description)}. The map only shows this signal plus the filters that support it.</p>
+      <div class="view-actions">
+        <button type="button" data-action="select-current-commit">Open ${escapeHtml(metric.label)} commit</button>
+        <button type="button" data-action="show-layers">Adjust filters</button>
+      </div>
+    `;
+  } else if (state.activeView === "layers") {
+    els.viewPanel.hidden = false;
+    els.viewPanel.innerHTML = `
+      <strong>Layer filters</strong>
+      <p>Use the Signal Layers card to add context. Switching signals resets to a clean, signal-specific preset.</p>
+    `;
+  } else if (state.activeView === "settings") {
+    els.viewPanel.hidden = false;
+    els.viewPanel.innerHTML = `
+      <strong>Display settings</strong>
+      <p>Use the sidebar checkboxes for labels and legend, or the map buttons for basemap and 3D height.</p>
+    `;
+  } else if (state.activeView === "scenarios") {
+    const metric = METRIC_BY_ID[state.metric];
+    els.viewPanel.hidden = false;
+    els.viewPanel.innerHTML = `
+      <strong>2036 baseline preview</strong>
+      <p>The simulation baseline starts from the 2026 ${escapeHtml(metric.label)} trend. Select a commit to inspect what would carry forward into Mode B.</p>
+      <div class="view-actions"><button type="button" data-action="select-current-commit">Inspect 2026 trend</button></div>
+    `;
+  } else if (state.activeView === "compare") {
+    renderComparePanel();
+  } else {
+    els.viewPanel.hidden = true;
+    els.viewPanel.innerHTML = "";
+  }
+}
+
+function renderComparePanel() {
+  if (!els.viewPanel || !state.modeA) return;
+  const cards = state.modeA.metricsByYear[String(state.year)] || [];
+  els.viewPanel.hidden = false;
+  els.viewPanel.innerHTML = `
+    <strong>Compare years</strong>
+    <p>Current view compares ${escapeHtml(state.year)} against the 2016 baseline.</p>
+    <div class="compare-grid">
+      ${cards.map((card) => `
+        <button type="button" data-metric="${escapeHtml(card.metric)}" class="${state.metric === card.metric ? "active" : ""}">
+          <span>${escapeHtml(card.label)}</span>
+          <b>${escapeHtml(card.deltaDisplay)}%</b>
+          <em>${escapeHtml(card.trend)}</em>
+        </button>
+      `).join("")}
+    </div>
+  `;
 }
 
 function renderLensTabs() {
@@ -489,10 +630,14 @@ function renderLensTabs() {
     button.innerHTML = `<span>${escapeHtml(metric.icon)}</span>${escapeHtml(metric.label)}`;
     button.addEventListener("click", () => {
       state.metric = metric.id;
-      state.layers.change_heatmap = true;
+      applySignalPreset(metric.id);
       updateMapStyles();
+      updateSelectedCommitLayer();
       renderLensTabs();
+      renderToggles();
       renderMetrics();
+      renderCommits();
+      renderViewPanel();
     });
     els.lensTabs.append(button);
   }
@@ -501,11 +646,11 @@ function renderLensTabs() {
 function renderToggles() {
   els.layerToggles.innerHTML = "";
   updateLayerCount();
-  for (const item of CONTEXT_REGISTRY) {
+  for (const item of visibleContextItems()) {
     const enabled = state.layers[item.id] !== false;
     const row = document.createElement("button");
     row.type = "button";
-    row.className = `switch-row${enabled ? " active" : ""}`;
+    row.className = `switch-row${enabled ? " active" : ""}${item.advanced ? " advanced" : ""}`;
     row.innerHTML = `
       <span class="switch-icon">${escapeHtml(item.icon)}</span>
       <span class="switch-copy"><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(item.description)}</small></span>
@@ -523,8 +668,10 @@ function renderToggles() {
 
 function updateLayerCount() {
   if (!els.sourceTotal) return;
-  const activeCount = CONTEXT_REGISTRY.filter((item) => state.layers[item.id] !== false).length;
-  els.sourceTotal.textContent = `${activeCount} active`;
+  const visible = visibleContextItems();
+  const activeCount = visible.filter((item) => state.layers[item.id] !== false).length;
+  const visibleCount = visible.length;
+  els.sourceTotal.textContent = `${activeCount}/${visibleCount} on`;
 }
 
 function renderTimeline() {
@@ -558,6 +705,7 @@ function renderYear() {
   updateMapStyles();
   renderMetrics();
   renderCommits();
+  renderViewPanel();
   updateSelectedCommitLayer();
   if (!state.selectedCommit) renderEmptySelectedChange();
 }
@@ -586,6 +734,8 @@ function updateMapStyles() {
     }
   }
 
+  setMapLabels(state.labelsVisible);
+
   if (state.map.getLayer("replay-buildings")) {
     state.map.setFilter("replay-buildings", ["<=", ["to-number", ["get", "replay_first_visible_year"]], state.year]);
     state.map.setLayoutProperty("replay-buildings", "visibility", state.layers.buildings === false ? "none" : "visible");
@@ -594,6 +744,16 @@ function updateMapStyles() {
       ["coalesce", ["to-number", ["get", "replay_height_m"]], 8],
       state.pitch3d ? 1.0 : 0.18
     ]);
+  }
+}
+
+function setMapLabels(visible) {
+  if (!state.map?.getStyle) return;
+  const visibility = visible ? "visible" : "none";
+  for (const layer of state.map.getStyle().layers || []) {
+    if (layer.type === "symbol" && /label|place|poi|road/i.test(layer.id)) {
+      state.map.setLayoutProperty(layer.id, "visibility", visibility);
+    }
   }
 }
 
@@ -619,11 +779,13 @@ function renderMetrics() {
     `;
     node.querySelector("button").addEventListener("click", () => {
       state.metric = card.metric;
-      state.layers.change_heatmap = true;
+      applySignalPreset(card.metric);
       updateMapStyles();
       renderToggles();
       renderLensTabs();
       renderMetrics();
+      renderCommits();
+      renderViewPanel();
     });
     els.metricCards.append(node);
   }
@@ -644,8 +806,16 @@ function normalizeSparkline(values) {
 }
 
 function renderCommits() {
-  const commits = state.modeA.commitsByYear[String(state.year)] || [];
+  const allCommits = state.modeA.commitsByYear[String(state.year)] || [];
+  const showAll = ["commits", "compare"].includes(state.activeView);
+  const commits = showAll ? allCommits : allCommits.filter((commit) => commit.type === state.metric);
   els.cityCommits.innerHTML = "";
+  if (!showAll) {
+    const notice = document.createElement("div");
+    notice.className = "commit-filter-note";
+    notice.innerHTML = `Showing ${escapeHtml(labelFor(state.metric))}. Open Commit Log for all ${allCommits.length} signals.`;
+    els.cityCommits.append(notice);
+  }
   for (const commit of commits) {
     const meta = METRIC_BY_ID[commit.type] || METRIC_BY_ID.traffic;
     const active = state.selectedCommit?.id === commit.id;
@@ -671,19 +841,27 @@ function labelFor(metric) {
   return METRIC_BY_ID[metric]?.label || metric.replace(/_/g, " ");
 }
 
-function selectCommit(commit) {
+function selectCommit(commit, options = {}) {
   state.selectedCommit = { ...commit, year: state.year };
   state.metric = commit.type;
-  state.layers.change_heatmap = true;
+  applySignalPreset(commit.type);
   if (commit.type === "electricity") state.layers.electricity_context = true;
   if (commit.type === "buildings") state.layers.buildings = true;
   if (commit.type === "services") state.layers.services_context = true;
   if (commit.type === "traffic") state.layers.roads = true;
+  if (!options.keepView && state.activeView === "overview") {
+    state.activeView = "diff";
+    els.app?.setAttribute("data-view", "diff");
+    document.querySelectorAll(".icon-nav button[data-view]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.view === "diff");
+    });
+  }
   updateMapStyles();
   renderToggles();
   renderLensTabs();
   renderMetrics();
   renderCommits();
+  renderViewPanel();
   updateSelectedCommitLayer();
   showCommitEvidence(commit);
 }
@@ -905,6 +1083,31 @@ els.yearSlider.addEventListener("input", (event) => {
   state.selectedCommit = null;
   renderYear();
 });
+els.iconNav?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-view]");
+  if (!button) return;
+  setView(button.dataset.view);
+});
+els.viewPanel?.addEventListener("click", (event) => {
+  const metricButton = event.target.closest("button[data-metric]");
+  if (metricButton) {
+    state.metric = metricButton.dataset.metric;
+    applySignalPreset(state.metric);
+    updateMapStyles();
+    renderLensTabs();
+    renderToggles();
+    renderMetrics();
+    renderViewPanel();
+    return;
+  }
+  const action = event.target.closest("button[data-action]")?.dataset.action;
+  if (action === "show-layers") {
+    setView("layers");
+  } else if (action === "select-current-commit") {
+    const commit = signalCommit();
+    if (commit) selectCommit(commit);
+  }
+});
 els.playButton.addEventListener("click", togglePlay);
 els.presentButton.addEventListener("click", () => {
   state.year = 2026;
@@ -919,6 +1122,23 @@ if (els.commitYearSelect) {
   });
 }
 els.fitTool.addEventListener("click", fitBelfast);
+els.selectTool?.addEventListener("click", () => {
+  state.selectedCommit = null;
+  updateSelectedCommitLayer();
+  renderCommits();
+  renderEmptySelectedChange();
+  setView("overview");
+});
+els.layersTool?.addEventListener("click", () => setView("layers"));
+els.settingsTool?.addEventListener("click", () => setView("settings"));
+els.labelsToggle?.addEventListener("change", (event) => {
+  state.labelsVisible = Boolean(event.target.checked);
+  updateMapStyles();
+});
+els.legendToggle?.addEventListener("change", (event) => {
+  state.legendVisible = Boolean(event.target.checked);
+  if (els.mapLegend) els.mapLegend.hidden = !state.legendVisible;
+});
 els.lightMap.addEventListener("click", () => {
   els.lightMap.classList.add("active");
   els.darkMap.classList.remove("active");
@@ -955,14 +1175,16 @@ window.BelfastGitModeA = {
   setMetric: (metric) => {
     if (!REQUIRED_METRICS.includes(metric)) return;
     state.metric = metric;
-    state.layers.change_heatmap = true;
+    applySignalPreset(metric);
     updateMapStyles();
     renderToggles();
     renderLensTabs();
     renderMetrics();
+    renderCommits();
   },
   selectCommit: (metric) => {
     const commit = (state.modeA.commitsByYear[String(state.year)] || []).find((item) => item.type === metric);
     if (commit) selectCommit(commit);
-  }
+  },
+  setView
 };
