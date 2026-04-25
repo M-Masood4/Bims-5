@@ -1,0 +1,16 @@
+{
+  "name": "belfast-replay-ui-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lightweight local UI/API scaffold for the Belfast historical replay data.",
+  "scripts": {
+    "build:manifest": "python scripts/build_ui_manifest.py && python scripts/build_mode_a_replay.py",
+    "start": "node server.js",
+    "verify": "node scripts/verify-manifest.js",
+    "verify:browser": "node scripts/browser_smoke.js",
+    "test": "npm run build:manifest && npm run verify"
+  },
+  "devDependencies": {
+    "playwright": "^1.51.1"
+  }
+}

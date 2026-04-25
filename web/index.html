@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Replay Belfast</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="replay-app">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Replay Belfast home">
+          <span class="brand-mark">R</span>
+          <span><strong>Replay Belfast</strong><small>city repository</small></span>
+        </a>
+        <div class="repo-path" aria-label="Replay branch">
+          <span>Urban Repo</span>
+          <b>/</b>
+          <span>Historical Replay</span>
+          <b>/</b>
+          <strong>main branch</strong>
+          <b>/</b>
+          <span>2016-2026</span>
+        </div>
+        <section class="lens-strip" aria-label="Impact lenses">
+          <span>Impact lens</span>
+          <div id="lensTabs" class="lens-tabs"></div>
+        </section>
+        <div class="baseline-pill">
+          <small>Historical Replay -&gt;</small>
+          <strong>2036 Simulation Baseline</strong>
+        </div>
+      </header>
+
+      <aside class="icon-nav" aria-label="Product navigation">
+        <button class="active" type="button" data-view="overview"><span>O</span>Overview</button>
+        <button type="button" data-view="commits"><span>C</span>Changes</button>
+        <button type="button" data-view="diff"><span>D</span>Impact</button>
+        <button type="button" data-view="compare"><span>Y</span>Compare</button>
+        <button type="button" data-view="evidence"><span>E</span>Evidence</button>
+      </aside>
+
+      <main class="map-workspace">
+        <div id="map" aria-label="Replay Belfast map"></div>
+
+        <section class="floating-card layer-card" aria-label="Map layers" hidden>
+          <header><strong>Signal Layers</strong><span id="sourceTotal">Loading</span></header>
+          <p id="filterHint" class="filter-hint">Only layers relevant to the selected signal are shown.</p>
+          <div id="layerToggles" class="switch-list"></div>
+          <div class="basemap-row">
+            <button id="lightMap" class="active" type="button">Standard</button>
+            <button id="darkMap" type="button">Night</button>
+            <button id="toggle3d" class="active" type="button">3D</button>
+          </div>
+        </section>
+
+        <div class="map-toolbar" aria-label="Map tools">
+          <button id="selectTool" type="button" title="Clear selection">A</button>
+          <button id="fitTool" type="button" title="Fit Belfast">F</button>
+        </div>
+
+        <section id="viewPanel" class="floating-card view-panel" hidden></section>
+
+        <div class="floating-card map-legend">
+          <strong>Change intensity</strong>
+          <span id="legendMetric">Traffic</span>
+          <div class="legend-ramp"></div>
+          <div class="legend-labels"><span>low</span><span>medium</span><span>high</span></div>
+        </div>
+
+        <div id="evidencePopover" class="evidence-popover" hidden></div>
+
+        <section class="bottom-deck" aria-label="Replay timeline and metrics">
+          <div class="timeline-dock">
+            <div class="timeline-intro">
+              <strong>Replay timeline</strong>
+              <span>Scrub years, then inspect changes on the right.</span>
+            </div>
+            <button id="playButton" class="play-button" type="button">Play</button>
+            <div class="timeline-control">
+              <div id="yearTicks" class="year-ticks"></div>
+              <input id="yearSlider" type="range" min="2016" max="2026" step="1" value="2026" aria-label="Replay year">
+            </div>
+            <button id="speedButton" type="button">Animate</button>
+            <button id="presentButton" type="button">Go to 2026</button>
+          </div>
+
+          <section class="glance-row">
+            <div class="glance-title">
+              <strong>Belfast at a glance</strong>
+              <span><span id="currentYearLabel">2026</span> vs 2016</span>
+            </div>
+            <div id="metricCards" class="metric-stack"></div>
+          </section>
+        </section>
+      </main>
+
+      <aside class="right-panel" aria-label="Replay analytics">
+        <header class="panel-header">
+          <div>
+            <p>Infrastructure Changes</p>
+            <span>Click a change to inspect traffic, jobs, electricity, and service impacts.</span>
+          </div>
+          <div class="commit-controls">
+            <select id="commitYearSelect" aria-label="Commit year"></select>
+            <strong id="manifestStatus">Loading</strong>
+          </div>
+        </header>
+
+        <div class="change-filters">
+          <button class="active" type="button" data-change-filter="all">All</button>
+          <button type="button" data-change-filter="building">Buildings</button>
+          <button type="button" data-change-filter="road">Roads</button>
+          <button type="button" data-change-filter="power">Grid</button>
+          <button type="button" data-change-filter="service">Services</button>
+        </div>
+
+        <div id="cityCommits" class="commit-list"></div>
+
+        <section class="panel-card selected-card">
+          <h3>Selected Change</h3>
+          <div id="selectedChange" class="selected-change">
+            <div class="empty-state">
+              <strong>Select a commit</strong>
+              <span>Click a city commit to highlight the affected map cells and inspect impact.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-card evidence-card">
+          <h3>Evidence Trail</h3>
+          <div id="evidencePanel" class="evidence-panel">Select a city commit or grid cell to inspect source evidence and confidence.</div>
+        </section>
+      </aside>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

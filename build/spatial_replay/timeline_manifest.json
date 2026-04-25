@@ -1,0 +1,372 @@
+{
+  "annual_snapshots": [
+    {
+      "layer_kind_counts": {
+        "raster_basemap_rgb": 3,
+        "raster_indicator_ndbi": 1,
+        "raster_indicator_ndvi": 2
+      },
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [
+        "belfast_ndbi_2016",
+        "belfast_ndvi_2016",
+        "belfast_ndvi_2018",
+        "belfast_rgb_2016",
+        "belfast_rgb_2018",
+        "belfast_rgb_2020"
+      ],
+      "status": "observed_source_available",
+      "year": 2016
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2017
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2018
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2019
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2020
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2021
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2022
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2023
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2024
+    },
+    {
+      "layer_kind_counts": {},
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [],
+      "status": "awaiting_source_manifest",
+      "year": 2025
+    },
+    {
+      "layer_kind_counts": {
+        "active_travel_network": 1,
+        "building_footprint": 3,
+        "land_cover": 3,
+        "planning_or_land_market": 2,
+        "poi": 5,
+        "pt_route": 1,
+        "pt_stop": 1,
+        "road_network": 3,
+        "zone_boundary": 1
+      },
+      "snapshot_tables": [
+        "replay_zones",
+        "annual_zone_snapshots",
+        "annual_zone_indicators",
+        "annual_osm_feature_snapshots",
+        "annual_planning_application_snapshots",
+        "annual_bike_station_snapshots",
+        "annual_pt_stop_snapshots",
+        "annual_pt_route_snapshots",
+        "annual_air_zone_snapshots"
+      ],
+      "source_dataset_ids": [
+        "belfast_bridges_2026",
+        "belfast_buildings_2026",
+        "belfast_cycleways_2026",
+        "belfast_green_spaces_2026",
+        "belfast_major_roads_2026",
+        "belfast_roads_2026",
+        "belfast_transportstops2026",
+        "belfast_water_2026",
+        "belfastboudnary2026",
+        "belfastcommercial2026",
+        "belfastdevelopmentland2026",
+        "belfasteducation2026",
+        "belfasthealthcare2026",
+        "belfastlandmarks2026",
+        "belfastlanduse2026",
+        "belfastplaces2026",
+        "belfastpublicservices2026",
+        "belfasttransitroutes2026",
+        "exportbuildings",
+        "belfast_ni_buildings_3d_core"
+      ],
+      "status": "observed_source_available",
+      "year": 2026
+    }
+  ],
+  "event_tables": [
+    "planning_application_events",
+    "osm_feature_version_events",
+    "bike_trip_events",
+    "bike_station_events",
+    "pt_stop_events",
+    "pt_route_events",
+    "pt_timetable_events",
+    "air_observation_events",
+    "scenario_branch_events",
+    "scenario_edit_events"
+  ],
+  "manifest_version": "0.1.0",
+  "source_manifest_contract": {
+    "merge_expectation": "data-source branch may pass one or more manifest JSON files via --source-manifest without changing this ETL contract.",
+    "schema_path": "schemas/source_manifest.schema.json"
+  },
+  "spatial_delta_jobs": [
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2016,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2017
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2017,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2018
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2018,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2019
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2019,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2020
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2020,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2021
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2021,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2022
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2022,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2023
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2023,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2024
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2024,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2025
+    },
+    {
+      "delta_tables": [
+        "spatial_feature_deltas",
+        "zone_indicator_deltas",
+        "network_accessibility_deltas"
+      ],
+      "from_year": 2025,
+      "status": "awaiting_adjacent_sources",
+      "to_year": 2026
+    }
+  ],
+  "static_replay_exports": [
+    {
+      "asset_id": "annual_snapshot_tiles",
+      "contract": "one static vector/raster summary bundle per replay year",
+      "status": "blocked_until_renderer_branch"
+    },
+    {
+      "asset_id": "year_to_year_delta_layers",
+      "contract": "added/removed/changed geometries and indicator deltas",
+      "status": "ready_for_etl_when_adjacent_years_available"
+    },
+    {
+      "asset_id": "provenance_index",
+      "contract": "dataset-level source paths, source manifests, and checksums where small enough",
+      "status": "created_by_this_etl"
+    }
+  ],
+  "study_area": "Belfast",
+  "year_end": 2026,
+  "year_start": 2016
+}
