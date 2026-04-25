@@ -23,8 +23,8 @@
           <b>/</b>
           <span>2016-2026</span>
         </div>
-        <section class="lens-strip" aria-label="Signals">
-          <span>Signals</span>
+        <section class="lens-strip" aria-label="Impact lenses">
+          <span>Impact lens</span>
           <div id="lensTabs" class="lens-tabs"></div>
         </section>
         <div class="baseline-pill">
@@ -35,24 +35,16 @@
 
       <aside class="icon-nav" aria-label="Product navigation">
         <button class="active" type="button" data-view="overview"><span>O</span>Overview</button>
-        <button type="button" data-view="signals"><span>S</span>Signals</button>
-        <button type="button" data-view="commits"><span>C</span>Commit Log</button>
-        <button type="button" data-view="diff"><span>D</span>Impact Diff</button>
-        <button type="button" data-view="layers"><span>L</span>Layers</button>
-        <button type="button" data-view="compare"><span>Y</span>Compare Years</button>
+        <button type="button" data-view="commits"><span>C</span>Changes</button>
+        <button type="button" data-view="diff"><span>D</span>Impact</button>
+        <button type="button" data-view="compare"><span>Y</span>Compare</button>
         <button type="button" data-view="evidence"><span>E</span>Evidence</button>
-        <button type="button" data-view="scenarios"><span>B</span>Scenarios</button>
-        <button type="button" data-view="settings"><span>S</span>Settings</button>
-        <div class="nav-bottom">
-          <label><input id="labelsToggle" type="checkbox" checked> Labels</label>
-          <label><input id="legendToggle" type="checkbox" checked> Legend</label>
-        </div>
       </aside>
 
       <main class="map-workspace">
         <div id="map" aria-label="Replay Belfast map"></div>
 
-        <section class="floating-card layer-card" aria-label="Map layers">
+        <section class="floating-card layer-card" aria-label="Map layers" hidden>
           <header><strong>Signal Layers</strong><span id="sourceTotal">Loading</span></header>
           <p id="filterHint" class="filter-hint">Only layers relevant to the selected signal are shown.</p>
           <div id="layerToggles" class="switch-list"></div>
@@ -64,10 +56,8 @@
         </section>
 
         <div class="map-toolbar" aria-label="Map tools">
-          <button id="selectTool" type="button" title="Select">A</button>
+          <button id="selectTool" type="button" title="Clear selection">A</button>
           <button id="fitTool" type="button" title="Fit Belfast">F</button>
-          <button id="layersTool" type="button" title="Layers">L</button>
-          <button id="settingsTool" type="button" title="Settings">S</button>
         </div>
 
         <section id="viewPanel" class="floating-card view-panel" hidden></section>
@@ -85,7 +75,7 @@
           <div class="timeline-dock">
             <div class="timeline-intro">
               <strong>Replay timeline</strong>
-              <span>Scrub through commits to see how Belfast changed.</span>
+              <span>Scrub years, then inspect changes on the right.</span>
             </div>
             <button id="playButton" class="play-button" type="button">Play</button>
             <div class="timeline-control">
@@ -109,14 +99,22 @@
       <aside class="right-panel" aria-label="Replay analytics">
         <header class="panel-header">
           <div>
-            <p>City Commit Log</p>
-            <span>Evidence-backed changelog for Belfast.</span>
+            <p>Infrastructure Changes</p>
+            <span>Click a change to inspect traffic, jobs, electricity, and service impacts.</span>
           </div>
           <div class="commit-controls">
             <select id="commitYearSelect" aria-label="Commit year"></select>
             <strong id="manifestStatus">Loading</strong>
           </div>
         </header>
+
+        <div class="change-filters">
+          <button class="active" type="button" data-change-filter="all">All</button>
+          <button type="button" data-change-filter="building">Buildings</button>
+          <button type="button" data-change-filter="road">Roads</button>
+          <button type="button" data-change-filter="power">Grid</button>
+          <button type="button" data-change-filter="service">Services</button>
+        </div>
 
         <div id="cityCommits" class="commit-list"></div>
 

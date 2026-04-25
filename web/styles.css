@@ -41,7 +41,7 @@ button {
 
 .replay-app {
   display: grid;
-  grid-template-columns: 88px minmax(720px, 1fr) 386px;
+  grid-template-columns: 76px minmax(720px, 1fr) 420px;
   grid-template-rows: 86px minmax(0, 1fr);
   height: 100vh;
   min-width: 0;
@@ -211,7 +211,7 @@ button {
   grid-row: 2;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   padding: 16px 8px;
   border-right: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.92);
@@ -249,23 +249,6 @@ button {
   font-weight: 800;
 }
 
-.nav-bottom {
-  display: grid;
-  gap: 10px;
-  margin-top: auto;
-  padding: 14px 10px 4px;
-  border-top: 1px solid var(--line);
-  color: #3b4c64;
-  font-size: 0.76rem;
-}
-
-.nav-bottom label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-
 .map-workspace {
   position: relative;
   grid-column: 2;
@@ -277,7 +260,7 @@ button {
 
 #map {
   position: absolute;
-  inset: 0 0 214px 0;
+  inset: 0 0 96px 0;
 }
 
 .floating-card,
@@ -290,6 +273,7 @@ button {
 }
 
 .layer-card {
+  display: none;
   position: absolute;
   top: 18px;
   left: 18px;
@@ -444,7 +428,7 @@ button {
   top: 18px;
   right: 18px;
   z-index: 4;
-  display: grid;
+  display: flex;
   gap: 8px;
 }
 
@@ -553,7 +537,7 @@ button {
 .map-legend {
   position: absolute;
   left: 20px;
-  bottom: 238px;
+  bottom: 118px;
   z-index: 4;
   width: 174px;
   padding: 12px;
@@ -594,7 +578,7 @@ button {
   right: 0;
   bottom: 0;
   z-index: 6;
-  min-height: 214px;
+  min-height: 96px;
   border-top: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 -18px 44px rgba(16, 33, 61, 0.1);
@@ -663,7 +647,7 @@ button {
 }
 
 .glance-row {
-  display: grid;
+  display: none;
   grid-template-columns: 136px minmax(0, 1fr);
   gap: 16px;
   align-items: stretch;
@@ -839,6 +823,30 @@ button {
   background: #eef4ff;
   color: #174ea6;
   font-weight: 900;
+}
+
+.change-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-bottom: 4px;
+}
+
+.change-filters button {
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid #d7e0ec;
+  border-radius: 7px;
+  background: #fff;
+  color: #1f3656;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.change-filters button.active {
+  border-color: var(--blue);
+  background: #eaf2ff;
+  color: var(--blue-2);
 }
 
 .commit-list {
@@ -1022,6 +1030,42 @@ button {
 
 .selected-head span {
   color: var(--muted);
+}
+
+.impact-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.impact-tabs button {
+  min-height: 32px;
+  border: 1px solid #d7e0ec;
+  border-radius: 7px;
+  background: #fff;
+  color: #1f3656;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.impact-tabs button.active {
+  border-color: var(--metric-color, var(--blue));
+  background: color-mix(in srgb, var(--metric-color, var(--blue)) 12%, white);
+  color: var(--metric-color, var(--blue));
+}
+
+.impact-readout {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.impact-readout p {
+  margin: 6px 0 0;
+  color: #334155;
 }
 
 .affected-table,

@@ -25,7 +25,7 @@ function assert(condition, message) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".mapboxgl-canvas", { timeout: 30000 });
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.map?.loaded(), null, { timeout: 30000 });
-  await page.waitForSelector(".metric-card", { timeout: 30000 });
+  await page.waitForSelector(".metric-card", { state: "attached", timeout: 30000 });
   await page.waitForSelector(".commit", { timeout: 30000 });
 
   const loaded = await page.evaluate(() => ({
@@ -47,9 +47,9 @@ function assert(condition, message) {
   assert(loaded.layout, "Reference-style replay layout did not render.");
   assert(loaded.metricCards === 5, "Five metric cards did not render.");
   assert(loaded.lensTabs === 5, "Five top lens tabs did not render.");
-  assert(loaded.commits === 1, "Default filtered commit view should show one selected-signal commit.");
+  assert(loaded.commits === 5, "Default change list should show all infrastructure changes.");
   assert(loaded.toggles >= 3, "Filtered product layer toggles did not render.");
-  assert(loaded.navButtons === 9, "Product navigation buttons did not render.");
+  assert(loaded.navButtons === 5, "Product navigation buttons did not render.");
   assert(loaded.electricity, "Electricity replay layer did not render.");
   assert(loaded.selectionLayer, "Commit selection highlight layer did not render.");
   assert(JSON.stringify(loaded.metrics) === JSON.stringify(["traffic", "jobs", "electricity", "buildings", "services"]), "Browser metric registry is not the required five-signal set.");
@@ -62,29 +62,18 @@ function assert(condition, message) {
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.metric === expected, label.toLowerCase());
   }
 
-  for (const view of ["signals", "commits", "diff", "layers", "compare", "evidence", "scenarios", "settings", "overview"]) {
+  for (const view of ["commits", "diff", "compare", "evidence", "overview"]) {
     await page.locator(`.icon-nav button[data-view="${view}"]`).click();
     await page.waitForFunction((expected) => window.BelfastGitModeA?.state?.activeView === expected, view);
     if (view === "commits") {
       await page.waitForFunction(() => document.querySelectorAll(".commit").length === 5);
     }
   }
-  await page.locator('.icon-nav button[data-view="layers"]').click();
-  await page.waitForSelector(".layer-card", { state: "visible", timeout: 5000 });
 
-  const toggleCount = await page.locator(".switch-row").count();
-  for (let index = 0; index < toggleCount; index += 1) {
-    await page.locator(".switch-row").nth(index).click();
-    await page.waitForTimeout(80);
-    await page.locator(".switch-row").nth(index).click();
-  }
+  await page.locator('[data-change-filter="building"]').click();
+  await page.waitForFunction(() => window.BelfastGitModeA?.state?.changeFilter === "building");
+  await page.locator('[data-change-filter="all"]').click();
 
-  await page.locator("#darkMap").click();
-  await page.waitForFunction(() => window.BelfastGitModeA?.state?.map?.getLayer("mode-a-grid-fill"), null, { timeout: 30000 });
-  await page.waitForTimeout(1200);
-  await page.locator("#lightMap").click();
-  await page.waitForFunction(() => window.BelfastGitModeA?.state?.map?.getLayer("mode-a-grid-fill"), null, { timeout: 30000 });
-  await page.waitForTimeout(1200);
   await page.locator("#fitTool").click();
   await page.locator("#playButton").click();
   await page.waitForTimeout(1200);
@@ -97,18 +86,17 @@ function assert(condition, message) {
     slider.dispatchEvent(new Event("input", { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector("#currentYearLabel")?.textContent?.trim() === "2023");
-  await page.locator(".commit", { hasText: "Traffic" }).click();
+  await page.locator(".commit", { hasText: "Road / corridor change" }).first().click();
   await page.waitForFunction(() => window.BelfastGitModeA?.state?.selectedCommit?.type === "traffic");
-  await page.waitForFunction(() => document.querySelector("#selectedChange")?.textContent?.includes("Affected signals"));
+  await page.locator("[data-impact-metric='electricity']").click();
+  await page.waitForFunction(() => window.BelfastGitModeA?.state?.metric === "electricity");
+  await page.locator("[data-impact-metric='traffic']").click();
+  await page.waitForFunction(() => document.querySelector("#selectedChange")?.textContent?.includes("Impact table"));
   await page.waitForFunction(() => document.querySelector("#evidencePanel")?.textContent?.includes("Evidence"));
   await page.waitForFunction(() => {
     const source = window.BelfastGitModeA?.state?.map?.getSource("commit-selection");
     return Boolean(source && window.BelfastGitModeA.state.selectedCommit);
   });
-  await page.locator("#toggle3d").click();
-  await page.waitForTimeout(750);
-  await page.locator("#toggle3d").click();
-  await page.waitForTimeout(350);
   await page.evaluate(() => {
     const { state } = window.BelfastGitModeA;
     state.map.jumpTo({

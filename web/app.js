@@ -9,6 +9,7 @@ const state = {
   year: 2026,
   metric: "traffic",
   activeView: "overview",
+  changeFilter: "all",
   selectedCommit: null,
   playing: false,
   timer: null,
@@ -129,6 +130,45 @@ const SIGNAL_LAYER_PRESETS = {
   services: { change_heatmap: true, roads: false, buildings: false, services_context: true, electricity_context: false, boundaries: false, transit: false, green: true, water: false }
 };
 
+const IMPACT_LENSES = ["traffic", "jobs", "electricity", "services"];
+const CHANGE_TYPES = {
+  traffic: {
+    type: "road",
+    label: "Road / corridor change",
+    headline: "Road network change",
+    icon: "RD",
+    detail: "Road additions, reconfiguration, or corridor disruption are interpreted through traffic strain and access effects."
+  },
+  buildings: {
+    type: "building",
+    label: "Building change",
+    headline: "Building expansion",
+    icon: "BD",
+    detail: "Mapped footprint additions and development pressure are analysed as demand on roads, services, jobs and grid headroom."
+  },
+  electricity: {
+    type: "power",
+    label: "Grid / energy change",
+    headline: "Data centre / grid load",
+    icon: "EL",
+    detail: "GRID-style load and headroom scoring estimates how data centres, substations, wind farms or reinforcement change electricity pressure."
+  },
+  jobs: {
+    type: "employment",
+    label: "Jobs / opportunity change",
+    headline: "Employment access change",
+    icon: "JB",
+    detail: "Commercial activity and job access are tested against road pressure, service reach and electricity demand."
+  },
+  services: {
+    type: "service",
+    label: "Service change",
+    headline: "Service access change",
+    icon: "SV",
+    detail: "Health, education, civic and recreation changes are analysed for access, traffic draw and grid/service demand."
+  }
+};
+
 function formatNumber(value) {
   return Number.isFinite(value) ? value.toLocaleString() : "0";
 }
@@ -172,12 +212,58 @@ function layerBelongsToSignal(item) {
 }
 
 function visibleContextItems() {
-  if (["layers", "settings"].includes(state.activeView)) return CONTEXT_REGISTRY;
   return CONTEXT_REGISTRY.filter((item) => layerBelongsToSignal(item));
 }
 
 function signalCommit(metric = state.metric) {
   return (state.modeA?.commitsByYear?.[String(state.year)] || []).find((commit) => commit.type === metric);
+}
+
+function infrastructureChanges() {
+  return (state.modeA?.commitsByYear?.[String(state.year)] || []).map((commit) => {
+    const type = CHANGE_TYPES[commit.type] || CHANGE_TYPES.traffic;
+    const intensity = Math.min(100, Math.max(6, Math.round(Math.abs(commit.delta || 0) * 100)));
+    const mw = commit.type === "electricity" ? Math.max(15, Math.round((0.35 + Math.abs(commit.delta || 0)) * 140)) : 0;
+    const scenario = commit.type === "electricity" && commit.delta > 0.1 ? "Data centre load" : commit.type === "electricity" ? "Wind farm / grid relief" : type.headline;
+    return {
+      ...commit,
+      changeType: type.type,
+      changeLabel: type.label,
+      headline: type.headline,
+      icon: type.icon,
+      detail: type.detail,
+      scenario,
+      intensity,
+      estimatedMw: mw,
+    };
+  });
+}
+
+function filteredChanges() {
+  const changes = infrastructureChanges();
+  if (state.changeFilter === "all") return changes;
+  return changes.filter((change) => change.changeType === state.changeFilter);
+}
+
+function impactCopy(change, metric) {
+  const affected = (change.affectedSignals || []).find((item) => item.signal === metric);
+  const delta = affected?.delta ?? change.delta ?? 0;
+  const direction = delta >= 0 ? "increases" : "reduces";
+  const area = change.area || "Belfast";
+  if (metric === "traffic") {
+    return `${change.headline} around ${area} ${direction} the traffic pressure signal by ${signedPct(delta)} against 2016. The highlighted cells show the congestion surface most likely to change first.`;
+  }
+  if (metric === "jobs") {
+    return `${area} shows a ${signedPct(delta)} opportunity/job-access shift. Use this to see whether the change improves reach to employment or concentrates demand in already busy corridors.`;
+  }
+  if (metric === "electricity") {
+    const load = change.estimatedMw ? ` Estimated load: ${change.estimatedMw} MW.` : "";
+    return `${change.scenario} changes grid headroom by ${signedPct(delta)} in the selected cells.${load} Electricity is derived from the GRID-style load/headroom proxy and OSM power assets.`;
+  }
+  if (metric === "services") {
+    return `Service access around ${area} shifts ${signedPct(delta)}. This shows whether the infrastructure change helps practical access to civic, health, education, and recreation services.`;
+  }
+  return change.explanation || change.subtitle || "";
 }
 
 function focusRightPanel(selector) {
@@ -518,13 +604,12 @@ function renderAll() {
   renderToggles();
   renderTimeline();
   renderYear();
-  setView(state.activeView);
 }
 
 function setView(view) {
   state.activeView = view;
   els.app?.setAttribute("data-view", view);
-  els.app?.classList.toggle("show-layer-card", ["signals", "layers", "settings"].includes(view));
+  els.app?.classList.remove("show-layer-card");
   els.app?.classList.toggle("focus-map", view === "overview");
   document.querySelectorAll(".icon-nav button[data-view]").forEach((button) => {
     button.classList.toggle("active", button.dataset.view === view);
@@ -535,16 +620,12 @@ function setView(view) {
 
   if (view === "overview") {
     fitBelfast();
-  } else if (view === "signals") {
-    els.layerCard?.focus?.();
   } else if (view === "commits") {
     focusRightPanel(".panel-header");
   } else if (view === "diff") {
     const commit = state.selectedCommit || signalCommit();
     if (commit) selectCommit(commit, { keepView: true });
     focusRightPanel(".selected-card");
-  } else if (view === "layers" || view === "settings") {
-    renderToggles();
   } else if (view === "compare") {
     renderComparePanel();
   } else if (view === "evidence") {
@@ -553,46 +634,12 @@ function setView(view) {
       if (commit) selectCommit(commit, { keepView: true });
     }
     focusRightPanel(".evidence-card");
-  } else if (view === "scenarios") {
-    state.year = 2026;
-    renderYear();
   }
 }
 
 function renderViewPanel() {
   if (!els.viewPanel) return;
-  if (state.activeView === "signals") {
-    const metric = METRIC_BY_ID[state.metric];
-    els.viewPanel.hidden = false;
-    els.viewPanel.innerHTML = `
-      <strong>${escapeHtml(metric.label)} signal</strong>
-      <p>${escapeHtml(metric.description)}. The map only shows this signal plus the filters that support it.</p>
-      <div class="view-actions">
-        <button type="button" data-action="select-current-commit">Open ${escapeHtml(metric.label)} commit</button>
-        <button type="button" data-action="show-layers">Adjust filters</button>
-      </div>
-    `;
-  } else if (state.activeView === "layers") {
-    els.viewPanel.hidden = false;
-    els.viewPanel.innerHTML = `
-      <strong>Layer filters</strong>
-      <p>Use the Signal Layers card to add context. Switching signals resets to a clean, signal-specific preset.</p>
-    `;
-  } else if (state.activeView === "settings") {
-    els.viewPanel.hidden = false;
-    els.viewPanel.innerHTML = `
-      <strong>Display settings</strong>
-      <p>Use the sidebar checkboxes for labels and legend, or the map buttons for basemap and 3D height.</p>
-    `;
-  } else if (state.activeView === "scenarios") {
-    const metric = METRIC_BY_ID[state.metric];
-    els.viewPanel.hidden = false;
-    els.viewPanel.innerHTML = `
-      <strong>2036 baseline preview</strong>
-      <p>The simulation baseline starts from the 2026 ${escapeHtml(metric.label)} trend. Select a commit to inspect what would carry forward into Mode B.</p>
-      <div class="view-actions"><button type="button" data-action="select-current-commit">Inspect 2026 trend</button></div>
-    `;
-  } else if (state.activeView === "compare") {
+  if (state.activeView === "compare") {
     renderComparePanel();
   } else {
     els.viewPanel.hidden = true;
@@ -806,17 +853,16 @@ function normalizeSparkline(values) {
 }
 
 function renderCommits() {
-  const allCommits = state.modeA.commitsByYear[String(state.year)] || [];
-  const showAll = ["commits", "compare"].includes(state.activeView);
-  const commits = showAll ? allCommits : allCommits.filter((commit) => commit.type === state.metric);
+  const changes = filteredChanges();
   els.cityCommits.innerHTML = "";
-  if (!showAll) {
-    const notice = document.createElement("div");
-    notice.className = "commit-filter-note";
-    notice.innerHTML = `Showing ${escapeHtml(labelFor(state.metric))}. Open Commit Log for all ${allCommits.length} signals.`;
-    els.cityCommits.append(notice);
+  if (!changes.length) {
+    const empty = document.createElement("div");
+    empty.className = "commit-filter-note";
+    empty.textContent = "No changes match this filter for the selected year.";
+    els.cityCommits.append(empty);
+    return;
   }
-  for (const commit of commits) {
+  for (const commit of changes) {
     const meta = METRIC_BY_ID[commit.type] || METRIC_BY_ID.traffic;
     const active = state.selectedCommit?.id === commit.id;
     const row = document.createElement("button");
@@ -826,10 +872,10 @@ function renderCommits() {
     row.innerHTML = `
       <span class="commit-symbol">${escapeHtml(meta.icon)}</span>
       <span class="commit-body">
-        <span class="commit-meta"><strong>${escapeHtml(labelFor(commit.type))}</strong><em>${escapeHtml(commit.month || state.year)}</em></span>
-        <strong>${escapeHtml(commit.title)}</strong>
-        <small>${escapeHtml(commit.subtitle || "")}</small>
-        <span class="commit-foot"><span>${escapeHtml(commit.severity || "Medium")}</span><span>View diff</span></span>
+        <span class="commit-meta"><strong>${escapeHtml(commit.changeLabel)}</strong><em>${escapeHtml(commit.month || state.year)}</em></span>
+        <strong>${escapeHtml(commit.headline)} in ${escapeHtml(commit.area || "Belfast")}</strong>
+        <small>${escapeHtml(commit.detail)}</small>
+        <span class="commit-foot"><span>${escapeHtml(commit.severity || "Medium")}</span><span>Analyse impacts</span></span>
       </span>
     `;
     row.addEventListener("click", () => selectCommit(commit));
@@ -891,8 +937,8 @@ function renderEmptySelectedChange() {
   if (!els.selectedChange) return;
   els.selectedChange.innerHTML = `
     <div class="empty-state">
-      <strong>Select a commit</strong>
-      <span>Click a city commit to highlight the affected map cells, inspect the evidence trail and see the signal impact.</span>
+      <strong>Select an infrastructure change</strong>
+      <span>Use the year slider, filter changes, then click one to inspect traffic, jobs, electricity, and service impacts.</span>
     </div>
   `;
   if (els.evidencePanel) {
@@ -910,27 +956,37 @@ function showCommitEvidence(commit) {
       <header class="selected-head">
         <span class="selected-icon" style="--metric-color:${escapeHtml(meta.palette[2])}">${escapeHtml(meta.icon)}</span>
         <div>
-          <small>${escapeHtml(labelFor(commit.type))} / ${escapeHtml(commit.month || state.year)}</small>
-          <strong>${escapeHtml(commit.title)}</strong>
-          <span>${escapeHtml(commit.severity || "Medium")} confidence focus, ${escapeHtml(signedPct(commit.delta || 0))} vs 2016</span>
+          <small>${escapeHtml(commit.changeLabel || labelFor(commit.type))} / ${escapeHtml(commit.month || state.year)}</small>
+          <strong>${escapeHtml(commit.headline || commit.title)} in ${escapeHtml(commit.area || "Belfast")}</strong>
+          <span>${escapeHtml(commit.severity || "Medium")} confidence, ${escapeHtml(signedPct(commit.delta || 0))} baseline shift${commit.estimatedMw ? `, ${escapeHtml(commit.estimatedMw)} MW load proxy` : ""}</span>
         </div>
       </header>
-      <p>${escapeHtml(commit.explanation || commit.subtitle || "")}</p>
-      <section class="affected-table" aria-label="Affected signals">
-        <strong>Affected signals</strong>
-        ${affected.map((row) => `
-          <div class="affected-row">
-            <span>${escapeHtml(row.label)}</span>
-            <em>${escapeHtml(row.impact)}</em>
-            <b>${escapeHtml(signedPct(row.delta || 0))}</b>
-          </div>
-        `).join("")}
+      <p>${escapeHtml(commit.detail || commit.explanation || commit.subtitle || "")}</p>
+      <section class="impact-tabs" aria-label="Impact lenses">
+        ${IMPACT_LENSES.map((metric) => {
+          const item = METRIC_BY_ID[metric];
+          return `<button type="button" data-impact-metric="${escapeHtml(metric)}" class="${state.metric === metric ? "active" : ""}" style="--metric-color:${escapeHtml(item.palette[2])}">${escapeHtml(item.label)}</button>`;
+        }).join("")}
+      </section>
+      <section class="impact-readout">
+        <strong>${escapeHtml(labelFor(state.metric))} impact</strong>
+        <p>${escapeHtml(impactCopy(commit, state.metric))}</p>
       </section>
       <section class="reasoning-trace">
+        <strong>Impact table</strong>
+        <div class="affected-table">
+          ${affected.map((row) => `
+            <div class="affected-row">
+              <span>${escapeHtml(row.label)}</span>
+              <em>${escapeHtml(row.impact)}</em>
+              <b>${escapeHtml(signedPct(row.delta || 0))}</b>
+            </div>
+          `).join("")}
+        </div>
         <strong>Planning readout</strong>
         <div id="geminiReadout" class="ai-readout">Deterministic readout ready. Gemini summary will appear here when a local API key is available.</div>
       </section>
-      <a class="inspect-link" href="#evidencePanel">Inspect impact in detail</a>
+      <a class="inspect-link" href="#evidencePanel">View evidence</a>
     `;
   }
   if (els.evidencePanel) {
@@ -1108,6 +1164,23 @@ els.viewPanel?.addEventListener("click", (event) => {
     if (commit) selectCommit(commit);
   }
 });
+els.selectedChange?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-impact-metric]");
+  if (!button || !state.selectedCommit) return;
+  state.metric = button.dataset.impactMetric;
+  applySignalPreset(state.metric);
+  updateMapStyles();
+  renderLensTabs();
+  renderMetrics();
+  showCommitEvidence(state.selectedCommit);
+});
+document.querySelector(".change-filters")?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-change-filter]");
+  if (!button) return;
+  state.changeFilter = button.dataset.changeFilter;
+  document.querySelectorAll("[data-change-filter]").forEach((item) => item.classList.toggle("active", item === button));
+  renderCommits();
+});
 els.playButton.addEventListener("click", togglePlay);
 els.presentButton.addEventListener("click", () => {
   state.year = 2026;
@@ -1185,6 +1258,10 @@ window.BelfastGitModeA = {
   selectCommit: (metric) => {
     const commit = (state.modeA.commitsByYear[String(state.year)] || []).find((item) => item.type === metric);
     if (commit) selectCommit(commit);
+  },
+  setChangeFilter: (filter) => {
+    state.changeFilter = filter;
+    renderCommits();
   },
   setView
 };
