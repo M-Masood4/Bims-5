@@ -625,7 +625,7 @@ def commit(
         "confidence": confidence,
         "tone": tone,
         "cellIds": cell_ids,
-        "mapInstruction": f"Highlight the top {len(cell_ids)} {metric} replay cells around {area}.",
+        "mapInstruction": f"Highlight the top {len(cell_ids)} affected replay cells around {area}. Click any cell in the list to zoom into that exact diff.",
         "explanation": explanation,
         "evidence": evidence,
         "affectedSignals": affected_signals(metric, year, averages),
@@ -653,7 +653,7 @@ def commits_for_year(
             values.items(),
             key=lambda item: (item[1][year][metric], abs(item[1][year][metric] - item[1][2016][metric])),
             reverse=True,
-        )[:9]
+        )[:36]
         cell_ids = [cell_id for cell_id, _year_values in ordered]
         leading_cell = by_cell[cell_ids[0]]
         area = area_name(leading_cell["center"])
@@ -727,6 +727,37 @@ def geometry_centroid(geometry: dict[str, Any] | None) -> tuple[float, float] | 
     return (sum(lon for lon, _lat in coords) / len(coords), sum(lat for _lon, lat in coords) / len(coords))
 
 
+def load_power_asset_meta(root: Path) -> dict[str, dict[str, Any]]:
+    path = root / "data/raw/overpass/belfast_power_assets_overpass_meta_2026.json"
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    meta: dict[str, dict[str, Any]] = {}
+    for element in payload.get("elements", []):
+        element_type = element.get("type")
+        element_id = element.get("id")
+        if not element_type or element_id is None:
+            continue
+        source_id = f"{element_type}/{element_id}"
+        timestamp = str(element.get("timestamp") or "")
+        try:
+            mapped_year = int(timestamp[:4])
+        except ValueError:
+            mapped_year = 2016
+        meta[source_id] = {
+            "osm_timestamp": timestamp,
+            "osm_version": element.get("version"),
+            "osm_changeset": element.get("changeset"),
+            "osm_user": element.get("user"),
+            "osm_power": (element.get("tags") or {}).get("power"),
+            "mapped_first_visible_year": min(2026, max(2016, mapped_year)),
+        }
+    return meta
+
+
 def electricity_status(load: float) -> str:
     if load >= 0.82:
         return "stressed"
@@ -747,6 +778,7 @@ def electricity_layers_for_year(
     if not path.exists():
         return {"type": "FeatureCollection", "features": []}
     source = json.loads(path.read_text(encoding="utf-8"))
+    power_meta = load_power_asset_meta(root)
     progress = (year - 2016) / 10
     features = []
     for feature in source.get("features", []):
@@ -757,6 +789,10 @@ def electricity_layers_for_year(
         metrics = values[cell["id"]][year]
         props = feature.get("properties") or {}
         power_type = props.get("power") or "grid"
+        meta = power_meta.get(str(props.get("source_id") or ""))
+        first_visible_year = int(meta.get("mapped_first_visible_year", 2016)) if meta else 2016
+        if first_visible_year > year:
+            continue
         type_weight = 0.08 if power_type in {"line", "minor_line", "cable"} else 0.14 if power_type in {"substation", "transformer"} else 0.05
         load = clamp(
             0.23
@@ -771,14 +807,18 @@ def electricity_layers_for_year(
         headroom = clamp(1 - load)
         properties = {
             **{key: value for key, value in props.items() if value not in (None, "")},
+            **({key: value for key, value in meta.items() if value not in (None, "")} if meta else {}),
             "year": year,
             "cell_id": cell["id"],
+            "replay_first_visible_year": first_visible_year,
+            "visibility_basis": "OSM metadata timestamp" if meta else "Current OSM asset without historical metadata",
             "grid_load_pct": round(load * 100, 1),
             "headroom_pct": round(headroom * 100, 1),
             "status": electricity_status(load),
             "confidence": "medium",
             "evidence": [
                 "OSM power lines/substations current asset map",
+                "Overpass OSM metadata for transformer/substation mapped timestamps" if meta else "No OSM timestamp in local power export; shown from 2016 baseline",
                 "GRID reference method: load heatmap and headroom scoring",
                 "Load is a Belfast replay proxy weighted by electricity, development, jobs, services and traffic pressure",
             ],
@@ -789,8 +829,9 @@ def electricity_layers_for_year(
         "name": f"belfast_ni_electricity_{year}",
         "metadata": {
             "year": year,
-            "source": "OSM power-grid assets with GRID-style load/headroom replay proxy",
+            "source": "OSM power-grid assets with Overpass metadata timestamps and GRID-style load/headroom replay proxy",
             "feature_count": len(features),
+            "visibility_note": "Power assets with Overpass metadata appear from their OSM timestamp year; this is mapped-history evidence, not confirmed commissioning date.",
         },
         "features": features,
     }
@@ -865,11 +906,12 @@ def build(root: Path, output_dir: Path) -> dict[str, Any]:
             {"name": "Belfast trees, pitches and public toilets open data", "status": "local", "confidence": "medium", "note": "Services and civic-access context"},
             {"name": "BCCAQ air monitoring inventory", "status": "local", "confidence": "medium", "note": "Traffic/exposure supporting context"},
             {"name": "Belfast electricity assets from OSM power tags", "status": "local derived", "confidence": "medium for asset location, proxy for load", "note": "GRID-inspired load/headroom replay over power lines and substations"},
+            {"name": "OpenStreetMap Overpass power metadata", "status": "downloaded 2026-04-25", "confidence": "medium for mapped timestamps", "note": "Transformer, substation, generator and plant metadata drives mapped-appearance dots; timestamps are OSM history, not commissioning dates"},
         ],
         "electricityMethod": {
             "sourceInspiration": "GRID-main.zip",
             "rendering": "Power lines and substations use load percentage and headroom status, similar to GRID heatmap/viability scoring.",
-            "caveat": "Belfast load is a replay proxy; asset locations come from OSM power tags, not live NIE Networks telemetry.",
+            "caveat": "Belfast load is a replay proxy; asset locations come from OSM power tags, and Overpass timestamps show when assets became visible in OSM, not confirmed commissioning dates.",
         },
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

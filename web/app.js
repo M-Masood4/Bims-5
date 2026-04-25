@@ -11,6 +11,8 @@ const state = {
   activeView: "overview",
   changeFilter: "all",
   selectedCommit: null,
+  selectedCellId: null,
+  selectedCellFeature: null,
   playing: false,
   timer: null,
   pitch3d: true,
@@ -60,7 +62,8 @@ const els = {
   mapLegend: document.querySelector(".map-legend"),
   layersTool: document.querySelector("#layersTool"),
   settingsTool: document.querySelector("#settingsTool"),
-  selectTool: document.querySelector("#selectTool")
+  selectTool: document.querySelector("#selectTool"),
+  resetSelection: document.querySelector("#resetSelection")
 };
 
 const LENS_REGISTRY = [
@@ -130,7 +133,7 @@ const SIGNAL_LAYER_PRESETS = {
   services: { change_heatmap: true, roads: false, buildings: false, services_context: true, electricity_context: false, boundaries: false, transit: false, green: true, water: false }
 };
 
-const IMPACT_LENSES = ["traffic", "jobs", "electricity", "services"];
+const IMPACT_LENSES = REQUIRED_METRICS;
 const CHANGE_TYPES = {
   traffic: {
     type: "road",
@@ -260,6 +263,9 @@ function impactCopy(change, metric) {
     const load = change.estimatedMw ? ` Estimated load: ${change.estimatedMw} MW.` : "";
     return `${change.scenario} changes grid headroom by ${signedPct(delta)} in the selected cells.${load} Electricity is derived from the GRID-style load/headroom proxy and OSM power assets.`;
   }
+  if (metric === "buildings") {
+    return `${change.headline} shifts mapped building pressure by ${signedPct(delta)} around ${area}. Building footprints visible on the map are filtered by replay year so later mapped/proxy additions appear as the slider moves.`;
+  }
   if (metric === "services") {
     return `Service access around ${area} shifts ${signedPct(delta)}. This shows whether the infrastructure change helps practical access to civic, health, education, and recreation services.`;
   }
@@ -313,7 +319,7 @@ function initMap() {
   });
   state.map.on("click", "mode-a-grid-fill", (event) => {
     const feature = event.features?.[0];
-    if (feature) showCellEvidence(feature, event.lngLat);
+    if (feature) selectGridCell(feature, event.lngLat);
   });
   for (const layer of ["electricity-line", "electricity-circle", "electricity-fill"]) {
     state.map.on("click", layer, (event) => {
@@ -679,7 +685,13 @@ function renderLensTabs() {
       state.metric = metric.id;
       applySignalPreset(metric.id);
       updateMapStyles();
-      updateSelectedCommitLayer();
+      if (state.selectedCommit) {
+        updateSelectedCommitLayer();
+      } else if (state.selectedCellFeature) {
+        setSelectionCollection({ type: "FeatureCollection", features: [state.selectedCellFeature] });
+        renderAreaSelection(state.selectedCellFeature.properties || {});
+        showCellEvidence(state.selectedCellFeature, null);
+      }
       renderLensTabs();
       renderToggles();
       renderMetrics();
@@ -749,6 +761,8 @@ function renderYear() {
   const electricitySource = state.map?.getSource("electricity-replay");
   if (electricitySource) electricitySource.setData(`/data/mode-a/electricity_${state.year}.geojson`);
   if (state.selectedCommit && state.selectedCommit.year !== state.year) state.selectedCommit = null;
+  state.selectedCellId = null;
+  state.selectedCellFeature = null;
   updateMapStyles();
   renderMetrics();
   renderCommits();
@@ -828,6 +842,11 @@ function renderMetrics() {
       state.metric = card.metric;
       applySignalPreset(card.metric);
       updateMapStyles();
+      if (state.selectedCellFeature) {
+        setSelectionCollection({ type: "FeatureCollection", features: [state.selectedCellFeature] });
+        renderAreaSelection(state.selectedCellFeature.properties || {});
+        showCellEvidence(state.selectedCellFeature, null);
+      }
       renderToggles();
       renderLensTabs();
       renderMetrics();
@@ -887,8 +906,82 @@ function labelFor(metric) {
   return METRIC_BY_ID[metric]?.label || metric.replace(/_/g, " ");
 }
 
+function cloneFeature(feature) {
+  return JSON.parse(JSON.stringify(feature));
+}
+
+function extendBounds(bounds, value) {
+  if (!Array.isArray(value)) return;
+  if (value.length >= 2 && typeof value[0] === "number" && typeof value[1] === "number") {
+    bounds.extend(value);
+    return;
+  }
+  for (const item of value) extendBounds(bounds, item);
+}
+
+function fitFeatureCollection(collection, options = {}) {
+  if (!state.map || !collection?.features?.length) return;
+  const bounds = new mapboxgl.LngLatBounds();
+  for (const feature of collection.features) {
+    extendBounds(bounds, feature.geometry?.coordinates);
+  }
+  if (bounds.isEmpty()) return;
+  state.map.fitBounds(bounds, {
+    padding: options.padding || { top: 88, right: 90, bottom: 132, left: 90 },
+    maxZoom: options.maxZoom || 14.8,
+    pitch: state.pitch3d ? 52 : 18,
+    bearing: state.pitch3d ? -20 : 0,
+    duration: options.duration || 850
+  });
+}
+
+function setSelectionCollection(collection, options = {}) {
+  const source = state.map?.getSource("commit-selection");
+  const hasSelection = Boolean(collection?.features?.length);
+  if (source) source.setData(hasSelection ? collection : { type: "FeatureCollection", features: [] });
+  for (const layerId of ["commit-selection-fill", "commit-selection-line"]) {
+    if (state.map?.getLayer(layerId)) {
+      state.map.setLayoutProperty(layerId, "visibility", hasSelection ? "visible" : "none");
+    }
+  }
+  if (hasSelection && options.zoom) fitFeatureCollection(collection, options);
+}
+
+function affectedCellList(cellIds = []) {
+  return `
+    <section class="cell-list" aria-label="Affected cells">
+      <header><span>Affected cells</span><span>${cellIds.length}</span></header>
+      ${cellIds.map((cellId) => `
+        <button type="button" data-cell-id="${escapeHtml(cellId)}" class="${state.selectedCellId === cellId ? "active" : ""}">
+          <span>${escapeHtml(cellId)}</span>
+          <b>Zoom</b>
+        </button>
+      `).join("")}
+    </section>
+  `;
+}
+
+function areaMetricCards(props) {
+  return LENS_REGISTRY.map((metric) => {
+    const value = Number(props[metric.id]);
+    const delta = props[`${metric.id}_delta_2016`];
+    return `
+      <article class="area-metric">
+        <strong>${escapeHtml(metric.label)}</strong>
+        <span>${escapeHtml(pct(value))} / ${escapeHtml(delta)} vs 2016</span>
+      </article>
+    `;
+  }).join("");
+}
+
+function changesForCell(cellId) {
+  return infrastructureChanges().filter((change) => (change.cellIds || []).includes(cellId));
+}
+
 function selectCommit(commit, options = {}) {
   state.selectedCommit = { ...commit, year: state.year };
+  state.selectedCellId = null;
+  state.selectedCellFeature = null;
   state.metric = commit.type;
   applySignalPreset(commit.type);
   if (commit.type === "electricity") state.layers.electricity_context = true;
@@ -908,15 +1001,15 @@ function selectCommit(commit, options = {}) {
   renderMetrics();
   renderCommits();
   renderViewPanel();
-  updateSelectedCommitLayer();
+  updateSelectedCommitLayer({ zoom: options.zoom !== false });
   showCommitEvidence(commit);
 }
 
-async function updateSelectedCommitLayer() {
+async function updateSelectedCommitLayer(options = {}) {
   const source = state.map?.getSource("commit-selection");
   if (!source) return;
   if (!state.selectedCommit?.cellIds?.length) {
-    source.setData(emptyFeatureCollection);
+    setSelectionCollection(emptyFeatureCollection);
     return;
   }
   const commitId = state.selectedCommit.id;
@@ -924,13 +1017,61 @@ async function updateSelectedCommitLayer() {
     const grid = await json(`/data/mode-a/grid_${state.year}.geojson`);
     if (state.selectedCommit?.id !== commitId) return;
     const wanted = new Set(state.selectedCommit.cellIds);
-    source.setData({
+    const collection = {
       type: "FeatureCollection",
       features: grid.features.filter((feature) => wanted.has(feature.properties?.cell_id))
-    });
+    };
+    setSelectionCollection(collection, options);
   } catch (error) {
-    source.setData(emptyFeatureCollection);
+    setSelectionCollection(emptyFeatureCollection);
   }
+}
+
+async function selectCellById(cellId, options = {}) {
+  try {
+    const grid = await json(`/data/mode-a/grid_${state.year}.geojson`);
+    const feature = grid.features.find((item) => item.properties?.cell_id === cellId);
+    if (feature) selectGridCell(feature, null, { zoom: options.zoom !== false });
+  } catch (_error) {
+    renderEmptySelectedChange();
+  }
+}
+
+function selectGridCell(feature, lngLat, options = {}) {
+  const cloned = cloneFeature(feature);
+  const props = cloned.properties || {};
+  state.selectedCommit = null;
+  state.selectedCellId = props.cell_id || null;
+  state.selectedCellFeature = cloned;
+  const collection = { type: "FeatureCollection", features: [cloned] };
+  setSelectionCollection(collection, { zoom: options.zoom !== false, maxZoom: 15.2 });
+  renderCommits();
+  renderAreaSelection(props);
+  showCellEvidence(cloned, lngLat);
+  focusRightPanel(".selected-card");
+}
+
+function resetSelection() {
+  state.selectedCommit = null;
+  state.selectedCellId = null;
+  state.selectedCellFeature = null;
+  state.changeFilter = "all";
+  state.metric = "traffic";
+  state.activeView = "overview";
+  applySignalPreset("traffic");
+  document.querySelectorAll("[data-change-filter]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.changeFilter === "all");
+  });
+  els.app?.setAttribute("data-view", "overview");
+  setSelectionCollection(emptyFeatureCollection);
+  updateMapStyles();
+  renderLensTabs();
+  renderToggles();
+  renderMetrics();
+  renderCommits();
+  renderViewPanel();
+  renderEmptySelectedChange();
+  fitBelfast();
 }
 
 function renderEmptySelectedChange() {
@@ -944,6 +1085,34 @@ function renderEmptySelectedChange() {
   if (els.evidencePanel) {
     els.evidencePanel.textContent = "Select a city commit or grid cell to inspect source evidence and confidence.";
   }
+}
+
+function renderAreaSelection(props) {
+  if (!els.selectedChange) return;
+  const cellId = props.cell_id;
+  const localChanges = changesForCell(cellId);
+  const dominant = `${labelFor(props.dominant_metric)} ${props.dominant_change || ""}`.trim();
+  els.selectedChange.innerHTML = `
+    <header class="selected-head">
+      <span class="selected-icon" style="--metric-color:${escapeHtml(activeMetricColor())}">GC</span>
+      <div>
+        <small>Selected grid cell / ${escapeHtml(state.year)}</small>
+        <strong>${escapeHtml(cellId)}</strong>
+        <span>${escapeHtml(dominant)} / ${escapeHtml(props.confidence || "medium")} confidence</span>
+      </div>
+    </header>
+    <p>This is the exact area-level diff for the selected replay cell. The cards compare the current year against 2016, and the list shows city commits whose affected-cell set includes this cell.</p>
+    <section class="area-metrics">${areaMetricCards(props)}</section>
+    <section class="cell-list" aria-label="Changes affecting selected cell">
+      <header><span>Changes affecting this cell</span><span>${localChanges.length}</span></header>
+      ${localChanges.length ? localChanges.map((change) => `
+        <button type="button" data-change-id="${escapeHtml(change.id)}">
+          <span>${escapeHtml(change.changeLabel)} / ${escapeHtml(change.area || "Belfast")}</span>
+          <b>${escapeHtml(signedPct(change.delta || 0))}</b>
+        </button>
+      `).join("") : `<span class="commit-filter-note">No headline city commit contains this cell for ${escapeHtml(state.year)}, but the local signal values above still update from the replay grid.</span>`}
+    </section>
+  `;
 }
 
 function showCommitEvidence(commit) {
@@ -986,6 +1155,7 @@ function showCommitEvidence(commit) {
         <strong>Planning readout</strong>
         <div id="geminiReadout" class="ai-readout">Deterministic readout ready. Gemini summary will appear here when a local API key is available.</div>
       </section>
+      ${affectedCellList(commit.cellIds || [])}
       <a class="inspect-link" href="#evidencePanel">View evidence</a>
     `;
   }
@@ -1065,6 +1235,7 @@ function showCellEvidence(feature, lngLat) {
       <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
     </dl>
   `;
+  if (!lngLat) return;
   els.evidencePopover.hidden = false;
   els.evidencePopover.innerHTML = `<strong>${escapeHtml(labelFor(props.dominant_metric))}</strong><span>${escapeHtml(props.dominant_change)}, ${escapeHtml(props.confidence)} confidence</span>`;
   const point = state.map.project(lngLat);
@@ -1084,10 +1255,12 @@ function showElectricityEvidence(feature, lngLat) {
     <dl>
       <dt>Grid Status</dt><dd><span>${escapeHtml(props.status)} load, ${escapeHtml(props.grid_load_pct)}% estimated load, ${escapeHtml(props.headroom_pct)}% headroom</span></dd>
       <dt>Asset</dt><dd><span>${escapeHtml(props.power || "power")} ${props.voltage ? `, ${escapeHtml(props.voltage)} volts` : ""}</span></dd>
+      <dt>Replay appearance</dt><dd><span>${escapeHtml(props.replay_first_visible_year || 2016)} / ${escapeHtml(props.visibility_basis || "replay baseline")}${props.osm_timestamp ? ` / OSM ${escapeHtml(props.osm_timestamp)}` : ""}</span></dd>
       <dt>Confidence</dt><dd><span>${escapeHtml(props.confidence)} for location, proxy for load</span></dd>
       <dt>Evidence</dt><dd>${evidence.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</dd>
     </dl>
   `;
+  if (!lngLat) return;
   els.evidencePopover.hidden = false;
   els.evidencePopover.innerHTML = `<strong>${escapeHtml(props.status || "grid")}</strong><span>${escapeHtml(props.grid_load_pct)}% load, ${escapeHtml(props.headroom_pct)}% headroom</span>`;
   const point = state.map.project(lngLat);
@@ -1130,6 +1303,8 @@ function togglePlay() {
     const index = state.modeA.years.indexOf(state.year);
     state.year = state.modeA.years[(index + 1) % state.modeA.years.length];
     state.selectedCommit = null;
+    state.selectedCellId = null;
+    state.selectedCellFeature = null;
     renderYear();
   }, 1050);
 }
@@ -1137,6 +1312,8 @@ function togglePlay() {
 els.yearSlider.addEventListener("input", (event) => {
   state.year = Number(event.target.value);
   state.selectedCommit = null;
+  state.selectedCellId = null;
+  state.selectedCellFeature = null;
   renderYear();
 });
 els.iconNav?.addEventListener("click", (event) => {
@@ -1165,6 +1342,17 @@ els.viewPanel?.addEventListener("click", (event) => {
   }
 });
 els.selectedChange?.addEventListener("click", (event) => {
+  const cellButton = event.target.closest("button[data-cell-id]");
+  if (cellButton) {
+    selectCellById(cellButton.dataset.cellId);
+    return;
+  }
+  const changeButton = event.target.closest("button[data-change-id]");
+  if (changeButton) {
+    const change = infrastructureChanges().find((item) => item.id === changeButton.dataset.changeId);
+    if (change) selectCommit(change);
+    return;
+  }
   const button = event.target.closest("button[data-impact-metric]");
   if (!button || !state.selectedCommit) return;
   state.metric = button.dataset.impactMetric;
@@ -1185,23 +1373,22 @@ els.playButton.addEventListener("click", togglePlay);
 els.presentButton.addEventListener("click", () => {
   state.year = 2026;
   state.selectedCommit = null;
+  state.selectedCellId = null;
+  state.selectedCellFeature = null;
   renderYear();
 });
 if (els.commitYearSelect) {
   els.commitYearSelect.addEventListener("change", (event) => {
     state.year = Number(event.target.value);
     state.selectedCommit = null;
+    state.selectedCellId = null;
+    state.selectedCellFeature = null;
     renderYear();
   });
 }
 els.fitTool.addEventListener("click", fitBelfast);
-els.selectTool?.addEventListener("click", () => {
-  state.selectedCommit = null;
-  updateSelectedCommitLayer();
-  renderCommits();
-  renderEmptySelectedChange();
-  setView("overview");
-});
+els.selectTool?.addEventListener("click", resetSelection);
+els.resetSelection?.addEventListener("click", resetSelection);
 els.layersTool?.addEventListener("click", () => setView("layers"));
 els.settingsTool?.addEventListener("click", () => setView("settings"));
 els.labelsToggle?.addEventListener("change", (event) => {
@@ -1243,6 +1430,8 @@ window.BelfastGitModeA = {
   setYear: (year) => {
     state.year = Number(year);
     state.selectedCommit = null;
+    state.selectedCellId = null;
+    state.selectedCellFeature = null;
     renderYear();
   },
   setMetric: (metric) => {
@@ -1261,7 +1450,12 @@ window.BelfastGitModeA = {
   },
   setChangeFilter: (filter) => {
     state.changeFilter = filter;
+    document.querySelectorAll("[data-change-filter]").forEach((item) => {
+      item.classList.toggle("active", item.dataset.changeFilter === filter);
+    });
     renderCommits();
   },
-  setView
+  setView,
+  resetSelection,
+  selectCellById
 };

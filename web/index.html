@@ -33,14 +33,6 @@
         </div>
       </header>
 
-      <aside class="icon-nav" aria-label="Product navigation">
-        <button class="active" type="button" data-view="overview"><span>O</span>Overview</button>
-        <button type="button" data-view="commits"><span>C</span>Changes</button>
-        <button type="button" data-view="diff"><span>D</span>Impact</button>
-        <button type="button" data-view="compare"><span>Y</span>Compare</button>
-        <button type="button" data-view="evidence"><span>E</span>Evidence</button>
-      </aside>
-
       <main class="map-workspace">
         <div id="map" aria-label="Replay Belfast map"></div>
 
@@ -56,7 +48,7 @@
         </section>
 
         <div class="map-toolbar" aria-label="Map tools">
-          <button id="selectTool" type="button" title="Clear selection">A</button>
+          <button id="selectTool" type="button" title="Reset selection">Reset</button>
           <button id="fitTool" type="button" title="Fit Belfast">F</button>
         </div>
 
@@ -104,6 +96,7 @@
           </div>
           <div class="commit-controls">
             <select id="commitYearSelect" aria-label="Commit year"></select>
+            <button id="resetSelection" type="button">Reset</button>
             <strong id="manifestStatus">Loading</strong>
           </div>
         </header>
@@ -113,6 +106,7 @@
           <button type="button" data-change-filter="building">Buildings</button>
           <button type="button" data-change-filter="road">Roads</button>
           <button type="button" data-change-filter="power">Grid</button>
+          <button type="button" data-change-filter="employment">Jobs</button>
           <button type="button" data-change-filter="service">Services</button>
         </div>
 
