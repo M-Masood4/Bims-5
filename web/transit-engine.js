@@ -27,6 +27,8 @@
   'use strict';
 
   const STOPS_URL = '/api/layers/2026/source-ni-transport-stops-osm';
+  const TRANSLINK_STOPS_URL = '/data/derived/2026/translink_belfast_bus_stops_2026.geojson';
+  const TRANSLINK_ROUTES_URL = '/data/derived/2026/translink_belfast_route_segments_2026.geojson';
   const EVENTS_URL = '/api/events?signal=services&limit=0';
 
   const BASE_SOURCE = 'pt-base-stops';
@@ -46,6 +48,8 @@
   let map = null;
   let stops = null;
   let routes = [];
+  let officialRouteFeatures = null;
+  let officialRouteSummary = null;
   let events = [];
   let loadPromise = null;
   let lastResult = null;
@@ -304,6 +308,9 @@
     const props = feature.properties || {};
     const mode = classifyMode(props);
     const name = props.name || props.source_id || ('Stop ' + (index + 1));
+    const servingLineCount = Number(props.servingLineCount);
+    const weight = Number(props.weight);
+    const routeNode = Number(props.routeNode);
     return {
       id: props.source_id || feature.id || ('stop-' + index),
       name,
@@ -311,8 +318,10 @@
       coord: feature.geometry.coordinates.map(Number),
       firstYear: 2016,
       evidenceCount: 0,
-      weight: modeWeight(mode),
-      color: modeColor(mode),
+      servingLineCount: Number.isFinite(servingLineCount) ? servingLineCount : 0,
+      routeNode: Number.isFinite(routeNode) ? routeNode : 0,
+      weight: Number.isFinite(weight) ? clamp(weight, 0.25, 1.25) : modeWeight(mode),
+      color: props.color || modeColor(mode),
     };
   }
 
@@ -352,16 +361,28 @@
     if (stops) return Promise.resolve(stops);
     if (loadPromise) return loadPromise;
     loadPromise = Promise.all([
+      fetch(TRANSLINK_STOPS_URL, { cache: 'force-cache' })
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      fetch(TRANSLINK_ROUTES_URL, { cache: 'force-cache' })
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
       fetch(STOPS_URL, { cache: 'force-cache' })
-        .then(r => { if (!r.ok) throw new Error('public transport stops ' + r.status); return r.json(); }),
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
       fetch(EVENTS_URL, { cache: 'force-cache' })
         .then(r => r.ok ? r.json() : { events: [] })
         .catch(() => ({ events: [] }))
-    ]).then(([stopData, eventData]) => {
+    ]).then(([translinkStops, translinkRoutes, osmStops, eventData]) => {
+      const stopData = translinkStops && translinkStops.features && translinkStops.features.length ? translinkStops : osmStops;
       const features = (stopData && stopData.features) || [];
       stops = features
         .filter(f => f && f.geometry && f.geometry.type === 'Point')
         .map(normaliseStop);
+      officialRouteFeatures = translinkRoutes && Array.isArray(translinkRoutes.features)
+        ? translinkRoutes.features.filter(f => f && f.geometry && f.geometry.type === 'LineString')
+        : null;
+      officialRouteSummary = translinkRoutes && translinkRoutes.summary ? translinkRoutes.summary : null;
       events = ((eventData && eventData.events) || []).map(normaliseEvent).filter(Boolean);
       attachEvidenceToStops();
       buildRouteCorridors();
@@ -403,10 +424,14 @@
         source: ROUTE_SOURCE,
         paint: {
           'line-color': ['get', 'color'],
-          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.2, 1, 3.1],
-          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.52, 1, 0.9]
+          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.65, 0.35, 1.25, 0.72, 3.2, 1, 6.2],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.34, 0.45, 0.58, 1, 0.94]
         },
-        layout: { 'line-cap': 'round', 'line-join': 'round' }
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round',
+          'line-sort-key': ['get', 'coverage']
+        }
       });
     }
     if (!map.getLayer(ROUTE_STOP_LAYER)) {
@@ -416,11 +441,11 @@
         source: BASE_SOURCE,
         filter: ['==', ['get', 'routeNode'], 1],
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 2.2, 15, 4.1],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.8, 15, 3.4],
           'circle-color': '#ffffff',
           'circle-stroke-color': ['get', 'routeColor'],
-          'circle-stroke-width': 1.2,
-          'circle-opacity': 0.82
+          'circle-stroke-width': 1,
+          'circle-opacity': 0.72
         }
       });
     }
@@ -431,11 +456,15 @@
         type: 'circle',
         source: BASE_SOURCE,
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 14, 2.4, 17, 3.4],
+          'circle-radius': [
+            '+',
+            ['interpolate', ['linear'], ['zoom'], 10, 1.1, 14, 2.0, 17, 2.8],
+            ['interpolate', ['linear'], ['get', 'servingLineCount'], 0, 0, 24, 0.8, 80, 2.4]
+          ],
           'circle-color': ['get', 'routeColor'],
           'circle-stroke-color': '#ffffff',
-          'circle-stroke-width': 0.7,
-          'circle-opacity': 0.88
+          'circle-stroke-width': 0.6,
+          'circle-opacity': 0.84
         }
       });
     }
@@ -447,7 +476,7 @@
         layout: {
           'text-field': ['get', 'stopSymbol'],
           'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 6.5, 14, 8.2, 17, 10],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 5.5, 14, 7.5, 17, 9.5],
           'text-allow-overlap': false,
           'text-ignore-placement': false,
           'text-padding': 1
@@ -456,7 +485,7 @@
           'text-color': '#0f172a',
           'text-halo-color': '#ffffff',
           'text-halo-width': 0.65,
-          'text-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0, 11.5, 0.84, 15, 0.96]
+          'text-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0, 12.9, 0, 14, 0.82, 15, 0.96]
         }
       });
     }
@@ -554,7 +583,8 @@
         weight: stop.weight,
         color: stop.color,
         stopSymbol: modeSymbol(stop.mode),
-        routeNode: meta ? 1 : 0,
+        servingLineCount: stop.servingLineCount || 0,
+        routeNode: meta ? 1 : (stop.routeNode || 0),
         routeColor: meta ? meta.color : stop.color,
         routeName: meta ? meta.routeName : '',
         visibleYear: year
@@ -574,6 +604,23 @@
 
   function baseRouteFeatureCollection(year) {
     const y = Number(year) || 2026;
+    if (officialRouteFeatures && officialRouteFeatures.length) {
+      const yearRamp = clamp((y - 2016) / 10, 0.55, 1);
+      const features = officialRouteFeatures.map(feature => {
+        const props = feature.properties || {};
+        const strength = clamp((Number(props.strength) || 0.35) * yearRamp, 0.16, 1);
+        return {
+          type: 'Feature',
+          properties: Object.assign({}, props, {
+            strength,
+            visibleYear: y,
+            official: 1
+          }),
+          geometry: feature.geometry
+        };
+      });
+      return { type: 'FeatureCollection', features, summary: officialRouteSummary };
+    }
     const features = routes.map(route => {
       const strength = routeStrengthForYear(route, y);
       return {
@@ -939,7 +986,13 @@
     const forecastRoute = map.getSource(FORECAST_ROUTE_SOURCE);
     if (forecast) forecast.setData(emptyFC());
     if (forecastRoute) forecastRoute.setData(emptyFC());
-    return { summary: { networkStops: (stops || []).length, mode: 'historical' } };
+    return {
+      summary: {
+        networkStops: (stops || []).length,
+        routeSegments: officialRouteFeatures ? officialRouteFeatures.length : routes.length,
+        mode: 'historical'
+      }
+    };
   }
 
   function showForecast(opts) {
@@ -980,11 +1033,13 @@
     return {
       loaded: isLoaded(),
       stopCount: (stops || []).length,
-      routeCount: routes.length,
+      routeCount: officialRouteFeatures ? officialRouteFeatures.length : routes.length,
       eventCount: events.length,
       lastSummary: lastResult && lastResult.summary,
       sources: {
-        stops: STOPS_URL,
+        stops: TRANSLINK_STOPS_URL,
+        fallbackStops: STOPS_URL,
+        routes: TRANSLINK_ROUTES_URL,
         events: EVENTS_URL,
         forecastMetric: 'services'
       }

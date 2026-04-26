@@ -1,0 +1,687 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260312104325
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1001  20260413999999991111100 X652 50L02 LF              O
+QO7000000016370900   T1  
+QNp    pick up only                                                            
+QI70000000027709070907P   T1  
+QNp    pick up only                                                            
+QI70000000028109100910P   T1  
+QNp    pick up only                                                            
+QI70000000028909120912P   T0  
+QNp    pick up only                                                            
+QI70000001532809220922B   T1  
+QI70000000181109240924B   T1  
+QI70000001589609260926B   T1  
+QI70000000767109280928B   T1  
+QI70000001469609280928B   T0  
+QI70000000767309310931B   T1  
+QI70000001537409320932B   T1  
+QI70000000663009370937B   T1  
+QI70000000768809510951B   T0  
+QT7000000076900952   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1003  20260413999999991111100 X652 50D06 URBY            O
+QO7000000016371000   T1  
+QNp    pick up only                                                            
+QI70000000027710071007P   T1  
+QNp    pick up only                                                            
+QI70000000028110101010P   T1  
+QNp    pick up only                                                            
+QI70000000028910121012P   T0  
+QNp    pick up only                                                            
+QI70000001532810221022B   T1  
+QI70000000181110241024B   T1  
+QI70000001589610261026B   T1  
+QI70000000767110281028B   T1  
+QI70000001469610281028B   T0  
+QI70000000767310311031B   T1  
+QI70000001537410321032B   T1  
+QI70000000663010371037B   T1  
+QI70000000768810511051B   T0  
+QT7000000076901052   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1005  20260413999999991111100 X652 50D01 DD              O
+QO7000000016371100   T1  
+QNp    pick up only                                                            
+QI70000000027711071107P   T1  
+QNp    pick up only                                                            
+QI70000000028111101110P   T1  
+QNp    pick up only                                                            
+QI70000000028911121112P   T0  
+QNp    pick up only                                                            
+QI70000001532811221122B   T1  
+QI70000000181111241124B   T1  
+QI70000001589611261126B   T1  
+QI70000000767111281128B   T1  
+QI70000001469611281128B   T0  
+QI70000000767311311131B   T1  
+QI70000001537411321132B   T1  
+QI70000000663011371137B   T1  
+QI70000000768811511151B   T0  
+QT7000000076901152   T1  
+QDNULB 652cOBelfast, GCS - Carryduff Church Road                                
+QSNULB 1007  20260413999999991111100 X652c50D09 LF              O
+QO7000000016371200   T1  
+QNp    pick up only                                                            
+QI70000000032512031203P   T1  
+QNp    pick up only                                                            
+QI70000001635612041204P   T0  
+QNp    pick up only                                                            
+QI70000000032912041204P   T0  
+QNp    pick up only                                                            
+QI70000000033112041204P   T0  
+QNp    pick up only                                                            
+QI70000000028912051205P   T0  
+QNp    pick up only                                                            
+QI70000001532812181218B   T1  
+QI70000000181112201220B   T1  
+QI70000001589612221222B   T1  
+QI70000000767112241224B   T1  
+QI70000001469612271227B   T0  
+QT7000000066411232   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1009  20260413999999991111100 X652 50D05 URBY            O
+QO7000000016371300   T1  
+QNp    pick up only                                                            
+QI70000000027713071307P   T1  
+QNp    pick up only                                                            
+QI70000000028113101310P   T1  
+QNp    pick up only                                                            
+QI70000000028913121312P   T0  
+QNp    pick up only                                                            
+QI70000001532813221322B   T1  
+QI70000000181113241324B   T1  
+QI70000001589613261326B   T1  
+QI70000000767113281328B   T1  
+QI70000001469613281328B   T0  
+QI70000000767313311331B   T1  
+QI70000001537413321332B   T1  
+QI70000000663013371337B   T1  
+QI70000000768813511351B   T0  
+QT7000000076901352   T1  
+QDNULB 652cOBelfast, GCS - Carryduff Church Road                                
+QSNULB 1011  20260413999999991111100 X652c50L02 LF              O
+QO7000000016371400   T1  
+QNp    pick up only                                                            
+QI70000000032514031403P   T1  
+QNp    pick up only                                                            
+QI70000001635614041404P   T0  
+QNp    pick up only                                                            
+QI70000000032914041404P   T0  
+QNp    pick up only                                                            
+QI70000000033114041404P   T0  
+QNp    pick up only                                                            
+QI70000000028914051405P   T0  
+QNp    pick up only                                                            
+QI70000001532814181418B   T1  
+QI70000000181114201420B   T1  
+QI70000001589614221422B   T1  
+QI70000000767114241424B   T1  
+QI70000001469614271427B   T0  
+QT7000000066411432   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1013  20260413999999991111100 X652 50D05 URBY            O
+QO7000000016371540   T1  
+QNp    pick up only                                                            
+QI70000000027715471547P   T1  
+QNp    pick up only                                                            
+QI70000000028115501550P   T1  
+QNp    pick up only                                                            
+QI70000000028915521552P   T0  
+QNp    pick up only                                                            
+QI70000001532816021602B   T1  
+QI70000000181116041604B   T1  
+QI70000001589616061606B   T1  
+QI70000000767116081608B   T1  
+QI70000001469616081608B   T0  
+QI70000000767316111611B   T1  
+QI70000001537416121612B   T1  
+QI70000000663016171617B   T1  
+QI70000000768816311631B   T0  
+QT7000000076901632   T1  
+QDNULB 652dOBelfast, GCS - Carryduff Drumalig Turning Circle                    
+QSNULB 1015  20260413999999991111100 X652d50D07 URBY            O
+QO7000000016371605   T1  
+QNp    pick up only                                                            
+QI70000000027716121612P   T1  
+QNp    pick up only                                                            
+QI70000000028116151615P   T1  
+QNp    pick up only                                                            
+QI70000000028916181618P   T0  
+QNp    pick up only                                                            
+QI70000001532816351635B   T1  
+QI70000000181116371637B   T1  
+QI70000001589616391639B   T1  
+QI70000000767116411641B   T1  
+QI70000001469616411641B   T0  
+QI70000000767316421642B   T1  
+QT7000000153741643   T1  
+QDNULB 652dOBelfast, GCS - Carryduff Drumalig Turning Circle                    
+QSNULB 1017  20260413999999991111100 X652d50D09 LF              O
+QO7000000016371635   T1  
+QNp    pick up only                                                            
+QI70000000027716421642P   T1  
+QNp    pick up only                                                            
+QI70000000028116451645P   T1  
+QNp    pick up only                                                            
+QI70000000028916481648P   T0  
+QNp    pick up only                                                            
+QI70000001532817051705B   T1  
+QI70000000181117071707B   T1  
+QI70000001589617091709B   T1  
+QI70000000767117111711B   T1  
+QI70000001469617111711B   T0  
+QI70000000767317121712B   T1  
+QT7000000153741713   T1  
+QDNULB 652cOBelfast, GCS - Carryduff Church Road                                
+QSNULB 1019  20260413999999991111100 X652c50D08 URBY            O
+QO7000000016371655   T1  
+QNp    pick up only                                                            
+QI70000000032517001700P   T1  
+QNp    pick up only                                                            
+QI70000001635617011701P   T0  
+QNp    pick up only                                                            
+QI70000000032917021702P   T0  
+QNp    pick up only                                                            
+QI70000000033117021702P   T0  
+QNp    pick up only                                                            
+QI70000000028917031703P   T0  
+QNp    pick up only                                                            
+QI70000001532817251725B   T1  
+QI70000000181117271727B   T1  
+QI70000001589617291729B   T1  
+QI70000000767117311731B   T1  
+QI70000001469617321732B   T0  
+QT7000000066411735   T1  
+QDNULB 652dOBelfast, GCS - Carryduff Drumalig Turning Circle                    
+QSNULB 1021  20260413999999991111100 X652d50D06 URBY            O
+QO7000000016371715   T1  
+QNp    pick up only                                                            
+QI70000000027717221722P   T1  
+QNp    pick up only                                                            
+QI70000000028117251725P   T1  
+QNp    pick up only                                                            
+QI70000000028917281728P   T0  
+QNp    pick up only                                                            
+QI70000001532817451745B   T1  
+QI70000000181117471747B   T1  
+QI70000001589617491749B   T1  
+QI70000000767117511751B   T1  
+QI70000001469617511751B   T0  
+QI70000000767317521752B   T1  
+QT7000000153741753   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1023  20260413999999991111100 X652 50D03 URBY            O
+QO7000000016371735   T1  
+QNp    pick up only                                                            
+QI70000000027717421742P   T1  
+QNp    pick up only                                                            
+QI70000000028117451745P   T1  
+QNp    pick up only                                                            
+QI70000000028917471747P   T0  
+QNp    pick up only                                                            
+QI70000001532817571757B   T1  
+QI70000000181117591759B   T1  
+QI70000001589618011801B   T1  
+QI70000000767118031803B   T1  
+QI70000001469618031803B   T0  
+QI70000000767318061806B   T1  
+QI70000001537418071807B   T1  
+QI70000000663018121812B   T1  
+QI70000000768818261826B   T0  
+QT7000000076901827   T1  
+QDNULB 652cOBelfast, GCS - Carryduff Church Road                                
+QSNULB 1025  20260413999999991111100 X652c50D07 URBY            O
+QO7000000016371755   T1  
+QNp    pick up only                                                            
+QI70000000032517581758P   T1  
+QNp    pick up only                                                            
+QI70000001635617591759P   T0  
+QNp    pick up only                                                            
+QI70000000032917591759P   T0  
+QNp    pick up only                                                            
+QI70000000033117591759P   T0  
+QNp    pick up only                                                            
+QI70000000028918001800P   T0  
+QNp    pick up only                                                            
+QI70000001532818131813B   T1  
+QI70000000181118151815B   T1  
+QI70000001589618171817B   T1  
+QI70000000767118191819B   T1  
+QI70000001469618221822B   T0  
+QT7000000066411827   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1027  20260413999999991111100 X652 50D09 LF              O
+QO7000000016371815   T1  
+QNp    pick up only                                                            
+QI70000000027718221822P   T1  
+QNp    pick up only                                                            
+QI70000000028118251825P   T1  
+QNp    pick up only                                                            
+QI70000000028918271827P   T0  
+QNp    pick up only                                                            
+QI70000001532818371837B   T1  
+QI70000000181118391839B   T1  
+QI70000001589618411841B   T1  
+QI70000000767118431843B   T1  
+QI70000001469618431843B   T0  
+QI70000000767318461846B   T1  
+QI70000001537418471847B   T1  
+QI70000000663018521852B   T1  
+QI70000000768819061906B   T0  
+QT7000000076901907   T1  
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street                        
+QSNULB 1029  20260413999999991111100 X652 50D06 URBY            O
+QO7000000016371835   T1  
+QNp    pick up only                                                            
+QI70000000027718421842P   T1  
+QNp    pick up only                                                            
+QI70000000028118451845P   T1  
+QNp    pick up only                                                            
+QI70000000028918471847P   T0  
+QNp    pick up only                                                            
+QI70000001532818571857B   T1  
+QI70000000181118591859B   T1  
+QI70000001589619011901B   T1  
+QI70000000767119031903B   T1  
+QI70000001469619031903B   T0  
+QI70000000767319061906B   T1  
+QI70000001537419071907B   T1  
+QI70000000663019121912B   T1  
+QI70000000768819261926B   T0  
+QT7000000076901927   T1  
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1000  20260413999999991111100 X652 50D07 URBY            I
+QO7000000076500610   T1  
+QI70000000765106100610B   T0  
+QI70000000766206150615B   T1  
+QI70000001537406190619B   T1  
+QI70000000766706210621B   T1  
+QI70000000766906220622B   T0  
+QI70000001469406230623B   T1  
+QI70000000181606240624B   T1  
+QI70000000181706250625B   T1  
+QI70000001532806300635B   T1  
+QI70000000042506460646S   T0  
+QNs    set down only                                                           
+QI70000000044106500650S   T1  
+QNs    set down only                                                           
+QI70000000044506550655S   T1  
+QNs    set down only                                                           
+QT7000000154210658   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1002  20260413999999991111100 X652 50D09 LF              I
+QO7000000076500635   T1  
+QI70000000765106350635B   T0  
+QI70000000766206400640B   T1  
+QI70000001537406440644B   T1  
+QI70000000766706460646B   T1  
+QI70000000766906470647B   T0  
+QI70000001469406480648B   T1  
+QI70000000181606490649B   T1  
+QI70000000181706500650B   T1  
+QI70000001532806550700B   T1  
+QI70000000042507110711S   T0  
+QNs    set down only                                                           
+QI70000000044107150715S   T1  
+QNs    set down only                                                           
+QI70000000044507200720S   T1  
+QNs    set down only                                                           
+QT7000000154210723   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1004  20260413999999991111100 X652 50D02 DD              I
+QO7000000076500650   T1  
+QI70000000765106500650B   T0  
+QI70000000766206550655B   T1  
+QI70000001537406590659B   T1  
+QI70000000766707010701B   T1  
+QI70000000766907020702B   T0  
+QI70000001469407030703B   T1  
+QI70000000181607040704B   T1  
+QI70000000181707050705B   T1  
+QI70000001532807100715B   T1  
+QI70000000042507260726S   T0  
+QNs    set down only                                                           
+QI70000000044107300730S   T1  
+QNs    set down only                                                           
+QI70000000044507350735S   T1  
+QNs    set down only                                                           
+QT7000000154210738   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1008  20260413999999991111100 X652 50D09 LF              I
+QO7000000153280800   T1  
+QI70000000042508110811S   T0  
+QNs    set down only                                                           
+QI70000000044108150815S   T1  
+QNs    set down only                                                           
+QI70000000044508200820S   T1  
+QNs    set down only                                                           
+QT7000000154210823   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1006  20260413999999991111100 X652 50L02 LF              I
+QO7000000076500740   T1  
+QI70000000765107400740B   T0  
+QI70000000766207450745B   T1  
+QI70000001537407490749B   T1  
+QI70000000766707510751B   T1  
+QI70000000766907520752B   T0  
+QI70000001469407530753B   T1  
+QI70000000181607540754B   T1  
+QI70000000181707550755B   T1  
+QI70000001532808050810B   T1  
+QI70000000042508210821S   T0  
+QNs    set down only                                                           
+QI70000000044108250825S   T1  
+QNs    set down only                                                           
+QI70000000044508300830S   T1  
+QNs    set down only                                                           
+QT7000000154210833   T1  
+QNs    set down only                                                           
+QDNULB 652cICarryduff, Church Road - Belfast, GCS                               
+QSNULB 1010  20260413999999991111100 X652c50D03 URBY            I
+QO7000000153280820   T1  
+QI70000000042508350835S   T0  
+QNs    set down only                                                           
+QI70000000042708360836S   T1  
+QNs    set down only                                                           
+QI70000000042908360836S   T0  
+QNs    set down only                                                           
+QI70000000043108380838S   T1  
+QNs    set down only                                                           
+QT7000000154210841   T1  
+QNs    set down only                                                           
+QDNULB 652dICarryduff Drumalig Turning Circle - Belfast, GCS                    
+QSNULB 1012  20260413999999991111100 X652d50D06 URBY            I
+QO7000000153740820   T1  
+QI70000000766708220822B   T1  
+QI70000000766908230823B   T0  
+QI70000001469408240824B   T1  
+QI70000000181608260826B   T1  
+QI70000000181708280828B   T1  
+QI70000001532808350840B   T1  
+QI70000000042508510851S   T0  
+QNs    set down only                                                           
+QI70000000044108550855S   T1  
+QNs    set down only                                                           
+QI70000000044509000900S   T1  
+QNs    set down only                                                           
+QT7000000154210903   T1  
+QNs    set down only                                                           
+QDNULB 652cICarryduff, Church Road - Belfast, GCS                               
+QSNULB 1014  20260413999999991111100 X652c50D05 URBY            I
+QO7000000153280900   T1  
+QI70000000042509150915S   T0  
+QNs    set down only                                                           
+QI70000000042709160916S   T1  
+QNs    set down only                                                           
+QI70000000042909160916S   T0  
+QNs    set down only                                                           
+QI70000000043109180918S   T1  
+QNs    set down only                                                           
+QT7000000154210921   T1  
+QNs    set down only                                                           
+QDNULB 652dICarryduff Drumalig Turning Circle - Belfast, GCS                    
+QSNULB 1016  20260413999999991111100 X652d50D09 LF              I
+QO7000000153740900   T1  
+QI70000000766709010901B   T1  
+QI70000000766909010901B   T0  
+QI70000001469409020902B   T1  
+QI70000000181609030903B   T1  
+QI70000000181709040904B   T1  
+QI70000001532809100915B   T1  
+QI70000000042509260926S   T0  
+QNs    set down only                                                           
+QI70000000044109300930S   T1  
+QNs    set down only                                                           
+QI70000000044509350935S   T1  
+QNs    set down only                                                           
+QT7000000154210938   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1018  20260413999999991111100 X652 50D06 URBY            I
+QO7000000153280930   T1  
+QI70000000042509410941S   T0  
+QNs    set down only                                                           
+QI70000000044109450945S   T1  
+QNs    set down only                                                           
+QI70000000044509500950S   T1  
+QNs    set down only                                                           
+QT7000000154210953   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1020  20260413999999991111100 X652 50D01 DD              I
+QO7000000076500955   T1  
+QI70000000765109550955B   T0  
+QI70000000766210051005B   T1  
+QI70000001537410071007B   T1  
+QI70000000766710081008B   T1  
+QI70000000766910081008B   T0  
+QI70000001469410091009B   T1  
+QI70000000181610101010B   T1  
+QI70000000181710111011B   T1  
+QI70000001532810151020B   T1  
+QI70000000042510311031S   T0  
+QNs    set down only                                                           
+QI70000000044110351035S   T1  
+QNs    set down only                                                           
+QI70000000044510401040S   T1  
+QNs    set down only                                                           
+QT7000000154211043   T1  
+QNs    set down only                                                           
+QDNULB 652cICarryduff, Church Road - Belfast, GCS                               
+QSNULB 1022  20260413999999991111100 X652c50D09 LF              I
+QO7000000066391115   T1  
+QI70000000766911181118B   T0  
+QI70000001469411191119B   T1  
+QI70000000181611201120B   T1  
+QI70000000181711211121B   T1  
+QI70000001532811251130B   T1  
+QI70000000042511451145S   T0  
+QNs    set down only                                                           
+QI70000000042711461146S   T1  
+QNs    set down only                                                           
+QI70000000042911461146S   T0  
+QNs    set down only                                                           
+QI70000000043111481148S   T1  
+QNs    set down only                                                           
+QT7000000154211151   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1024  20260413999999991111100 X652 50D05 URBY            I
+QO7000000076501155   T1  
+QI70000000765111551155B   T0  
+QI70000000766212051205B   T1  
+QI70000001537412071207B   T1  
+QI70000000766712081208B   T1  
+QI70000000766912081208B   T0  
+QI70000001469412091209B   T1  
+QI70000000181612101210B   T1  
+QI70000000181712111211B   T1  
+QI70000001532812151220B   T1  
+QI70000000042512311231S   T0  
+QNs    set down only                                                           
+QI70000000044112351235S   T1  
+QNs    set down only                                                           
+QI70000000044512401240S   T1  
+QNs    set down only                                                           
+QT7000000154211243   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1026  20260413999999991111100 X652 50L02 LF              I
+QO7000000076501255   T1  
+QI70000000765112551255B   T0  
+QI70000000766213051305B   T1  
+QI70000001537413071307B   T1  
+QI70000000766713081308B   T1  
+QI70000000766913081308B   T0  
+QI70000001469413091309B   T1  
+QI70000000181613101310B   T1  
+QI70000000181713111311B   T1  
+QI70000001532813151320B   T1  
+QI70000000042513311331S   T0  
+QNs    set down only                                                           
+QI70000000044113351335S   T1  
+QNs    set down only                                                           
+QI70000000044513401340S   T1  
+QNs    set down only                                                           
+QT7000000154211343   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1028  20260413999999991111100 X652 50D02 DD              I
+QO7000000076501355   T1  
+QI70000000765113551355B   T0  
+QI70000000766214051405B   T1  
+QI70000001537414071407B   T1  
+QI70000000766714081408B   T1  
+QI70000000766914081408B   T0  
+QI70000001469414091409B   T1  
+QI70000000181614101410B   T1  
+QI70000000181714111411B   T1  
+QI70000001532814151420B   T1  
+QI70000000042514311431S   T0  
+QNs    set down only                                                           
+QI70000000044114351435S   T1  
+QNs    set down only                                                           
+QI70000000044514401440S   T1  
+QNs    set down only                                                           
+QT7000000154211443   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1030  20260413999999991111100 X652 50D05 URBY            I
+QO7000000076501430   T1  
+QI70000000765114301430B   T0  
+QI70000000766214351435B   T1  
+QI70000001537414391439B   T1  
+QI70000000766714411441B   T1  
+QI70000000766914421442B   T0  
+QI70000001469414431443B   T1  
+QI70000000181614441444B   T1  
+QI70000000181714451445B   T1  
+QI70000001532814501455B   T1  
+QI70000000042515061506S   T0  
+QNs    set down only                                                           
+QI70000000044115101510S   T1  
+QNs    set down only                                                           
+QI70000000044515151515S   T1  
+QNs    set down only                                                           
+QT7000000154211518   T1  
+QNs    set down only                                                           
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS                            
+QSNULB 1032  20260413999999991111100 X652 50D07 URBY            I
+QO7000000153741705   T1  
+QI70000000766717071707B   T1  
+QI70000000766917081708B   T0  
+QI70000001469417091709B   T1  
+QI70000000181617101710B   T1  
+QI70000000181717111711B   T1  
+QI70000001532817211721B   T1  
+QI70000000042517321732S   T0  
+QNs    set down only                                                           
+QI70000000044117361736S   T1  
+QNs    set down only                                                           
+QI70000000044517411741S   T1  
+QNs    set down only                                                           
+QT7000000154211744   T1  
+QNs    set down only                                                           
+QDNULB 652dICarryduff Drumalig Turning Circle - Belfast, GCS                    
+QSNULB 1034  20260413999999991111100 X652d50D09 LF              I
+QO7000000153741723   T1  
+QI70000000766717251725B   T1  
+QI70000000766917261726B   T0  
+QI70000001469417271727B   T1  
+QI70000000181617281728B   T1  
+QI70000000181717291729B   T1  
+QI70000001532817341739B   T1  
+QI70000000042517501750S   T0  
+QNs    set down only                                                           
+QI70000000044117541754S   T1  
+QNs    set down only                                                           
+QI70000000044517591759S   T1  
+QNs    set down only                                                           
+QT7000000154211802   T1  
+QNs    set down only                                                           
+QLN700000001637Adelaide St.                                      A0000001
+QBN700000001637333940  373912  Northern Ireland
+QLN700000000325Cromac Wood                                       A0000001
+QBN700000000325334139  373443  Northern Ireland
+QLN700000000277Botanic Avenue (Shaftsbury Square)                A0000001
+QBN700000000277333639  373167  Northern Ireland
+QLN700000000281College Green                                     A0000001
+QBN700000000281333753  372699  Northern Ireland
+QLN700000016356Scoil an Droicid School                           A0000001
+QBN700000016356334252  373070  Northern Ireland
+QLN700000000329Shaftesbury Avenue                                A0000001
+QBN700000000329334281  372961  Northern Ireland
+QLN700000000331Hatfield Street                                   A0000001
+QBN700000000331334330  372812  Northern Ireland
+QLN700000000289Ormeau Road (Agincourt Avenue)                    A0000001
+QBN700000000289334382  372630  Northern Ireland
+QLN700000015328Cairnshill Park & Ride                            A0000001
+QBN700000015328335572  368401  Northern Ireland
+QLN700000001811Ivanhoe                                           A0000001
+QBN700000001811336506  366406  Northern Ireland
+QLN700000015896Carryduff Manse Road                              A0000001
+QBN700000015896336712  366037  Northern Ireland
+QLN700000007671Queensway Carryduff                               A0000001
+QBN700000007671336831  365255  Northern Ireland
+QLN700000014696Shopping Centre                                   A0000001
+QBN700000014696336766  365011  Northern Ireland
+QLN700000006641Church Rd                                         A0000001
+QBN700000006641336939  365032  Northern Ireland
+QLN700000007673Winchester Heights                                A0000001
+QBN700000007673336609  364490  Northern Ireland
+QLN700000015374Carryduff Drumalig Turning Circle                 A0000001
+QBN700000015374336424  363528  Northern Ireland
+QLN700000006630Temple X Rds                                      A0000001
+QBN700000006630335740  360527  Northern Ireland
+QLN700000007688Ballynahinch Library                              A0000001
+QBN700000007688336814  352631  Northern Ireland
+QLN700000007690Windmill Street                                   A0000001
+QBN700000007690336680  352404  Northern Ireland
+QLN700000007650Ballynahinch Caugheys                             A0000001
+QBN700000007650336628  352540  Northern Ireland
+QLN700000007651Assumption                                        A0000001
+QBN700000007651336798  352641  Northern Ireland
+QLN700000007662Temple X Rds                                      A0000001
+QBN700000007662335691  360625  Northern Ireland
+QLN700000007667Muskett Road                                      A0000001
+QBN700000007667336589  364486  Northern Ireland
+QLN700000006639Church Rd                                         A0000001
+QBN700000006639337015  365055  Northern Ireland
+QLN700000007669Carryduff Shopping Centre                         A0000001
+QBN700000007669336780  365140  Northern Ireland
+QLN700000014694Queensway                                         A0000001
+QBN700000014694336828  365300  Northern Ireland
+QLN700000001816Manse Rd.                                         A0000001
+QBN700000001816336616  366185  Northern Ireland
+QLN700000001817Ivanhoe                                           A0000001
+QBN700000001817336388  366511  Northern Ireland
+QLN700000000425Ormeau Road (Agincourt Avenue)                    A0000001
+QBN700000000425334369  372603  Northern Ireland
+QLN700000000441College Green                                     A0000001
+QBN700000000441333706  372749  Northern Ireland
+QLN700000000445Botanic Avenue (Shaftsbury Square)                A0000001
+QBN700000000445333630  373156  Northern Ireland
+QLN700000000427Hatfield Street                                   A0000001
+QBN700000000427334317  372810  Northern Ireland
+QLN700000000429McClure Street                                    A0000001
+QBN700000000429334246  373046  Northern Ireland
+QLN700000000431Gasworks                                          A0000001
+QBN700000000431334142  373375  Northern Ireland
+QLN700000015421Belfast Bedford Street                            A0000001
+QBN700000015421333749  373890  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      Low Floor Single Deck
+QVNURBY    URBY
+QVNDD      Double Decker
+QDNULB 652 OBelfast, GCS - Ballynahinch, Windmill Street
+QDNULB 652cOBelfast, GCS - Carryduff Church Road
+QDNULB 652dOBelfast, GCS - Carryduff Drumalig Turning Circle
+QDNULB 652 IBallynahinch, Main Street - Belfast, GCS
+QDNULB 652cICarryduff, Church Road - Belfast, GCS
+QDNULB 652dICarryduff Drumalig Turning Circle - Belfast, GCS

@@ -106,6 +106,12 @@ button { font-family: inherit; }
   color: var(--blue);
   font-weight: 700;
 }
+.event-icon svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.event-icon .transformer-icon { color: #c2410c; }
 .event-info { flex: 1; min-width: 0; }
 .event-title { font-size: 12.5px; font-weight: 600; color: #111; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .event-sub { font-size: 11px; color: var(--text-mute); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

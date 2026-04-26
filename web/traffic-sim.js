@@ -1481,7 +1481,7 @@
       const demandRatio = s.spawnWeight / maxSpawn;
       const congestion = clamp01(occRatio * 0.58 + throughRatio * 0.28 + demandRatio * 0.52);
       baseFeatures.push(lineFeatureForSegment(s, { congestion: 0, flow: 0 }));
-      if (congestion >= 0.18 || s.source === 'user') {
+      if (wholeCityRoads || congestion >= 0.18 || s.source === 'user') {
         flowFeatures.push(lineFeatureForSegment(s, {
           congestion: congestion,
           flow: throughRatio,
@@ -1491,16 +1491,21 @@
       }
     }
     flowFeatures.sort((a, b) => (b.properties.congestion || 0) - (a.properties.congestion || 0));
-    const maxFlowLimit = wholeCityRoads ? 1800 : cityWide ? 1400 : 900;
+    const maxFlowLimit = wholeCityRoads ? maxSegmentLimit : cityWide ? 1400 : 900;
     const maxFlowSegments = Math.max(80, Math.min(maxFlowLimit, Number(opts.maxFlowSegments) || (cityWide ? 900 : 420)));
     if (flowFeatures.length > maxFlowSegments) flowFeatures = flowFeatures.slice(0, maxFlowSegments);
 
-    let pointData = demand.slice().sort((a, b) => {
-      if (a.active !== b.active) return a.active ? -1 : 1;
-      return b.weight - a.weight;
-    });
-    const maxPointFeatures = Math.max(0, Math.min(80, Number(opts.maxPointFeatures) || 24));
-    if (pointData.length > maxPointFeatures) pointData = pointData.slice(0, maxPointFeatures);
+    const requestedPointFeatures = opts.maxPointFeatures == null ? 24 : Number(opts.maxPointFeatures);
+    const maxPointFeatures = Math.max(0, Math.min(80, Number.isFinite(requestedPointFeatures) ? requestedPointFeatures : 0));
+    const showDemandPoints = opts.showDemandPoints !== false && maxPointFeatures > 0;
+    let pointData = [];
+    if (showDemandPoints) {
+      pointData = demand.slice().sort((a, b) => {
+        if (a.active !== b.active) return a.active ? -1 : 1;
+        return b.weight - a.weight;
+      });
+      if (pointData.length > maxPointFeatures) pointData = pointData.slice(0, maxPointFeatures);
+    }
     const pointFeatures = pointData.map((p, i) => ({
       type: 'Feature',
       properties: {

@@ -1,0 +1,37 @@
+ATCO-CIF0500Translink                       OMNITIMES       20240226163939
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  0900  20260504202605041000000 B458       GL              O  
+QO7000000121650900   T1
+QT8490B55505011145   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  1100  20260504202605041000000 B458       GL              O  
+QO7000000121651100   T1
+QT8490B55505011353   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  1300  20260504202605041000000 B458       GL              O  
+QO7000000121651300   T1
+QT8490B55505011543   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  1440  20260504202605041000000 B458       GL              O  
+QO7000000121651440   T1
+QT8490B55505011726   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  1600  20260504202605041000000 B458       GL              O  
+QO7000000121651600   T1
+QT8490B55505011849   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  1830  20260504202605041000000 B458       GL              O  
+QO7000000121651830   T1
+QT8490B55505012117   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  2000  20260504202605041000000 B458       GL              O  
+QO7000000121652000   T1
+QT8490B55505012237   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  2130  20260504202605041000000 B458       GL              O  
+QO7000000121652130   T1
+QT8510B55508012244   T1
+QDNBE  458 OEnniskillen Buscentre - Sligo - Ballina                        
+QSNBE  2300  20260504202605041000000 B458       GL              O  
+QO7000000121652300   T1
+QT8510B55508010018   T1

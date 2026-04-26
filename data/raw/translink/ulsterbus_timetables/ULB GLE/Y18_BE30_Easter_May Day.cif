@@ -1,0 +1,158 @@
+ATCO-CIF0500Ulsterbus                       OMNITIMES       20180302122243
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0415  20260406202605041100000 B30        GL              O
+QNBE   Bus Eireann Online seat reservation @expressway.ie
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650159   T1  
+QI70000001609004360436S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156420501   T1  
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650330   T1  
+QI70000001609006060606S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156420631   T1  
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1200  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650500   T1  
+QI70000001609007360736S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156420801   T1 
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650630   T1  
+QI70000001609009060906S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156420931   T1  
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1500  20260406202605041100000 B30        GL              O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650802   T1  
+QI70000001609010371037S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421102   T1  
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121650932   T1  
+QI70000001609012131213S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421238   T1   
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1100  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651102   T1  
+QI70000001609013431343S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421408   T1 
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651232   T1  
+QI70000001609015131513S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421538   T1   
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1500  20260406202605041100000 B30        GL              O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651402   T1  
+QI70000001609016431643S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421708   T1  
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651532   T1  
+QI70000001609018131813S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156421838   T1   
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1700  20260406202605041100000 B30        GL              O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651702   T1  
+QI70000001609019431943S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156422008   T1  
+QDNBE  30  OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  0700  20260406202605041100000 B30                        O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QO7000000121651832   T1  
+QI70000001609021132113S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156422138   T1   
+QDNBE  X30 OEnniskillen Buscentre - Dublin, Busaras                     
+QSNBE  1500  20260406202605041100000 B30        GL              O
+QNBE   Bus Eireann Online seat reservation @expressway.ie 
+QNB    Buy online before 5pm prior to day of travel to guarantee seat   
+QE20251224202512240
+QO7000000121652002   T1  
+QI70000001609022402240S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000156422305   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  0925  20260406202605041100000 B30                        I
+QO7000000121650927   T1  
+QT8530B15582011036   T1   
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  1225  20260406202605041100000 B30                        I
+QO7000000121651104   T1  
+QT8530B15582011206   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  1525  20260406202605041100000 B30                        I
+QO7000000121651235   T1  
+QT8530B15582011336   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  1825  20260406202605041100000 B30                        I
+QO7000000121651405   T1  
+QT8530B15582011506   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  2125  20260406202605041100000 B30                        I
+QO7000000121651539   T1  
+QT8530B15582011644   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  2425  20260406202605041100000 B30                        I
+QO7000000121651708   T1  
+QT8530B15582011812   T1
+QDNBE  30  OEnniskillen Buscentre - Donegal                     
+QSNBE  2725  20260406202605041100000 B30                        I
+QO7000000121651838   T1  
+QT8530B15582011942   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  1040  20260406202605041100000 B30        GL              I
+QO7000000121652008   T1  
+QT8530B15582012112   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  1340  20260406202605041100000 B30        GL              I
+QO7000000121652138   T1  
+QT8530B15582012243   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  1640  20260406202605041100000 B30        GL              I
+QO7000000121652251   T1  
+QT8530B15582012355   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  1940  20260406202605041100000 B30        GL              I
+QO7000000121650016   T1  
+QT8530B15582010121   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  2240  20260406202605041100000 B30        GL              I
+QO7000000121650150   T1  
+QT8530B15582010249   T1
+QDNBE  X30 OEnniskillen Buscentre - Donegal                     
+QSNBE  2540  20260406202605041100000 B30        GL              I
+QO7000000121650320   T1  
+QT8530B15582010419   T1

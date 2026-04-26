@@ -297,7 +297,7 @@
   function attachItemDrag() {
     if (!state.map || state.map._uxItemDragArmed) return;
     state.map._uxItemDragArmed = true;
-    const layers = ['items-buildings-circle', 'items-parks-circle', 'items-infra-circle'];
+    const layers = ['items-buildings-circle', 'items-parks-circle', 'items-infra-circle', 'items-infra-symbol'];
     layers.forEach(layerId => {
       state.map.on('mouseenter', layerId, () => {
         if (activeTool()) return; // don't conflict with placement

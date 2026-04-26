@@ -1,0 +1,117 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260210084942
+QDNULB 655 OBelfast - Newtownards Strangford Arms                               TUAO655 
+QSNULB 1001  20260223202604011111100 X655 06D13 DD      TUAO655 O
+QNURBY OPERATED BY URBY VEHICLE                                                
+QO7000000150081550   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001621215551555P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000012115571557P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001622216001600P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000091916171617S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000169016201620S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000160111625   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 655 OBelfast - Newtownards Strangford Arms                               TUAO655 
+QSNULB 1005  20260223202604011111100 X655 06D13 DD      TUAO655 O
+QNURBY OPERATED BY URBY VEHICLE                                                
+QO7000000150081700   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001621217051705P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000012117071707P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001622217101710P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000091917271727S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000169017301730S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001601117351735S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000032921750   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 655 INewtownards, Strangford Arms - Belfast                              TUAO655 
+QSNULB 1002  20260223202604011111100 X655 06D13 DD      TUAO655 I
+QNURBY OPERATED BY URBY VEHICLE                                                
+QO7000000032910630   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001601106450645P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000170806470647P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000171006500650P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000019907070707S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000163507090709S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000018020712   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 655 INewtownards, Strangford Arms - Belfast                              TUAO655 
+QSNULB 1006  20260223202604011111100 X655 06D13 DD      TUAO655 I
+QNURBY OPERATED BY URBY VEHICLE                                                
+QO7000000160110740   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000170807420742P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000171007450745P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000019908020802S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000163508040804S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000018020807   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 655 INewtownards, Strangford Arms - Belfast                              TUAO655 
+QSNULB 1010  20260223202604011111100 X655 06D13 DD      TUAO655 I
+QNURBY OPERATED BY URBY VEHICLE                                                
+QO7000000160110845   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000170808470847P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000171008500850P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000019909070907S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000163509090909S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000018020912   T1  
+QNs    SET DOWN ONLY                                                           
+QLN700000015008Donegall Square North                             N0000009
+QBN700000015008333799  374089  Belfast Metro Ops
+QLN700000016212Queens Square                                     N0000001
+QBN700000016212334225  374506
+QLN700000000121Waterfront                                        N0000009
+QBN700000000121334391  374126  Belfast Metro Ops
+QLN700000016222Lanyon Place (bus stop)                           N0000001
+QBN700000016222334697  373940
+QLN700000000919Ulster Hospital                                   N0000009
+QBN700000000919341481  374073  Belfast Metro Ops
+QLN700000001690Cherryhill                                        N0000009
+QBN700000001690342022  374042  Belfast Metro Ops
+QLN700000016011Dundonald Park & Ride                             N0000009
+QBN700000016011342393  374213  Belfast Metro Ops
+QLN700000003292Church Street                                     N0000028
+QBN700000003292348160  374340  Newtownards
+QLN700000003291Church Street                                     N0000028
+QBN700000003291348172  374319  Newtownards
+QLN700000001708Cherryhill                                        N0000009
+QBN700000001708342074  374039  Belfast Metro Ops
+QLN700000001710Ulster Hospital                                   N0000009
+QBN700000001710341507  374047  Belfast Metro Ops
+QLN700000000199Lanyon Place Station (Glider)                     N0000009
+QBN700000000199334730  373926  Belfast Metro Ops
+QLN700000001635May Street (St George's Market)                   N0000009
+QBN700000001635334183  373969  Belfast Metro Ops
+QLN700000001802Donegall Square West                              N0000009
+QBN700000001802333738  373972  Belfast Metro Ops
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNDD      Double Deck
+QDNULB 655 OBelfast - Newtownards Strangford Arms                               TUAO655
+QDNULB 655 INewtownards, Strangford Arms - Belfast                              TUAO655

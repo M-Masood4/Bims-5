@@ -1,0 +1,1552 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251201161521
+QDNGLE X261OBelfast - Enniskillen (1st stop Ballygawley)                        
+QSNGLE 1001  20260408999999991111100 XX26115G02 GL              O
+QO700000017118090015 T1  
+QI70000001537610031003B   T1  
+QI70000001151810111011B   T1  
+QI70000001152010141014B   T1  
+QI70000001286110241024B   T1  
+QI70000001283010341034B   T1  
+QI70000001537710401040B   T1  
+QI70000001537810471047B   T1  
+QI70000001269210501050B   T1  
+QI70000001620610581058S   T0  
+QNs    Set down only                                                           
+QT7000000121651100   T1  
+QDNGLE 261cOBelfast - Dungannon                                                 
+QSNGLE 1003  20260408999999991111100 X261c15G03 GL              O
+QO700000017117091015 T1  
+QI70000000964309580958S   T0  
+QNs    Set down only                                                           
+QI70000001537509590959S   T0  
+QNs    Set down only                                                           
+QI70000000964409590959S   T0  
+QNs    Set down only                                                           
+QI70000000964510001000S   T0  
+QNs    Set down only                                                           
+QI70000000964610001000S   T0  
+QNs    Set down only                                                           
+QT7000000091271002   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1005  20260408999999991111100 X261 18GD1 GD              O
+QO700000017117092015 T1  
+QI70000000678409500950B   T1  
+QI70000001591510051005B   T1  
+QI70000000964310141014S   T0  
+QNs    Set down only                                                           
+QI70000001537510141014S   T0  
+QNs    Set down only                                                           
+QI70000000964410151015S   T0  
+QNs    Set down only                                                           
+QI70000000964510151015S   T0  
+QNs    Set down only                                                           
+QI70000000964610161016S   T0  
+QNs    Set down only                                                           
+QI70000000912710171025B   T1  
+QI70000001537610431043B   T1  
+QI70000001151810511051B   T1  
+QI70000001152010541054B   T1  
+QI70000001286111041104B   T1  
+QI70000001283011141114B   T1  
+QI70000001537711201120B   T1  
+QI70000001537811271127B   T1  
+QI70000001269211301130B   T1  
+QI70000001620611381138S   T0  
+QNs    Set down only                                                           
+QT7000000121651140   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1007  20260408999999991111100 X261 18G02 GL              O
+QO700000017117102015 T1  
+QI70000000678410501050B   T1  
+QI70000001591511051105B   T1  
+QI70000000964311141114S   T0  
+QNs    Set down only                                                           
+QI70000001537511141114S   T0  
+QNs    Set down only                                                           
+QI70000000964411151115S   T0  
+QNs    Set down only                                                           
+QI70000000964511151115S   T0  
+QNs    Set down only                                                           
+QI70000000964611161116S   T0  
+QNs    Set down only                                                           
+QI70000000912711171125B   T1  
+QI70000001537611431143B   T1  
+QI70000001151811511151B   T1  
+QI70000001152011541154B   T1  
+QI70000001286112041204B   T1  
+QI70000001283012141214B   T1  
+QI70000001537712201220B   T1  
+QI70000001537812271227B   T1  
+QI70000001269212301230B   T1  
+QI70000001620612381238S   T0  
+QNs    Set down only                                                           
+QT7000000121651240   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1009  20260408999999991111100 X261 18G03 GL              O
+QO700000017117112015 T1  
+QI70000000678411501150B   T1  
+QI70000001591512051205B   T1  
+QI70000000964312141214S   T0  
+QNs    Set down only                                                           
+QI70000001537512141214S   T0  
+QNs    Set down only                                                           
+QI70000000964412151215S   T0  
+QNs    Set down only                                                           
+QI70000000964512151215S   T0  
+QNs    Set down only                                                           
+QI70000000964612161216S   T0  
+QNs    Set down only                                                           
+QI70000000912712171225B   T1  
+QI70000001537612431243B   T1  
+QI70000001151812511251B   T1  
+QI70000001152012541254B   T1  
+QI70000001286113041304B   T1  
+QI70000001283013141314B   T1  
+QI70000001537713201320B   T1  
+QI70000001537813271327B   T1  
+QI70000001269213301330B   T1  
+QI70000001620613381338S   T0  
+QNs    Set down only                                                           
+QT7000000121651340   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1011  20260408999999991111100 X261 18G05 GL              O
+QO700000017117122015 T1  
+QI70000000678412501250B   T1  
+QI70000001591513051305B   T1  
+QI70000000964313141314S   T0  
+QNs    Set down only                                                           
+QI70000001537513141314S   T0  
+QNs    Set down only                                                           
+QI70000000964413151315S   T0  
+QNs    Set down only                                                           
+QI70000000964513151315S   T0  
+QNs    Set down only                                                           
+QI70000000964613161316S   T0  
+QNs    Set down only                                                           
+QI70000000912713171325B   T1  
+QI70000001537613431343B   T1  
+QI70000001151813511351B   T1  
+QI70000001152013541354B   T1  
+QI70000001286114041404B   T1  
+QI70000001283014141414B   T1  
+QI70000001537714201420B   T1  
+QI70000001537814271427B   T1  
+QI70000001269214301430B   T1  
+QI70000001620614381438S   T0  
+QNs    Set down only                                                           
+QT7000000121651440   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1013  20260408999999991111100 X261 18G04 GL              O
+QO700000017117132015 T1  
+QI70000000678413501350B   T1  
+QI70000001591514051405B   T1  
+QI70000000964314141414S   T0  
+QNs    Set down only                                                           
+QI70000001537514141414S   T0  
+QNs    Set down only                                                           
+QI70000000964414151415S   T0  
+QNs    Set down only                                                           
+QI70000000964514151415S   T0  
+QNs    Set down only                                                           
+QI70000000964614161416S   T0  
+QNs    Set down only                                                           
+QI70000000912714171425B   T1  
+QI70000001537614431443B   T1  
+QI70000001151814511451B   T1  
+QI70000001152014541454B   T1  
+QI70000001286115041504B   T1  
+QI70000001283015141514B   T1  
+QI70000001537715201520B   T1  
+QI70000001537815271527B   T1  
+QI70000001269215301530B   T1  
+QI70000001620615381538S   T0  
+QNs    Set down only                                                           
+QT7000000121651540   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1015  20260408999999991111100 X261 18G06 GL              O
+QO700000017117142015 T1  
+QI70000000678414501450B   T1  
+QI70000001591515051505B   T1  
+QI70000000964315141514S   T0  
+QNs    Set down only                                                           
+QI70000001537515141514S   T0  
+QNs    Set down only                                                           
+QI70000000964415151515S   T0  
+QNs    Set down only                                                           
+QI70000000964515151515S   T0  
+QNs    Set down only                                                           
+QI70000000964615161516S   T0  
+QNs    Set down only                                                           
+QI70000000912715171525B   T1  
+QI70000001537615431543B   T1  
+QI70000001151815511551B   T1  
+QI70000001152015541554B   T1  
+QI70000001286116041604B   T1  
+QI70000001283016141614B   T1  
+QI70000001537716201620B   T1  
+QI70000001537816271627B   T1  
+QI70000001269216301630B   T1  
+QI70000001620616381638S   T0  
+QNs    Set down only                                                           
+QT7000000121651640   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1017  20260408999999991111100 X261 15G02 GL              O
+QO700000017117152015 T1  
+QI70000000678415501550B   T1  
+QI70000001591516051605B   T1  
+QI70000000964316141614S   T0  
+QNs    Set down only                                                           
+QI70000001537516141614S   T0  
+QNs    Set down only                                                           
+QI70000000964416151615S   T0  
+QNs    Set down only                                                           
+QI70000000964516151615S   T0  
+QNs    Set down only                                                           
+QI70000000964616161616S   T0  
+QNs    Set down only                                                           
+QI70000000912716171625B   T1  
+QI70000001537616431643B   T1  
+QI70000001151816511651B   T1  
+QI70000001152016541654B   T1  
+QI70000001286117041704B   T1  
+QI70000001283017141714B   T1  
+QI70000001537717201720B   T1  
+QI70000001537817271727B   T1  
+QI70000001269217301730B   T1  
+QI70000001620617381738S   T0  
+QNs    Set down only                                                           
+QT7000000121651740   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE       20260408999999991111100 X261d      GD              O
+QO700000017118161015 T1  
+QI70000000678416401640B   T1  
+QI70000001591516551655B   T1  
+QI70000000964317041704S   T0  
+QNs    Set down only                                                           
+QI70000001537517041704S   T0  
+QNs    Set down only                                                           
+QI70000000964417051705S   T0  
+QNs    Set down only                                                           
+QI70000000964517051705S   T0  
+QNs    Set down only                                                           
+QI70000000964617061706S   T0  
+QNs    Set down only                                                           
+QT7000000091271707   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1019  20260408999999991111100 X261 18GD1 GD              O
+QO700000017117163015 T1  
+QI70000000678417001700B   T1  
+QI70000001591517151715B   T1  
+QI70000000964317241724S   T0  
+QNs    Set down only                                                           
+QI70000001537517241724S   T0  
+QNs    Set down only                                                           
+QI70000000964417251725S   T0  
+QNs    Set down only                                                           
+QI70000000964517251725S   T0  
+QNs    Set down only                                                           
+QI70000000964617261726S   T0  
+QNs    Set down only                                                           
+QI70000000912717271735B   T1  
+QI70000001537617531753B   T1  
+QI70000001151818011801B   T1  
+QI70000001152018041804B   T1  
+QI70000001286118141814B   T1  
+QI70000001283018241824B   T1  
+QI70000001537718301830B   T1  
+QI70000001537818371837B   T1  
+QI70000001269218401840B   T1  
+QI70000001620618481848S   T0  
+QNs    Set down only                                                           
+QT7000000121651850   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 1021  20260408999999991111100 X261d15GD1 GD              O
+QO700000017117165015 T1  
+QI70000000678417201720B   T1  
+QI70000001591517351735B   T1  
+QI70000000964317441744S   T0  
+QNs    Set down only                                                           
+QI70000001537517441744S   T0  
+QNs    Set down only                                                           
+QI70000000964417451745S   T0  
+QNs    Set down only                                                           
+QI70000000964517451745S   T0  
+QNs    Set down only                                                           
+QI70000000964617461746S   T0  
+QNs    Set down only                                                           
+QT7000000091271747   T1  
+QDNGLE 261aOBelfast - Dungannon (1st Stop Tamnamore)                            
+QSNGLE 1023  20260408999999991111100 X261a15G04 GL              O
+QO700000017117171015 T1  
+QI70000001591517501750B   T1  
+QI70000000964317591759S   T0  
+QNs    Set down only                                                           
+QI70000001537517591759S   T0  
+QNs    Set down only                                                           
+QI70000000964418001800S   T0  
+QNs    Set down only                                                           
+QI70000000964518001800S   T0  
+QNs    Set down only                                                           
+QI70000000964618011801S   T0  
+QNs    Set down only                                                           
+QT7000000091271802   T1  
+QDNGLE X261OBelfast - Enniskillen (1st stop Ballygawley)                        
+QSNGLE 1025  20260408999999991111100 XX26118G03 GL              O
+QO700000017118172015 T1  
+QI70000001537618231823B   T1  
+QI70000001151818311831B   T1  
+QI70000001152018341834B   T1  
+QI70000001286118441844B   T1  
+QI70000001283018541854B   T1  
+QI70000001537719001900B   T1  
+QI70000001537819071907B   T1  
+QI70000001269219101910B   T1  
+QI70000001620619181918S   T0  
+QNs    Set down only                                                           
+QT7000000121651920   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 1027  20260408999999991111100 X261d15G03 GL              O
+QO700000017117173015 T1  
+QI70000000678418001800B   T1  
+QI70000001591518151815B   T1  
+QI70000000964318241824S   T0  
+QNs    Set down only                                                           
+QI70000001537518241824S   T0  
+QNs    Set down only                                                           
+QI70000000964418251825S   T0  
+QNs    Set down only                                                           
+QI70000000964518251825S   T0  
+QNs    Set down only                                                           
+QI70000000964618261826S   T0  
+QNs    Set down only                                                           
+QT7000000091271827   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1029  20260408999999991111100 X261 18G05 GL              O
+QO700000017117182015 T1  
+QI70000000678418501850B   T1  
+QI70000001591519051905B   T1  
+QI70000000964319141914S   T0  
+QNs    Set down only                                                           
+QI70000001537519141914S   T0  
+QNs    Set down only                                                           
+QI70000000964419151915S   T0  
+QNs    Set down only                                                           
+QI70000000964519151915S   T0  
+QNs    Set down only                                                           
+QI70000000964619161916S   T0  
+QNs    Set down only                                                           
+QI70000000912719171925B   T1  
+QI70000001537619431943B   T1  
+QI70000001151819511951B   T1  
+QI70000001152019541954B   T1  
+QI70000001286120042004B   T1  
+QI70000001283020142014B   T1  
+QI70000001537720202020B   T1  
+QI70000001537820272027B   T1  
+QI70000001269220302030B   T1  
+QI70000001620620382038S   T0  
+QNs    Set down only                                                           
+QT7000000121652040   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1031  20260408999999991111100 X261 18G04 GL              O
+QO700000017117192015 T1  
+QI70000000678419501950B   T1  
+QI70000001591520052005B   T1  
+QI70000000964320142014S   T0  
+QNs    Set down only                                                           
+QI70000001537520142014S   T0  
+QNs    Set down only                                                           
+QI70000000964420152015S   T0  
+QNs    Set down only                                                           
+QI70000000964520152015S   T0  
+QNs    Set down only                                                           
+QI70000000964620162016S   T0  
+QNs    Set down only                                                           
+QI70000000912720172025B   T1  
+QI70000001537620432043B   T1  
+QI70000001151820512051B   T1  
+QI70000001152020542054B   T1  
+QI70000001286121042104B   T1  
+QI70000001283021142114B   T1  
+QI70000001537721202120B   T1  
+QI70000001537821272127B   T1  
+QI70000001269221302130B   T1  
+QI70000001620621382138S   T0  
+QNs    Set down only                                                           
+QT7000000121652140   T1  
+QDNGLE 273 OBelfast - Omagh                                                     
+QSNGLE 1033  20260408999999991111100 X273       GL              O
+QO700000017117205015 T1  
+QI70000000678421152115B   T1  
+QI70000001591521302130B   T1  
+QI70000000964321392139S   T0  
+QNs    Set down only                                                           
+QI70000001537521392139S   T0  
+QNs    Set down only                                                           
+QI70000000964421402140S   T0  
+QNs    Set down only                                                           
+QI70000000964521402140S   T0  
+QNs    Set down only                                                           
+QI70000000964621412141S   T0  
+QNs    Set down only                                                           
+QT7000000091272142   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 1035  20260408999999991111100 X261 18G03 GL              O
+QNC    Connection with service 273 in Dungannon                                
+QO7000000091272145   T1  
+QI70000001537622032203B   T1  
+QI70000001151822102210B   T1  
+QI70000001152022132213B   T1  
+QI70000001286122232223B   T1  
+QI70000001283022322232B   T1  
+QI70000001537722372237B   T1  
+QI70000001537822442244B   T1  
+QI70000001269222472247B   T1  
+QI70000001620622532253S   T0  
+QNs    Set down only                                                           
+QT7000000121652255   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 1037  20260408999999990000100 X261d15G03 GD              O
+QNFR   Operates Fridays only                                                            
+QO700000017109240015 T1  
+QI70000000678424252425B   T1  
+QI70000001591524402440B   T1  
+QI70000000964324492449S   T0  
+QNs    Set down only                                                           
+QI70000001537524492449S   T0  
+QNs    Set down only                                                           
+QI70000000964424502450S   T0  
+QNs    Set down only                                                           
+QI70000000964524502450S   T0  
+QNs    Set down only                                                           
+QI70000000964624512451S   T0  
+QNs    Set down only                                                           
+QT7000000091272452   T1  
+QDNGLE X261IEnniskillen - Belfast                                               
+QSNGLE 1002  20260408999999991111100 XX26118GD1 GD              I
+QNA    Connection in Ballygawley to Dungannon                                  
+QO7000000121650600   T1  
+QI70000001264306070607B   T1  
+QI70000001537806110611B   T1  
+QI70000001537706180618B   T1  
+QI70000001283706230623B   T1  
+QI70000001284706330633B   T1  
+QI70000001152106430643B   T1  
+QI70000001152306470647B   T1  
+QI70000001537606570657B   T1  
+QI70000001591507200720B   T1  
+QI70000000180108080808S   T0  
+QNs    Set down only                                                           
+QT700000017113081016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE       20260408999999991111100 X261d      GL              I
+QO7000000091270710   T1  
+QI70000001591507200720B   T1  
+QI70000000678407350735B   T1  
+QI70000000180108130813S   T0  
+QNs    Set down only                                                           
+QT700000017117081516 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1004  20260408999999991111100 X261 15G02 GL              I
+QO7000000153760700   T1  
+QI70000000912707180730B   T1  
+QI70000001591507400740B   T1  
+QI70000000678407550755B   T1  
+QI70000000180108330833S   T0  
+QNs    Set down only                                                           
+QT700000017118083516 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 1006  20260408999999991111100 X261d15G03 GL              I
+QO7000000091270750   T1  
+QI70000001591508000800B   T1  
+QI70000000678408150815B   T1  
+QI70000000180108530853S   T0  
+QNs    Set down only                                                           
+QT700000017117085516 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1008  20260408999999991111100 X261 18G02 GL              I
+QO7000000121650700   T1  
+QI70000001264307070707B   T1  
+QI70000001537807110711B   T1  
+QI70000001537707180718B   T1  
+QI70000001283707230723B   T1  
+QI70000001284707330733B   T1  
+QI70000001152107430743B   T1  
+QI70000001152307470747B   T1  
+QI70000001537607570757B   T1  
+QI70000000912708150820B   T1  
+QI70000001591508300830B   T1  
+QI70000000678408450845B   T1  
+QI70000000180109180918S   T0  
+QNs    Set down only                                                           
+QT700000017118092016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1010  20260408999999991111100 X261 18G03 GL              I
+QO7000000121650800   T1  
+QI70000001264308070807B   T1  
+QI70000001537808110811B   T1  
+QI70000001537708180818B   T1  
+QI70000001283708230823B   T1  
+QI70000001284708330833B   T1  
+QI70000001152108430843B   T1  
+QI70000001152308470847B   T1  
+QI70000001537608570857B   T1  
+QI70000000912709150920B   T1  
+QI70000001591509300930B   T1  
+QI70000000678409450945B   T1  
+QI70000000180110181018S   T0  
+QNs    Set down only                                                           
+QT700000017118102016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1012  20260408999999991111100 X261 18G05 GL              I
+QO7000000121650900   T1  
+QI70000001264309070907B   T1  
+QI70000001537809110911B   T1  
+QI70000001537709180918B   T1  
+QI70000001283709230923B   T1  
+QI70000001284709330933B   T1  
+QI70000001152109430943B   T1  
+QI70000001152309470947B   T1  
+QI70000001537609570957B   T1  
+QI70000000912710151020B   T1  
+QI70000001591510301030B   T1  
+QI70000000678410451045B   T1  
+QI70000000180111181118S   T0  
+QNs    Set down only                                                           
+QT700000017118112016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1014  20260408999999991111100 X261 18G04 GL              I
+QO7000000121651000   T1  
+QI70000001264310071007B   T1  
+QI70000001537810111011B   T1  
+QI70000001537710181018B   T1  
+QI70000001283710231023B   T1  
+QI70000001284710331033B   T1  
+QI70000001152110431043B   T1  
+QI70000001152310471047B   T1  
+QI70000001537610571057B   T1  
+QI70000000912711151120B   T1  
+QI70000001591511301130B   T1  
+QI70000000678411451145B   T1  
+QI70000000180112181218S   T0  
+QNs    Set down only                                                           
+QT700000017118122016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1016  20260408999999991111100 X261 18G06 GL              I
+QO7000000121651100   T1  
+QI70000001264311071107B   T1  
+QI70000001537811111111B   T1  
+QI70000001537711181118B   T1  
+QI70000001283711231123B   T1  
+QI70000001284711331133B   T1  
+QI70000001152111431143B   T1  
+QI70000001152311471147B   T1  
+QI70000001537611571157B   T1  
+QI70000000912712151220B   T1  
+QI70000001591512301230B   T1  
+QI70000000678412451245B   T1  
+QI70000000180113181318S   T0  
+QNs    Set down only                                                           
+QT700000017118132016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 1018  20260408999999991111100 X261d15GD1 GD              I
+QO7000000091271235   T1  
+QI70000001591512451245B   T1  
+QI70000000678413001300B   T1  
+QI70000000180113331333S   T0  
+QNs    Set down only                                                           
+QT700000017118133516 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1020  20260408999999991111100 X261 15G02 GL              I
+QO7000000121651200   T1  
+QI70000001264312071207B   T1  
+QI70000001537812111211B   T1  
+QI70000001537712181218B   T1  
+QI70000001283712231223B   T1  
+QI70000001284712331233B   T1  
+QI70000001152112431243B   T1  
+QI70000001152312471247B   T1  
+QI70000001537612571257B   T1  
+QI70000000912713151320B   T1  
+QI70000001591513301330B   T1  
+QI70000000678413451345B   T1  
+QI70000000180114181418S   T0  
+QNs    Set down only                                                           
+QT700000017118142016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1022  20260408999999991111100 X261 18GD1 GD              I
+QO7000000121651300   T1  
+QI70000001264313071307B   T1  
+QI70000001537813111311B   T1  
+QI70000001537713181318B   T1  
+QI70000001283713231323B   T1  
+QI70000001284713331333B   T1  
+QI70000001152113431343B   T1  
+QI70000001152313471347B   T1  
+QI70000001537613571357B   T1  
+QI70000000912714151420B   T1  
+QI70000001591514301430B   T1  
+QI70000000678414451445B   T1  
+QI70000000180115181518S   T0  
+QNs    Set down only                                                           
+QT700000017118152016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE       20260408999999991111100 X261d      GD              I
+QO7000000091271435   T1  
+QI70000001591514451445B   T1  
+QI70000000678415001500B   T1  
+QI70000000180115331533S   T0  
+QNs    Set down only                                                           
+QT700000017116153516 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1024  20260408999999991111100 X261 18G03 GL              I
+QO7000000121651400   T1  
+QI70000001264314071407B   T1  
+QI70000001537814111411B   T1  
+QI70000001537714181418B   T1  
+QI70000001283714231423B   T1  
+QI70000001284714331433B   T1  
+QI70000001152114431443B   T1  
+QI70000001152314471447B   T1  
+QI70000001537614571457B   T1  
+QI70000000912715151520B   T1  
+QI70000001591515301530B   T1  
+QI70000000678415451545B   T1  
+QI70000000180116181618S   T0  
+QNs    Set down only                                                           
+QT700000017118162016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 1026  20260408999999991111100 X261d15GD1 GD              I
+QO7000000091271535   T1  
+QI70000001591515451545B   T1  
+QI70000000678416001600B   T1  
+QI70000000180116331633S   T0  
+QNs    Set down only                                                           
+QT700000017117163516 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1028  20260408999999991111100 X261 18G05 GL              I
+QO7000000121651500   T1  
+QI70000001264315071507B   T1  
+QI70000001537815111511B   T1  
+QI70000001537715181518B   T1  
+QI70000001283715231523B   T1  
+QI70000001284715331533B   T1  
+QI70000001152115431543B   T1  
+QI70000001152315471547B   T1  
+QI70000001537615571557B   T1  
+QI70000000912716151620B   T1  
+QI70000001591516301630B   T1  
+QI70000000678416451645B   T1  
+QI70000000180117181718S   T0  
+QNs    Set down only                                                           
+QT700000017107172016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1030  20260408999999991111100 X261 18G04 GL              I
+QO7000000121651600   T1  
+QI70000001264316071607B   T1  
+QI70000001537816111611B   T1  
+QI70000001537716181618B   T1  
+QI70000001283716231623B   T1  
+QI70000001284716331633B   T1  
+QI70000001152116431643B   T1  
+QI70000001152316471647B   T1  
+QI70000001537616571657B   T1  
+QI70000000912717151720B   T1  
+QI70000001591517301730B   T1  
+QI70000000678417451745B   T1  
+QI70000000180118181818S   T0  
+QNs    Set down only                                                           
+QT700000017118182016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1032  20260408999999991111100 X261 15G02 GL              I
+QNC    Connection with service 273 in Dungannon                                
+QO7000000121651800   T1  
+QI70000001264318071807B   T1  
+QI70000001537818111811B   T1  
+QI70000001537718181818B   T1  
+QI70000001283718231823B   T1  
+QI70000001284718331833B   T1  
+QI70000001152118431843B   T1  
+QI70000001152318471847B   T1  
+QI70000001537618571857B   T1  
+QT7000000091271915   T1  
+QNC    Connection with service 273 in Dungannon                                
+QDNGLE 273 IDungannon - Belfast                                                 
+QSNGLE 1034  20260408999999991111100 X273       GL              I
+QO7000000091271920   T1  
+QI70000001591519301930B   T1  
+QI70000000678419451945B   T1  
+QI70000000180120182018S   T0  
+QNs    Set down only                                                           
+QT700000017118202016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 1036  20260408999999991111100 X261 18G03 GL              I
+QNC    Connection with service 273 in Dungannon                                
+QO7000000121651945   T1  
+QI70000001264319511951B   T1  
+QI70000001537819551955B   T1  
+QI70000001537720012001B   T1  
+QI70000001283720062006B   T1  
+QI70000001284720152015B   T1  
+QI70000001152120252025B   T1  
+QI70000001152320282028B   T1  
+QI70000001537620372037B   T1  
+QT7000000091272055   T1  
+QNC    Connection with service 273 in Dungannon                                
+QDNGLE 273 IDungannon - Belfast                                                 
+QSNGLE 1038  20260408999999991111100 X273       GL              I
+QO7000000091272100   T1  
+QI70000001591521102110B   T1  
+QI70000000678421252125B   T1  
+QI70000000180121482148S   T0  
+QNs    Set down only                                                           
+QT700000017118215016 T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2001  20260408999999990000010 X261 15GD1 GD              O
+QND    Connection from service 273 in Dungannon                                
+QO7000000091270940   T1  
+QI70000001537609580958B   T1  
+QI70000001151810061006B   T1  
+QI70000001152010091009B   T1  
+QI70000001286110191019B   T1  
+QI70000001283010291029B   T1  
+QI70000001537710351035B   T1  
+QI70000001537810421042B   T1  
+QI70000001269210451045B   T1  
+QI70000001620610531053S   T0  
+QNs    Set down only                                                           
+QT7000000121651055   T1  
+QDNGLE 273 OBelfast - Omagh                                                     
+QSNGLE 2003  20260408999999990000010 X273 17G01 GL              O
+QO700000017117084515 T1  
+QI70000000678409100910B   T1  
+QI70000001591509250925B   T1  
+QI70000000964309340934S   T0  
+QNs    Set down only                                                           
+QI70000001537509340934S   T0  
+QNs    Set down only                                                           
+QI70000000964409350935S   T0  
+QNs    Set down only                                                           
+QI70000000964509350935S   T0  
+QNs    Set down only                                                           
+QI70000000964609360936S   T0  
+QNs    Set down only                                                           
+QT7000000091270937   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2005  20260408999999990000010 X261 18G01 GL              O
+QO700000017117102015 T1  
+QI70000000678410501050B   T1  
+QI70000001591511051105B   T1  
+QI70000000964311141114S   T0  
+QNs    Set down only                                                           
+QI70000001537511141114S   T0  
+QNs    Set down only                                                           
+QI70000000964411151115S   T0  
+QNs    Set down only                                                           
+QI70000000964511151115S   T0  
+QNs    Set down only                                                           
+QI70000000964611161116S   T0  
+QNs    Set down only                                                           
+QI70000000912711171125B   T1  
+QI70000001537611431143B   T1  
+QI70000001151811511151B   T1  
+QI70000001152011541154B   T1  
+QI70000001286112041204B   T1  
+QI70000001283012141214B   T1  
+QI70000001537712201220B   T1  
+QI70000001537812271227B   T1  
+QI70000001269212301230B   T1  
+QI70000001620612381238S   T0  
+QNs    Set down only                                                           
+QT7000000121651240   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2007  20260408999999990000010 X261 18G02 GL              O
+QO700000017117122015 T1  
+QI70000000678412501250B   T1  
+QI70000001591513051305B   T1  
+QI70000000964313141314S   T0  
+QNs    Set down only                                                           
+QI70000001537513141314S   T0  
+QNs    Set down only                                                           
+QI70000000964413151315S   T0  
+QNs    Set down only                                                           
+QI70000000964513151315S   T0  
+QNs    Set down only                                                           
+QI70000000964613161316S   T0  
+QNs    Set down only                                                           
+QI70000000912713171325B   T1  
+QI70000001537613431343B   T1  
+QI70000001151813511351B   T1  
+QI70000001152013541354B   T1  
+QI70000001286114041404B   T1  
+QI70000001283014141414B   T1  
+QI70000001537714201420B   T1  
+QI70000001537814271427B   T1  
+QI70000001269214301430B   T1  
+QI70000001620614381438S   T0  
+QNs    Set down only                                                           
+QT7000000121651440   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2009  20260408999999990000010 X261 18G03 GL              O
+QO700000017117132015 T1  
+QI70000000678413501350B   T1  
+QI70000001591514051405B   T1  
+QI70000000964314141414S   T0  
+QNs    Set down only                                                           
+QI70000001537514141414S   T0  
+QNs    Set down only                                                           
+QI70000000964414151415S   T0  
+QNs    Set down only                                                           
+QI70000000964514151415S   T0  
+QNs    Set down only                                                           
+QI70000000964614161416S   T0  
+QNs    Set down only                                                           
+QI70000000912714171425B   T1  
+QI70000001537614431443B   T1  
+QI70000001151814511451B   T1  
+QI70000001152014541454B   T1  
+QI70000001286115041504B   T1  
+QI70000001283015141514B   T1  
+QI70000001537715201520B   T1  
+QI70000001537815271527B   T1  
+QI70000001269215301530B   T1  
+QI70000001620615381538S   T0  
+QNs    Set down only                                                           
+QT7000000121651540   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 2011  20260408999999990000010 X261d15G02 GL              O
+QO700000017117142015 T1  
+QI70000000678414501450B   T1  
+QI70000001591515051505B   T1  
+QI70000000964315141514S   T0  
+QNs    Set down only                                                           
+QI70000001537515141514S   T0  
+QNs    Set down only                                                           
+QI70000000964415151515S   T0  
+QNs    Set down only                                                           
+QI70000000964515151515S   T0  
+QNs    Set down only                                                           
+QI70000000964615161516S   T0  
+QNs    Set down only                                                           
+QT7000000091271517   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2013  20260408999999990000010 X261 15GD1 GD              O
+QO700000017117152015 T1  
+QI70000000678415501550B   T1  
+QI70000001591516051605B   T1  
+QI70000000964316141614S   T0  
+QNs    Set down only                                                           
+QI70000001537516141614S   T0  
+QNs    Set down only                                                           
+QI70000000964416151615S   T0  
+QNs    Set down only                                                           
+QI70000000964516151615S   T0  
+QNs    Set down only                                                           
+QI70000000964616161616S   T0  
+QNs    Set down only                                                           
+QI70000000912716171625B   T1  
+QI70000001537616431643B   T1  
+QI70000001151816511651B   T1  
+QI70000001152016541654B   T1  
+QI70000001286117041704B   T1  
+QI70000001283017141714B   T1  
+QI70000001537717201720B   T1  
+QI70000001537817271727B   T1  
+QI70000001269217301730B   T1  
+QI70000001620617381738S   T0  
+QNs    Set down only                                                           
+QT7000000121651740   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2015  20260408999999990000010 X261 18G01 GL              O
+QO700000017117172015 T1  
+QI70000000678417501750B   T1  
+QI70000001591518051805B   T1  
+QI70000000964318141814S   T0  
+QNs    Set down only                                                           
+QI70000001537518141814S   T0  
+QNs    Set down only                                                           
+QI70000000964418151815S   T0  
+QNs    Set down only                                                           
+QI70000000964518151815S   T0  
+QNs    Set down only                                                           
+QI70000000964618161816S   T0  
+QNs    Set down only                                                           
+QI70000000912718171825B   T1  
+QI70000001537618431843B   T1  
+QI70000001151818511851B   T1  
+QI70000001152018541854B   T1  
+QI70000001286119041904B   T1  
+QI70000001283019141914B   T1  
+QI70000001537719201920B   T1  
+QI70000001537819271927B   T1  
+QI70000001269219301930B   T1  
+QI70000001620619381938S   T0  
+QNs    Set down only                                                           
+QT7000000121651940   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 2017  20260408999999990000010 X261 18G02 GL              O
+QO700000017117192015 T1  
+QI70000000678419501950B   T1  
+QI70000001591520052005B   T1  
+QI70000000964320142014S   T0  
+QNs    Set down only                                                           
+QI70000001537520142014S   T0  
+QNs    Set down only                                                           
+QI70000000964420152015S   T0  
+QNs    Set down only                                                           
+QI70000000964520152015S   T0  
+QNs    Set down only                                                           
+QI70000000964620162016S   T0  
+QNs    Set down only                                                           
+QI70000000912720172025B   T1  
+QI70000001537620432043B   T1  
+QI70000001151820512051B   T1  
+QI70000001152020542054B   T1  
+QI70000001286121042104B   T1  
+QI70000001283021142114B   T1  
+QI70000001537721202120B   T1  
+QI70000001537821272127B   T1  
+QI70000001269221302130B   T1  
+QI70000001620621382138S   T0  
+QNs    Set down only                                                           
+QT7000000121652140   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 2019  20260408999999990000010 X261d15G03 GL              O
+QO700000017109240015 T1  
+QI70000000678424252425S   T1  
+QNs    Set down only                                                           
+QI70000001591524402440S   T1  
+QNs    Set down only                                                           
+QI70000000964324492449S   T0  
+QNs    Set down only                                                           
+QI70000001537524492449S   T0  
+QNs    Set down only                                                           
+QI70000000964424502450S   T0  
+QNs    Set down only                                                           
+QI70000000964524502450S   T0  
+QNs    Set down only                                                           
+QI70000000964624512451S   T0  
+QNs    Set down only                                                           
+QT7000000091272452   T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2002  20260408999999990000010 X261 18G01 GL              I
+QO7000000121650700   T1  
+QI70000001264307070707B   T1  
+QI70000001537807110711B   T1  
+QI70000001537707180718B   T1  
+QI70000001283707230723B   T1  
+QI70000001284707330733B   T1  
+QI70000001152107430743B   T1  
+QI70000001152307470747B   T1  
+QI70000001537607570757B   T1  
+QI70000000912708150820B   T1  
+QI70000001591508300830B   T1  
+QI70000000678408450845B   T1  
+QI70000000180109180918S   T0  
+QNs    Set down only                                                           
+QT700000017118092016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 2004  20260408999999990000010 X261d15G01 GL              I
+QO7000000091270920   T1  
+QI70000001591509300930B   T1  
+QI70000000678409450945B   T1  
+QI70000000180110181018S   T0  
+QNs    Set down only                                                           
+QT700000017118102016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2006  20260408999999990000010 X261 18G02 GL              I
+QO7000000121650900   T1  
+QI70000001264309070907B   T1  
+QI70000001537809110911B   T1  
+QI70000001537709180918B   T1  
+QI70000001283709230923B   T1  
+QI70000001284709330933B   T1  
+QI70000001152109430943B   T1  
+QI70000001152309470947B   T1  
+QI70000001537609570957B   T1  
+QI70000000912710151020B   T1  
+QI70000001591510301030B   T1  
+QI70000000678410451045B   T1  
+QI70000000180111181118S   T0  
+QNs    Set down only                                                           
+QT700000017118112016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2008  20260408999999990000010 X261 18G03 GL              I
+QO7000000121651000   T1  
+QI70000001264310071007B   T1  
+QI70000001537810111011B   T1  
+QI70000001537710181018B   T1  
+QI70000001283710231023B   T1  
+QI70000001284710331033B   T1  
+QI70000001152110431043B   T1  
+QI70000001152310471047B   T1  
+QI70000001537610571057B   T1  
+QI70000000912711151120B   T1  
+QI70000001591511301130B   T1  
+QI70000000678411451145B   T1  
+QI70000000180112181218S   T0  
+QNs    Set down only                                                           
+QT700000017118122016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 2010  20260408999999990000010 X261d15G02 GL              I
+QO7000000091271220   T1  
+QI70000001591512301230B   T1  
+QI70000000678412451245B   T1  
+QI70000000180113181318S   T0  
+QNs    Set down only                                                           
+QT700000017118132016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2012  20260408999999990000010 X261 15GD1 GD              I
+QO7000000121651200   T1  
+QI70000001264312071207B   T1  
+QI70000001537812111211B   T1  
+QI70000001537712181218B   T1  
+QI70000001283712231223B   T1  
+QI70000001284712331233B   T1  
+QI70000001152112431243B   T1  
+QI70000001152312471247B   T1  
+QI70000001537612571257B   T1  
+QI70000000912713151320B   T1  
+QI70000001591513301330B   T1  
+QI70000000678413451345B   T1  
+QI70000000180114181418S   T0  
+QNs    Set down only                                                           
+QT700000017118142016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2014  20260408999999990000010 X261 18G01 GL              I
+QO7000000121651400   T1  
+QI70000001264314071407B   T1  
+QI70000001537814111411B   T1  
+QI70000001537714181418B   T1  
+QI70000001283714231423B   T1  
+QI70000001284714331433B   T1  
+QI70000001152114431443B   T1  
+QI70000001152314471447B   T1  
+QI70000001537614571457B   T1  
+QI70000000912715151520B   T1  
+QI70000001591515301530B   T1  
+QI70000000678415451545B   T1  
+QI70000000180116181618S   T0  
+QNs    Set down only                                                           
+QT700000017118162016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2016  20260408999999990000010 X261 18G02 GL              I
+QO7000000121651600   T1  
+QI70000001264316071607B   T1  
+QI70000001537816111611B   T1  
+QI70000001537716181618B   T1  
+QI70000001283716231623B   T1  
+QI70000001284716331633B   T1  
+QI70000001152116431643B   T1  
+QI70000001152316471647B   T1  
+QI70000001537616571657B   T1  
+QI70000000912717151720B   T1  
+QI70000001591517301730B   T1  
+QI70000000678417451745B   T1  
+QI70000000180118181818S   T0  
+QNs    Set down only                                                           
+QT700000017118182016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 2018  20260408999999990000010 X261 15GD1 GD              I
+QNC    Connection with service 273 in Dungannon                                
+QO7000000121651800   T1  
+QI70000001264318071807B   T1  
+QI70000001537818111811B   T1  
+QI70000001537718181818B   T1  
+QI70000001283718231823B   T1  
+QI70000001284718331833B   T1  
+QI70000001152118431843B   T1  
+QI70000001152318471847B   T1  
+QI70000001537618571857B   T1  
+QT7000000091271915   T1  
+QNC    Connection with service 273 in Dungannon                                
+QDNGLE 273 IDungannon - Belfast                                                 
+QSNGLE 2020  20260408999999990000010 X273 17G04 GL              I
+QO7000000091271920   T1  
+QI70000001591519301930B   T1  
+QI70000000678419451945B   T1  
+QI70000000180120182018S   T0  
+QNs    Set down only                                                           
+QT700000017118202016 T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 3003  20260408999999990000001 X261 15G01 GL              O
+QND    Connection from service 273 in Dungannon                                
+QO7000000091271040   T1  
+QI70000001537610581058B   T1  
+QI70000001151811051105B   T1  
+QI70000001152011081108B   T1  
+QI70000001286111171117B   T1  
+QI70000001283011261126B   T1  
+QI70000001537711311131B   T1  
+QI70000001537811371137B   T1  
+QI70000001269211401140B   T1  
+QI70000001620611481148S   T0  
+QNs    Set down only                                                           
+QT7000000121651150   T1  
+QDNGLE 273 OBelfast - Omagh                                                     
+QSNGLE 3001  20260408999999990000001 X273 16GD2 GD              O
+QO700000017117094515 T1  
+QI70000000678410101010B   T1  
+QI70000001591510251025B   T1  
+QI70000000964310341034S   T0  
+QNs    Set down only                                                           
+QI70000001537510341034S   T0  
+QNs    Set down only                                                           
+QI70000000964410351035S   T0  
+QNs    Set down only                                                           
+QI70000000964510351035S   T0  
+QNs    Set down only                                                           
+QI70000000964610361036S   T0  
+QNs    Set down only                                                           
+QT7000000091271037   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 3005  20260408999999990000001 X261d02G07 GL              O
+QO700000017117111515 T1  
+QI70000000678411451145B   T1  
+QI70000001591512001200B   T1  
+QI70000000964312091209S   T0  
+QNs    Set down only                                                           
+QI70000001537512091209S   T0  
+QNs    Set down only                                                           
+QI70000000964412101210S   T0  
+QNs    Set down only                                                           
+QI70000000964512101210S   T0  
+QNs    Set down only                                                           
+QI70000000964612111211S   T0  
+QNs    Set down only                                                           
+QT7000000091271212   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 3007  20260408999999990000001 X261 18G01 GL              O
+QO700000017117132015 T1  
+QI70000000678413501350B   T1  
+QI70000001591514051405B   T1  
+QI70000000964314141414S   T0  
+QNs    Set down only                                                           
+QI70000001537514141414S   T0  
+QNs    Set down only                                                           
+QI70000000964414151415S   T0  
+QNs    Set down only                                                           
+QI70000000964514151415S   T0  
+QNs    Set down only                                                           
+QI70000000964614161416S   T0  
+QNs    Set down only                                                           
+QI70000000912714171425B   T1  
+QI70000001537614431443B   T1  
+QI70000001151814511451B   T1  
+QI70000001152014541454B   T1  
+QI70000001286115041504B   T1  
+QI70000001283015141514B   T1  
+QI70000001537715201520B   T1  
+QI70000001537815271527B   T1  
+QI70000001269215301530B   T1  
+QI70000001620615381538S   T0  
+QNs    Set down only                                                           
+QT7000000121651540   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 3009  20260408999999990000001 X261 15G01 GL              O
+QO700000017117152015 T1  
+QI70000000678415501550B   T1  
+QI70000001591516051605B   T1  
+QI70000000964316141614S   T0  
+QNs    Set down only                                                           
+QI70000001537516141614S   T0  
+QNs    Set down only                                                           
+QI70000000964416151615S   T0  
+QNs    Set down only                                                           
+QI70000000964516151615S   T0  
+QNs    Set down only                                                           
+QI70000000964616161616S   T0  
+QNs    Set down only                                                           
+QI70000000912716171625B   T1  
+QI70000001537616431643B   T1  
+QI70000001151816511651B   T1  
+QI70000001152016541654B   T1  
+QI70000001286117041704B   T1  
+QI70000001283017141714B   T1  
+QI70000001537717201720B   T1  
+QI70000001537817271727B   T1  
+QI70000001269217301730B   T1  
+QI70000001620617381738S   T0  
+QNs    Set down only                                                           
+QT7000000121651740   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 3021  20260408999999990000001 X261d15DG1 GL              O
+QO700000017118161515 T1  
+QI70000000678416451645B   T1  
+QI70000001591517001700B   T1  
+QI70000000964317091709S   T0  
+QNs    Set down only                                                           
+QI70000001537517091709S   T0  
+QNs    Set down only                                                           
+QI70000000964417101710S   T0  
+QNs    Set down only                                                           
+QI70000000964517101710S   T0  
+QNs    Set down only                                                           
+QI70000000964617111711S   T0  
+QNs    Set down only                                                           
+QT7000000091271712   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 3011  20260408999999990000001 X261 18G02 GL              O
+QO700000017117172015 T1  
+QI70000000678417501750B   T1  
+QI70000001591518051805B   T1  
+QI70000000964318141814S   T0  
+QNs    Set down only                                                           
+QI70000001537518141814S   T0  
+QNs    Set down only                                                           
+QI70000000964418151815S   T0  
+QNs    Set down only                                                           
+QI70000000964518151815S   T0  
+QNs    Set down only                                                           
+QI70000000964618161816S   T0  
+QNs    Set down only                                                           
+QI70000000912718171825B   T1  
+QI70000001537618431843B   T1  
+QI70000001151818511851B   T1  
+QI70000001152018541854B   T1  
+QI70000001286119041904B   T1  
+QI70000001283019141914B   T1  
+QI70000001537719201920B   T1  
+QI70000001537819271927B   T1  
+QI70000001269219301930B   T1  
+QI70000001620619381938S   T0  
+QNs    Set down only                                                           
+QT7000000121651940   T1  
+QDNGLE 261 OBelfast - Enniskillen                                               
+QSNGLE 3013  20260408999999990000001 X261 15G02 GL              O
+QO700000017117184515 T1  
+QI70000000678419151915B   T1  
+QI70000001591519301930B   T1  
+QI70000000964319391939B   T0  
+QI70000001537519391939B   T0  
+QI70000000964419401940B   T0  
+QI70000000964519401940B   T0  
+QI70000000964619411941B   T0  
+QI70000000912719421950B   T1  
+QI70000001537620082008B   T1  
+QI70000001151820162016B   T1  
+QI70000001152020192019B   T1  
+QI70000001286120292029B   T1  
+QI70000001283020392039B   T1  
+QI70000001537720452045B   T1  
+QI70000001537820522052B   T1  
+QI70000001269220552055B   T1  
+QI70000001620621032103S   T0  
+QNs    Set down only                                                           
+QT7000000121652105   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 3015  20260408999999990000001 X261d16DG1 GD              O
+QO700000017117200015 T1  
+QI70000000678420252025B   T1  
+QI70000001591520402040B   T1  
+QI70000000964320492049S   T0  
+QNs    Set down only                                                           
+QI70000001537520492049S   T0  
+QNs    Set down only                                                           
+QI70000000964420502050S   T0  
+QNs    Set down only                                                           
+QI70000000964520502050S   T0  
+QNs    Set down only                                                           
+QI70000000964620512051S   T0  
+QNs    Set down only                                                           
+QT7000000091272052   T1  
+QDNGLE X261OBelfast - Enniskillen (1st Stop Ballygawley)                        
+QSNGLE 3017  20260408999999990000001 XX26118G01 GL              O
+QO700000017117210015 T1  
+QI70000001537622002200B   T1  
+QI70000001151822082208B   T1  
+QI70000001152022112211B   T1  
+QI70000001286122212221B   T1  
+QI70000001283022312231B   T1  
+QI70000001537722372237B   T1  
+QI70000001537822442244B   T1  
+QI70000001269222472247B   T1  
+QI70000001620622552255S   T0  
+QNs    Set down only                                                           
+QT7000000121652257   T1  
+QDNGLE 261dOBelfast - Dungannon                                                 
+QSNGLE 3019  20260408999999990000001 X261d15G01 GL              O
+QO700000017117213015 T1  
+QI70000000678421552155B   T1  
+QI70000001591522102210B   T1  
+QI70000000964322192219S   T0  
+QNs    Set down only                                                           
+QI70000001537522192219S   T0  
+QNs    Set down only                                                           
+QI70000000964422202220S   T0  
+QNs    Set down only                                                           
+QI70000000964522202220S   T0  
+QNs    Set down only                                                           
+QI70000000964622212221S   T0  
+QNs    Set down only                                                           
+QT7000000091272222   T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 3002  20260408999999990000001 X261d15G02 GL              I
+QO7000000091271050   T1  
+QI70000001591511001100B   T1  
+QI70000000678411151115B   T1  
+QI70000000180111481148S   T0  
+QNs    Set down only                                                           
+QT700000017118115016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 3004  20260408999999990000001 X261 18G01 GL              I
+QO7000000121651000   T1  
+QI70000001264310071007B   T1  
+QI70000001537810111011B   T1  
+QI70000001537710181018B   T1  
+QI70000001283710231023B   T1  
+QI70000001284710331033B   T1  
+QI70000001152110431043B   T1  
+QI70000001152310471047B   T1  
+QI70000001537610571057B   T1  
+QI70000000912711151120B   T1  
+QI70000001591511301130B   T1  
+QI70000000678411451145B   T1  
+QI70000000180112181218S   T0  
+QNs    Set down only                                                           
+QT700000017118122016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 3006  20260408999999990000001 X261d02G07 GL              I
+QO7000000091271220   T1  
+QI70000001591512301230B   T1  
+QI70000000678412451245B   T1  
+QI70000000180113181318S   T0  
+QNs    Set down only                                                           
+QT700000017118132016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 3008  20260408999999990000001 X261 15G01 GL              I
+QO7000000121651200   T1  
+QI70000001264312071207B   T1  
+QI70000001537812111211B   T1  
+QI70000001537712181218B   T1  
+QI70000001283712231223B   T1  
+QI70000001284712331233B   T1  
+QI70000001152112431243B   T1  
+QI70000001152312471247B   T1  
+QI70000001537612571257B   T1  
+QI70000000912713151320B   T1  
+QI70000001591513301330B   T1  
+QI70000000678413451345B   T1  
+QI70000000180114181418S   T0  
+QNs    Set down only                                                           
+QT700000017118142016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 3010  20260408999999990000001 X261 18G02 GL              I
+QO7000000121651330   T1  
+QI70000001264313371337B   T1  
+QI70000001537813411341B   T1  
+QI70000001537713481348B   T1  
+QI70000001283713531353B   T1  
+QI70000001284714031403B   T1  
+QI70000001152114131413B   T1  
+QI70000001152314171417B   T1  
+QI70000001537614271427B   T1  
+QI70000000912714451450B   T1  
+QI70000001591515001500B   T1  
+QI70000000678415151515B   T1  
+QI70000000180115481548S   T0  
+QNs    Set down only                                                           
+QT700000017118155016 T1  
+QDNGLE 261dIDungannon - Belfast                                                 
+QSNGLE 3020  20260408999999990000001 X261d15DG1 GL              I
+QO7000000091271450   T1  
+QI70000001591515001500B   T1  
+QI70000000678415151515B   T1  
+QI70000000180115481548S   T0  
+QNs    Set down only                                                           
+QT700000017118155016 T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 3012  20260408999999990000001 X261 18G01 GL              I
+QO7000000121651730   T1  
+QI70000001264317371737B   T1  
+QI70000001537817411741B   T1  
+QI70000001537717481748B   T1  
+QI70000001283717531753B   T1  
+QI70000001284718031803B   T1  
+QI70000001152118131813B   T1  
+QI70000001152318171817B   T1  
+QI70000001537618271827B   T1  
+QI70000000912718451850B   T1  
+QI70000001591519001900B   T1  
+QI70000000678419151915B   T1  
+QI70000000180119481948S   T0  
+QNs    Set down only                                                           
+QT700000017118195016 T1  
+QDNGLE 261uIEnniskillen - Belfast                                               
+QSNGLE 3014  20260408999999990000001 X261u18G07 GL              I
+QE20250901202509120
+QE20251213202601030
+QE20260317202603170
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                                   
+QO7000000121651730   T1  
+QI70000001264317371737B   T1  
+QI70000001537817411741B   T1  
+QI70000001537717481748B   T1  
+QI70000001283717531753B   T1  
+QI70000001284718031803B   T1  
+QI70000001152118131813B   T1  
+QI70000001152318171817B   T1  
+QI70000001537618271827B   T1  
+QI70000000912718451850B   T1  
+QI70000001591519001900B   T1  
+QI70000000678419151915B   T1  
+QI70000000100919451945S   T1  
+QNs    Set down only                                                           
+QI70000001711819551955B16 T1  
+QT7000000015182005   T1  
+QDNGLE 261 IEnniskillen - Belfast                                               
+QSNGLE 3016  20260408999999990000001 X261 15G01 GL              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000121651830   T1  
+QI70000001264318371837B   T1  
+QI70000001537818411841B   T1  
+QI70000001537718481848B   T1  
+QI70000001283718531853B   T1  
+QI70000001284719031903B   T1  
+QI70000001152119131913B   T1  
+QI70000001152319171917B   T1  
+QI70000001537619271927B   T1  
+QI70000000912719451950B   T1  
+QI70000001591520002000B   T1  
+QI70000000678420152015B   T1  
+QI70000000180120482048S   T0  
+QNs    Set down only                                                           
+QT700000017110205016 T1  
+QDNGLE 261uIEnniskillen - Belfast                                               
+QSNGLE 3020  20260408999999990000001 X261u      GL              I
+QE20250901202509120
+QE20251213202601030
+QE20260317202603170
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                                   
+QO7000000121651830   T1  
+QI70000001264318371837B   T1  
+QI70000001537818411841B   T1  
+QI70000001537718481848B   T1  
+QI70000001283718531853B   T1  
+QI70000001284719031903B   T1  
+QI70000001152119131913B   T1  
+QI70000001152319171917B   T1  
+QI70000001537619271927B   T1  
+QI70000000912719451950B   T1  
+QI70000001591520002000B   T1  
+QI70000000678420152015B   T1  
+QI70000000100920452045S   T1  
+QNs    Set down only                                                           
+QI70000001711920552055B16 T1  
+QT7000000015182105   T1  
+QDNGLE 261uIEnniskillen - Belfast                                               
+QSNGLE 3018  20260408999999990000001 X261u15GD1 GD              I
+QE20250901202509120
+QE20251213202601030
+QE20260317202603170
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                                   
+QO7000000128471903   T1  
+QI70000001152119131913B   T1  
+QI70000001152319171917B   T1  
+QI70000001537619271927B   T1  
+QI70000000912719451950B   T1  
+QI70000001591520002000B   T1  
+QI70000000678420152015B   T1  
+QI70000000100920452045S   T1  
+QNs    Set down only                                                           
+QI70000001711920552055B16 T1  
+QT7000000015182105   T1  
+QLN700000017117Grand Central Station Stand 15                    A0000001
+QBN700000017117333227  373720  Northern Ireland
+QLN700000017118Grand Central Station Stand 16
+QBN700000017118333222  373716  Northern Ireland
+QLN700000017109Grand Central Station Stand 7
+QBN700000017109333269  373750  Northern Ireland
+QLN700000006784Loughview Park & Ride                             A0000001
+QBN700000006784306719  360553  Northern Ireland
+QLN700000015915Tamnamore Park and Ride                           A0000001
+QBN700000015915287463  361771  Northern Ireland
+QLN700000009643Ranfurley Heights                                 A0000001
+QBN700000009643281168  360843  Northern Ireland
+QLN700000015375Ballynorthland Park                               A0000001
+QBN700000015375280963  361113  Northern Ireland
+QLN700000009644Cunninghams Lane                                  A0000001
+QBN700000009644280690  361360  Northern Ireland
+QLN700000009645Tunnel Lodge                                      A0000001
+QBN700000009645280348  361722  Northern Ireland
+QLN700000009646Brooke Street                                     A0000001
+QBN700000009646279994  361963  Northern Ireland
+QLN700000009127Dungannon Bus Station                             A0000001
+QBN700000009127279473  362080  Northern Ireland
+QLN700000015376Ballygawley Park and Ride                         A0000001
+QBN700000015376262690  356890  Northern Ireland
+QLN700000011518Augher Village                                    A0000001
+QBN700000011518256374  353630  Northern Ireland
+QLN700000011520Main Street                                       A0000001
+QBN700000011520254038  351910  Northern Ireland
+QLN700000012861Main Street                                       A0000001
+QBN700000012861244327  347812  Northern Ireland
+QLN700000012830Main Street                                       A0000001
+QBN700000012830238805  340944  Northern Ireland
+QLN700000015377Maguiresbridge                                    A0000001
+QBN700000015377234949  338295  Northern Ireland
+QLN700000015378Lisbellaw                                         A0000001
+QBN700000015378229672  341182  Northern Ireland
+QLN700000012692Tamlaght                                          A0000001
+QBN700000012692227626  341088  Northern Ireland
+QLN700000016206Firestation Enniskillen                           A0000001
+QBN700000016206224220  343852  Northern Ireland
+QLN700000012165Enniskillen Bus Station                           A0000001
+QBN700000012165223453  343919  Northern Ireland
+QLN700000012643Tamlaght                                          A0000001
+QBN700000012643227587  341099  Northern Ireland
+QLN700000012837Main Street                                       A0000001
+QBN700000012837238776  340924  Northern Ireland
+QLN700000012847Main Street                                       A0000001
+QBN700000012847244304  347813  Northern Ireland
+QLN700000011521Main Street                                       A0000001
+QBN700000011521254051  351936  Northern Ireland
+QLN700000011523Augher Village                                    A0000001
+QBN700000011523256372  353678  Northern Ireland
+QLN700000001800Belfast Grand Central Busway                      A0000001
+QBN700000001800332672  373438  Northern Ireland
+QLN700000001801Belfast Grand Central Busway                      A0000001
+QBN700000001801332700  373424  Northern Ireland
+QLN700000017118Grand Central Station Stand 16                    A0000001
+QBN700000017118333222  373716  Northern Ireland
+QLN700000017113Grand Central Station Stand 11
+QBN700000017113333249  373735  Northern Ireland
+QLN700000017117Grand Central Station Stand 15
+QBN700000017117333227  373720  Northern Ireland
+QLN700000017116Grand Central Station Stand 14
+QBN700000017116333230  373722  Northern Ireland
+QLN700000017107Grand Central Station Stand 5
+QBN700000017107333280  373757  Northern Ireland
+QLN700000001009Queen's University Belfast                        A0000001
+QBN700000001009333453  372682  Northern Ireland
+QLN700000017110Grand Central Station Stand 8
+QBN700000017110333264  373746  Northern Ireland
+QLN700000017119Grand Central Station Stand 17
+QBN700000017119333217  373713  Northern Ireland
+QLN700000001518Ulster University Belfast                         A0000001
+QBN700000001518333838  374833  Northern Ireland
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNGL      Goldliner
+QVNGD      Goldline Double Decker
+QDNGLE X261OBelfast - Enniskillen (1st stop Ballygawley)
+QDNGLE 261cOBelfast - Dungannon
+QDNGLE 261 OBelfast - Enniskillen
+QDNGLE 261dOBelfast - Dungannon
+QDNGLE 261aOBelfast - Dungannon (1st Stop Tamnamore)
+QDNGLE 273 OBelfast - Omagh
+QDNGLE X261IEnniskillen - Belfast
+QDNGLE 261dIDungannon - Belfast
+QDNGLE 261 IEnniskillen - Belfast
+QDNGLE 273 IDungannon - Belfast
+QDNGLE X261OBelfast - Enniskillen (1st Stop Ballygawley)
+QDNGLE 261uIEnniskillen - Belfast

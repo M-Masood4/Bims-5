@@ -1,0 +1,963 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260306120906
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1001  20260309999999991111100 X234       DD              O
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000132140730   T1  
+QI70000001522807340734P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313207350735P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317807410741P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315607500750B   T1  
+QI70000001568107530753B   T1  
+QI70000001568207530753B   T1  
+QI70000001314507560756B   T1  
+QI70000001490808000800B   T1  
+QI70000001314808020802B   T1  
+QI70000001314908030803B   T1  
+QI70000001335708100810B   T1  
+QI70000001568808390839S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073908420842S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001568708450845S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000108320855   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1003  20260309999999991111100 X234       DD              O
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000132140730   T1  
+QI70000001522807340734P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313207350735P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317807410741P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315607500750B   T1  
+QI70000001568107530753B   T1  
+QI70000001568207530753B   T1  
+QI70000001314507560756B   T1  
+QI70000001490808000800B   T1  
+QI70000001314808020802B   T1  
+QI70000001314908030803B   T1  
+QI70000001335708100810B   T1  
+QI70000001568808390839S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073908420842S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156870845   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1005  20260309999999991111100 X234       GL              O
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000132140850   T1  
+QI70000001522808540854P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313208550855P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317809020902P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315609120912B   T1  
+QI70000001568109150915B   T1  
+QI70000001568209150915B   T1  
+QI70000001314509180918B   T1  
+QI70000001490809220922B   T1  
+QI70000001314809260926B   T1  
+QI70000001314909270927B   T1  
+QI70000001335709350935B   T1  
+QI70000001568810001000S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073910031003S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001568710051005S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000108321015   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1007  20260309999999991111100 X234       GL              O
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000132140850   T1  
+QI70000001522808540854P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313208550855P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317809020902P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315609120912B   T1  
+QI70000001568109150915B   T1  
+QI70000001568209150915B   T1  
+QI70000001314509180918B   T1  
+QI70000001490809220922B   T1  
+QI70000001314809260926B   T1  
+QI70000001314909270927B   T1  
+QI70000001335709350935B   T1  
+QI70000001568810001000S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073910031003S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871005   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1009  20260309999999991111100 X234       DD              O
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000132141020   T1  
+QI70000001522810241024P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313210251025P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317810321032P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315610421042B   T1  
+QI70000001568110451045B   T1  
+QI70000001568210451045B   T1  
+QI70000001314510481048B   T1  
+QI70000001490810521052B   T1  
+QI70000001314810561056B   T1  
+QI70000001314910571057B   T1  
+QI70000001335711051105B   T1  
+QI70000001568811301130S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073911331133S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001568711351135S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000108321145   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1011  20260309999999991111100 X234       DD              O
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000132141020   T1  
+QI70000001522810241024P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313210251025P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317810321032P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315610421042B   T1  
+QI70000001568110451045B   T1  
+QI70000001568210451045B   T1  
+QI70000001314510481048B   T1  
+QI70000001490810521052B   T1  
+QI70000001314810561056B   T1  
+QI70000001314910571057B   T1  
+QI70000001335711051105B   T1  
+QI70000001568811301130S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073911331133S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871135   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1013  20260309999999991111100 X234       GD              O
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000132141210   T1  
+QI70000001522812141214P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313212151215P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317812221222P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315612321232B   T1  
+QI70000001568112351235B   T1  
+QI70000001568212351235B   T1  
+QI70000001314512381238B   T1  
+QI70000001490812421242B   T1  
+QI70000001314812461246B   T1  
+QI70000001314912471247B   T1  
+QI70000001335712551255B   T1  
+QI70000001568813201320S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073913231323S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001568713251325S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000108321335   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1015  20260309999999991111100 X234       DD              O
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000132141210   T1  
+QI70000001522812141214P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313212151215P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317812221222P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315612321232B   T1  
+QI70000001568112351235B   T1  
+QI70000001568212351235B   T1  
+QI70000001314512381238B   T1  
+QI70000001490812421242B   T1  
+QI70000001314812461246B   T1  
+QI70000001314912471247B   T1  
+QI70000001335712551255B   T1  
+QI70000001568813201320S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073913231323S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871325   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1017  20260309999999991111100 X234       DD              O
+QO7000000132141340   T1  
+QI70000001522813441344P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313213451345P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317813521352P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315614021402B   T1  
+QI70000001568114051405B   T1  
+QI70000001568214051405B   T1  
+QI70000001314514081408B   T1  
+QI70000001490814121412B   T1  
+QI70000001314814161416B   T1  
+QI70000001314914171417B   T1  
+QI70000001335714251425B   T1  
+QI70000001568814501450S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073914531453S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871455   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1019  20260309999999991111100 X234       GD              O
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000132141610   T1  
+QI70000001522816141614P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313216151615P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317816221622P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315616321632B   T1  
+QI70000001568116351635B   T1  
+QI70000001568216351635B   T1  
+QI70000001314516381638B   T1  
+QI70000001490816421642B   T1  
+QI70000001314816461646B   T1  
+QI70000001314916471647B   T1  
+QI70000001335716551655B   T1  
+QI70000001568817201720S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073917231723S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001568717251725S   T1  
+QNs    SET DOWN ONLY                                                           
+QT7000000108321735   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1021  20260309999999991111100 X234       GL              O
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000132141610   T1  
+QI70000001522816141614P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313216151615P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317816221622P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315616321632B   T1  
+QI70000001568116351635B   T1  
+QI70000001568216351635B   T1  
+QI70000001314516381638B   T1  
+QI70000001490816421642B   T1  
+QI70000001314816461646B   T1  
+QI70000001314916471647B   T1  
+QI70000001335716551655B   T1  
+QI70000001568817201720S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073917231723S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871725   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234aOFoyle Street Buscentre - Coleraine University                       
+QSNGLE 1023  20260309999999991111100 X234a      GL              O
+QO7000000132141740   T1  
+QI70000001522817441744P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313217451745P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317817531753P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001314518081808B   T1  
+QI70000001490818121812B   T1  
+QI70000001314818161816B   T1  
+QI70000001314918171817B   T1  
+QI70000001335718251825B   T1  
+QI70000001568818461846S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073918481848S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871850   T1  
+QDNGLE 234aIColeraine Buscentre - Foyle Street Buscentre                        
+QSNGLE 1002  20260309999999991111100 X234a      GL              I
+QO7000000156870710   T1  
+QI70000001568907140714P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335707400740B   T1  
+QI70000001315307440744B   T1  
+QI70000001315407450745B   T1  
+QI70000001490907470747B   T1  
+QI70000001316307510751B   T1  
+QI70000001491607570757B   T1  
+QI70000001317508130813S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338108230823S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321208260826S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132140830   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1004  20260309999999991111100 X234       DD              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000156870920   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568909240924P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335709500950B   T1  
+QI70000001315309540954B   T1  
+QI70000001315409550955B   T1  
+QI70000001490909570957B   T1  
+QI70000001316310011001B   T1  
+QI70000001491610031003B   T1  
+QI70000001568110041004B   T1  
+QI70000001316910081008B   T1  
+QI70000001317510201020S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338110291029S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321210321032S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141035   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1006  20260309999999991111100 X234       DD              I
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000108320910   T1  
+QI70000001568709200920P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568909240924P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335709500950B   T1  
+QI70000001315309540954B   T1  
+QI70000001315409550955B   T1  
+QI70000001490909570957B   T1  
+QI70000001316310011001B   T1  
+QI70000001491610031003B   T1  
+QI70000001568110041004B   T1  
+QI70000001316910081008B   T1  
+QI70000001317510201020S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338110291029S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321210321032S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141035   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1008  20260309999999991111100 X234       DD              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000156871200   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568912041204P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335712301230B   T1  
+QI70000001315312341234B   T1  
+QI70000001315412351235B   T1  
+QI70000001490912371237B   T1  
+QI70000001316312411241B   T1  
+QI70000001491612431243B   T1  
+QI70000001568112441244B   T1  
+QI70000001316912481248B   T1  
+QI70000001317513001300S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338113091309S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321213121312S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141315   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1010  20260309999999991111100 X234       DD              I
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000108321150   T1  
+QI70000001568712001200P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568912041204P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335712301230B   T1  
+QI70000001315312341234B   T1  
+QI70000001315412351235B   T1  
+QI70000001490912371237B   T1  
+QI70000001316312411241B   T1  
+QI70000001491612431243B   T1  
+QI70000001568112441244B   T1  
+QI70000001316912481248B   T1  
+QI70000001317513001300S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338113091309S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321213121312S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141315   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1012  20260309999999991111100 X234       GD              I
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000108321340   T1  
+QI70000001568713501350P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568913541354P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335714201420B   T1  
+QI70000001315314241424B   T1  
+QI70000001315414251425B   T1  
+QI70000001490914271427B   T1  
+QI70000001316314311431B   T1  
+QI70000001491614331433B   T1  
+QI70000001568114341434B   T1  
+QI70000001316914381438B   T1  
+QI70000001317514501450S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338114591459S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321215021502S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141505   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1014  20260309999999991111100 X234       DD              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000156871350   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568913541354P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335714201420B   T1  
+QI70000001315314241424B   T1  
+QI70000001315414251425B   T1  
+QI70000001490914271427B   T1  
+QI70000001316314311431B   T1  
+QI70000001491614331433B   T1  
+QI70000001568114341434B   T1  
+QI70000001316914381438B   T1  
+QI70000001317514501450S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338114591459S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321215021502S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141505   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1016  20260309999999991111100SX234       DD              I
+QE20251030202510310
+QE20251222202601020
+QE20260212202602130
+QE20260402202604100
+QE20260525202605250
+QE20260701202608310
+QNSch  Schooldays Only                                                         
+QO7000000156871500   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568915041504P   T0  
+QNp    PICK UP ONLY                                                            
+QT7000000133571530   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1018  20260309999999991111100HX234       DD              I
+QE20251030202510311
+QE20251222202601021
+QE20260212202602131
+QE20260402202604101
+QE20260525202605251
+QE20260701202608311
+QNNSch School Holidays                                                         
+QO7000000156871500   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568915041504P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335715301530B   T1  
+QI70000001315315341534B   T1  
+QI70000001315415351535B   T1  
+QI70000001490915371537B   T1  
+QI70000001316315411541B   T1  
+QI70000001491615431543B   T1  
+QI70000001568115441544B   T1  
+QI70000001316915481548B   T1  
+QI70000001317516001600S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338116091609S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321216121612S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141615   T1  
+QDNGLE 234bIColeraine University - Foyle Street Buscentre                       
+QSNGLE 1020  20260309999999991111100 X234b      GL              I
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000108321610   T1  
+QI70000001568716201620B   T1  
+QI70000001568916241624P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335716501650B   T1  
+QI70000001315316541654B   T1  
+QI70000001315416551655B   T1  
+QI70000001490916571657B   T1  
+QI70000001316317011701B   T1  
+QI70000001491617031703B   T1  
+QI70000001568117041704B   T1  
+QI70000001317517191719S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338117291729B   T0  
+QI70000001321217311731S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141735   T1  
+QDNGLE 234bIColeraine University - Foyle Street Buscentre                       
+QSNGLE 1022  20260309999999991111100 X234b      GL              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000156871620   T1  
+QI70000001568916241624P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335716501650B   T1  
+QI70000001315316541654B   T1  
+QI70000001315416551655B   T1  
+QI70000001490916571657B   T1  
+QI70000001316317011701B   T1  
+QI70000001491617031703B   T1  
+QI70000001568117041704B   T1  
+QI70000001317517191719S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338117291729B   T0  
+QI70000001321217311731S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141735   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1024  20260309999999991111100 X234       DD              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000156871750   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568917541754P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335718201820B   T1  
+QI70000001315318241824B   T1  
+QI70000001315418251825B   T1  
+QI70000001490918271827B   T1  
+QI70000001316318311831B   T1  
+QI70000001491618331833B   T1  
+QI70000001568118341834B   T1  
+QI70000001316918381838B   T1  
+QI70000001317518501850S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338118591859S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321219021902S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141905   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 1026  20260309999999991111100 X234       GD              I
+QE20250901202509120
+QE20251213202601030
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                    
+QO7000000108321740   T1  
+QI70000001568717501750P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568917541754P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335718201820B   T1  
+QI70000001315318241824B   T1  
+QI70000001315418251825B   T1  
+QI70000001490918271827B   T1  
+QI70000001316318311831B   T1  
+QI70000001491618331833B   T1  
+QI70000001568118341834B   T1  
+QI70000001316918381838B   T1  
+QI70000001317518501850S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338118591859S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321219021902S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141905   T1  
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 2001  20260309999999990000010 X234       GL              O
+QO7000000132140840   T1  
+QI70000001522808440844P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313208450845P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317808520852P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315609020902B   T1  
+QI70000001568109050905B   T1  
+QI70000001568209050905B   T1  
+QI70000001314509080908B   T1  
+QI70000001490809120912B   T1  
+QI70000001314809160916B   T1  
+QI70000001314909170917B   T1  
+QI70000001335709250925B   T1  
+QI70000001568809490949S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073909530953S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156870955   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 2003  20260309999999990000010 X234       DD              O
+QO7000000132141020   T1  
+QI70000001522810241024P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313210251025P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317810321032P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315610421042B   T1  
+QI70000001568110451045B   T1  
+QI70000001568210451045B   T1  
+QI70000001314510481048B   T1  
+QI70000001490810521052B   T1  
+QI70000001314810561056B   T1  
+QI70000001314910571057B   T1  
+QI70000001335711051105B   T1  
+QI70000001568811291129S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073911331133S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871135   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 2005  20260309999999990000010 X234       DD              O
+QO7000000132141410   T1  
+QI70000001522814141414P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313214151415P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317814221422P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315614321432B   T1  
+QI70000001568114351435B   T1  
+QI70000001568214351435B   T1  
+QI70000001314514381438B   T1  
+QI70000001490814421442B   T1  
+QI70000001314814461446B   T1  
+QI70000001314914471447B   T1  
+QI70000001335714551455B   T1  
+QI70000001568815191519S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073915231523S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871525   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University                       
+QSNGLE 2007  20260309999999990000010 X234       DD              O
+QO7000000132141740   T1  
+QI70000001522817441744P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313217451745P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317817521752P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315618021802B   T1  
+QI70000001568118051805B   T1  
+QI70000001568218051805B   T1  
+QI70000001314518081808B   T1  
+QI70000001490818121812B   T1  
+QI70000001314818161816B   T1  
+QI70000001314918171817B   T1  
+QI70000001335718251825B   T1  
+QI70000001568818491849S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073918531853S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871855   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 2002  20260309999999990000010 X234       GL              I
+QO7000000156870720   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568907240724P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335707500750B   T1  
+QI70000001315307540754B   T1  
+QI70000001315407550755B   T1  
+QI70000001490907570757B   T1  
+QI70000001316308010801B   T1  
+QI70000001491608020802B   T1  
+QI70000001568108040804B   T1  
+QI70000001316908080808B   T1  
+QI70000001317508180818S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338108250825S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321208270827S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132140830   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 2004  20260309999999990000010 X234       DD              I
+QO7000000156871150   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568911541154P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335712201220B   T1  
+QI70000001315312241224B   T1  
+QI70000001315412251225B   T1  
+QI70000001490912271227B   T1  
+QI70000001316312311231B   T1  
+QI70000001491612321232B   T1  
+QI70000001568112341234B   T1  
+QI70000001316912381238B   T1  
+QI70000001317512481248S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338112551255S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321212571257S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141300   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 2006  20260309999999990000010 X234       DD              I
+QO7000000156871550   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568915541554P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335716201620B   T1  
+QI70000001315316241624B   T1  
+QI70000001315416251625B   T1  
+QI70000001490916271627B   T1  
+QI70000001316316311631B   T1  
+QI70000001491616321632B   T1  
+QI70000001568116341634B   T1  
+QI70000001316916381638B   T1  
+QI70000001317516481648S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338116551655S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321216571657S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141700   T1  
+QDNGLE 234 IColeraine University - Foyle Street Buscentre                       
+QSNGLE 2008  20260309999999990000010 X234       DD              I
+QO7000000156871900   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568919041904P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001335719301930B   T1  
+QI70000001315319341934B   T1  
+QI70000001315419351935B   T1  
+QI70000001490919371937B   T1  
+QI70000001316319411941B   T1  
+QI70000001491619421942B   T1  
+QI70000001568119441944B   T1  
+QI70000001316919481948B   T1  
+QI70000001317519581958S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338120052005S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321220072007S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132142010   T1  
+QDNGLE 234cOFoyle Street Buscentre - Coleraine University                       
+QSNGLE 3001  20260309999999990000001 X234c      GL              O
+QO7000000132140840   T1  
+QI70000001522808440844P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313208450845P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317808510851P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315609000900B   T1  
+QI70000001568209030903B   T1  
+QI70000001314509050905B   T1  
+QI70000001490809080908B   T1  
+QI70000001314809100910B   T1  
+QI70000001314909110911B   T1  
+QI70000001672109150915B   T1  
+QI70000001568809360936S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073909380938S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156870940   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234cOFoyle Street Buscentre - Coleraine University                       
+QSNGLE 3003  20260309999999990000001 X234c      GL              O
+QO7000000132141730   T1  
+QI70000001522817341734P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001313217351735P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001317817411741P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001315617501750B   T1  
+QI70000001568217531753B   T1  
+QI70000001314517551755B   T1  
+QI70000001490817581758B   T1  
+QI70000001314818001800B   T1  
+QI70000001314918011801B   T1  
+QI70000001672118051805B   T1  
+QI70000001568818261826S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001073918281828S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000156871830   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 234cIColeraine University - Foyle Street Buscentre                       
+QSNGLE 3002  20260309999999990000001 X234c      GL              I
+QO7000000156870720   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568907230723P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001672107450745B   T1  
+QI70000001315307490749B   T1  
+QI70000001315407500750B   T1  
+QI70000001490907510751B   T1  
+QI70000001316307550755B   T1  
+QI70000001491607560756B   T1  
+QI70000001316908000800B   T1  
+QI70000001317508080808S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338108160816S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321208170817S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132140820   T1  
+QDNGLE 234cIColeraine University - Foyle Street Buscentre                       
+QSNGLE 3004  20260309999999990000001 X234c      GL              I
+QO7000000156871620   T1  
+QNp    PICK UP ONLY                                                            
+QI70000001568916231623P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000001672116451645B   T1  
+QI70000001315316491649B   T1  
+QI70000001315416501650B   T1  
+QI70000001490916511651B   T1  
+QI70000001316316551655B   T1  
+QI70000001491616561656B   T1  
+QI70000001316917001700B   T1  
+QI70000001317517081708S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001338117161716S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000001321217171717S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000132141720   T1  
+QLN700000013214Foyle Street Bus Station                          N0000023
+QBN700000013214243685  416800  LondonderryCounty
+QLN700000015228Waterside House                                   N0000014
+QBN700000015228243916  416093  DerryCity
+QLN700000013132May Street                                        N0000014
+QBN700000013132244223  416866  DerryCity
+QLN700000013178Enagh Crescent                                    N0000023
+QBN700000013178247809  419785  LondonderryCounty
+QLN700000013156Main Street                                       N0000023
+QBN700000013156252711  420270  LondonderryCounty
+QLN700000015681City of Derry Airport                             N0000014
+QBN700000015681254074  421697  DerryCity
+QLN700000015682Airport Roundabout                                N0000014
+QBN700000015682254518  421332  DerryCity
+QLN700000013145Greysteel                                         N0000023
+QBN700000013145256624  420953  LondonderryCounty
+QLN700000014908Foyle Drive                                       N0000014
+QBN700000014908261974  422170  DerryCity
+QLN700000013148Main Street                                       N0000023
+QBN700000013148262817  422360  LondonderryCounty
+QLN700000013149King's Lane                                       N0000023
+QBN700000013149263455  422413  LondonderryCounty
+QLN700000013357Limavady Bus Station                              N0000021
+QBN700000013357267249  423479  Limavady
+QLN700000015688Greenmount Roundabout                             N0000011
+QBN700000015688284136  430982  Coleraine
+QLN700000010739Rose Gardens                                      N0000011
+QBN700000010739284790  432629  Coleraine
+QLN700000015687Coleraine Buscentre                               N0000011
+QBN700000015687285355  432599  Coleraine
+QLN700000010832Ulster University Coleraine                       N0000011
+QBN700000010832284383  434364  Coleraine
+QLN700000015689Greenmount Roundabout                             N0000011
+QBN700000015689284177  431002  Coleraine
+QLN700000013153King's Lane                                       N0000023
+QBN700000013153263415  422383  LondonderryCounty
+QLN700000013154Main Street                                       N0000023
+QBN700000013154262801  422344  LondonderryCounty
+QLN700000014909Foyle Drive                                       N0000014
+QBN700000014909261858  422155  DerryCity
+QLN700000013163Greysteel                                         N0000023
+QBN700000013163256516  420912  LondonderryCounty
+QLN700000014916Airport Roundabout                                N0000014
+QBN700000014916254253  421306  DerryCity
+QLN700000013169Main Street                                       N0000023
+QBN700000013169252783  420276  LondonderryCounty
+QLN700000013175Enagh Crescent                                    N0000023
+QBN700000013175247797  419740  LondonderryCounty
+QLN700000013381May Street                                        N0000014
+QBN700000013381244266  416919  DerryCity
+QLN700000013212Duke Street                                       N0000023
+QBN700000013212243956  416108  LondonderryCounty
+QLN700000016721Limavady Outside Bus Station                      N0000001
+QBN700000016721267259  423457
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNDD      Double Decker
+QVNGL      Single Decker Goldliner
+QVNGD      Double Decker Goldliner
+QDNGLE 234 OFoyle Street Buscentre - Coleraine University
+QDNGLE 234aOFoyle Street Buscentre - Coleraine University
+QDNGLE 234aIColeraine Buscentre - Foyle Street Buscentre
+QDNGLE 234 IColeraine University - Foyle Street Buscentre
+QDNGLE 234bIColeraine University - Foyle Street Buscentre
+QDNGLE 234cOFoyle Street Buscentre - Coleraine University
+QDNGLE 234cIColeraine University - Foyle Street Buscentre

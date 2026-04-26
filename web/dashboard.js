@@ -20,6 +20,12 @@
   const FINAL_YEAR = 2036;
 
   const STORAGE_KEY = 'belfast-dashboard-v1';
+  const TRANSFORMER_ICON_SVG =
+    '<svg class="transformer-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M5 5h14"/><path d="M8 5v3"/><path d="M16 5v3"/>' +
+    '<rect x="8" y="8" width="8" height="7" rx="1.5"/>' +
+    '<path d="M10 11h4M10 13h4M12 15v6M7 21h10"/>' +
+    '</svg>';
 
   const TOOL_LABELS = {
     building: 'Click any valid Belfast map point to place a building',
@@ -611,6 +617,85 @@
     }
   }
 
+  function roundedCanvasRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function ensureTransformerMarkerImage() {
+    if (!state.map || (state.map.hasImage && state.map.hasImage('transformer-marker'))) return;
+    const canvas = document.createElement('canvas');
+    canvas.width = 48;
+    canvas.height = 48;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, 48, 48);
+    ctx.save();
+    ctx.shadowColor = 'rgba(15, 23, 42, 0.45)';
+    ctx.shadowBlur = 5;
+    ctx.shadowOffsetY = 2;
+
+    ctx.strokeStyle = '#7c2d12';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(24, 7);
+    ctx.lineTo(24, 43);
+    ctx.moveTo(10, 9);
+    ctx.lineTo(38, 9);
+    ctx.stroke();
+
+    ctx.fillStyle = '#fed7aa';
+    [13, 35].forEach(x => {
+      ctx.beginPath();
+      ctx.arc(x, 9, 3.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    roundedCanvasRect(ctx, 14, 14, 20, 18, 4);
+    ctx.fillStyle = '#f59e0b';
+    ctx.fill();
+    ctx.lineWidth = 2.4;
+    ctx.strokeStyle = '#fff7ed';
+    ctx.stroke();
+
+    ctx.strokeStyle = '#fff7ed';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(18, 20);
+    ctx.lineTo(30, 20);
+    ctx.moveTo(18, 24);
+    ctx.lineTo(30, 24);
+    ctx.moveTo(18, 28);
+    ctx.lineTo(30, 28);
+    ctx.stroke();
+
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.moveTo(18, 32);
+    ctx.lineTo(12, 40);
+    ctx.moveTo(30, 32);
+    ctx.lineTo(36, 40);
+    ctx.stroke();
+    ctx.restore();
+
+    try {
+      state.map.addImage('transformer-marker', ctx.getImageData(0, 0, 48, 48), { pixelRatio: 2 });
+    } catch (error) {
+      if (!/already exists/i.test(String(error && error.message))) console.warn('transformer marker image', error);
+    }
+  }
+
   function addItemSources() {
     const empty = { type: 'FeatureCollection', features: [] };
     state.map.addSource('items-points', { type: 'geojson', data: empty });
@@ -671,19 +756,48 @@
       }
     }, 'items-parks-circle');
 
-    // Infrastructure (square-ish marker)
+    ensureTransformerMarkerImage();
+    state.map.addLayer({
+      id: 'items-infra-halo',
+      type: 'circle',
+      source: 'items-points',
+      filter: ['==', ['get', 'type'], 'infrastructure'],
+      paint: {
+        'circle-radius': 15,
+        'circle-color': '#0f172a',
+        'circle-opacity': 0.34,
+        'circle-stroke-color': '#fbbf24',
+        'circle-stroke-width': 1.5,
+        'circle-stroke-opacity': 0.85
+      }
+    });
+
+    // Transformer marker: pole, body and coil lines so it does not read as a building.
     state.map.addLayer({
       id: 'items-infra-circle',
       type: 'circle',
       source: 'items-points',
       filter: ['==', ['get', 'type'], 'infrastructure'],
       paint: {
-        'circle-radius': 9,
-        'circle-color': '#fde68a',
+        'circle-radius': 13,
+        'circle-color': '#f59e0b',
         'circle-stroke-color': '#f59e0b',
         'circle-stroke-width': 2,
-        'circle-opacity': 0.95
+        'circle-opacity': 0.28
       }
+    });
+    state.map.addLayer({
+      id: 'items-infra-symbol',
+      type: 'symbol',
+      source: 'items-points',
+      filter: ['==', ['get', 'type'], 'infrastructure'],
+      layout: {
+        'icon-image': 'transformer-marker',
+        'icon-size': 1,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true
+      },
+      paint: { 'icon-opacity': 0.98 }
     });
 
     // Building markers (overlaid for 2D mode and labelling)
@@ -744,7 +858,7 @@
     });
 
     // Click handlers on item layers (for inspect/remove)
-    ['items-buildings-circle', 'items-parks-circle', 'items-infra-circle', 'items-roads-line', 'items-buildings-3d']
+    ['items-buildings-circle', 'items-parks-circle', 'items-infra-circle', 'items-infra-symbol', 'items-roads-line', 'items-buildings-3d']
       .forEach(layerId => {
         state.map.on('click', layerId, (e) => {
           if (!e.features || !e.features.length) return;
@@ -1462,6 +1576,7 @@
     bus: '🚌', metro: '🚇', cycle: '🚲', park: '🌿', star: '⭐', water: '💧', people: '👥',
     home: '🏠', office: '🏢',
   };
+  LENS_ICONS.electricity = TRANSFORMER_ICON_SVG;
   const LENS_TINTS = {
     traffic: '#fffbe6', jobs: '#f0eaff', electricity: '#fff5eb',
     buildings: '#eaf4ff', transit: '#edfaf0', services: '#edfaf0',
@@ -1704,6 +1819,7 @@
         icon = '⚡'; tint = '#fff5eb';
         title = 'Added Transformer';
       }
+      if (it.type === 'infrastructure') icon = TRANSFORMER_ICON_SVG;
       entries.push({
         icon: icon, tint: tint,
         title: title,
@@ -2905,9 +3021,9 @@
         '<path d="M 0 -3 Q 3 -1 3 2 Q 3 4 0 4 Q -3 4 -3 2 Q -3 -1 0 -3 Z" fill="#fff" opacity="0.9"/>';
     }
     if (item.type === 'infrastructure') {
-      return '<rect x="-7" y="-7" width="14" height="14" rx="2.5" fill="#f59e0b"/>' +
-        '<circle r="4.5" fill="none" stroke="#fff" stroke-width="1.5"/>' +
-        '<line x1="0" y1="-3.5" x2="0" y2="3.5" stroke="#fff" stroke-width="1.5"/>';
+      return '<circle r="8" fill="#f59e0b"/>' +
+        '<path d="M -5 -5 H 5 M -3 -2 H 3 M -3 1 H 3 M 0 -5 V 6 M -5 6 H 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<rect x="-4" y="-2.5" width="8" height="6" rx="1.2" fill="none" stroke="#fff" stroke-width="1.3"/>';
     }
     return '<circle r="4.5" fill="' + branchColor + '"/>';
   }
@@ -4892,8 +5008,9 @@
       seed: (state.year * 2654435761 + demand.length * 97) >>> 0,
       branch: activeBranch(),
       maxSegments: 8200,
-      maxFlowSegments: 1300,
-      maxPointFeatures: 72
+      maxFlowSegments: 8200,
+      maxPointFeatures: 0,
+      showDemandPoints: false
     });
     window.TrafficSim.showAgentSwarmOverlay(result);
     showCongestionLegend();
@@ -5353,7 +5470,7 @@
   function lensIcon(id) {
     if (id === 'traffic') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>';
     if (id === 'jobs') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
-    if (id === 'electricity') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+    if (id === 'electricity') return TRANSFORMER_ICON_SVG;
     if (id === 'buildings') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/></svg>';
     if (id === 'services') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 17h12"/><path d="M6 17v3"/><path d="M18 17v3"/><rect x="4" y="4" width="16" height="13" rx="2"/><path d="M4 10h16"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></svg>';
     return '';

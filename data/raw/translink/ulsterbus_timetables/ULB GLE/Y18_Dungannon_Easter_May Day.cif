@@ -1,0 +1,94 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260226122717
+QDNULB 75a ODungannon, Bus Station - Craigavon Hospital                         
+QSNULB 9001  20260406202605041100000 B75a 15L01 LF              O
+QNBH   Bank holidays                                                           
+QO7000000091271330   T1  
+QI70000000960313361336B   T1  
+QI70000001591513421342B   T1  
+QI70000001541513531353B   T1  
+QI70000000032714031403B   T1  
+QI70000001547114071407B   T1  
+QI70000000669614141414B   T1  
+QT7000000066991421   T1  
+QDNULB 75a ODungannon, Bus Station - Craigavon Hospital                         
+QSNULB 9003  20260406202605041100000 B75a 15L01 LF              O
+QNBH   Bank holidays                                                           
+QO7000000091271605   T1  
+QI70000000960316111611B   T1  
+QI70000001591516171617B   T1  
+QI70000001541516281628B   T1  
+QI70000000032716381638B   T1  
+QI70000001547116421642B   T1  
+QI70000000669616491649B   T1  
+QT7000000066991656   T1  
+QDNULB 75a ICraigavon Hospital - Dungannon, Bus Station                         
+QSNULB 9002  20260406202605041100000 B75a 15L01 LF              I
+QNBH   Bank holidays                                                           
+QO7000000066991430   T1  
+QI70000000669614371437B   T1  
+QI70000001547114441444B   T1  
+QI70000001493714471447B   T1  
+QI70000001541414561456B   T1  
+QI70000001591515011501B   T1  
+QI70000000963815121512B   T1  
+QI70000000964415171517B   T0  
+QI70000000923715221522B   T1  
+QT7000000091271525   T1  
+QDNULB 75a ICraigavon Hospital - Dungannon, Bus Station                         
+QSNULB 9004  20260406202605041100000 B75a 15L01 LF              I
+QNBH   Bank holidays                                                           
+QO7000000066991700   T1  
+QI70000000669617071707B   T1  
+QI70000001547117141714B   T1  
+QI70000001493717171717B   T1  
+QI70000001541417261726B   T1  
+QI70000001591517311731B   T1  
+QI70000000963817421742B   T1  
+QI70000000964417471747B   T0  
+QI70000000923717521752B   T1  
+QT7000000091271755   T1  
+QLN700000009127Dungannon Bus Station                             A0000001
+QBN700000009127279470  362079  Northern Ireland
+QLN700000009603Moygashel                                         A0000001
+QBN700000009603280858  360025  Northern Ireland
+QLN700000015915Tamnamore Park and Ride                           A0000001
+QBN700000015915287463  361771  Northern Ireland
+QLN700000015415Birches Roundabout                                A0000001
+QBN700000015415294906  359974  Northern Ireland
+QLN700000000327Portadown Train Station (bus stop)                A0000001
+QBN700000000327300894  353965  Northern Ireland
+QLN700000015471Castle Street                                     A0000001
+QBN700000015471301171  353937  Northern Ireland
+QLN700000006696Craigavon Area Hospital                           A0000001
+QBN700000006696303116  355175  Northern Ireland
+QLN700000006699Rushmere Shopping Centre                          A0000001
+QBN700000006699304517  356923  Northern Ireland
+QLN700000014937Portadown Train Station (bus stop)                A0000001
+QBN700000014937300837  353871  Northern Ireland
+QLN700000015414Birches Roundabout                                A0000001
+QBN700000015414294773  360055  Northern Ireland
+QLN700000009638Moygashel                                         A0000001
+QBN700000009638280852  360027  Northern Ireland
+QLN700000009642Linen Green                                       A0000001
+QBN700000009642280985  360443  Northern Ireland
+QLN700000009643Ranfurley Heights                                 A0000001
+QBN700000009643281168  360842  Northern Ireland
+QLN700000015375Ballynorthland Park                               A0000001
+QBN700000015375280963  361112  Northern Ireland
+QLN700000009644Cunninghams Lane                                  A0000001
+QBN700000009644280690  361359  Northern Ireland
+QLN700000009645Tunnel Lodge                                      A0000001
+QBN700000009645280348  361721  Northern Ireland
+QLN700000009131Royal School Gates                                A0000001
+QBN700000009131280187  361983  Northern Ireland
+QLN700000009132Upper Ranfurly Road                               A0000001
+QBN700000009132280126  362218  Northern Ireland
+QLN700000009133Perry Street                                      A0000001
+QBN700000009133279952  362351  Northern Ireland
+QLN700000009237Scotch Street                                     A0000001
+QBN700000009237279703  362392  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      Lowfloor Vehicle
+QDNULB 75a ODungannon, Bus Station - Craigavon Hospital
+QDNULB 75a ICraigavon Hospital - Dungannon, Bus Station

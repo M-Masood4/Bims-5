@@ -1,0 +1,1897 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251104113350                                                 
+QDNGLE X5  ONewry Bus Station - Dublin Busaras Bus Station                      
+QSNGLE 1005  20251124999999991111100 XX5        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000154700505   T1  
+QI70000001609006150615S   T1  
+QNs    set down only                                                           
+QT7000000156420645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1007  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710505003  T1  
+QNp    pick up only                                                            
+QI70000000332105150515P   T1  
+QNp    pick up only                                                            
+QI70000001495105350535P   T1  
+QNp    pick up only                                                            
+QI70000001547006050605P   T1  
+QNp    pick up only                                                            
+QI70000001609007150715S   T1  
+QNs    set down only                                                           
+QT7000000156420745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1009  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710506003  T1  
+QNp    pick up only                                                            
+QI70000000332106150615P   T1  
+QNp    pick up only                                                            
+QI70000001495106350635P   T1  
+QNp    pick up only                                                            
+QI70000001547007050705P   T1  
+QNp    pick up only                                                            
+QI70000001609008150815S   T1  
+QNs    set down only                                                           
+QT7000000156420845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1011  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710507003  T1  
+QNp    pick up only                                                            
+QI70000000332107150715P   T1  
+QNp    pick up only                                                            
+QI70000001495107350735P   T1  
+QNp    pick up only                                                            
+QI70000001547008050805P   T1  
+QNp    pick up only                                                            
+QI70000001609009150915S   T1  
+QNs    set down only                                                           
+QT7000000156420945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1013  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710508003  T1  
+QNp    pick up only                                                            
+QI70000000332108150815P   T1  
+QNp    pick up only                                                            
+QI70000001495108350835P   T1  
+QNp    pick up only                                                            
+QI70000001547009050905P   T1  
+QNp    pick up only                                                            
+QI70000001609010151015S   T1  
+QNs    set down only                                                           
+QT7000000156421045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1015  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710509003  T1  
+QNp    pick up only                                                            
+QI70000000332109150915P   T1  
+QNp    pick up only                                                            
+QI70000001495109350935P   T1  
+QNp    pick up only                                                            
+QI70000001547010051005P   T1  
+QNp    pick up only                                                            
+QI70000001609011151115S   T1  
+QNs    set down only                                                           
+QT7000000156421145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1017  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710510003  T1  
+QNp    pick up only                                                            
+QI70000000332110151015P   T1  
+QNp    pick up only                                                            
+QI70000001495110351035P   T1  
+QNp    pick up only                                                            
+QI70000001547011051105P   T1  
+QNp    pick up only                                                            
+QI70000001609012151215S   T1  
+QNs    set down only                                                           
+QT7000000156421245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1019  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710511003  T1  
+QNp    pick up only                                                            
+QI70000000332111151115P   T1  
+QNp    pick up only                                                            
+QI70000001495111351135P   T1  
+QNp    pick up only                                                            
+QI70000001547012051205P   T1  
+QNp    pick up only                                                            
+QI70000001609013151315S   T1  
+QNs    set down only                                                           
+QT7000000156421345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1021  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710512003  T1  
+QNp    pick up only                                                            
+QI70000000332112151215P   T1  
+QNp    pick up only                                                            
+QI70000001495112351235P   T1  
+QNp    pick up only                                                            
+QI70000001547013051305P   T1  
+QNp    pick up only                                                            
+QI70000001609014151415S   T1  
+QNs    set down only                                                           
+QT7000000156421445   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1023  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710513003  T1  
+QNp    pick up only                                                            
+QI70000000332113151315P   T1  
+QNp    pick up only                                                            
+QI70000001495113351335P   T1  
+QNp    pick up only                                                            
+QI70000001547014051405P   T1  
+QNp    pick up only                                                            
+QI70000001609015151515S   T1  
+QNs    set down only                                                           
+QT7000000156421545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1025  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710514003  T1  
+QNp    pick up only                                                            
+QI70000000332114151415P   T1  
+QNp    pick up only                                                            
+QI70000001495114351435P   T1  
+QNp    pick up only                                                            
+QI70000001547015051505P   T1  
+QNp    pick up only                                                            
+QI70000001609016151615S   T1  
+QNs    set down only                                                           
+QT7000000156421645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1027  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710515003  T1  
+QNp    pick up only                                                            
+QI70000000332115151515P   T1  
+QNp    pick up only                                                            
+QI70000001495115351535P   T1  
+QNp    pick up only                                                            
+QI70000001547016051605P   T1  
+QNp    pick up only                                                            
+QI70000001609017151715S   T1  
+QNs    set down only                                                           
+QT7000000156421745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1029  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710516003  T1  
+QNp    pick up only                                                            
+QI70000000332116151615P   T1  
+QNp    pick up only                                                            
+QI70000001495116351635P   T1  
+QNp    pick up only                                                            
+QI70000001547017051705P   T1  
+QNp    pick up only                                                            
+QI70000001609018151815S   T1  
+QNs    set down only                                                           
+QT7000000156421845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1031  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710517003  T1  
+QNp    pick up only                                                            
+QI70000000332117151715P   T1  
+QNp    pick up only                                                            
+QI70000001495117351735P   T1  
+QNp    pick up only                                                            
+QI70000001547018051805P   T1  
+QNp    pick up only                                                            
+QI70000001609019151915S   T1  
+QNs    set down only                                                           
+QT7000000156421945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1033  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO70000001710518003  T1  
+QNp    pick up only                                                            
+QI70000000332118151815P   T1  
+QNp    pick up only                                                            
+QI70000001495118351835P   T1  
+QNp    pick up only                                                            
+QI70000001547019051905P   T1  
+QNp    pick up only                                                            
+QI70000001609020152015S   T1  
+QNs    set down only                                                           
+QT7000000156422045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1035  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO70000001710519003  T1  
+QNp    pick up only                                                            
+QI70000000332119151915P   T1  
+QNp    pick up only                                                            
+QI70000001495119351935P   T1  
+QNp    pick up only                                                            
+QI70000001547020052005P   T1  
+QNp    pick up only                                                            
+QI70000001609021152115S   T1  
+QNs    set down only                                                           
+QT7000000156422145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1037  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO70000001710520003  T1  
+QNp    pick up only                                                            
+QI70000000332120152015P   T1  
+QNp    pick up only                                                            
+QI70000001495120352035P   T1  
+QNp    pick up only                                                            
+QI70000001547021052105P   T1  
+QNp    pick up only                                                            
+QI70000001609022152215S   T1  
+QNs    set down only                                                           
+QT7000000156422245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1039  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO70000001710521003  T1  
+QNp    pick up only                                                            
+QI70000000332121152115P   T1  
+QNp    pick up only                                                            
+QI70000001495121352135P   T1  
+QNp    pick up only                                                            
+QI70000001547022052205P   T1  
+QNp    pick up only                                                            
+QI70000001609023152315S   T1  
+QNs    set down only                                                           
+QT7000000156422345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1041  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO70000001710523003  T1  
+QNp    pick up only                                                            
+QI70000000332123152315P   T1  
+QNp    pick up only                                                            
+QI70000001495123352335P   T1  
+QNp    pick up only                                                            
+QI70000001547024052405P   T1  
+QNp    pick up only                                                            
+QI70000001609025152515S   T1  
+QNs    set down only                                                           
+QT7000000156422545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1001  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710501003  T1  
+QNp    pick up only                                                            
+QI70000000332101150115P   T1  
+QNp    pick up only                                                            
+QI70000001495101350135P   T1  
+QNp    pick up only                                                            
+QI70000001547002050205P   T1  
+QNp    pick up only                                                            
+QI70000001609003150315S   T1  
+QNs    set down only                                                           
+QT7000000156420345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 1003  20251124999999991111100 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710503003  T1  
+QNp    pick up only                                                            
+QI70000000332103150315P   T1  
+QNp    pick up only                                                            
+QI70000001495103350335P   T1  
+QNp    pick up only                                                            
+QI70000001547004050405P   T1  
+QNp    pick up only                                                            
+QI70000001609005150515S   T1  
+QNs    set down only                                                           
+QT7000000156420545   T1  
+QNs    set down only                                                           
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1006  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420745   T1  
+QNp    pick up only                                                            
+QI70000001564308200820P   T1  
+QNp    pick up only                                                            
+QI70000001547009350935S   T1  
+QNs    set down only                                                           
+QI70000001495110001000S   T1  
+QNs    set down only                                                           
+QI70000000332110201020S   T1  
+QNs    set down only                                                           
+QT700000017113103511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1008  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420845   T1  
+QNp    pick up only                                                            
+QI70000001564309200920P   T1  
+QNp    pick up only                                                            
+QI70000001547010351035S   T1  
+QNs    set down only                                                           
+QI70000001495111001100S   T1  
+QNs    set down only                                                           
+QI70000000332111201120S   T1  
+QNs    set down only                                                           
+QT700000017113113511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1010  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420945   T1  
+QNp    pick up only                                                            
+QI70000001564310201020P   T1  
+QNp    pick up only                                                            
+QI70000001547011351135S   T1  
+QNs    set down only                                                           
+QI70000001495112001200S   T1  
+QNs    set down only                                                           
+QI70000000332112201220S   T1  
+QNs    set down only                                                           
+QT700000017113123511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1012  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421045   T1  
+QNp    pick up only                                                            
+QI70000001564311201120P   T1  
+QNp    pick up only                                                            
+QI70000001547012351235S   T1  
+QNs    set down only                                                           
+QI70000001495113001300S   T1  
+QNs    set down only                                                           
+QI70000000332113201320S   T1  
+QNs    set down only                                                           
+QT700000017113133511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1014  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421145   T1  
+QNp    pick up only                                                            
+QI70000001564312201220P   T1  
+QNp    pick up only                                                            
+QI70000001547013351335S   T1  
+QNs    set down only                                                           
+QI70000001495114001400S   T1  
+QNs    set down only                                                           
+QI70000000332114201420S   T1  
+QNs    set down only                                                           
+QT700000017113143511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1016  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421245   T1  
+QNp    pick up only                                                            
+QI70000001564313201320P   T1  
+QNp    pick up only                                                            
+QI70000001547014351435S   T1  
+QNs    set down only                                                           
+QI70000001495115001500S   T1  
+QNs    set down only                                                           
+QI70000000332115201520S   T1  
+QNs    set down only                                                           
+QT700000017113153511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1018  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421345   T1  
+QNp    pick up only                                                            
+QI70000001564314201420P   T1  
+QNp    pick up only                                                            
+QI70000001547015351535S   T1  
+QNs    set down only                                                           
+QI70000001495116001600S   T1  
+QNs    set down only                                                           
+QI70000000332116201620S   T1  
+QNs    set down only                                                           
+QT700000017113163511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1020  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421445   T1  
+QNp    pick up only                                                            
+QI70000001564315201520P   T1  
+QNp    pick up only                                                            
+QI70000001547016351635S   T1  
+QNs    set down only                                                           
+QI70000001495117001700S   T1  
+QNs    set down only                                                           
+QI70000000332117201720S   T1  
+QNs    set down only                                                           
+QT700000017113173511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1022  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421545   T1  
+QNp    pick up only                                                            
+QI70000001564316201620P   T1  
+QNp    pick up only                                                            
+QI70000001547017351735S   T1  
+QNs    set down only                                                           
+QI70000001495118001800S   T1  
+QNs    set down only                                                           
+QI70000000332118201820S   T1  
+QNs    set down only                                                           
+QT700000017113183511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1024  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421645   T1  
+QNp    pick up only                                                            
+QI70000001564317201720P   T1  
+QNp    pick up only                                                            
+QI70000001547018351835S   T1  
+QNs    set down only                                                           
+QI70000001495119001900S   T1  
+QNs    set down only                                                           
+QI70000000332119201920S   T1  
+QNs    set down only                                                           
+QT700000017113193511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1026  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421745   T1  
+QNp    pick up only                                                            
+QI70000001564318201820P   T1  
+QNp    pick up only                                                            
+QI70000001547019351935S   T1  
+QNs    set down only                                                           
+QI70000001495120002000S   T1  
+QNs    set down only                                                           
+QI70000000332120202020S   T1  
+QNs    set down only                                                           
+QT700000017113203511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1028  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421845   T1  
+QNp    pick up only                                                            
+QI70000001564319201920P   T1  
+QNp    pick up only                                                            
+QI70000001547020352035S   T1  
+QNs    set down only                                                           
+QI70000001495121002100S   T1  
+QNs    set down only                                                           
+QI70000000332121202120S   T1  
+QNs    set down only                                                           
+QT700000017113213511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1030  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421945   T1  
+QNp    pick up only                                                            
+QI70000001564320202020P   T1  
+QNp    pick up only                                                            
+QI70000001547021352135S   T1  
+QNs    set down only                                                           
+QI70000001495122002200S   T1  
+QNs    set down only                                                           
+QI70000000332122202220S   T1  
+QNs    set down only                                                           
+QT700000017113223511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1032  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO7000000156422045   T1  
+QNp    pick up only                                                            
+QI70000001564321202120P   T1  
+QNp    pick up only                                                            
+QI70000001547022352235S   T1  
+QNs    set down only                                                           
+QI70000001495123002300S   T1  
+QNs    set down only                                                           
+QI70000000332123202320S   T1  
+QNs    set down only                                                           
+QT700000017113233511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1034  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO7000000156422145   T1  
+QNp    pick up only                                                            
+QI70000001564322202220P   T1  
+QNp    pick up only                                                            
+QI70000001547023352335S   T1  
+QNs    set down only                                                           
+QI70000001495124002400S   T1  
+QNs    set down only                                                           
+QI70000000332124202420S   T1  
+QNs    set down only                                                           
+QT700000017113243511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1036  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO7000000156422245   T1  
+QNp    pick up only                                                            
+QI70000001564323202320P   T1  
+QNp    pick up only                                                            
+QI70000001547024352435S   T1  
+QNs    set down only                                                           
+QI70000001495125002500S   T1  
+QNs    set down only                                                           
+QI70000000332125202520S   T1  
+QNs    set down only                                                           
+QT700000017113253511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1040  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QE20251224202512240
+QO7000000156422345   T1  
+QNp    pick up only                                                            
+QI70000001564324202420P   T1  
+QNp    pick up only                                                            
+QI70000001547025352535S   T1  
+QNs    set down only                                                           
+QI70000001495126002600S   T1  
+QNs    set down only                                                           
+QI70000000332126202620S   T1  
+QNs    set down only                                                           
+QT700000017113263511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1038  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422445   T1  
+QNp    pick up only                                                            
+QI70000001564325202520P   T1  
+QNp    pick up only                                                            
+QI70000001547026352635S   T1  
+QNs    set down only                                                           
+QI70000001495127002700S   T1  
+QNs    set down only                                                           
+QI70000000332127202720S   T1  
+QNs    set down only                                                           
+QT700000017113273511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1042  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422645   T1  
+QNp    pick up only                                                            
+QI70000001564327202720P   T1  
+QNp    pick up only                                                            
+QI70000001547028352835S   T1  
+QNs    set down only                                                           
+QI70000001495129002900S   T1  
+QNs    set down only                                                           
+QI70000000332129202920S   T1  
+QNs    set down only                                                           
+QT700000017113293511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1002  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422845   T1  
+QNp    pick up only                                                            
+QI70000001564329202920P   T1  
+QNp    pick up only                                                            
+QI70000001547030353035S   T1  
+QNs    set down only                                                           
+QI70000001495131003100S   T1  
+QNs    set down only                                                           
+QI70000000332131203120S   T1  
+QNs    set down only                                                           
+QT700000017113313511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 1004  20251124999999991111100 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156423045   T1  
+QNp    pick up only                                                            
+QI70000001564331203120P   T1  
+QNp    pick up only                                                            
+QI70000001547032353235S   T1  
+QNs    set down only                                                           
+QI70000001495133003300S   T1  
+QNs    set down only                                                           
+QI70000000332133203320S   T1  
+QNs    set down only                                                           
+QT700000017113333511 T1  
+QDNGLE X5  ONewry Bus Station - Dublin Busaras Bus Station                      
+QSNGLE 2005  20251124999999990000010 XX5        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000154700505   T1  
+QI70000001609006150615S   T1  
+QNs    set down only                                                           
+QT7000000156420645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2007  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710505003  T1  
+QNp    pick up only                                                            
+QI70000000332105150515P   T1  
+QNp    pick up only                                                            
+QI70000001495105350535P   T1  
+QNp    pick up only                                                            
+QI70000001547006050605P   T1  
+QNp    pick up only                                                            
+QI70000001609007150715S   T1  
+QNs    set down only                                                           
+QT7000000156420745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2009  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710506003  T1  
+QNp    pick up only                                                            
+QI70000000332106150615P   T1  
+QNp    pick up only                                                            
+QI70000001495106350635P   T1  
+QNp    pick up only                                                            
+QI70000001547007050705P   T1  
+QNp    pick up only                                                            
+QI70000001609008150815S   T1  
+QNs    set down only                                                           
+QT7000000156420845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2011  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710507003  T1  
+QNp    pick up only                                                            
+QI70000000332107150715P   T1  
+QNp    pick up only                                                            
+QI70000001495107350735P   T1  
+QNp    pick up only                                                            
+QI70000001547008050805P   T1  
+QNp    pick up only                                                            
+QI70000001609009150915S   T1  
+QNs    set down only                                                           
+QT7000000156420945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2013  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710508003  T1  
+QNp    pick up only                                                            
+QI70000000332108150815P   T1  
+QNp    pick up only                                                            
+QI70000001495108350835P   T1  
+QNp    pick up only                                                            
+QI70000001547009050905P   T1  
+QNp    pick up only                                                            
+QI70000001609010151015S   T1  
+QNs    set down only                                                           
+QT7000000156421045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2015  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710509003  T1  
+QNp    pick up only                                                            
+QI70000000332109150915P   T1  
+QNp    pick up only                                                            
+QI70000001495109350935P   T1  
+QNp    pick up only                                                            
+QI70000001547010051005P   T1  
+QNp    pick up only                                                            
+QI70000001609011151115S   T1  
+QNs    set down only                                                           
+QT7000000156421145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2017  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710510003  T1  
+QNp    pick up only                                                            
+QI70000000332110151015P   T1  
+QNp    pick up only                                                            
+QI70000001495110351035P   T1  
+QNp    pick up only                                                            
+QI70000001547011051105P   T1  
+QNp    pick up only                                                            
+QI70000001609012151215S   T1  
+QNs    set down only                                                           
+QT7000000156421245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2019  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710511003  T1  
+QNp    pick up only                                                            
+QI70000000332111151115P   T1  
+QNp    pick up only                                                            
+QI70000001495111351135P   T1  
+QNp    pick up only                                                            
+QI70000001547012051205P   T1  
+QNp    pick up only                                                            
+QI70000001609013151315S   T1  
+QNs    set down only                                                           
+QT7000000156421345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2021  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710512003  T1  
+QNp    pick up only                                                            
+QI70000000332112151215P   T1  
+QNp    pick up only                                                            
+QI70000001495112351235P   T1  
+QNp    pick up only                                                            
+QI70000001547013051305P   T1  
+QNp    pick up only                                                            
+QI70000001609014151415S   T1  
+QNs    set down only                                                           
+QT7000000156421445   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2023  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710513003  T1  
+QNp    pick up only                                                            
+QI70000000332113151315P   T1  
+QNp    pick up only                                                            
+QI70000001495113351335P   T1  
+QNp    pick up only                                                            
+QI70000001547014051405P   T1  
+QNp    pick up only                                                            
+QI70000001609015151515S   T1  
+QNs    set down only                                                           
+QT7000000156421545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2025  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710514003  T1  
+QNp    pick up only                                                            
+QI70000000332114151415P   T1  
+QNp    pick up only                                                            
+QI70000001495114351435P   T1  
+QNp    pick up only                                                            
+QI70000001547015051505P   T1  
+QNp    pick up only                                                            
+QI70000001609016151615S   T1  
+QNs    set down only                                                           
+QT7000000156421645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2027  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710515003  T1  
+QNp    pick up only                                                            
+QI70000000332115151515P   T1  
+QNp    pick up only                                                            
+QI70000001495115351535P   T1  
+QNp    pick up only                                                            
+QI70000001547016051605P   T1  
+QNp    pick up only                                                            
+QI70000001609017151715S   T1  
+QNs    set down only                                                           
+QT7000000156421745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2029  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710516003  T1  
+QNp    pick up only                                                            
+QI70000000332116151615P   T1  
+QNp    pick up only                                                            
+QI70000001495116351635P   T1  
+QNp    pick up only                                                            
+QI70000001547017051705P   T1  
+QNp    pick up only                                                            
+QI70000001609018151815S   T1  
+QNs    set down only                                                           
+QT7000000156421845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2031  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710517003  T1  
+QNp    pick up only                                                            
+QI70000000332117151715P   T1  
+QNp    pick up only                                                            
+QI70000001495117351735P   T1  
+QNp    pick up only                                                            
+QI70000001547018051805P   T1  
+QNp    pick up only                                                            
+QI70000001609019151915S   T1  
+QNs    set down only                                                           
+QT7000000156421945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2033  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710518003  T1  
+QNp    pick up only                                                            
+QI70000000332118151815P   T1  
+QNp    pick up only                                                            
+QI70000001495118351835P   T1  
+QNp    pick up only                                                            
+QI70000001547019051905P   T1  
+QNp    pick up only                                                            
+QI70000001609020152015S   T1  
+QNs    set down only                                                           
+QT7000000156422045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2035  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710519003  T1  
+QNp    pick up only                                                            
+QI70000000332119151915P   T1  
+QNp    pick up only                                                            
+QI70000001495119351935P   T1  
+QNp    pick up only                                                            
+QI70000001547020052005P   T1  
+QNp    pick up only                                                            
+QI70000001609021152115S   T1  
+QNs    set down only                                                           
+QT7000000156422145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2037  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710520003  T1  
+QNp    pick up only                                                            
+QI70000000332120152015P   T1  
+QNp    pick up only                                                            
+QI70000001495120352035P   T1  
+QNp    pick up only                                                            
+QI70000001547021052105P   T1  
+QNp    pick up only                                                            
+QI70000001609022152215S   T1  
+QNs    set down only                                                           
+QT7000000156422245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2039  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710521003  T1  
+QNp    pick up only                                                            
+QI70000000332121152115P   T1  
+QNp    pick up only                                                            
+QI70000001495121352135P   T1  
+QNp    pick up only                                                            
+QI70000001547022052205P   T1  
+QNp    pick up only                                                            
+QI70000001609023152315S   T1  
+QNs    set down only                                                           
+QT7000000156422345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2041  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710523003  T1  
+QNp    pick up only                                                            
+QI70000000332123152315P   T1  
+QNp    pick up only                                                            
+QI70000001495123352335P   T1  
+QNp    pick up only                                                            
+QI70000001547024052405P   T1  
+QNp    pick up only                                                            
+QI70000001609025152515S   T1  
+QNs    set down only                                                           
+QT7000000156422545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2001  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710501003  T1  
+QNp    pick up only                                                            
+QI70000000332101150115P   T1  
+QNp    pick up only                                                            
+QI70000001495101350135P   T1  
+QNp    pick up only                                                            
+QI70000001547002050205P   T1  
+QNp    pick up only                                                            
+QI70000001609003150315S   T1  
+QNs    set down only                                                           
+QT7000000156420345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 2003  20251124999999990000010 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710503003  T1  
+QNp    pick up only                                                            
+QI70000000332103150315P   T1  
+QNp    pick up only                                                            
+QI70000001495103350335P   T1  
+QNp    pick up only                                                            
+QI70000001547004050405P   T1  
+QNp    pick up only                                                            
+QI70000001609005150515S   T1  
+QNs    set down only                                                           
+QT7000000156420545   T1  
+QNs    set down only                                                           
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2006  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420745   T1  
+QNp    pick up only                                                            
+QI70000001564308200820P   T1  
+QNp    pick up only                                                            
+QI70000001547009350935S   T1  
+QNs    set down only                                                           
+QI70000001495110001000S   T1  
+QNs    set down only                                                           
+QI70000000332110201020S   T1  
+QNs    set down only                                                           
+QT700000017113103511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2008  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420845   T1  
+QNp    pick up only                                                            
+QI70000001564309200920P   T1  
+QNp    pick up only                                                            
+QI70000001547010351035S   T1  
+QNs    set down only                                                           
+QI70000001495111001100S   T1  
+QNs    set down only                                                           
+QI70000000332111201120S   T1  
+QNs    set down only                                                           
+QT700000017113113511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2010  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420945   T1  
+QNp    pick up only                                                            
+QI70000001564310201020P   T1  
+QNp    pick up only                                                            
+QI70000001547011351135S   T1  
+QNs    set down only                                                           
+QI70000001495112001200S   T1  
+QNs    set down only                                                           
+QI70000000332112201220S   T1  
+QNs    set down only                                                           
+QT700000017113123511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2012  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421045   T1  
+QNp    pick up only                                                            
+QI70000001564311201120P   T1  
+QNp    pick up only                                                            
+QI70000001547012351235S   T1  
+QNs    set down only                                                           
+QI70000001495113001300S   T1  
+QNs    set down only                                                           
+QI70000000332113201320S   T1  
+QNs    set down only                                                           
+QT700000017113133511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2014  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421145   T1  
+QNp    pick up only                                                            
+QI70000001564312201220P   T1  
+QNp    pick up only                                                            
+QI70000001547013351335S   T1  
+QNs    set down only                                                           
+QI70000001495114001400S   T1  
+QNs    set down only                                                           
+QI70000000332114201420S   T1  
+QNs    set down only                                                           
+QT700000017113143511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2016  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421245   T1  
+QNp    pick up only                                                            
+QI70000001564313201320P   T1  
+QNp    pick up only                                                            
+QI70000001547014351435S   T1  
+QNs    set down only                                                           
+QI70000001495115001500S   T1  
+QNs    set down only                                                           
+QI70000000332115201520S   T1  
+QNs    set down only                                                           
+QT700000017113153511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2018  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421345   T1  
+QNp    pick up only                                                            
+QI70000001564314201420P   T1  
+QNp    pick up only                                                            
+QI70000001547015351535S   T1  
+QNs    set down only                                                           
+QI70000001495116001600S   T1  
+QNs    set down only                                                           
+QI70000000332116201620S   T1  
+QNs    set down only                                                           
+QT700000017113163511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2020  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421445   T1  
+QNp    pick up only                                                            
+QI70000001564315201520P   T1  
+QNp    pick up only                                                            
+QI70000001547016351635S   T1  
+QNs    set down only                                                           
+QI70000001495117001700S   T1  
+QNs    set down only                                                           
+QI70000000332117201720S   T1  
+QNs    set down only                                                           
+QT700000017113173511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2022  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421545   T1  
+QNp    pick up only                                                            
+QI70000001564316201620P   T1  
+QNp    pick up only                                                            
+QI70000001547017351735S   T1  
+QNs    set down only                                                           
+QI70000001495118001800S   T1  
+QNs    set down only                                                           
+QI70000000332118201820S   T1  
+QNs    set down only                                                           
+QT700000017113183511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2024  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421645   T1  
+QNp    pick up only                                                            
+QI70000001564317201720P   T1  
+QNp    pick up only                                                            
+QI70000001547018351835S   T1  
+QNs    set down only                                                           
+QI70000001495119001900S   T1  
+QNs    set down only                                                           
+QI70000000332119201920S   T1  
+QNs    set down only                                                           
+QT700000017113193511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2026  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421745   T1  
+QNp    pick up only                                                            
+QI70000001564318201820P   T1  
+QNp    pick up only                                                            
+QI70000001547019351935S   T1  
+QNs    set down only                                                           
+QI70000001495120002000S   T1  
+QNs    set down only                                                           
+QI70000000332120202020S   T1  
+QNs    set down only                                                           
+QT700000017113203511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2028  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421845   T1  
+QNp    pick up only                                                            
+QI70000001564319201920P   T1  
+QNp    pick up only                                                            
+QI70000001547020352035S   T1  
+QNs    set down only                                                           
+QI70000001495121002100S   T1  
+QNs    set down only                                                           
+QI70000000332121202120S   T1  
+QNs    set down only                                                           
+QT700000017113213511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2030  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421945   T1  
+QNp    pick up only                                                            
+QI70000001564320202020P   T1  
+QNp    pick up only                                                            
+QI70000001547021352135S   T1  
+QNs    set down only                                                           
+QI70000001495122002200S   T1  
+QNs    set down only                                                           
+QI70000000332122202220S   T1  
+QNs    set down only                                                           
+QT700000017113223511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2032  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422045   T1  
+QNp    pick up only                                                            
+QI70000001564321202120P   T1  
+QNp    pick up only                                                            
+QI70000001547022352235S   T1  
+QNs    set down only                                                           
+QI70000001495123002300S   T1  
+QNs    set down only                                                           
+QI70000000332123202320S   T1  
+QNs    set down only                                                           
+QT700000017113233511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2034  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422145   T1  
+QNp    pick up only                                                            
+QI70000001564322202220P   T1  
+QNp    pick up only                                                            
+QI70000001547023352335S   T1  
+QNs    set down only                                                           
+QI70000001495124002400S   T1  
+QNs    set down only                                                           
+QI70000000332124202420S   T1  
+QNs    set down only                                                           
+QT700000017113243511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2036  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422245   T1  
+QNp    pick up only                                                            
+QI70000001564323202320P   T1  
+QNp    pick up only                                                            
+QI70000001547024352435S   T1  
+QNs    set down only                                                           
+QI70000001495125002500S   T1  
+QNs    set down only                                                           
+QI70000000332125202520S   T1  
+QNs    set down only                                                           
+QT700000017113253511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2038  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422345   T1  
+QNp    pick up only                                                            
+QI70000001564324202420P   T1  
+QNp    pick up only                                                            
+QI70000001547025352535S   T1  
+QNs    set down only                                                           
+QI70000001495126002600S   T1  
+QNs    set down only                                                           
+QI70000000332126202620S   T1  
+QNs    set down only                                                           
+QT700000017113263511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2040  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422445   T1  
+QNp    pick up only                                                            
+QI70000001564325202520P   T1  
+QNp    pick up only                                                            
+QI70000001547026352635S   T1  
+QNs    set down only                                                           
+QI70000001495127002700S   T1  
+QNs    set down only                                                           
+QI70000000332127202720S   T1  
+QNs    set down only                                                           
+QT700000017113273511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2042  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422645   T1  
+QNp    pick up only                                                            
+QI70000001564327202720P   T1  
+QNp    pick up only                                                            
+QI70000001547028352835S   T1  
+QNs    set down only                                                           
+QI70000001495129002900S   T1  
+QNs    set down only                                                           
+QI70000000332129202920S   T1  
+QNs    set down only                                                           
+QT700000017113293511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2002  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422845   T1  
+QNp    pick up only                                                            
+QI70000001564329202920P   T1  
+QNp    pick up only                                                            
+QI70000001547030353035S   T1  
+QNs    set down only                                                           
+QI70000001495131003100S   T1  
+QNs    set down only                                                           
+QI70000000332131203120S   T1  
+QNs    set down only                                                           
+QT700000017113313511 T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 2004  20251124999999990000010 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156423045   T1  
+QNp    pick up only                                                            
+QI70000001564331203120P   T1  
+QNp    pick up only                                                            
+QI70000001547032353235S   T1  
+QNs    set down only                                                           
+QI70000001495133003300S   T1  
+QNs    set down only                                                           
+QI70000000332133203320S   T1  
+QNs    set down only                                                           
+QT700000017113333511 T1  
+QDNGLE X5  ONewry Bus Station - Dublin Busaras Bus Station                      
+QSNGLE 3005  20251124999999990000001 XX5        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000154700505   T1  
+QI70000001609006150615S   T1  
+QNs    set down only                                                           
+QT7000000156420645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3007  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710505003  T1  
+QNp    pick up only                                                            
+QI70000000332105150515P   T1  
+QNp    pick up only                                                            
+QI70000001495105350535P   T1  
+QNp    pick up only                                                            
+QI70000001547006050605P   T1  
+QNp    pick up only                                                            
+QI70000001609007150715S   T1  
+QNs    set down only                                                           
+QT7000000156420745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3009  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710506003  T1  
+QNp    pick up only                                                            
+QI70000000332106150615P   T1  
+QNp    pick up only                                                            
+QI70000001495106350635P   T1  
+QNp    pick up only                                                            
+QI70000001547007050705P   T1  
+QNp    pick up only                                                            
+QI70000001609008150815S   T1  
+QNs    set down only                                                           
+QT7000000156420845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3011  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710507003  T1  
+QNp    pick up only                                                            
+QI70000000332107150715P   T1  
+QNp    pick up only                                                            
+QI70000001495107350735P   T1  
+QNp    pick up only                                                            
+QI70000001547008050805P   T1  
+QNp    pick up only                                                            
+QI70000001609009150915S   T1  
+QNs    set down only                                                           
+QT7000000156420945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3013  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710508003  T1  
+QNp    pick up only                                                            
+QI70000000332108150815P   T1  
+QNp    pick up only                                                            
+QI70000001495108350835P   T1  
+QNp    pick up only                                                            
+QI70000001547009050905P   T1  
+QNp    pick up only                                                            
+QI70000001609010151015S   T1  
+QNs    set down only                                                           
+QT7000000156421045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3015  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710509003  T1  
+QNp    pick up only                                                            
+QI70000000332109150915P   T1  
+QNp    pick up only                                                            
+QI70000001495109350935P   T1  
+QNp    pick up only                                                            
+QI70000001547010051005P   T1  
+QNp    pick up only                                                            
+QI70000001609011151115S   T1  
+QNs    set down only                                                           
+QT7000000156421145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3017  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710510003  T1  
+QNp    pick up only                                                            
+QI70000000332110151015P   T1  
+QNp    pick up only                                                            
+QI70000001495110351035P   T1  
+QNp    pick up only                                                            
+QI70000001547011051105P   T1  
+QNp    pick up only                                                            
+QI70000001609012151215S   T1  
+QNs    set down only                                                           
+QT7000000156421245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3019  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710511003  T1  
+QNp    pick up only                                                            
+QI70000000332111151115P   T1  
+QNp    pick up only                                                            
+QI70000001495111351135P   T1  
+QNp    pick up only                                                            
+QI70000001547012051205P   T1  
+QNp    pick up only                                                            
+QI70000001609013151315S   T1  
+QNs    set down only                                                           
+QT7000000156421345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3021  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710512003  T1  
+QNp    pick up only                                                            
+QI70000000332112151215P   T1  
+QNp    pick up only                                                            
+QI70000001495112351235P   T1  
+QNp    pick up only                                                            
+QI70000001547013051305P   T1  
+QNp    pick up only                                                            
+QI70000001609014151415S   T1  
+QNs    set down only                                                           
+QT7000000156421445   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3023  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710513003  T1  
+QNp    pick up only                                                            
+QI70000000332113151315P   T1  
+QNp    pick up only                                                            
+QI70000001495113351335P   T1  
+QNp    pick up only                                                            
+QI70000001547014051405P   T1  
+QNp    pick up only                                                            
+QI70000001609015151515S   T1  
+QNs    set down only                                                           
+QT7000000156421545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3025  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710514003  T1  
+QNp    pick up only                                                            
+QI70000000332114151415P   T1  
+QNp    pick up only                                                            
+QI70000001495114351435P   T1  
+QNp    pick up only                                                            
+QI70000001547015051505P   T1  
+QNp    pick up only                                                            
+QI70000001609016151615S   T1  
+QNs    set down only                                                           
+QT7000000156421645   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3027  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710515003  T1  
+QNp    pick up only                                                            
+QI70000000332115151515P   T1  
+QNp    pick up only                                                            
+QI70000001495115351535P   T1  
+QNp    pick up only                                                            
+QI70000001547016051605P   T1  
+QNp    pick up only                                                            
+QI70000001609017151715S   T1  
+QNs    set down only                                                           
+QT7000000156421745   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3029  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710516003  T1  
+QNp    pick up only                                                            
+QI70000000332116151615P   T1  
+QNp    pick up only                                                            
+QI70000001495116351635P   T1  
+QNp    pick up only                                                            
+QI70000001547017051705P   T1  
+QNp    pick up only                                                            
+QI70000001609018151815S   T1  
+QNs    set down only                                                           
+QT7000000156421845   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3031  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710517003  T1  
+QNp    pick up only                                                            
+QI70000000332117151715P   T1  
+QNp    pick up only                                                            
+QI70000001495117351735P   T1  
+QNp    pick up only                                                            
+QI70000001547018051805P   T1  
+QNp    pick up only                                                            
+QI70000001609019151915S   T1  
+QNs    set down only                                                           
+QT7000000156421945   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3033  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710518003  T1  
+QNp    pick up only                                                            
+QI70000000332118151815P   T1  
+QNp    pick up only                                                            
+QI70000001495118351835P   T1  
+QNp    pick up only                                                            
+QI70000001547019051905P   T1  
+QNp    pick up only                                                            
+QI70000001609020152015S   T1  
+QNs    set down only                                                           
+QT7000000156422045   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3035  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710519003  T1  
+QNp    pick up only                                                            
+QI70000000332119151915P   T1  
+QNp    pick up only                                                            
+QI70000001495119351935P   T1  
+QNp    pick up only                                                            
+QI70000001547020052005P   T1  
+QNp    pick up only                                                            
+QI70000001609021152115S   T1  
+QNs    set down only                                                           
+QT7000000156422145   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3037  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710520003  T1  
+QNp    pick up only                                                            
+QI70000000332120152015P   T1  
+QNp    pick up only                                                            
+QI70000001495120352035P   T1  
+QNp    pick up only                                                            
+QI70000001547021052105P   T1  
+QNp    pick up only                                                            
+QI70000001609022152215S   T1  
+QNs    set down only                                                           
+QT7000000156422245   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3039  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710521003  T1  
+QNp    pick up only                                                            
+QI70000000332121152115P   T1  
+QNp    pick up only                                                            
+QI70000001495121352135P   T1  
+QNp    pick up only                                                            
+QI70000001547022052205P   T1  
+QNp    pick up only                                                            
+QI70000001609023152315S   T1  
+QNs    set down only                                                           
+QT7000000156422345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3041  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710523003  T1  
+QNp    pick up only                                                            
+QI70000000332123152315P   T1  
+QNp    pick up only                                                            
+QI70000001495123352335P   T1  
+QNp    pick up only                                                            
+QI70000001547024052405P   T1  
+QNp    pick up only                                                            
+QI70000001609025152515S   T1  
+QNs    set down only                                                           
+QT7000000156422545   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3001  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710501003  T1  
+QNp    pick up only                                                            
+QI70000000332101150115P   T1  
+QNp    pick up only                                                            
+QI70000001495101350135P   T1  
+QNp    pick up only                                                            
+QI70000001547002050205P   T1  
+QNp    pick up only                                                            
+QI70000001609003150315S   T1  
+QNs    set down only                                                           
+QT7000000156420345   T1  
+QNs    set down only                                                           
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station         
+QSNGLE 3003  20251124999999990000001 XX1        GL              O
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO70000001710503003  T1  
+QNp    pick up only                                                            
+QI70000000332103150315P   T1  
+QNp    pick up only                                                            
+QI70000001495103350335P   T1  
+QNp    pick up only                                                            
+QI70000001547004050405P   T1  
+QNp    pick up only                                                            
+QI70000001609005150515S   T1  
+QNs    set down only                                                           
+QT7000000156420545   T1  
+QNs    set down only                                                         
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3006  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420745   T1  
+QNp    pick up only                                                            
+QI70000001564308200820P   T1  
+QNp    pick up only                                                            
+QI70000001547009350935S   T1  
+QNs    set down only                                                           
+QI70000001495110001000S   T1  
+QNs    set down only                                                           
+QI70000000332110201020S   T1  
+QNs    set down only                                                           
+QT70000001711310351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3008  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420845   T1  
+QNp    pick up only                                                            
+QI70000001564309200920P   T1  
+QNp    pick up only                                                            
+QI70000001547010351035S   T1  
+QNs    set down only                                                           
+QI70000001495111001100S   T1  
+QNs    set down only                                                           
+QI70000000332111201120S   T1  
+QNs    set down only                                                           
+QT70000001711311351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3010  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156420945   T1  
+QNp    pick up only                                                            
+QI70000001564310201020P   T1  
+QNp    pick up only                                                            
+QI70000001547011351135S   T1  
+QNs    set down only                                                           
+QI70000001495112001200S   T1  
+QNs    set down only                                                           
+QI70000000332112201220S   T1  
+QNs    set down only                                                           
+QT70000001711312351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3012  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421045   T1  
+QNp    pick up only                                                            
+QI70000001564311201120P   T1  
+QNp    pick up only                                                            
+QI70000001547012351235S   T1  
+QNs    set down only                                                           
+QI70000001495113001300S   T1  
+QNs    set down only                                                           
+QI70000000332113201320S   T1  
+QNs    set down only                                                           
+QT70000001711313351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3014  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421145   T1  
+QNp    pick up only                                                            
+QI70000001564312201220P   T1  
+QNp    pick up only                                                            
+QI70000001547013351335S   T1  
+QNs    set down only                                                           
+QI70000001495114001400S   T1  
+QNs    set down only                                                           
+QI70000000332114201420S   T1  
+QNs    set down only                                                           
+QT70000001711314351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3016  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421245   T1  
+QNp    pick up only                                                            
+QI70000001564313201320P   T1  
+QNp    pick up only                                                            
+QI70000001547014351435S   T1  
+QNs    set down only                                                           
+QI70000001495115001500S   T1  
+QNs    set down only                                                           
+QI70000000332115201520S   T1  
+QNs    set down only                                                           
+QT70000001711315351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3018  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421345   T1  
+QNp    pick up only                                                            
+QI70000001564314201420P   T1  
+QNp    pick up only                                                            
+QI70000001547015351535S   T1  
+QNs    set down only                                                           
+QI70000001495116001600S   T1  
+QNs    set down only                                                           
+QI70000000332116201620S   T1  
+QNs    set down only                                                           
+QT70000001711316351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3020  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421445   T1  
+QNp    pick up only                                                            
+QI70000001564315201520P   T1  
+QNp    pick up only                                                            
+QI70000001547016351635S   T1  
+QNs    set down only                                                           
+QI70000001495117001700S   T1  
+QNs    set down only                                                           
+QI70000000332117201720S   T1  
+QNs    set down only                                                           
+QT70000001711317351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3022  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421545   T1  
+QNp    pick up only                                                            
+QI70000001564316201620P   T1  
+QNp    pick up only                                                            
+QI70000001547017351735S   T1  
+QNs    set down only                                                           
+QI70000001495118001800S   T1  
+QNs    set down only                                                           
+QI70000000332118201820S   T1  
+QNs    set down only                                                           
+QT70000001711318351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3024  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421645   T1  
+QNp    pick up only                                                            
+QI70000001564317201720P   T1  
+QNp    pick up only                                                            
+QI70000001547018351835S   T1  
+QNs    set down only                                                           
+QI70000001495119001900S   T1  
+QNs    set down only                                                           
+QI70000000332119201920S   T1  
+QNs    set down only                                                           
+QT70000001711319351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3026  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421745   T1  
+QNp    pick up only                                                            
+QI70000001564318201820P   T1  
+QNp    pick up only                                                            
+QI70000001547019351935S   T1  
+QNs    set down only                                                           
+QI70000001495120002000S   T1  
+QNs    set down only                                                           
+QI70000000332120202020S   T1  
+QNs    set down only                                                           
+QT70000001711320351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3028  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421845   T1  
+QNp    pick up only                                                            
+QI70000001564319201920P   T1  
+QNp    pick up only                                                            
+QI70000001547020352035S   T1  
+QNs    set down only                                                           
+QI70000001495121002100S   T1  
+QNs    set down only                                                           
+QI70000000332121202120S   T1  
+QNs    set down only                                                           
+QT70000001711321351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3030  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156421945   T1  
+QNp    pick up only                                                            
+QI70000001564320202020P   T1  
+QNp    pick up only                                                            
+QI70000001547021352135S   T1  
+QNs    set down only                                                           
+QI70000001495122002200S   T1  
+QNs    set down only                                                           
+QI70000000332122202220S   T1  
+QNs    set down only                                                           
+QT70000001711322351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3032  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422045   T1  
+QNp    pick up only                                                            
+QI70000001564321202120P   T1  
+QNp    pick up only                                                            
+QI70000001547022352235S   T1  
+QNs    set down only                                                           
+QI70000001495123002300S   T1  
+QNs    set down only                                                           
+QI70000000332123202320S   T1  
+QNs    set down only                                                           
+QT70000001711323351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3034  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422145   T1  
+QNp    pick up only                                                            
+QI70000001564322202220P   T1  
+QNp    pick up only                                                            
+QI70000001547023352335S   T1  
+QNs    set down only                                                           
+QI70000001495124002400S   T1  
+QNs    set down only                                                           
+QI70000000332124202420S   T1  
+QNs    set down only                                                           
+QT70000001711324351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3036  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422245   T1  
+QNp    pick up only                                                            
+QI70000001564323202320P   T1  
+QNp    pick up only                                                            
+QI70000001547024352435S   T1  
+QNs    set down only                                                           
+QI70000001495125002500S   T1  
+QNs    set down only                                                           
+QI70000000332125202520S   T1  
+QNs    set down only                                                           
+QT70000001711325351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3038  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422345   T1  
+QNp    pick up only                                                            
+QI70000001564324202420P   T1  
+QNp    pick up only                                                            
+QI70000001547025352535S   T1  
+QNs    set down only                                                           
+QI70000001495126002600S   T1  
+QNs    set down only                                                           
+QI70000000332126202620S   T1  
+QNs    set down only                                                           
+QT70000001711326351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3040  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422445   T1  
+QNp    pick up only                                                            
+QI70000001564325202520P   T1  
+QNp    pick up only                                                            
+QI70000001547026352635S   T1  
+QNs    set down only                                                           
+QI70000001495127002700S   T1  
+QNs    set down only                                                           
+QI70000000332127202720S   T1  
+QNs    set down only                                                           
+QT70000001711327351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3042  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422645   T1  
+QNp    pick up only                                                            
+QI70000001564327202720P   T1  
+QNp    pick up only                                                            
+QI70000001547028352835S   T1  
+QNs    set down only                                                           
+QI70000001495129002900S   T1  
+QNs    set down only                                                           
+QI70000000332129202920S   T1  
+QNs    set down only                                                           
+QT70000001711329351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3002  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156422845   T1  
+QNp    pick up only                                                            
+QI70000001564329202920P   T1  
+QNp    pick up only                                                            
+QI70000001547030353035S   T1  
+QNs    set down only                                                           
+QI70000001495131003100S   T1  
+QNs    set down only                                                           
+QI70000000332131203120S   T1  
+QNs    set down only                                                           
+QT70000001711331351  T1  
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station             
+QSNGLE 3004  20251124999999990000001 XX1        GL              I
+QNB    Buy online up to 28 days in advance of travel and guarantee your seat   
+QO7000000156423045   T1  
+QNp    pick up only                                                            
+QI70000001564331203120P   T1  
+QNp    pick up only                                                            
+QI70000001547032353235S   T1  
+QNs    set down only                                                           
+QI70000001495133003300S   T1  
+QNs    set down only                                                           
+QI70000000332133203320S   T1  
+QNs    set down only                                                           
+QT70000001711333351  T1  
+QLN700000017112Grand Central Station Stand 10                    A0000001
+QBN700000017112333251  373737  Northern Ireland
+QLN700000017106Grand Central Station Stand 4
+QBN700000017106333282  373760  Northern Ireland
+QLN700000017111Grand Central Station Stand 9
+QBN700000017111333259  373742  Northern Ireland
+QLN700000015367Queen Street                                      A0000001
+QBN700000015367333622  374251  Northern Ireland
+QLN700000016059Ballymartin Park & Ride                           A0000001
+QBN700000016059324819  386386  Northern Ireland
+QLN700000005615Templepatrick Park & Ride                         A0000001
+QBN700000005615323084  385725  Northern Ireland
+QLN700000005616St Patrick's Church                               A0000001
+QBN700000005616322711  385516  Northern Ireland
+QLN700000005617Broadacres                                        A0000001
+QBN700000005617322551  385424  Northern Ireland
+QLN700000005618Templeton Park                                    A0000001
+QBN700000005618321994  385086  Northern Ireland
+QLN700000005801Belfast International Airport                     A0000001
+QBN700000005801315044  380827  Northern Ireland
+QLN700000005671Templeton Park                                    A0000001
+QBN700000005671322050  385141  Northern Ireland
+QLN700000005672Broadacres                                        A0000001
+QBN700000005672322522  385421  Northern Ireland
+QLN700000005673St Patrick's Church                               A0000001
+QBN700000005673322863  385617  Northern Ireland
+QLN700000005674Templepatrick Park & Ride                         A0000001
+QBN700000005674323168  385767  Northern Ireland
+QLN700000001417Nelson Street Bus Lane                            A0000001
+QBN700000001417334395  375582  Northern Ireland
+QLN700000001515Ulster University Belfast                         A0000001
+QBN700000001515333849  374819  Northern Ireland
+QLN700000000792North Street                                      A0000001
+QBN700000000792333655  374639  Northern Ireland
+QLN700000017111Grand Central Station Stand 9                     A0000001
+QBN700000017111333259  373742  Northern Ireland
+QLN700000017112Grand Central Station Stand 10
+QBN700000017112333251  373737  Northern Ireland
+QLN700000017113Grand Central Station Stand 11
+QBN700000017113333249  373735  Northern Ireland
+QLN700000017114Grand Central Station Stand 12
+QBN700000017114333244  373730  Northern Ireland
+QLN700000017105Grand Central Station Stand 3
+QBN700000017105333290  373765  Northern Ireland
+QLN700000017108Grand Central Station Stand 6
+QBN700000017108333271  373753  Northern Ireland
+QLN700000017105Grand Central Station Stand 3                     A0000001
+QBN700000017105333290  373765  Northern Ireland
+QLN700000003321Sprucefield Shopping Centre                       A0000001
+QBN700000003321325892  362096  Northern Ireland
+QLN700000014951Kenlis Street                                     A0000001
+QBN700000014951312471  345560  Northern Ireland
+QLN700000015470Newry Bus Station                                 A0000001
+QBN700000015470308468  326431  Northern Ireland
+QLN700000016090Dublin Airport T2                                 A0000001
+QBN700000016090317035  243252  Northern Ireland
+QLN700000015642Dublin Busaras Bus Station                        A0000001
+QBN700000015642316425  234683  Northern Ireland
+QLN700000015643Dublin Airport T1 (Zone 13) Stop 11 Airport       A0000001
+QBN700000015643316924  243381  Northern Ireland
+QLN700000017113Grand Central Station Stand 11                    A0000001
+QBN700000017113333249  373735  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNDD      Double Deck
+QVNGL      Goldliner
+QVNLF      Low Floor
+QVNAB      Airbus
+QDNULB 300aOBelfast, Grand Central Station - Belfast International Airport
+QDNULB 300 OBelfast, Grand Central Station - Belfast International Airport
+QDNULB 300 IBelfast International Airport - Belfast, Grand Central Station
+QDNULB 300aIBelfast International Airport - Belfast, Grand Central Station
+QDNULB 300 IBelfast International Airport - Belfast, Europa Buscentre
+QDNULB 300aIBelfast International Airport - Belfast, Europa Buscentre
+QDNULB 300 IInternational Airport, Terminal Bdg - Belfast, Grand Central Station
+QDNULB 300aIInternational Airport, Terminal Bdg - Belfast, Grand Central Station
+QDNGLE X5  ONewry Bus Station - Dublin Busaras Bus Station
+QDNGLE X1  OBelfast, Grand Central Station - Dublin Busaras Bus Station
+QDNGLE X1  IDublin Busaras Station - Belfast, Grand Central Station

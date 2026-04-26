@@ -1,0 +1,536 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260226193731
+QDNGLE 251aOBelfast, Grand Central Station - Armagh, Buscentre                  
+QSNGLE 2001  20260504202605041000000 B251a11GL3 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119103517 T1  
+QI70000000332110551055B   T1  
+QI70000000678411101110B   T1  
+QI70000001493711251125B   T1  
+QI70000000705511371137B   T1  
+QI70000000829911431143B   T1  
+QI70000000830011441144S   T0  
+QNs    Set Down Only                                                           
+QI70000000830111461146S   T0  
+QNs    Set Down Only                                                           
+QI70000001498011481148S   T0  
+QNs    Set Down Only                                                           
+QT7000000082351152   T1  
+QDNGLE 251aOBelfast, Grand Central Station - Armagh, Buscentre                  
+QSNGLE 2003  20260504202605041000000 B251a11GL2 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119123517 T1  
+QI70000000332112551255B   T1  
+QI70000000678413101310B   T1  
+QI70000001493713251325B   T1  
+QI70000000705513371337B   T1  
+QI70000000829913431343B   T1  
+QI70000000830013441344S   T0  
+QNs    Set Down Only                                                           
+QI70000000830113461346S   T0  
+QNs    Set Down Only                                                           
+QI70000001498013481348S   T0  
+QNs    Set Down Only                                                           
+QT7000000082351352   T1  
+QDNGLE 251aOBelfast, Grand Central Station - Armagh, Buscentre                  
+QSNGLE 2005  20260504202605041000000 B251a11GL2 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119173517 T1  
+QI70000000332117551755B   T1  
+QI70000000678418101810B   T1  
+QI70000001493718251825B   T1  
+QI70000000705518371837B   T1  
+QI70000000829918431843B   T1  
+QI70000000830018441844S   T0  
+QNs    Set Down Only                                                           
+QI70000000830118461846S   T0  
+QNs    Set Down Only                                                           
+QI70000001498018481848S   T0  
+QNs    Set Down Only                                                           
+QT7000000082361852   T1  
+QDNGLE 251cOBelfast, Grand Central Station - Armagh, Buscentre                  
+QSNGLE 2007  20260504202605041000000 B251c11GL3 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119183517 T1  
+QI70000000678419051905B   T1  
+QI70000000666919201920B   T1  
+QI70000000667019201920B   T0  
+QI70000000667119201920B   T0  
+QI70000000667219211921B   T0  
+QI70000000667319211921B   T0  
+QI70000000704419231923B   T0  
+QI70000000704519241924B   T0  
+QI70000000704619251925B   T0  
+QI70000000704719261926B   T0  
+QI70000000704819271927B   T0  
+QI70000000704919281928B   T0  
+QI70000000705019281928B   T0  
+QI70000000705119301930B   T0  
+QI70000000828519311931B   T0  
+QI70000000828619311931B   T0  
+QI70000000705219331933B   T0  
+QI70000000705319331933B   T0  
+QI70000000705419341934B   T0  
+QI70000000705519351935B   T1  
+QI70000000828819351935B   T0  
+QI70000000828919361936B   T0  
+QI70000000829219361936B   T0  
+QI70000000829319371937B   T0  
+QI70000000829419371937B   T0  
+QI70000000829519381938B   T0  
+QI70000000829619381938B   T0  
+QI70000000829719391939B   T0  
+QI70000000829819401940B   T0  
+QI70000000829919411941B   T1  
+QI70000000830019421942S   T0  
+QNs    Set Down Only                                                           
+QI70000000830119441944S   T0  
+QNs    Set Down Only                                                           
+QI70000001498019461946S   T0  
+QNs    Set Down Only                                                           
+QT7000000082361950   T1  
+QDNGLE 251cOBelfast, Grand Central Station - Armagh, Buscentre                  
+QSNGLE 2009  20260504202605041000000 B251c11GL1 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119200517 T1  
+QI70000000678420352035B   T1  
+QI70000000666920502050B   T1  
+QI70000000667020502050B   T0  
+QI70000000667120502050B   T0  
+QI70000000667220512051B   T0  
+QI70000000667320512051B   T0  
+QI70000000704420532053B   T0  
+QI70000000704520542054B   T0  
+QI70000000704620552055B   T0  
+QI70000000704720562056B   T0  
+QI70000000704820572057B   T0  
+QI70000000704920582058B   T0  
+QI70000000705020582058B   T0  
+QI70000000705121002100B   T0  
+QI70000000828521012101B   T0  
+QI70000000828621012101B   T0  
+QI70000000705221032103B   T0  
+QI70000000705321032103B   T0  
+QI70000000705421042104B   T0  
+QI70000000705521052105B   T1  
+QI70000000828821052105B   T0  
+QI70000000828921062106B   T0  
+QI70000000829221062106B   T0  
+QI70000000829321072107B   T0  
+QI70000000829421072107B   T0  
+QI70000000829521082108B   T0  
+QI70000000829621082108B   T0  
+QI70000000829721092109B   T0  
+QI70000000829821102110B   T0  
+QI70000000829921112111B   T1  
+QI70000000830021122112S   T0  
+QNs    Set Down Only                                                           
+QI70000000830121142114S   T0  
+QNs    Set Down Only                                                           
+QI70000001498021162116S   T0  
+QNs    Set Down Only                                                           
+QT7000000082362120   T1  
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station                  
+QSNGLE 2002  20260504202605041000000 B251a11GL1 GL              I
+QNBH   Bank holidays                                                           
+QO7000000082350735   T1  
+QI70000000826707350735P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826807360736P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826907370737P   T0  
+QNp    Pick Up Only                                                            
+QI70000000827007380738B   T1  
+QI70000000705607450745B   T1  
+QI70000000032707570757B   T1  
+QI70000000678408100810B   T1  
+QI70000000332108250825B   T1  
+QI70000000180108460846S   T0  
+QNs    Set Down Only                                                           
+QT700000017119085017 T1  
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station                  
+QSNGLE 2004  20260504202605041000000 B251a11GL3 GL              I
+QNBH   Bank holidays                                                           
+QO7000000082350905   T1  
+QI70000000826709050905P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826809060906P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826909070907P   T0  
+QNp    Pick Up Only                                                            
+QI70000000827009080908B   T1  
+QI70000000705609150915B   T1  
+QI70000000032709270927B   T1  
+QI70000000678409400940B   T1  
+QI70000000332109550955B   T1  
+QI70000000180110161016S   T0  
+QNs    Set Down Only                                                           
+QT700000017119102017 T1  
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station                  
+QSNGLE 2006  20260504202605041000000 B251a11GL2 GL              I
+QNBH   Bank holidays                                                           
+QO7000000082351105   T1  
+QI70000000826711051105P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826811061106P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826911071107P   T0  
+QNp    Pick Up Only                                                            
+QI70000000827011081108B   T1  
+QI70000000705611151115B   T1  
+QI70000000032711271127B   T1  
+QI70000000678411401140B   T1  
+QI70000000332111551155B   T1  
+QI70000000180112161216S   T0  
+QNs    Set Down Only                                                           
+QT700000017119122017 T1  
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station                  
+QSNGLE 2008  20260504202605041000000 B251a11GL2 GL              I
+QNBH   Bank holidays                                                           
+QO7000000082351605   T1  
+QI70000000826716051605P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826816061606P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826916071607P   T0  
+QNp    Pick Up Only                                                            
+QI70000000827016081608B   T1  
+QI70000000705616151615B   T1  
+QI70000000032716271627B   T1  
+QI70000000678416401640B   T1  
+QI70000000332116551655B   T1  
+QI70000000180117161716S   T0  
+QNs    Set Down Only                                                           
+QT700000017119172017 T1  
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station                  
+QSNGLE 2010  20260504202605041000000 B251a11GL3 GL              I
+QNBH   Bank holidays                                                           
+QO7000000082351705   T1  
+QI70000000826717051705P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826817061706P   T0  
+QNp    Pick Up Only                                                            
+QI70000000826917071707P   T0  
+QNp    Pick Up Only                                                            
+QI70000000827017081708B   T1  
+QI70000000705617151715B   T1  
+QI70000000032717271727B   T1  
+QI70000000678417401740B   T1  
+QI70000000332117551755S   T1  
+QNs    Set Down Only                                                           
+QI70000000180118161816S   T0  
+QNs    Set Down Only                                                           
+QT700000017119182017 T1  
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station              
+QSNGLE 2001  20260504202605041000000 B270 11GL1 GL              O
+QNE    Serves all stops between Armagh & Monaghan                              
+QNBH   Bank holidays                                                           
+QO700000017119153517 T1  
+QI70000000678416001600B   T1  
+QI70000001493716151615B   T1  
+QI70000000705516271627B   T1  
+QI70000000829916341634B   T1  
+QI70000000830016351635S   T0  
+QNs    Set down only                                                           
+QI70000000830116361636S   T0  
+QNs    Set down only                                                           
+QI70000001498016371637S   T0  
+QNs    Set down only                                                           
+QI70000000823516401645B   T1  
+QI70000001498416461646B   T0  
+QI70000000808816471647B   T0  
+QI70000000815516481648B   T0  
+QI70000000819916491649B   T0  
+QI70000000820116521652B   T0  
+QI70000000820216531653B   T1  
+QI70000000822916531653B   T0  
+QI70000000822816541654B   T0  
+QI70000000822716551655B   T0  
+QI70000000820616571657B   T0  
+QI70000000822516591659B   T0  
+QI70000000820817001700B   T0  
+QI70000000820917011701B   T0  
+QI70000000821017021702B   T0  
+QI70000000821117031703B   T0  
+QI70000000821217051705B   T0  
+QI70000000821317061706B   T0  
+QI70000001596217081708B   T1  
+QI70000000821517101710B   T0  
+QT7000000158491720   T1  
+QDNGLE 270 ICavan, Bus Station - Belfast, Grand Central Station                 
+QSNGLE 2002  20260504202605041000000 B270 11GL1 GL              I
+QNC    Serves all stops between Monaghan and Armagh.                           
+QNBH   Bank holidays                                                           
+QO7000000158461220   T1  
+QI70000001584712501250B   T1  
+QI70000001584813001300B   T1  
+QI70000001584913151320B   T1  
+QI70000000821613291329B   T0  
+QI70000000821713321332B   T1  
+QI70000000821813321332B   T0  
+QI70000000821913331333B   T0  
+QI70000000822113351335B   T0  
+QI70000001707713351335B   T0  
+QI70000000822213361336B   T0  
+QI70000000822313371337B   T0  
+QI70000000822413381338B   T0  
+QI70000000822513391339B   T0  
+QI70000000822613401340B   T0  
+QI70000000820513421342B   T0  
+QI70000000820413431343B   T0  
+QI70000000820313441344B   T0  
+QI70000000823013451345B   T1  
+QI70000000823113461346B   T0  
+QI70000000823213501350B   T0  
+QI70000000823313521352B   T0  
+QI70000000823413531353B   T0  
+QI70000001497813531353B   T0  
+QI70000000812713551355B   T0  
+QI70000001496913571357B   T0  
+QI70000000823514001405B   T1  
+QI70000000826714051405P   T0  
+QNp    Pick up only                                                            
+QI70000000826814061406P   T0  
+QNp    Pick up only                                                            
+QI70000000826914071407P   T0  
+QNp    Pick up only                                                            
+QI70000000827014081408B   T1  
+QI70000000705614151415B   T1  
+QI70000000032714271427B   T1  
+QI70000000678414401440B   T1  
+QI70000000180115071507S   T0  
+QNs    Set down only                                                           
+QT700000017119151017 T1  
+QDNGLE 271 OBelfast, Grand Central Station - Cavan, Bus Station                 
+QSNGLE 1001  20260504202605041000000 B271 11GL1 GL              O
+QNBH   Bank holidays                                                           
+QO700000017119090517 T1  
+QI70000000678409300930B   T1  
+QI70000001493709450945B   T1  
+QI70000000705509570957B   T1  
+QI70000000829910041004B   T1  
+QI70000000830010051005S   T0  
+QNs    Set down only                                                           
+QI70000000830110061006S   T0  
+QNs    Set down only                                                           
+QI70000001498010071007S   T0  
+QNs    Set down only                                                           
+QI70000000823510101015B   T1  
+QI70000001596210301030B   T1  
+QI70000000821510331033B   T0  
+QI70000001584910451050B   T1  
+QI70000001584811021102B   T1  
+QI70000001584711151115B   T1  
+QT7000000158461145   T1  
+QDNGLE 271 IMonaghan, Bus Station - Belfast, Grand Central Station              
+QSNGLE 1002  20260504202605041000000 B271 11GL1 GL              I
+QNBH   Bank holidays                                                           
+QO7000000158491755   T1  
+QI70000000821618041804B   T0  
+QI70000000821718071807B   T1  
+QI70000000823018201820B   T1  
+QI70000000823518301835B   T1  
+QI70000000826718351835P   T0  
+QNp    Pick up only                                                            
+QI70000000826818361836P   T0  
+QNp    Pick up only                                                            
+QI70000000826918371837P   T0  
+QNp    Pick up only                                                            
+QI70000000827018381838B   T1  
+QI70000000705618451845B   T1  
+QI70000000032718571857B   T1  
+QI70000000678419101910B   T1  
+QI70000000180119321932S   T0  
+QNs    Set down only                                                           
+QT700000017119193517 T1  
+QLN700000017119Grand Central Station Stand 17                    N0000007
+QBN700000017119333217  373713  Belfast Europa
+QLN700000003321Sprucefield Shopping Centre                       N0000022
+QBN700000003321325892  362095  Lisburn
+QLN700000006784Loughview Park & Ride                             N0000013
+QBN700000006784306719  360553  Craigavon
+QLN700000014937Portadown Train Station (bus stop)                N0000013
+QBN700000014937300837  353871  Craigavon
+QLN700000006669Church Street                                     N0000013
+QBN700000006669300945  353688  Craigavon
+QLN700000006670Cecil Street                                      N0000013
+QBN700000006670300902  353490  Craigavon
+QLN700000006671Ridgeway Park                                     N0000013
+QBN700000006671300735  353166  Craigavon
+QLN700000006672Dorchester Park                                   N0000013
+QBN700000006672300573  352929  Craigavon
+QLN700000006673Shamrock Park                                     N0000013
+QBN700000006673300339  352641  Craigavon
+QLN700000007044Campbells Lane                                    N0000013
+QBN700000007044299889  352189  Craigavon
+QLN700000007045Artabrackagh Road                                 N0000013
+QBN700000007045298949  351483  Craigavon
+QLN700000007046Derryhale Crossroads                              N0000013
+QBN700000007046298221  350981  Craigavon
+QLN700000007047Dobbin Church                                     N0000013
+QBN700000007047297611  350746  Craigavon
+QLN700000007048Vicarage Road                                     N0000013
+QBN700000007048297243  350614  Craigavon
+QLN700000007049Drumnahauncheon                                   N0000013
+QBN700000007049296487  350289  Craigavon
+QLN700000007050Sturgeons Hill                                    N0000013
+QBN700000007050296152  350141  Craigavon
+QLN700000007051Stonebridge Roundabout                            N0000013
+QBN700000007051295086  349732  Craigavon
+QLN700000008284Stonebridge                                       N0000003
+QBN700000008284294993  349545  Armagh
+QLN700000008285Ballyleny Hall                                    N0000003
+QBN700000008285294985  349307  Armagh
+QLN700000008286Ballyleny Road                                    N0000003
+QBN700000008286295006  348967  Armagh
+QLN700000008287Legacorry Road                                    N0000003
+QBN700000008287294936  348826  Armagh
+QLN700000007052Elm Park                                          N0000013
+QBN700000007052294641  348321  Craigavon
+QLN700000007053Mullalelish Road                                  N0000013
+QBN700000007053294602  348113  Craigavon
+QLN700000007054Annareagh Road                                    N0000013
+QBN700000007054294483  347807  Craigavon
+QLN700000007055Richill Village                                   N0000013
+QBN700000007055294178  347971  Craigavon
+QLN700000008288Castleview Park                                   N0000003
+QBN700000008288293864  348157  Armagh
+QLN700000008289Corcreevy Road                                    N0000003
+QBN700000008289293457  348558  Armagh
+QLN700000008292Sandymount Road                                   N0000003
+QBN700000008292292990  348373  Armagh
+QLN700000008293Cloghan Road                                      N0000003
+QBN700000008293292605  348401  Armagh
+QLN700000008294Mullanasilla Road                                 N0000003
+QBN700000008294292189  348126  Armagh
+QLN700000008295Woodview                                          N0000003
+QBN700000008295291706  347627  Armagh
+QLN700000008296Mullaghbane Crossroads                            N0000003
+QBN700000008296291299  347153  Armagh
+QLN700000008297Annaclare                                         N0000003
+QBN700000008297290425  346660  Armagh
+QLN700000008298Portadown Road                                    N0000003
+QBN700000008298290160  346856  Armagh
+QLN700000008299Elim Church                                       N0000003
+QBN700000008299289298  346379  Armagh
+QLN700000008300Dillon Heights                                    N0000003
+QBN700000008300289015  346140  Armagh
+QLN700000008301Dean's Bridge                                     N0000003
+QBN700000008301288601  345845  Armagh
+QLN700000014980Tower Hill                                        N0000003
+QBN700000014980288139  345683  Armagh
+QLN700000008236Lonsdale Road                                     N0000003
+QBN700000008236287584  345536  Armagh
+QLN700000008235Armagh Bus Station                                N0000003
+QBN700000008235287547  345506  Armagh
+QLN700000008267Tower Hill                                        N0000003
+QBN700000008267288129  345693  Armagh
+QLN700000008268Dean's Bridge                                     N0000003
+QBN700000008268288635  345879  Armagh
+QLN700000008269Dillon Heights                                    N0000003
+QBN700000008269289012  346160  Armagh
+QLN700000008270Elim Church                                       N0000003
+QBN700000008270289358  346482  Armagh
+QLN700000007056Richill Village                                   N0000013
+QBN700000007056294187  347991  Craigavon
+QLN700000000327Portadown Train Station (bus stop)                N0000013
+QBN700000000327300894  353965  Craigavon
+QLN700000001801Belfast Grand Central Busway                      N0000009
+QBN700000001801332700  373424  Belfast Metro Ops
+QLN700000014984Mall West                                         N0000003
+QBN700000014984287858  345151  Armagh
+QLN700000008088Armagh City Hotel                                 N0000003
+QBN700000008088287696  344850  Armagh
+QLN700000008155Christian Brothers Primary School                 N0000003
+QBN700000008155287267  344578  Armagh
+QLN700000008199Cregagh Gardens                                   N0000003
+QBN700000008199287056  344187  Armagh
+QLN700000008201Anne Street                                       N0000003
+QBN700000008201285880  343709  Armagh
+QLN700000008202Hill Street                                       N0000003
+QBN700000008202285663  343556  Armagh
+QLN700000008229Magheraville Road                                 N0000003
+QBN700000008229285253  343040  Armagh
+QLN700000008228Milford Cottages                                  N0000003
+QBN700000008228284983  342790  Armagh
+QLN700000008227Goland Road                                       N0000003
+QBN700000008227283909  341901  Armagh
+QLN700000008206Brootally Crossroads                              N0000003
+QBN700000008206282581  340586  Armagh
+QLN700000008225Farnaloy Road                                     N0000003
+QBN700000008225281831  339681  Armagh
+QLN700000008208Dernalea Road                                     N0000003
+QBN700000008208281095  339447  Armagh
+QLN700000008209Long Nancy's                                      N0000003
+QBN700000008209280057  338946  Armagh
+QLN700000008210Derryhaw Road                                     N0000003
+QBN700000008210278993  339291  Armagh
+QLN700000008211Hamiltons Corner                                  N0000003
+QBN700000008211278049  339003  Armagh
+QLN700000008212Sherry's Corner                                   N0000003
+QBN700000008212276779  338070  Armagh
+QLN700000008213Rathtrillick Road                                 N0000003
+QBN700000008213275949  338450  Armagh
+QLN700000015962Main Street                                       N0000003
+QBN700000015962275316  338820  Armagh
+QLN700000008215Foyduff                                           N0000003
+QBN700000008215273926  336898  Armagh
+QLN700000015849Monaghan Bus Station                              N0000001
+QBN700000015849267170  334178
+QLN700000015846Cavan Bus Station                                 N0000003
+QBN700000015846241813  304745  Armagh
+QLN700000015847Jubilee Road                                      N0000003
+QBN700000015847250186  326107  Armagh
+QLN700000015848Smithborough Village                              N0000003
+QBN700000015848259038  330752  Armagh
+QLN700000008216Foyduff                                           N0000003
+QBN700000008216273944  336926  Armagh
+QLN700000008217Main Street                                       N0000003
+QBN700000008217275305  338815  Armagh
+QLN700000008218Rathtrillick Road                                 N0000003
+QBN700000008218275931  338475  Armagh
+QLN700000008219Sherry's Corner                                   N0000003
+QBN700000008219276810  338074  Armagh
+QLN700000008221Monaghan Road                                     N0000003
+QBN700000008221277870  338953  Armagh
+QLN700000017077Hamiltons Corner                                  N0000003
+QBN700000017077278061  339017  Armagh
+QLN700000008222Derryhaw Road                                     N0000003
+QBN700000008222278994  339301  Armagh
+QLN700000008223Long Nancy's                                      N0000003
+QBN700000008223280058  338954  Armagh
+QLN700000008224Dernalea Road                                     N0000003
+QBN700000008224281152  339480  Armagh
+QLN700000008226Brootally Crossroads                              N0000003
+QBN700000008226282665  340693  Armagh
+QLN700000008205Goland Road                                       N0000003
+QBN700000008205283952  341947  Armagh
+QLN700000008204Milford Cottages                                  N0000003
+QBN700000008204284927  342754  Armagh
+QLN700000008203Magheraville Road                                 N0000003
+QBN700000008203285239  343053  Armagh
+QLN700000008230Hill Street                                       N0000003
+QBN700000008230285646  343560  Armagh
+QLN700000008231Anne Street                                       N0000003
+QBN700000008231285864  343723  Armagh
+QLN700000008232Cregagh Gardens                                   N0000003
+QBN700000008232287040  344195  Armagh
+QLN700000008233Christian Brothers Primary School                 N0000003
+QBN700000008233287206  344454  Armagh
+QLN700000008234Irish Street Bridge                               N0000003
+QBN700000008234287288  344664  Armagh
+QLN700000014978St Malachy's Church                               N0000003
+QBN700000014978287344  344790  Armagh
+QLN700000008127Health Centre                                     N0000003
+QBN700000008127287628  344837  Armagh
+QLN700000014969Mall West                                         N0000003
+QBN700000014969287835  345150  Armagh
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNGL      Goldline
+QDNGLE 251aOBelfast, Grand Central Station - Armagh, Buscentre
+QDNGLE 251cOBelfast, Grand Central Station - Armagh, Buscentre
+QDNGLE 251aIArmagh, Buscentre - Belfast, Grand Central Station
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station
+QDNGLE 270 ICavan, Bus Station - Belfast, Grand Central Station
+QDNGLE 271 OBelfast, Grand Central Station - Cavan, Bus Station
+QDNGLE 271 IMonaghan, Bus Station - Belfast, Grand Central Station
