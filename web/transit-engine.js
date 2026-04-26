@@ -15,7 +15,9 @@
  *   window.PublicTransportEngine.showForecast({ branch, year })
  *   window.PublicTransportEngine.forecastFor(branch, year)
  *   window.PublicTransportEngine.baseFeatureCollection(year)
+ *   window.PublicTransportEngine.baseRouteFeatureCollection(year)
  *   window.PublicTransportEngine.forecastFeatureCollection(branch, year)
+ *   window.PublicTransportEngine.forecastRouteFeatureCollection(branch, year)
  *   window.PublicTransportEngine.clear()
  *
  * window.TransitEngine is kept as an alias so older dashboard code continues
@@ -28,10 +30,17 @@
   const EVENTS_URL = '/api/events?signal=services&limit=0';
 
   const BASE_SOURCE = 'pt-base-stops';
+  const ROUTE_SOURCE = 'pt-base-routes';
+  const ROUTE_GLOW_LAYER = 'pt-route-glow';
+  const ROUTE_LINE_LAYER = 'pt-route-line';
+  const ROUTE_STOP_LAYER = 'pt-route-nodes';
   const BASE_HEAT_LAYER = 'pt-access-heat';
   const BASE_HALO_LAYER = 'pt-stop-halo';
   const BASE_CORE_LAYER = 'pt-stop-core';
   const FORECAST_SOURCE = 'pt-forecast-stops';
+  const FORECAST_ROUTE_SOURCE = 'pt-forecast-routes';
+  const FORECAST_ROUTE_GLOW_LAYER = 'pt-forecast-route-glow';
+  const FORECAST_ROUTE_LINE_LAYER = 'pt-forecast-route-line';
   const FORECAST_HALO_LAYER = 'pt-forecast-halo';
   const FORECAST_CORE_LAYER = 'pt-forecast-core';
 
@@ -40,6 +49,7 @@
 
   let map = null;
   let stops = null;
+  let routes = [];
   let events = [];
   let loadPromise = null;
   let lastResult = null;
@@ -142,6 +152,129 @@
     return Math.sqrt(dx * dx + dy * dy);
   }
 
+  function projectOnSegment(point, a, b) {
+    if (!Array.isArray(point) || !Array.isArray(a) || !Array.isArray(b)) return 0;
+    const apx = (point[0] - a[0]) * M_PER_DEG_LNG;
+    const apy = (point[1] - a[1]) * M_PER_DEG_LAT;
+    const abx = (b[0] - a[0]) * M_PER_DEG_LNG;
+    const aby = (b[1] - a[1]) * M_PER_DEG_LAT;
+    const ab2 = abx * abx + aby * aby;
+    return clamp(ab2 ? (apx * abx + apy * aby) / ab2 : 0, 0, 1);
+  }
+
+  function routeColor(kind) {
+    if (kind === 'glider') return '#7c3aed';
+    if (kind === 'orbital') return '#16a34a';
+    if (kind === 'rail') return '#0ea5e9';
+    if (kind === 'future') return '#7c3aed';
+    return '#0284c7';
+  }
+
+  function routeSpecs() {
+    // Major corridors are snapped to the in-app Belfast OSM stop network:
+    // current Glider/Metro axes plus the north/south expansion corridor.
+    return [
+      {
+        id: 'glider-g1-east-west',
+        name: 'Glider G1 east-west spine',
+        kind: 'glider',
+        color: '#0284c7',
+        anchors: [[-6.055, 54.590], [-6.005, 54.595], [-5.930, 54.598], [-5.865, 54.598], [-5.805, 54.606]]
+      },
+      {
+        id: 'metro-north-south',
+        name: 'Metro north-south spine',
+        kind: 'bus',
+        color: '#16a34a',
+        anchors: [[-5.944, 54.681], [-5.935, 54.632], [-5.930, 54.598], [-5.929, 54.563], [-5.938, 54.522]]
+      },
+      {
+        id: 'lagan-cross-city',
+        name: 'Lagan cross-city rail/bus spine',
+        kind: 'rail',
+        color: '#0ea5e9',
+        anchors: [[-6.074, 54.553], [-6.005, 54.575], [-5.932, 54.596], [-5.880, 54.620], [-5.815, 54.657]]
+      },
+      {
+        id: 'g3-north-south-expansion',
+        name: 'Likely G3 north-south expansion',
+        kind: 'future',
+        color: '#15803d',
+        anchors: [[-6.065, 54.651], [-6.010, 54.622], [-5.932, 54.598], [-5.875, 54.571], [-5.812, 54.533]]
+      },
+      {
+        id: 'glider-g2-titanic-quarter',
+        name: 'Glider G2 Titanic Quarter link',
+        kind: 'glider',
+        color: '#7c3aed',
+        anchors: [[-5.945, 54.594], [-5.910, 54.604], [-5.870, 54.606], [-5.832, 54.615]]
+      }
+    ];
+  }
+
+  function nearestStop(coord, maxMetres) {
+    let best = null;
+    let bestD = Infinity;
+    (stops || []).forEach(stop => {
+      const d = distMetres(coord, stop.coord);
+      if (d < bestD) {
+        best = stop;
+        bestD = d;
+      }
+    });
+    return best && bestD <= (maxMetres || 900) ? best : null;
+  }
+
+  function routeStopsForSpec(spec) {
+    const seen = new Set();
+    const rows = [];
+    for (let i = 0; i + 1 < spec.anchors.length; i++) {
+      const a = spec.anchors[i];
+      const b = spec.anchors[i + 1];
+      (stops || []).forEach(stop => {
+        const d = distToSegment(stop.coord, a, b);
+        if (d > 420) return;
+        const t = projectOnSegment(stop.coord, a, b);
+        rows.push({ stop, key: i + t, d });
+      });
+    }
+    spec.anchors.forEach((anchor, index) => {
+      const stop = nearestStop(anchor, 950);
+      if (stop) rows.push({ stop, key: index, d: 0 });
+    });
+    return rows
+      .sort((a, b) => (a.key - b.key) || (a.d - b.d))
+      .filter(row => {
+        if (seen.has(row.stop.id)) return false;
+        seen.add(row.stop.id);
+        return true;
+      })
+      .filter((row, index, arr) => {
+        if (arr.length <= 26) return true;
+        const stride = Math.ceil(arr.length / 26);
+        return index % stride === 0 || index === arr.length - 1;
+      })
+      .map(row => row.stop);
+  }
+
+  function buildRouteCorridors() {
+    routes = routeSpecs().map(spec => {
+      const routeStops = routeStopsForSpec(spec);
+      const coords = routeStops.length >= 2
+        ? routeStops.map(stop => stop.coord)
+        : spec.anchors;
+      return {
+        id: spec.id,
+        name: spec.name,
+        kind: spec.kind,
+        color: spec.color || routeColor(spec.kind),
+        stops: routeStops,
+        coords
+      };
+    }).filter(route => route.coords.length >= 2);
+    return routes;
+  }
+
   function classifyMode(props) {
     const text = Object.keys(props || {}).map(k => String(props[k] || '')).join(' ').toLowerCase();
     if (text.includes('glider')) return 'glider';
@@ -228,6 +361,7 @@
         .map(normaliseStop);
       events = ((eventData && eventData.events) || []).map(normaliseEvent).filter(Boolean);
       attachEvidenceToStops();
+      buildRouteCorridors();
       return stops;
     }).catch(err => {
       console.warn('PublicTransportEngine: load failed', err);
@@ -250,7 +384,52 @@
       return false;
     }
     if (!map.getSource(BASE_SOURCE)) map.addSource(BASE_SOURCE, { type: 'geojson', data: emptyFC() });
+    if (!map.getSource(ROUTE_SOURCE)) map.addSource(ROUTE_SOURCE, { type: 'geojson', data: emptyFC() });
     if (!map.getSource(FORECAST_SOURCE)) map.addSource(FORECAST_SOURCE, { type: 'geojson', data: emptyFC() });
+    if (!map.getSource(FORECAST_ROUTE_SOURCE)) map.addSource(FORECAST_ROUTE_SOURCE, { type: 'geojson', data: emptyFC() });
+
+    if (!map.getLayer(ROUTE_GLOW_LAYER)) {
+      map.addLayer({
+        id: ROUTE_GLOW_LAYER,
+        type: 'line',
+        source: ROUTE_SOURCE,
+        paint: {
+          'line-color': ['get', 'color'],
+          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 4, 1, 11],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.14, 1, 0.36],
+          'line-blur': 3.5
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      });
+    }
+    if (!map.getLayer(ROUTE_LINE_LAYER)) {
+      map.addLayer({
+        id: ROUTE_LINE_LAYER,
+        type: 'line',
+        source: ROUTE_SOURCE,
+        paint: {
+          'line-color': ['get', 'color'],
+          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.4, 1, 3.8],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.36, 1, 0.86]
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      });
+    }
+    if (!map.getLayer(ROUTE_STOP_LAYER)) {
+      map.addLayer({
+        id: ROUTE_STOP_LAYER,
+        type: 'circle',
+        source: BASE_SOURCE,
+        filter: ['==', ['get', 'routeNode'], 1],
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 3.4, 15, 5.6],
+          'circle-color': '#ffffff',
+          'circle-stroke-color': ['get', 'routeColor'],
+          'circle-stroke-width': 1.7,
+          'circle-opacity': 0.9
+        }
+      });
+    }
 
     if (!map.getLayer(BASE_HEAT_LAYER)) {
       map.addLayer({
@@ -301,6 +480,42 @@
         }
       });
     }
+    [ROUTE_GLOW_LAYER, ROUTE_LINE_LAYER, ROUTE_STOP_LAYER].forEach(layerId => {
+      if (!map.getLayer(layerId)) return;
+      const beforeForecast = map.getLayer(FORECAST_ROUTE_GLOW_LAYER) ? FORECAST_ROUTE_GLOW_LAYER : undefined;
+      try {
+        if (beforeForecast) map.moveLayer(layerId, beforeForecast);
+        else map.moveLayer(layerId);
+      } catch (_) {}
+    });
+    if (!map.getLayer(FORECAST_ROUTE_GLOW_LAYER)) {
+      map.addLayer({
+        id: FORECAST_ROUTE_GLOW_LAYER,
+        type: 'line',
+        source: FORECAST_ROUTE_SOURCE,
+        paint: {
+          'line-color': ['get', 'deltaColor'],
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 6, 1, 18],
+          'line-opacity': 0.28,
+          'line-blur': 5
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      });
+    }
+    if (!map.getLayer(FORECAST_ROUTE_LINE_LAYER)) {
+      map.addLayer({
+        id: FORECAST_ROUTE_LINE_LAYER,
+        type: 'line',
+        source: FORECAST_ROUTE_SOURCE,
+        paint: {
+          'line-color': ['get', 'deltaColor'],
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 6.6],
+          'line-opacity': 0.9,
+          'line-dasharray': [1.3, 0.7]
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      });
+    }
     if (!map.getLayer(FORECAST_HALO_LAYER)) {
       map.addLayer({
         id: FORECAST_HALO_LAYER,
@@ -331,7 +546,50 @@
     return true;
   }
 
-  function stopFeature(stop, year) {
+  function routeEventCount(route, year) {
+    const y = Number(year) || 2026;
+    const coords = route && route.coords ? route.coords : [];
+    if (!coords.length || !events.length) return 0;
+    return events.filter(ev => {
+      if (!ev || ev.year > y) return false;
+      for (let i = 0; i + 1 < coords.length; i++) {
+        if (distToSegment(ev.coord, coords[i], coords[i + 1]) <= 560) return true;
+      }
+      return coords.some(coord => distMetres(ev.coord, coord) <= 520);
+    }).length;
+  }
+
+  function routeStrengthForYear(route, year) {
+    const y = Number(year) || 2026;
+    const stopDensity = clamp(((route && route.stops && route.stops.length) || 2) / 22, 0.25, 1);
+    const timeRamp = clamp((y - 2016) / 10, 0, 1);
+    const evidenceRamp = clamp(routeEventCount(route, y) / 5, 0, 1);
+    const futureCue = y > 2026 && route && route.kind === 'future' ? clamp((y - 2026) / 10, 0, 1) * 0.18 : 0;
+    return clamp(0.18 + stopDensity * 0.34 + timeRamp * 0.24 + evidenceRamp * 0.20 + futureCue, 0.18, 0.98);
+  }
+
+  function routeStopMetaForYear(year) {
+    const meta = {};
+    const y = Number(year) || 2026;
+    routes.forEach(route => {
+      const strength = routeStrengthForYear(route, y);
+      (route.stops || []).forEach(stop => {
+        if (stop.firstYear > y) return;
+        if (!meta[stop.id] || strength > meta[stop.id].strength) {
+          meta[stop.id] = {
+            color: route.color,
+            routeId: route.id,
+            routeName: route.name,
+            strength
+          };
+        }
+      });
+    });
+    return meta;
+  }
+
+  function stopFeature(stop, year, routeMeta) {
+    const meta = routeMeta || null;
     return {
       type: 'Feature',
       properties: {
@@ -342,6 +600,9 @@
         evidenceCount: stop.evidenceCount,
         weight: stop.weight,
         color: stop.color,
+        routeNode: meta ? 1 : 0,
+        routeColor: meta ? meta.color : stop.color,
+        routeName: meta ? meta.routeName : '',
         visibleYear: year
       },
       geometry: { type: 'Point', coordinates: stop.coord }
@@ -350,9 +611,32 @@
 
   function baseFeatureCollection(year) {
     const y = Number(year) || 2026;
+    const routeMeta = routeStopMetaForYear(y);
     const features = (stops || [])
       .filter(stop => stop.firstYear <= y)
-      .map(stop => stopFeature(stop, y));
+      .map(stop => stopFeature(stop, y, routeMeta[stop.id]));
+    return { type: 'FeatureCollection', features };
+  }
+
+  function baseRouteFeatureCollection(year) {
+    const y = Number(year) || 2026;
+    const features = routes.map(route => {
+      const strength = routeStrengthForYear(route, y);
+      return {
+        type: 'Feature',
+        properties: {
+          id: route.id,
+          name: route.name,
+          kind: route.kind,
+          color: route.color,
+          strength,
+          stopCount: (route.stops || []).length,
+          evidenceCount: routeEventCount(route, y),
+          visibleYear: y
+        },
+        geometry: { type: 'LineString', coordinates: route.coords }
+      };
+    });
     return { type: 'FeatureCollection', features };
   }
 
@@ -577,6 +861,105 @@
     return { type: 'FeatureCollection', features, summary: result.summary };
   }
 
+  function validCoord(coord) {
+    return Array.isArray(coord) &&
+      coord.length >= 2 &&
+      Number.isFinite(Number(coord[0])) &&
+      Number.isFinite(Number(coord[1]));
+  }
+
+  function pathForItem(item) {
+    if (!item) return [];
+    const path = Array.isArray(item.path) && item.path.length >= 2
+      ? item.path
+      : [item.start, item.end].filter(validCoord);
+    return path.filter(validCoord).map(coord => [Number(coord[0]), Number(coord[1])]);
+  }
+
+  function pathLengthMetres(path) {
+    let metres = 0;
+    for (let i = 0; i + 1 < path.length; i++) metres += distMetres(path[i], path[i + 1]);
+    return metres;
+  }
+
+  function plannedTransitRouteFeatures(branch, year, meanModelDelta) {
+    const y = Number(year) || 2036;
+    const items = ((branch && branch.items) || []).filter(item => item && item.type === 'road' && (Number(item.year) || 2026) <= y);
+    return items.map((item, index) => {
+      const path = pathForItem(item);
+      if (path.length < 2) return null;
+      const text = [
+        item.label,
+        item.plannerMode,
+        item.plannerEngine,
+        branch && branch.plannerEngine,
+        branch && branch.forecastObjective
+      ].filter(Boolean).join(' ').toLowerCase();
+      const isTransitPriority = /transit|public|bus|services|glider/.test(text);
+      const horizon = clamp((y - (Number(item.year) || 2026)) / 10, 0, 1);
+      const lengthScore = clamp(pathLengthMetres(path) / 4200, 0.12, 0.58);
+      const delta = clamp(0.1 + lengthScore * 0.22 + horizon * 0.12 + Math.max(0, meanModelDelta || 0) * 4 + (isTransitPriority ? 0.16 : 0.06), 0.08, 0.72);
+      const magnitude = clamp(0.25 + lengthScore + horizon * 0.22 + Math.abs(meanModelDelta || 0) * 5, 0.22, 1);
+      return {
+        type: 'Feature',
+        properties: {
+          id: 'planned-transit-' + (item.id || index),
+          name: isTransitPriority ? 'Planned transit-priority corridor' : 'Likely bus corridor on new road',
+          kind: 'planned',
+          delta,
+          magnitude,
+          deltaColor: isTransitPriority ? '#7c3aed' : '#22c55e',
+          future: 1,
+          year: y,
+          sourceItemId: item.id || ''
+        },
+        geometry: { type: 'LineString', coordinates: path }
+      };
+    }).filter(Boolean);
+  }
+
+  function forecastRouteFeatureCollection(branch, year) {
+    const y = Number(year) || 2036;
+    const result = forecastFor(branch, y);
+    const rowByStopId = {};
+    (result.stops || []).forEach(row => { rowByStopId[row.stop.id] = row; });
+
+    const features = routes.map(route => {
+      const routeRows = (route.stops || []).map(stop => rowByStopId[stop.id]).filter(Boolean);
+      const affected = routeRows.filter(row => row.magnitude > 0.035);
+      if (!affected.length) return null;
+      const weight = affected.reduce((sum, row) => sum + row.magnitude, 0) || 1;
+      const delta = affected.reduce((sum, row) => sum + row.delta * row.magnitude, 0) / weight;
+      const magnitude = clamp(
+        (weight / Math.max(6, routeRows.length || 1)) * 2.4 +
+        Math.abs(delta) * 0.55,
+        0.08,
+        1
+      );
+      if (magnitude < 0.08) return null;
+      return {
+        type: 'Feature',
+        properties: {
+          id: 'forecast-' + route.id,
+          name: route.name,
+          kind: route.kind,
+          delta,
+          magnitude,
+          deltaColor: deltaColor(delta),
+          affectedStops: affected.length,
+          future: 0,
+          year: y
+        },
+        geometry: { type: 'LineString', coordinates: route.coords }
+      };
+    }).filter(Boolean);
+
+    plannedTransitRouteFeatures(branch, y, result.summary && result.summary.meanModelDelta)
+      .forEach(feature => features.push(feature));
+
+    return { type: 'FeatureCollection', features, summary: result.summary };
+  }
+
   function init(opts) {
     map = (opts && opts.map) || null;
     if (!map) return;
@@ -588,6 +971,8 @@
     if (!ensureLayers()) return false;
     const base = map.getSource(BASE_SOURCE);
     if (base) base.setData(baseFeatureCollection(year));
+    const route = map.getSource(ROUTE_SOURCE);
+    if (route) route.setData(baseRouteFeatureCollection(year));
     return true;
   }
 
@@ -597,7 +982,9 @@
       return null;
     }
     const forecast = map.getSource(FORECAST_SOURCE);
+    const forecastRoute = map.getSource(FORECAST_ROUTE_SOURCE);
     if (forecast) forecast.setData(emptyFC());
+    if (forecastRoute) forecastRoute.setData(emptyFC());
     return { summary: { networkStops: (stops || []).length, mode: 'historical' } };
   }
 
@@ -612,15 +999,21 @@
     const fc = forecastFeatureCollection(branch, year);
     const forecast = map.getSource(FORECAST_SOURCE);
     if (forecast) forecast.setData(fc);
+    const forecastRoute = map.getSource(FORECAST_ROUTE_SOURCE);
+    if (forecastRoute) forecastRoute.setData(forecastRouteFeatureCollection(branch, year));
     return { stops: lastResult ? lastResult.stops : [], summary: fc.summary };
   }
 
   function clear() {
     if (!map) return;
     const base = map.getSource(BASE_SOURCE);
+    const route = map.getSource(ROUTE_SOURCE);
     const forecast = map.getSource(FORECAST_SOURCE);
+    const forecastRoute = map.getSource(FORECAST_ROUTE_SOURCE);
     if (base) base.setData(emptyFC());
+    if (route) route.setData(emptyFC());
     if (forecast) forecast.setData(emptyFC());
+    if (forecastRoute) forecastRoute.setData(emptyFC());
   }
 
   function getStopsNear(coord, radiusKm) {
@@ -633,6 +1026,7 @@
     return {
       loaded: isLoaded(),
       stopCount: (stops || []).length,
+      routeCount: routes.length,
       eventCount: events.length,
       lastSummary: lastResult && lastResult.summary,
       sources: {
@@ -651,7 +1045,9 @@
     showForecast,
     forecastFor,
     baseFeatureCollection,
+    baseRouteFeatureCollection,
     forecastFeatureCollection,
+    forecastRouteFeatureCollection,
     getStopsNear,
     clear,
     diagnostics

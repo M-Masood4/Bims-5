@@ -186,6 +186,14 @@
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
   function round(v, d) { const m = Math.pow(10, d || 0); return Math.round(v * m) / m; }
   function lerp(a, b, t) { return a + (b - a) * t; }
+  const DASH_M_PER_DEG_LAT = 111320;
+  const DASH_M_PER_DEG_LNG = 111320 * Math.cos(54.6 * Math.PI / 180);
+  function coordDistKm(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return Infinity;
+    const dx = (Number(a[0]) - Number(b[0])) * DASH_M_PER_DEG_LNG;
+    const dy = (Number(a[1]) - Number(b[1])) * DASH_M_PER_DEG_LAT;
+    return Math.hypot(dx, dy) / 1000;
+  }
 
   function fmtNumber(n) {
     if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
@@ -454,7 +462,7 @@
       'rcUsage', 'roadCompareSummary',
       'planRoadHint', 'planRoadStep', 'planRoadCancel',
       // New light-theme layout
-      'leftSidebarTitle', 'leftSidebarSubtitle', 'leftSidebarFilter', 'leftSidebarList',
+      'leftSidebarTitle', 'leftSidebarSubtitle', 'leftSidebarFilter', 'leftSidebarList', 'selectedEventSummary',
       'timelineYears', 'timelineDots', 'timelineFilled'
     ];
     ids.forEach(id => { els[id] = document.getElementById(id); });
@@ -463,6 +471,22 @@
     els.viewToggleButtons = document.querySelectorAll('.map-ctrl-btn[data-view], .toolbar-view-btn[data-view]');
     els.bottomTabs = document.querySelectorAll('.bn-btn');
     els.topTabs = els.topNav ? els.topNav.querySelectorAll('.nav-btn') : [];
+    ensureToolbarLensHost();
+  }
+
+  function ensureToolbarLensHost() {
+    if (els.lensTabs && document.body.contains(els.lensTabs)) return els.lensTabs;
+    const toolbarRight = document.querySelector('.toolbar-right');
+    if (!toolbarRight) return null;
+    const host = document.createElement('div');
+    host.id = 'lensTabs';
+    host.className = 'right-tabs';
+    host.setAttribute('role', 'tablist');
+    host.setAttribute('aria-label', 'Forecast filters');
+    const viewToggle = toolbarRight.querySelector('.toolbar-view-toggle');
+    toolbarRight.insertBefore(host, viewToggle || toolbarRight.firstChild);
+    els.lensTabs = host;
+    return host;
   }
 
   // ---------- DATA LOAD ----------
@@ -842,6 +866,7 @@
     branch.scenarioStaged = true;
     if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     state.lastPlacedItemId = item.id;
+    closeWorkspaceSplit();
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     triggerEpicentrePulse(item);
@@ -917,6 +942,7 @@
     branch.scenarioStaged = true;
     if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     state.lastPlacedItemId = item.id;
+    closeWorkspaceSplit();
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     triggerEpicentrePulse(item);
@@ -959,13 +985,14 @@
     branch.scenarioStaged = true;
     if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     state.lastPlacedItemId = item.id;
+    closeWorkspaceSplit();
     afterChange();
     if (item.type === 'building') triggerEpicentrePulse(item);
     toast('Added ' + (item.label || type) + ' to ' + branch.name);
   }
 
   async function runScenarioForBranch(branch, item) {
-    const building = item || (branch.items || []).find(it => it.type === 'building' && (it.postcode || (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat)))));
+    const building = item || selectedScenarioBuilding(branch);
     if (!building) return null;
     if (branch._scenarioPending) return branch._scenarioPending;
     branch._scenarioPending = fetch('/api/scenario-studio/run', {
@@ -1017,7 +1044,14 @@
   }
 
   function selectedScenarioBuilding(branch) {
-    return branch && (branch.items || []).find(it => it.type === 'building' && (it.postcode || (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat)))));
+    if (!branch) return null;
+    const buildings = (branch.items || []).filter(it =>
+      it.type === 'building' &&
+      (it.postcode || (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat))))
+    );
+    if (!buildings.length) return null;
+    const latest = buildings.find(it => it.id === state.lastPlacedItemId);
+    return latest || buildings[buildings.length - 1];
   }
 
   function scenarioResultForBranch(branch) {
@@ -1120,6 +1154,8 @@
     branch.scenarioResult = null;
     branch.scenarioStaged = true;
     if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
+    state.lastPlacedItemId = item.id;
+    closeWorkspaceSplit();
     afterChange();
     toast('Added Road segment to ' + branch.name);
   }
@@ -1427,6 +1463,148 @@
     buildings: '#eaf4ff', transit: '#edfaf0', services: '#edfaf0',
   };
 
+  function simpleEventKind(ev) {
+    const signal = ev && (ev.signal || ev.category || state.lens);
+    const title = String((ev && ev.title) || '').toLowerCase();
+    const tags = ev && ev.tags ? ev.tags : {};
+    const basis = String((ev && (ev.sourceBasis || ev.eventSourceBasis)) || '').toLowerCase();
+    if (title.includes('planning approval')) return 'Planning approval';
+    if (title.includes('station opened') || basis.includes('station opening')) return 'Station opening';
+    if (signal === 'traffic' || tags.highway) return 'Road network change';
+    if (signal === 'jobs' || tags.office || tags.shop) return 'Jobs access change';
+    if (signal === 'electricity' || tags.power) return 'Grid network change';
+    if (signal === 'services' || signal === 'transit' || tags.public_transport || tags.railway) return 'Public transit change';
+    if (signal === 'buildings' || tags.building) return 'Building footprint change';
+    return 'City change';
+  }
+
+  function compactPlaceName(value) {
+    let text = String(value || '').replace(/\s+/g, ' ').trim();
+    text = text.replace(/\s+BT\d[\dA-Z]?\s*\d[A-Z]{2}\.?$/i, '').trim();
+    text = text.replace(/\s+Belfast\.?$/i, '').trim();
+    text = text.replace(/\s+Northern Ireland\.?$/i, '').trim();
+    if (text.includes(';')) text = text.split(';')[0].trim();
+    if (text.length > 42) text = text.slice(0, 39).trim() + '...';
+    return text;
+  }
+
+  function simpleSourceName(ev) {
+    let source = String((ev && (ev.sourceName || ev.eventSourceName)) || (ev && ev.osmChangeset ? 'OpenStreetMap' : '') || '');
+    source = source
+      .replace('OpenStreetMap / Overpass API', 'OSM')
+      .replace(/^OpenStreetMap$/i, 'OSM')
+      .replace(/Northern Ireland planning statistics.*$/i, 'NI planning stats')
+      .replace(/planning-statistics-\d{4}-\d{2}-dataset\.csv/i, 'NI planning stats');
+    return source || 'Belfast event catalogue';
+  }
+
+  function planningProposalText(title) {
+    return String(title || '')
+      .replace(/^.+?\s+planning approval:\s*/i, '')
+      .replace(/^proposed\s+/i, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function planningSiteName(area) {
+    const clean = String(area || '')
+      .replace(/\s+BT\d[\dA-Z]?\s*\d[A-Z]{2}\.?$/i, '')
+      .replace(/\s+Belfast\.?$/i, '')
+      .trim();
+    if (!clean) return '';
+    const segments = clean.split(/\s{2,}|[,;]/).map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    const namedPattern = /(Social Club|Grammar School|Primary School|School|City Hospital|Hospital|House|Centre|Church|College|Station|Library|Clinic|Surgery|Hall)/i;
+    const namedSegment = segments.find(s => namedPattern.test(s));
+    if (namedSegment) {
+      const venue = namedSegment.match(/^(.+?(?:Social Club|Grammar School|Primary School|School|City Hospital|Hospital|House|Centre|Church|College|Station|Library|Clinic|Surgery|Hall))/i);
+      return compactPlaceName((venue && venue[1]) || namedSegment);
+    }
+    return compactPlaceName(segments[0] || clean.replace(/\s+/g, ' '));
+  }
+
+  function planningProposalSummary(text) {
+    const t = String(text || '').toLowerCase();
+    if (/medical|hospital|clinic|health/.test(t)) return 'medical facility';
+    if (/classroom|school|primary|grammar/.test(t)) return /extension/.test(t) ? 'school extension' : 'classroom unit';
+    if (/telecom|antenna|base station|tower|mast/.test(t)) return 'telecoms upgrade';
+    if (/car park|parking/.test(t) && /lift|platform/.test(t)) return 'car park lift';
+    if (/church|chapel/.test(t) && /kitchen/.test(t)) return 'church kitchen extension';
+    if (/external lift|platform lift|lift to service/.test(t)) return 'access lift';
+    if (/mobile|toilet accommodation/.test(t)) return 'modular accommodation';
+    if (/social club|main hall|lounge/.test(t)) return 'social club extension';
+    if (/first floor/.test(t)) return 'first-floor extension';
+    if (/boundary wall/.test(t)) return 'boundary works';
+    if (/extension/.test(t)) return 'building extension';
+    if (/alteration|alterations/.test(t)) return 'alterations';
+    if (/replacement|replace/.test(t)) return 'replacement works';
+    if (/development/.test(t)) return 'new development';
+    return String(text || 'approval').replace(/[.]+$/, '').slice(0, 34).trim() || 'approval';
+  }
+
+  function planningEventTitle(ev, category) {
+    const site = planningSiteName(ev && (ev.area || ev.location || ev.placeName));
+    const summary = planningProposalSummary(planningProposalText(ev && ev.title));
+    const prefix = site || category || 'Planning';
+    let title = prefix + ' - ' + summary;
+    if (title.length > 58 && site) title = site.slice(0, 34).trim() + ' - ' + summary;
+    if (title.length > 58) title = title.slice(0, 55).trim() + '...';
+    return title;
+  }
+
+  function simpleEventTitle(ev) {
+    if (!ev) return 'Event';
+    const area = String(ev.area || ev.location || ev.placeName || '').trim();
+    let title = String(ev.title || ev.label || area || 'Event').trim();
+    const planningMatch = title.match(/^(.+?)\s+planning approval:/i);
+    if (planningMatch) {
+      return planningEventTitle(ev, capitalise(planningMatch[1].replace(/_/g, ' ').trim()));
+    }
+    if (/road mapped in OSM/i.test(title) && area) {
+      return compactPlaceName(area) + ' update';
+    }
+    title = title
+      .replace(/^Belfast\s+/i, '')
+      .replace(/\s+mapped in OSM$/i, '')
+      .replace(/\s+road mapped$/i, ' road update')
+      .replace(/\s+road$/i, ' road update')
+      .replace(/\s+rail station opened$/i, ' station opened');
+    if (/^(residential|service|trunk|primary|secondary|tertiary|unclassified) road/i.test(title) && area) {
+      title = area + ' road update';
+    }
+    if (title.length > 58) title = title.slice(0, 55).trim() + '...';
+    return title;
+  }
+
+  function simpleEventSubtitle(ev) {
+    if (!ev) return '';
+    const bits = [simpleEventKind(ev)];
+    const place = compactPlaceName(ev.area || ev.location || ev.placeName || '');
+    if (place) bits.push(place);
+    if (ev.month || ev.year) bits.push(ev.month || String(ev.year));
+    return bits.join(' - ');
+  }
+
+  function simpleEventSourceLine(ev) {
+    if (!ev) return '';
+    const source = simpleSourceName(ev);
+    const confidence = ev.confidence ? ev.confidence + ' confidence' : '';
+    return [source, confidence].filter(Boolean).join(' - ');
+  }
+
+  function simpleEventNote(ev) {
+    if (!ev) return '';
+    const note = String(ev.impactNote || ev.explanation || ev.subtitle || '').trim();
+    const kind = simpleEventKind(ev);
+    if (/use the .*lens/i.test(note)) {
+      if (kind === 'Station opening') return 'Shows nearby access, jobs, traffic, and transit pressure around the station area.';
+      if (kind === 'Road network change') return 'Shows nearby traffic pressure and related cell changes around this road record.';
+      if (kind === 'Grid network change') return 'Shows local electricity pressure and nearby service impacts.';
+      if (kind === 'Public transit change') return 'Shows access changes around nearby stops and route corridors.';
+      return 'Shows how the nearby model cells changed around this event.';
+    }
+    return note.length > 135 ? note.slice(0, 132).trim() + '...' : note;
+  }
+
   function renderLeftSidebar() {
     if (!els.leftSidebarList || !els.leftSidebarTitle) return;
     const hist = isHistoricalMode();
@@ -1439,6 +1617,7 @@
     if (els.leftSidebarFilter) els.leftSidebarFilter.style.display = hist ? '' : 'none';
     if (hist) renderLeftSidebarEvents();
     else      renderLeftSidebarActivity();
+    renderSelectedEventSummary();
   }
 
   function renderLeftSidebarEvents() {
@@ -1464,11 +1643,11 @@
       const lensId = ev.signal || state.lens;
       const tint = LENS_TINTS[lensId] || '#eaf4ff';
       const icon = LENS_ICONS[lensId] || '•';
-      const title = escapeHtml(ev.title || ev.label || ('Event ' + (ev.id || '')));
-      const sub = escapeHtml(ev.subtitle || ev.location || ev.placeName || '');
-      const date = escapeHtml(ev.date || (ev.year ? String(ev.year) : ''));
+      const title = escapeHtml(simpleEventTitle(ev));
+      const sub = escapeHtml(simpleEventSubtitle(ev));
+      const date = escapeHtml(simpleEventSourceLine(ev));
       const active = (ev.id && ev.id === state.activeEventId) ? ' active' : '';
-      return '<div class="event-item' + active + '" data-event-id="' + escapeHtml(ev.id || '') + '">' +
+      return '<div class="event-item' + active + '" data-event-id="' + escapeHtml(ev.id || '') + '" role="button" tabindex="0">' +
         '<div class="event-icon" style="background:' + tint + '">' + icon + '</div>' +
         '<div class="event-info">' +
           '<div class="event-title">' + title + '</div>' +
@@ -1476,12 +1655,6 @@
           (date ? '<div class="event-date">' + date + '</div>' : '') +
         '</div></div>';
     }).join('');
-    els.leftSidebarList.querySelectorAll('.event-item').forEach(node => {
-      node.addEventListener('click', () => {
-        const id = node.getAttribute('data-event-id');
-        if (id && typeof selectEvent === 'function') selectEvent(id);
-      });
-    });
   }
 
   function renderLeftSidebarActivity() {
@@ -1560,6 +1733,23 @@
         const v = els.leftSidebarFilter.value;
         if (v && v !== 'all' && LENSES.find(l => l.id === v)) setLens(v);
         renderLeftSidebar();
+      });
+    }
+    if (els.leftSidebarList && els.leftSidebarList.dataset.delegatedClick !== '1') {
+      els.leftSidebarList.dataset.delegatedClick = '1';
+      els.leftSidebarList.addEventListener('click', (event) => {
+        const node = event.target && event.target.closest ? event.target.closest('.event-item[data-event-id]') : null;
+        if (!node || !els.leftSidebarList.contains(node)) return;
+        const id = node.getAttribute('data-event-id');
+        if (id) selectEvent(id);
+      });
+      els.leftSidebarList.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const node = event.target && event.target.closest ? event.target.closest('.event-item[data-event-id]') : null;
+        if (!node || !els.leftSidebarList.contains(node)) return;
+        event.preventDefault();
+        const id = node.getAttribute('data-event-id');
+        if (id) selectEvent(id);
       });
     }
     // First paint
@@ -1769,6 +1959,7 @@
           renderModify();
           return;
         }
+        closeWorkspaceSplit();
         // Roads now flow through the postcode → junction picker. If the
         // planner isn't armed yet, push the user to the search box rather
         // than letting them free-click points that won't sit on real roads.
@@ -3021,6 +3212,7 @@
       startTrafficSim({ auto: true });
     } else if (window.TrafficSim) {
       window.TrafficSim.refreshSegments();
+      if (typeof window.TrafficSim.previewVehicles === 'function') window.TrafficSim.previewVehicles(4000);
     }
     // Animate playback through sim years
     let i = 0;
@@ -3383,7 +3575,7 @@
     }
 
     // Yield to the browser so the modal paints + vehicles start moving,
-    // then run the headless comparison and paint the diff heatmap.
+    // then run the headless comparison and paint the road-link pressure view.
     setTimeout(() => {
       setRoadCompareProgress('Simulating without the new road…', 0.25);
       setTimeout(() => {
@@ -3404,8 +3596,8 @@
               if (els.roadCompareModal) els.roadCompareModal.hidden = true;
               return;
             }
-            // Persistent on-map heatmap — mirrors the historical Traffic
-            // lens look. Stays visible after the modal closes.
+            // Persistent on-map road-link pressure view. Stays visible after
+            // the modal closes.
             window.TrafficSim.showComparisonOverlay(result.segmentDeltas, candidate);
             renderRoadCompareResult(result, cand);
             showCongestionLegend();
@@ -3422,16 +3614,17 @@
     const wrap = document.createElement('div');
     wrap.className = 'congestion-legend';
     wrap.innerHTML =
-      '<div class="cl-head"><strong>Congestion change</strong>' +
+      '<div class="cl-head"><strong>Agent-swarm congestion</strong>' +
         '<button class="cl-clear" type="button" title="Clear overlay">&times;</button></div>' +
       '<div class="cl-ramp">' +
-        '<span class="cl-step" style="background:#16a34a"></span>' +
-        '<span class="cl-step" style="background:#86efac"></span>' +
-        '<span class="cl-step" style="background:#94a3b8"></span>' +
+        '<span class="cl-step" style="background:#2563eb"></span>' +
+        '<span class="cl-step" style="background:#22d3ee"></span>' +
+        '<span class="cl-step" style="background:#34d399"></span>' +
+        '<span class="cl-step" style="background:#facc15"></span>' +
         '<span class="cl-step" style="background:#fb923c"></span>' +
         '<span class="cl-step" style="background:#dc2626"></span>' +
       '</div>' +
-      '<div class="cl-ramp-labels"><span>Relieved</span><span>Worsened</span></div>' +
+      '<div class="cl-ramp-labels"><span>Free flow</span><span>Jammed</span></div>' +
       '<div class="cl-row"><span class="cl-sw cl-sw-new"></span> New road</div>';
     const canvas = document.querySelector('.map-canvas') || document.body;
     canvas.appendChild(wrap);
@@ -3439,7 +3632,10 @@
     wrap.querySelector('.cl-clear').addEventListener('click', clearCongestionOverlay);
   }
   function clearCongestionOverlay() {
-    if (window.TrafficSim) window.TrafficSim.clearComparisonOverlay();
+    if (window.TrafficSim) {
+      if (typeof window.TrafficSim.clearComparisonOverlay === 'function') window.TrafficSim.clearComparisonOverlay();
+      if (typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') window.TrafficSim.clearAgentSwarmOverlay();
+    }
     if (congestionLegendEl) congestionLegendEl.style.display = 'none';
   }
 
@@ -3940,17 +4136,18 @@
   }
 
   function renderLensTabs() {
-    if (!els.lensTabs) return;
+    const host = ensureToolbarLensHost();
+    if (!host) return;
     // Lens filters live in both modes. Buildings is the implicit default;
     // clicking an active filter again returns the view to Buildings.
-    els.lensTabs.hidden = false;
-    els.lensTabs.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
+    host.hidden = false;
+    host.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
       const active = l.id === state.lens ? ' active' : '';
       return '<button class="lens-tab' + active + '" data-lens="' + l.id + '" type="button" aria-pressed="' + (active ? 'true' : 'false') + '" title="' + l.label + ' filter" style="--lens-color:' + l.color + '">' +
         lensIcon(l.id) + '<span>' + l.label + '</span>' +
         '</button>';
     }).join('');
-    els.lensTabs.querySelectorAll('.lens-tab').forEach(b => {
+    host.querySelectorAll('.lens-tab').forEach(b => {
       b.addEventListener('click', () => toggleLensFilter(b.getAttribute('data-lens')));
     });
   }
@@ -4008,18 +4205,18 @@
     state.map.addLayer({
       id: 'ctx-roads-line', type: 'line', source: 'ctx-roads',
       paint: {
-        'line-color': '#fb923c',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.4, 13, 1.4, 16, 3],
-        'line-opacity': 0.7
+        'line-color': '#2563eb',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.35, 13, 1.0, 16, 2.2],
+        'line-opacity': 0.52
       },
       layout: { visibility: 'none' }
     }, refLayerId);
     state.map.addLayer({
       id: 'ctx-roads-glow', type: 'line', source: 'ctx-roads',
       paint: {
-        'line-color': '#fb923c',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 13, 4, 16, 9],
-        'line-opacity': 0.18,
+        'line-color': '#22d3ee',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.2, 13, 3.2, 16, 8],
+        'line-opacity': 0.12,
         'line-blur': 1.5
       },
       layout: { visibility: 'none' }
@@ -4129,7 +4326,7 @@
       id: 'hist-highlight-fill', type: 'fill', source: 'hist-highlight',
       paint: {
         'fill-color': ['coalesce', ['get', '__color'], '#60a5fa'],
-        'fill-opacity': 0.45
+        'fill-opacity': ['coalesce', ['get', '__opacity'], 0.45]
       },
       layout: { visibility: 'none' }
     }, refLayerId);
@@ -4273,6 +4470,9 @@
     if (!state.mapLoaded) return;
     if (!isHistoricalMode()) {
       if (state.contextLayersAdded) setHistoricalLayerVisibility(false);
+      if (window.TrafficSim && typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') {
+        window.TrafficSim.clearAgentSwarmOverlay();
+      }
       return;
     }
     ensureHistoricalSourcesAndLayers();
@@ -4292,8 +4492,9 @@
     const isElec = id === 'electricity';
     const isJobs = id === 'jobs';
     const isPublicTransit = id === 'services';
-    // The three "metric heatmap" lenses use the smooth Mapbox heatmap.
-    const useHeatmap = isTraffic || isJobs || isPublicTransit;
+    // Jobs and public transit keep the smooth point heatmap. Traffic now uses
+    // a trafficjam-style agent swarm rendered as coloured road links.
+    const useHeatmap = isJobs || isPublicTransit;
 
     // Water always on as soft base.
     map.setLayoutProperty('ctx-water-fill', 'visibility', 'visible');
@@ -4332,7 +4533,7 @@
     map.setLayoutProperty('ctx-services-circle', 'visibility', isJobs ? 'visible' : 'none');
     map.setLayoutProperty('ctx-transport-circle', 'visibility', (isJobs || isPublicTransit) ? 'visible' : 'none');
 
-    // Smooth heatmap for traffic/jobs/public transit; off otherwise.
+    // Smooth heatmap for jobs/public transit; traffic uses road-link swarm lines.
     map.setLayoutProperty('lens-heatmap', 'visibility', useHeatmap ? 'visible' : 'none');
     if (useHeatmap) {
       // Color ramp per lens. The first stop has alpha so areas outside the
@@ -4363,6 +4564,14 @@
       };
       map.setPaintProperty('lens-heatmap', 'heatmap-color', ramps[id]);
       refreshCellsHeatmapPoints(lens);
+    } else if (map.getSource('cells-points')) {
+      map.getSource('cells-points').setData({ type: 'FeatureCollection', features: [] });
+    }
+
+    if (isTraffic) refreshHistoricalTrafficSwarm();
+    else if (window.TrafficSim && typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') {
+      window.TrafficSim.clearAgentSwarmOverlay();
+      if (congestionLegendEl) congestionLegendEl.style.display = 'none';
     }
 
     if (isElec) {
@@ -4438,6 +4647,142 @@
     }
 
     state.map.getSource('cells-points').setData({ type: 'FeatureCollection', features: features });
+  }
+
+  function trafficSimReady(callback) {
+    if (!window.TrafficSim) return false;
+    if (window.TrafficSim.isOsmLoaded && !window.TrafficSim.isOsmLoaded() && !state._trafficAgentLoadAttempted) {
+      if (!state._trafficAgentLoadQueued && typeof window.TrafficSim.preloadOsm === 'function') {
+        state._trafficAgentLoadAttempted = true;
+        state._trafficAgentLoadQueued = true;
+        window.TrafficSim.preloadOsm('/api/layers/2026/source-ni-roads-osm')
+          .then(() => {
+            state._trafficAgentLoadQueued = false;
+            if (typeof callback === 'function') callback();
+          })
+          .catch(() => { state._trafficAgentLoadQueued = false; });
+      }
+      return false;
+    }
+    return typeof window.TrafficSim.runAgentSwarm === 'function' &&
+      typeof window.TrafficSim.showAgentSwarmOverlay === 'function';
+  }
+
+  function pointFeatureFromCoord(coord, props) {
+    if (!Array.isArray(coord) || coord.length < 2) return null;
+    const lng = Number(coord[0]), lat = Number(coord[1]);
+    if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
+    return {
+      type: 'Feature',
+      properties: Object.assign({}, props || {}),
+      geometry: { type: 'Point', coordinates: [lng, lat] }
+    };
+  }
+
+  function mapCentreCoord() {
+    if (!state.map || !state.map.getCenter) return [-5.93, 54.597];
+    const c = state.map.getCenter();
+    return [c.lng, c.lat];
+  }
+
+  function focusCoordForTraffic(branch, demandPoints) {
+    const items = (branch && branch.items) || [];
+    for (let i = items.length - 1; i >= 0; i--) {
+      const it = items[i];
+      if (it.type === 'road') {
+        const path = Array.isArray(it.path) && it.path.length >= 2 ? it.path : [it.start, it.end].filter(Array.isArray);
+        const loc = locationFromCoords(path);
+        if (loc) return [loc.lng, loc.lat];
+      }
+      if (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat))) return [Number(it.lng), Number(it.lat)];
+    }
+    if (demandPoints && demandPoints.length) {
+      let sx = 0, sy = 0, sw = 0;
+      demandPoints.forEach(p => {
+        const c = p.geometry && p.geometry.coordinates;
+        if (!Array.isArray(c)) return;
+        const w = Math.max(0.05, Number(p.properties && p.properties.intensity) || 0.2);
+        sx += c[0] * w; sy += c[1] * w; sw += w;
+      });
+      if (sw) return [sx / sw, sy / sw];
+    }
+    return mapCentreCoord();
+  }
+
+  function historicalTrafficDemandPoints(events, activeEventId) {
+    const buckets = new Map();
+    const cell = 0.0035; // roughly 250m in Belfast; keeps demand city-wide without thousands of agents.
+    (events || []).forEach(ev => {
+      const coord = realEventCoords(ev);
+      if (!coord) return;
+      const lng = Number(coord[0]), lat = Number(coord[1]);
+      if (!Number.isFinite(lng) || !Number.isFinite(lat)) return;
+      const key = Math.floor(lng / cell) + '|' + Math.floor(lat / cell);
+      let bucket = buckets.get(key);
+      if (!bucket) {
+        bucket = { sx: 0, sy: 0, weight: 0, count: 0, severity: 0, active: false, id: key };
+        buckets.set(key, bucket);
+      }
+      const sev = ev.severity === 'high' ? 1 : ev.severity === 'medium' ? 0.72 : 0.48;
+      const w = sev + 0.18;
+      bucket.sx += lng * w;
+      bucket.sy += lat * w;
+      bucket.weight += w;
+      bucket.count += 1;
+      bucket.severity += sev;
+      if (ev.id && ev.id === activeEventId) bucket.active = true;
+    });
+    let points = Array.from(buckets.values()).map((b, i) => {
+      const densityScore = Math.log1p(b.count) / Math.log1p(18);
+      const severityScore = b.count ? b.severity / b.count : 0.5;
+      return pointFeatureFromCoord([b.sx / b.weight, b.sy / b.weight], {
+        id: 'historical-traffic-city-' + (b.id || i),
+        intensity: clamp(0.16 + densityScore * 0.68 + severityScore * 0.16, 0.08, 1),
+        polarity: -1,
+        active: b.active ? 1 : 0,
+        count: b.count
+      });
+    }).filter(Boolean);
+    points.sort((a, b) => {
+      const aa = a.properties && a.properties.active ? 1 : 0;
+      const ba = b.properties && b.properties.active ? 1 : 0;
+      if (aa !== ba) return ba - aa;
+      return (Number(b.properties && b.properties.intensity) || 0) -
+        (Number(a.properties && a.properties.intensity) || 0);
+    });
+    return points.slice(0, 520);
+  }
+
+  async function refreshHistoricalTrafficSwarm() {
+    if (!isHistoricalMode() || state.lens !== 'traffic') return;
+    if (!trafficSimReady(refreshHistoricalTrafficSwarm)) return;
+    const requestId = (state._trafficAgentRequestId || 0) + 1;
+    state._trafficAgentRequestId = requestId;
+    const data = await loadEventsForYearLens(state.year, 'traffic');
+    if (state._trafficAgentRequestId !== requestId || !isHistoricalMode() || state.lens !== 'traffic') return;
+    const events = data && Array.isArray(data.events) ? data.events : [];
+    const activeEvent = state.activeEventId ? events.find(e => e.id === state.activeEventId) : null;
+    const activeCoord = activeEvent ? realEventCoords(activeEvent) : null;
+    const demand = historicalTrafficDemandPoints(events, state.activeEventId);
+    if (activeCoord && !demand.some(f => f.properties && f.properties.active)) {
+      const activePoint = pointFeatureFromCoord(activeCoord, { id: state.activeEventId || 'selected-traffic-event', intensity: 1, polarity: -1, active: 1 });
+      if (activePoint) demand.unshift(activePoint);
+    }
+    const result = window.TrafficSim.runAgentSwarm({
+      demandPoints: demand,
+      centre: BELFAST_CENTER,
+      radiusKm: 14.5,
+      cityWide: true,
+      density: clamp(260 + demand.length * 0.8, 320, 640),
+      durationSeconds: 9,
+      seed: (state.year * 2654435761 + demand.length * 97) >>> 0,
+      branch: activeBranch(),
+      maxSegments: 5200,
+      maxFlowSegments: 980,
+      maxPointFeatures: 72
+    });
+    window.TrafficSim.showAgentSwarmOverlay(result);
+    showCongestionLegend();
   }
 
   function pointOrCentroid(geom) {
@@ -4527,7 +4872,10 @@
     state.eventsForYearCache = data.events;
     state.eventsTotalForYear = data.total;
     // Re-render the events list with the now-loaded count + items
-    if (isHistoricalMode()) renderHistoricalBranchesPanel();
+    if (isHistoricalMode()) {
+      renderHistoricalBranchesPanel();
+      renderLeftSidebar();
+    }
     if (!state.map || !state.map.getSource('hist-events')) return;
     const lens = lensDef(state.lens);
     const features = data.events.map(ev => {
@@ -4601,6 +4949,146 @@
     return [sx / coords.length, sy / coords.length];
   }
 
+  function geometryBounds(geom, bounds) {
+    if (!geom) return bounds;
+    const b = bounds || [Infinity, Infinity, -Infinity, -Infinity];
+    function addCoord(coord) {
+      if (!Array.isArray(coord) || coord.length < 2) return;
+      const lng = Number(coord[0]);
+      const lat = Number(coord[1]);
+      if (!Number.isFinite(lng) || !Number.isFinite(lat)) return;
+      b[0] = Math.min(b[0], lng);
+      b[1] = Math.min(b[1], lat);
+      b[2] = Math.max(b[2], lng);
+      b[3] = Math.max(b[3], lat);
+    }
+    function walk(coords) {
+      if (!Array.isArray(coords)) return;
+      if (typeof coords[0] === 'number') {
+        addCoord(coords);
+        return;
+      }
+      coords.forEach(walk);
+    }
+    if (geom.type === 'Point') addCoord(geom.coordinates);
+    else walk(geom.coordinates);
+    return b;
+  }
+
+  function featureCollectionBounds(features) {
+    const bounds = (features || []).reduce((acc, feature) => geometryBounds(feature && feature.geometry, acc), null);
+    if (!bounds || !bounds.every(Number.isFinite)) return null;
+    return bounds;
+  }
+
+  function eventAffectedFeatures(ev, grid) {
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    return nearestCellsForEvent(ev, features);
+  }
+
+  function affectedMetricAverage(features, lens) {
+    const values = (features || []).map(f => Number(f.properties && f.properties[lens.valueProp])).filter(Number.isFinite);
+    return values.length ? mean(values) : null;
+  }
+
+  function affectedMetricRowsHTML(features) {
+    const ids = ['traffic', 'jobs', 'electricity', 'services'];
+    if (!features || !features.length) return '<div class="event-summary-empty">No grid cells are available for this event yet.</div>';
+    return '<div class="event-summary-metric-grid">' + ids.map(id => {
+      const lens = lensDef(id);
+      const avg = affectedMetricAverage(features, lens);
+      const value = avg == null ? 'n/a' : Math.round(avg * 100).toString();
+      return '<div class="event-summary-metric-tile" style="--metric-color:' + lens.color + '">' +
+        '<span class="event-summary-metric-dot"></span>' +
+        '<small>' + escapeHtml(lens.label === 'Public Transit' ? 'Transit' : lens.label) + '</small>' +
+        '<b>' + value + '</b>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  function selectedEventSummaryHTML(ev, features) {
+    const lens = lensDef(state.lens);
+    const cellCount = features && features.length ? features.length : 0;
+    const lensAvg = affectedMetricAverage(features, lens);
+    const lensValue = lensAvg == null ? 'n/a' : Math.round(lensAvg * 100);
+    const source = simpleSourceName(ev);
+    const confidence = ev.confidence || 'medium';
+    const note = simpleEventNote(ev);
+    const place = [compactPlaceName(ev.area) || 'Belfast', ev.month || String(ev.year || state.year)].filter(Boolean).join(' · ');
+    return '' +
+      '<div class="event-summary-top">' +
+        '<span class="event-summary-icon" style="background:' + lens.color + '">' + lensIcon(lens.id) + '</span>' +
+        '<div>' +
+          '<div class="event-summary-kicker">Selected event</div>' +
+          '<strong>' + escapeHtml(simpleEventTitle(ev)) + '</strong>' +
+          '<span>' + escapeHtml(place) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="event-summary-stats">' +
+        '<div><span>Affected Area</span><b>' + cellCount + ' cells</b></div>' +
+        '<div><span>' + escapeHtml(lens.label) + '</span><b>' + lensValue + '</b></div>' +
+      '</div>' +
+      (note ? '<p>' + escapeHtml(note) + '</p>' : '') +
+      '<div class="event-summary-section-label">Signals in this area</div>' +
+      '<div class="event-summary-metrics">' + affectedMetricRowsHTML(features) + '</div>' +
+      '<div class="event-summary-source">' +
+        '<span>' + escapeHtml(confidence) + ' confidence</span>' +
+        '<span>' + escapeHtml(source) + '</span>' +
+      '</div>';
+  }
+
+  function renderSelectedEventSummary(evOverride, featuresOverride) {
+    if (!els.selectedEventSummary) return;
+    const ev = evOverride || (state.activeEventId ? (state.eventsForYearCache || []).find(e => e.id === state.activeEventId) : null);
+    if (!isHistoricalMode() || !ev) {
+      els.selectedEventSummary.hidden = true;
+      els.selectedEventSummary.innerHTML = '';
+      return;
+    }
+    const grid = state.gridCache[state.year];
+    const features = featuresOverride || eventAffectedFeatures(ev, grid);
+    els.selectedEventSummary.style.setProperty('--lens-color', lensDef(state.lens).color);
+    els.selectedEventSummary.innerHTML = selectedEventSummaryHTML(ev, features || []);
+    els.selectedEventSummary.hidden = false;
+    if (!grid) {
+      loadGridYear(state.year).then(() => {
+        if (state.activeEventId === ev.id) renderSelectedEventSummary(ev);
+      });
+    }
+  }
+
+  async function zoomToEventAffectedArea(ev) {
+    if (!ev || !state.map) return;
+    const grid = await loadGridYear(state.year);
+    const features = eventAffectedFeatures(ev, grid);
+    renderSelectedEventSummary(ev, features);
+    refreshHighlightedCells();
+    const bounds = featureCollectionBounds(features);
+    if (bounds) {
+      const samePoint = Math.abs(bounds[0] - bounds[2]) < 0.00001 && Math.abs(bounds[1] - bounds[3]) < 0.00001;
+      if (!samePoint) {
+        state.map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
+          padding: { top: 90, bottom: 170, left: 120, right: 120 },
+          maxZoom: 15.4,
+          duration: 850,
+          pitch: state.view === '3D' ? 58 : 0,
+          bearing: state.view === '3D' ? -24 : 0
+        });
+        return;
+      }
+    }
+    const c = realEventCoords(ev);
+    if (c) {
+      state.map.flyTo({
+        center: c,
+        zoom: 15.2,
+        pitch: state.view === '3D' ? 58 : 0,
+        bearing: state.view === '3D' ? -24 : 0,
+        duration: 750
+      });
+    }
+  }
+
   function refreshHighlightedCells() {
     if (!state.map.getSource('hist-highlight')) return;
     const grid = state.gridCache[state.year];
@@ -4614,6 +5102,7 @@
       return;
     }
     const lens = lensDef(state.lens);
+    const fillOpacity = state.lens === 'traffic' ? 0.1 : 0.45;
     let features = [];
     if (Array.isArray(ev.cellIds) && ev.cellIds.length) {
       const idSet = new Set(ev.cellIds);
@@ -4631,7 +5120,7 @@
       features = ranked.map(r => r.feature);
     }
     features = features.map(f => Object.assign({}, f, {
-      properties: Object.assign({}, f.properties, { __color: lens.color })
+      properties: Object.assign({}, f.properties, { __color: lens.color, __opacity: fillOpacity })
     }));
     state.map.getSource('hist-highlight').setData({ type: 'FeatureCollection', features: features });
   }
@@ -4799,14 +5288,14 @@
     } else {
       const lens = lensDef(state.lens);
       html += '<div class="event-detail-card">' +
-        '<div class="head"><span class="event-symbol" style="background:' + lens.color + '">' + escapeHtml(ev.symbol || '+') + '</span>' + escapeHtml(ev.title || '') + '</div>' +
-        '<div class="meta">' + escapeHtml(ev.subtitle || '') + '</div>' +
+        '<div class="head"><span class="event-symbol" style="background:' + lens.color + '">' + escapeHtml(ev.symbol || '+') + '</span>' + escapeHtml(simpleEventTitle(ev)) + '</div>' +
+        '<div class="meta">' + escapeHtml(simpleEventSubtitle(ev)) + '</div>' +
         '<div class="meta">' +
           '<span class="pill" style="background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:8px;color:var(--text-dim);font-size:9.5px">' + escapeHtml(ev.area || 'Belfast') + '</span> ' +
           '<span class="pill" style="background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:8px;color:var(--text-dim);font-size:9.5px">' + escapeHtml(ev.month || state.year) + '</span> ' +
           '<span class="pill" style="background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:8px;color:var(--text-dim);font-size:9.5px">' + escapeHtml(ev.severity || 'Watch') + '</span>' +
         '</div>' +
-        '<div class="why">' + escapeHtml(ev.explanation || ev.subtitle || '') + '</div>' +
+        '<div class="why">' + escapeHtml(simpleEventNote(ev)) + '</div>' +
         '</div>' +
         '<button class="diff-btn" id="openDiffBtn" type="button">' +
           '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="3" width="7" height="18"/></svg>' +
@@ -4826,14 +5315,13 @@
 
   function selectEvent(eventId) {
     state.activeEventId = eventId;
+    renderLeftSidebar();
     renderHistoricalBranchesPanel();
     renderCompareSection();
-    refreshHighlightedCells();
+    if (state.lens === 'traffic') refreshHistoricalTrafficSwarm();
     const ev = (state.eventsForYearCache || []).find(e => e.id === eventId);
-    if (ev && state.map) {
-      const c = realEventCoords(ev);
-      if (c) state.map.flyTo({ center: c, zoom: 15, duration: 700 });
-    }
+    if (ev && state.map) zoomToEventAffectedArea(ev);
+    else refreshHighlightedCells();
   }
 
   function exportEvent() {
@@ -4946,19 +5434,129 @@
     else host.insertAdjacentHTML('afterbegin', html);
   }
 
-  async function addPublicTransportDiffLayers(map, side, year, branch, refLayerId) {
-    if (!map || currentScenarioDiffLens().id !== 'services') return;
+  function publicTransportFallbackRoutes(stopPoints, side, grid) {
+    const coords = (stopPoints || [])
+      .map(feature => feature && feature.geometry && feature.geometry.coordinates)
+      .filter(coord => Array.isArray(coord) && coord.length >= 2);
+    if (coords.length < 2) return diffFeatureCollection([]);
+    const lens = currentScenarioDiffLens();
+    const delta = scenarioDiffMeanDelta(grid, lens);
+    const deltaColor = Math.abs(delta) < 0.00005 ? '#22d3ee' : scenarioDeltaColour(delta, lens);
+    function sampledLine(sorted, id, color, strength, magnitude) {
+      if (sorted.length < 2) return null;
+      const step = Math.max(1, Math.floor(sorted.length / 28));
+      const line = sorted.filter((_, i) => i % step === 0).slice(0, 34);
+      if (line.length < 2) return null;
+      return {
+        type: 'Feature',
+        properties: {
+          id,
+          color,
+          strength,
+          deltaColor,
+          magnitude,
+          affectedStops: line.length
+        },
+        geometry: { type: 'LineString', coordinates: line }
+      };
+    }
+    const routes = [
+      sampledLine(coords.slice().sort((a, b) => a[0] - b[0]), 'fallback-east-west', '#22c55e', 0.74, 0.52),
+      sampledLine(coords.slice().sort((a, b) => a[1] - b[1]), 'fallback-north-south', '#06b6d4', 0.68, 0.48),
+      sampledLine(coords.slice().sort((a, b) => (a[0] + a[1]) - (b[0] + b[1])), 'fallback-diagonal', '#a855f7', 0.58, 0.42)
+    ].filter(Boolean);
+    if (side !== 'after') return diffFeatureCollection(routes);
+    return diffFeatureCollection(routes.map(route => cloneFeatureWithProps(route, {
+      color: route.properties.deltaColor,
+      strength: route.properties.magnitude,
+      magnitude: route.properties.magnitude,
+      deltaColor: route.properties.deltaColor
+    })));
+  }
+
+  async function publicTransportFallbackDiffData(side, year, branch, grid, building) {
+    const lens = currentScenarioDiffLens();
+    const focus = building || selectedScenarioBuilding(branch || activeBranch());
+    const center = focus && Number.isFinite(Number(focus.lng)) && Number.isFinite(Number(focus.lat))
+      ? [Number(focus.lng), Number(focus.lat)]
+      : mapCentreCoord();
+    const transport = await loadContextLayer('source-ni-transport-stops-osm');
+    const nearbyStops = nearbyContextFeatures(transport, center, 4.4, 180, null, (feature, distKm) => ({
+      __weight: clamp(1 - distKm / 4.4, 0.14, 1)
+    }));
+    const baseStops = anchorPointFeatures(nearbyStops, (feature, i) => {
+      const props = feature.properties || {};
+      return Object.assign({}, props, {
+        id: props.source_id || props.id || ('pt-stop-' + i),
+        color: i % 3 === 0 ? '#22c55e' : (i % 3 === 1 ? '#06b6d4' : '#a855f7'),
+        weight: Number.isFinite(Number(props.__weight)) ? Number(props.__weight) : 0.45,
+        magnitude: Number.isFinite(Number(props.__weight)) ? Number(props.__weight) : 0.45
+      });
+    });
+    const forecastStops = side === 'after'
+      ? scenarioDiffContextPressurePoints(nearbyStops, lens, side, 'pt-fallback-stop', grid, 80).map(feature => {
+        const props = feature.properties || {};
+        return cloneFeatureWithProps(feature, Object.assign({}, props, {
+          deltaColor: props.color || '#22d3ee',
+          magnitude: props.magnitude || 0.35
+        }));
+      }).filter(Boolean)
+      : [];
+    return {
+      base: diffFeatureCollection(baseStops),
+      forecast: diffFeatureCollection(forecastStops),
+      baseRoutes: publicTransportFallbackRoutes(baseStops, 'before', grid),
+      forecastRoutes: side === 'after' ? publicTransportFallbackRoutes(forecastStops.length ? forecastStops : baseStops, 'after', grid) : diffFeatureCollection([])
+    };
+  }
+
+  async function addPublicTransportDiffLayers(map, side, year, branch, refLayerId, grid, building) {
+    if (!map || currentScenarioDiffLens().id !== 'services') return false;
     const engine = window.PublicTransportEngine || window.TransitEngine;
-    if (!engine || typeof engine.preload !== 'function') return;
-    await engine.preload();
-    const base = typeof engine.baseFeatureCollection === 'function'
-      ? engine.baseFeatureCollection(year)
-      : { type: 'FeatureCollection', features: [] };
-    const forecast = side === 'after' && typeof engine.forecastFeatureCollection === 'function'
-      ? engine.forecastFeatureCollection(branch || activeBranch(), year)
-      : { type: 'FeatureCollection', features: [] };
+    let base = { type: 'FeatureCollection', features: [] };
+    let forecast = { type: 'FeatureCollection', features: [] };
+    let baseRoutes = { type: 'FeatureCollection', features: [] };
+    let forecastRoutes = { type: 'FeatureCollection', features: [] };
+    if (engine && typeof engine.preload === 'function') {
+      try {
+        await engine.preload();
+        base = typeof engine.baseFeatureCollection === 'function'
+          ? engine.baseFeatureCollection(year)
+          : base;
+        forecast = side === 'after' && typeof engine.forecastFeatureCollection === 'function'
+          ? engine.forecastFeatureCollection(branch || activeBranch(), year)
+          : forecast;
+        baseRoutes = typeof engine.baseRouteFeatureCollection === 'function'
+          ? engine.baseRouteFeatureCollection(year)
+          : baseRoutes;
+        forecastRoutes = side === 'after' && typeof engine.forecastRouteFeatureCollection === 'function'
+          ? engine.forecastRouteFeatureCollection(branch || activeBranch(), year)
+          : forecastRoutes;
+      } catch (_) {}
+    }
+    let hasTransitData = (base.features && base.features.length) ||
+      (forecast.features && forecast.features.length) ||
+      (baseRoutes.features && baseRoutes.features.length) ||
+      (forecastRoutes.features && forecastRoutes.features.length);
+    const needsForecastFallback = side === 'after' &&
+      !(forecast.features && forecast.features.length) &&
+      !(forecastRoutes.features && forecastRoutes.features.length);
+    if (!hasTransitData || needsForecastFallback) {
+      const fallback = await publicTransportFallbackDiffData(side, year, branch || activeBranch(), grid, building);
+      if (!(base.features && base.features.length)) base = fallback.base;
+      if (!(baseRoutes.features && baseRoutes.features.length)) baseRoutes = fallback.baseRoutes;
+      if (side === 'after' && !(forecast.features && forecast.features.length)) forecast = fallback.forecast;
+      if (side === 'after' && !(forecastRoutes.features && forecastRoutes.features.length)) forecastRoutes = fallback.forecastRoutes;
+      hasTransitData = (base.features && base.features.length) ||
+        (forecast.features && forecast.features.length) ||
+        (baseRoutes.features && baseRoutes.features.length) ||
+        (forecastRoutes.features && forecastRoutes.features.length);
+    }
+    if (!hasTransitData) return false;
     map.addSource('pt-diff-base', { type: 'geojson', data: base });
     map.addSource('pt-diff-forecast', { type: 'geojson', data: forecast });
+    map.addSource('pt-diff-base-routes', { type: 'geojson', data: baseRoutes });
+    map.addSource('pt-diff-forecast-routes', { type: 'geojson', data: forecastRoutes });
     map.addLayer({
       id: 'pt-diff-base-heat',
       type: 'heatmap',
@@ -4978,6 +5576,29 @@
       }
     }, refLayerId);
     map.addLayer({
+      id: 'pt-diff-base-route-glow',
+      type: 'line',
+      source: 'pt-diff-base-routes',
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 4, 1, 11],
+        'line-opacity': 0.22,
+        'line-blur': 3.5
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'pt-diff-base-route-line',
+      type: 'line',
+      source: 'pt-diff-base-routes',
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.5, 1, 3.8],
+        'line-opacity': 0.78
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
       id: 'pt-diff-base-core',
       type: 'circle',
       source: 'pt-diff-base',
@@ -4990,6 +5611,30 @@
       }
     }, refLayerId);
     if (side === 'after') {
+      map.addLayer({
+        id: 'pt-diff-forecast-route-glow',
+        type: 'line',
+        source: 'pt-diff-forecast-routes',
+        paint: {
+          'line-color': ['get', 'deltaColor'],
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 6, 1, 18],
+          'line-opacity': 0.3,
+          'line-blur': 5
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      }, refLayerId);
+      map.addLayer({
+        id: 'pt-diff-forecast-route-line',
+        type: 'line',
+        source: 'pt-diff-forecast-routes',
+        paint: {
+          'line-color': ['get', 'deltaColor'],
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 6.6],
+          'line-opacity': 0.9,
+          'line-dasharray': [1.3, 0.7]
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' }
+      }, refLayerId);
       map.addLayer({
         id: 'pt-diff-forecast-halo',
         type: 'circle',
@@ -5014,6 +5659,7 @@
         }
       }, refLayerId);
     }
+    return true;
   }
 
   async function openScenarioDiffModal() {
@@ -5133,8 +5779,20 @@
     if (!summary) {
       return '<div class="ai-summary"><div class="ai-summary-head"><strong>AI summary</strong><span>Powered by Gemini</span></div><p>No forecast cells were available for this view.</p></div>';
     }
-    const direction = summary.flat ? 'keeps ' + lens.label.toLowerCase() + ' broadly steady'
+    const trafficTrips = concrete && concrete.traffic ? Number(concrete.traffic.netDailyTrips) || 0 : 0;
+    let direction = summary.flat ? 'keeps ' + lens.label.toLowerCase() + ' broadly steady'
       : (summary.favourable ? 'improves ' : 'worsens ') + lens.label.toLowerCase() + ' by ' + Math.abs(summary.deltaPts).toFixed(Math.abs(summary.deltaPts) < 1 ? 2 : 1) + ' pts';
+    if (lens.id === 'traffic' && concrete && concrete.traffic) {
+      direction = (trafficTrips >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(trafficTrips), 0).replace(/^[+]/, '') + ' daily trips and reroutes local road pressure';
+    } else if (lens.id === 'jobs' && concrete && concrete.jobs) {
+      direction = (Number(concrete.jobs.netJobsEstimate) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.jobs.netJobsEstimate) || 0), 0).replace(/^[+]/, '') + ' jobs and shows nearby service-access pressure';
+    } else if (lens.id === 'electricity' && concrete && concrete.electricity) {
+      direction = (Number(concrete.electricity.peakKwChange) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.electricity.peakKwChange) || 0), 0).replace(/^[+]/, '') + ' kW peak load across local grid assets';
+    } else if (lens.id === 'services' && concrete && concrete.services) {
+      direction = (Number(concrete.services.netServiceDemand) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.services.netServiceDemand) || 0), 0).replace(/^[+]/, '') + ' people-equivalent transit demand on nearby stops and routes';
+    } else if (lens.id === 'buildings') {
+      direction = 'places the proposed building in the local 3D building fabric and shows development pressure around it';
+    }
     const branchName = branch && branch.name ? branch.name : 'this branch';
     const concreteBits = [];
     if (concrete && concrete.traffic) concreteBits.push('Traffic ' + fmtConcreteSigned(concrete.traffic.netDailyTrips, 0) + ' daily trips');
@@ -5294,6 +5952,591 @@
     evNode.innerHTML = html;
   }
 
+  async function ensureTrafficDiffReady() {
+    if (!window.TrafficSim || typeof window.TrafficSim.runAgentSwarm !== 'function') return false;
+    if (window.TrafficSim.isOsmLoaded && !window.TrafficSim.isOsmLoaded() && typeof window.TrafficSim.preloadOsm === 'function') {
+      try { await window.TrafficSim.preloadOsm('/api/layers/2026/source-ni-roads-osm'); }
+      catch (_) {}
+    }
+    return !window.TrafficSim.isOsmLoaded || window.TrafficSim.isOsmLoaded();
+  }
+
+  function scenarioTrafficDiffDemandPoints(grid, building, year, side, concrete) {
+    const center = [Number(building.lng), Number(building.lat)];
+    let points = baselineTrafficForecastDemandPoints(year, { centre: center, radiusKm: 2.35, limit: 70 });
+    const trafficLens = SCENARIO_DIFF_LENSES.find(l => l.id === 'traffic') || currentScenarioDiffLens();
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    features.forEach((feature, i) => {
+      const coord = pointOrCentroid(feature.geometry);
+      if (!coord) return;
+      const props = feature.properties || {};
+      const value = scenarioDiffMetricValue(feature, trafficLens);
+      const diff = scenarioDeltaValue(feature, trafficLens);
+      const intensity = clamp(
+        0.12 + value * 0.56 + Number(props.intensity || 0) * 0.2 + (side === 'after' ? Math.max(0, diff) * 4.8 : 0),
+        0.08,
+        1
+      );
+      points.push(pointFeatureFromCoord(coord, {
+        id: 'scenario-traffic-cell-' + side + '-' + (props.cell_id || props.cellId || i),
+        intensity: intensity,
+        delta: diff,
+        polarity: side === 'after' && diff < -0.002 ? 1 : -1,
+        active: 0
+      }));
+    });
+
+    if (side === 'after') {
+      const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+      const sitePoint = pointFeatureFromCoord(center, {
+        id: 'scenario-building-trip-demand',
+        intensity: clamp(0.68 + trips / 6500, 0.68, 1),
+        delta: trips,
+        polarity: -1,
+        active: 1
+      });
+      if (sitePoint) points.unshift(sitePoint);
+    }
+
+    points = points.filter(Boolean);
+    points.sort((a, b) => {
+      const aa = a.properties && a.properties.active ? 1 : 0;
+      const ba = b.properties && b.properties.active ? 1 : 0;
+      if (aa !== ba) return ba - aa;
+      return (Number(b.properties && b.properties.intensity) || 0) -
+        (Number(a.properties && a.properties.intensity) || 0);
+    });
+    return points.slice(0, 120);
+  }
+
+  async function addTrafficScenarioDiffLayers(map, side, grid, building, year, refLayerId) {
+    if (!map || currentScenarioDiffLens().id !== 'traffic') return false;
+    const ready = await ensureTrafficDiffReady();
+    if (!ready) return false;
+    const branch = activeBranch();
+    const concrete = side === 'after' ? concreteImpactsForBranchYear(branch, year) : null;
+    const demand = scenarioTrafficDiffDemandPoints(grid, building, year, side, concrete);
+    const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+    const result = window.TrafficSim.runAgentSwarm({
+      branch: side === 'after' ? branch : null,
+      demandPoints: demand,
+      centre: [Number(building.lng), Number(building.lat)],
+      radiusKm: 2.55,
+      density: side === 'after'
+        ? clamp(185 + demand.length * 2.2 + trips / 34, 210, 560)
+        : clamp(145 + demand.length * 1.8, 150, 350),
+      durationSeconds: 8,
+      seed: (year * 2654435761 + (side === 'after' ? 911 : 433) + demand.length * 17) >>> 0,
+      maxSegments: 2100,
+      maxFlowSegments: side === 'after' ? 480 : 380,
+      maxPointFeatures: side === 'after' ? 30 : 20
+    });
+
+    map.addSource('traffic-diff-base', { type: 'geojson', data: result.base || { type: 'FeatureCollection', features: [] } });
+    map.addSource('traffic-diff-flow', { type: 'geojson', data: result.flow || { type: 'FeatureCollection', features: [] } });
+    map.addSource('traffic-diff-points', { type: 'geojson', data: result.points || { type: 'FeatureCollection', features: [] } });
+    map.addLayer({
+      id: 'traffic-diff-base-case',
+      type: 'line',
+      source: 'traffic-diff-base',
+      paint: {
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 2.2, 16, 8.5],
+        'line-color': '#020617',
+        'line-opacity': 0.76
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'traffic-diff-base-line',
+      type: 'line',
+      source: 'traffic-diff-base',
+      paint: {
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 0.55, 16, 2.5],
+        'line-color': ['interpolate', ['linear'], ['get', 'weight'], 0.2, '#1d4ed8', 0.65, '#0284c7', 1, '#22d3ee'],
+        'line-opacity': 0.72
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    const ramp = [
+      'interpolate', ['linear'], ['get', 'congestion'],
+      0.00, '#2563eb',
+      0.18, '#22d3ee',
+      0.38, '#34d399',
+      0.58, '#facc15',
+      0.78, '#fb923c',
+      1.00, '#ef4444'
+    ];
+    map.addLayer({
+      id: 'traffic-diff-flow-glow',
+      type: 'line',
+      source: 'traffic-diff-flow',
+      paint: {
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 7, 16, 22],
+        'line-color': ramp,
+        'line-opacity': ['interpolate', ['linear'], ['get', 'congestion'], 0, 0.05, 1, 0.34],
+        'line-blur': 3.2
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'traffic-diff-flow-line',
+      type: 'line',
+      source: 'traffic-diff-flow',
+      paint: {
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 2.4, 16, 8.8],
+        'line-color': ramp,
+        'line-opacity': 0.96
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'traffic-diff-demand-glow',
+      type: 'circle',
+      source: 'traffic-diff-points',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['get', 'intensity'], 0, 6, 1, 17],
+        'circle-color': ['get', 'color'],
+        'circle-opacity': 0.22,
+        'circle-blur': 0.75
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'traffic-diff-demand-core',
+      type: 'circle',
+      source: 'traffic-diff-points',
+      paint: {
+        'circle-radius': ['case', ['==', ['get', 'active'], 1], 5, 2.4],
+        'circle-color': ['get', 'color'],
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 1.1,
+        'circle-opacity': 0.92
+      }
+    }, refLayerId);
+    return true;
+  }
+
+  function diffFeatureCollection(features) {
+    return { type: 'FeatureCollection', features: (features || []).filter(Boolean) };
+  }
+
+  function geometryAnchorCoord(geom) {
+    const centroid = pointOrCentroid(geom);
+    if (centroid) return centroid;
+    if (!geom) return null;
+    if (geom.type === 'MultiPoint' && Array.isArray(geom.coordinates) && geom.coordinates.length) {
+      return geom.coordinates[Math.floor(geom.coordinates.length / 2)];
+    }
+    if (geom.type === 'LineString' && Array.isArray(geom.coordinates) && geom.coordinates.length) {
+      return geom.coordinates[Math.floor(geom.coordinates.length / 2)];
+    }
+    if (geom.type === 'MultiLineString' && Array.isArray(geom.coordinates) && geom.coordinates.length) {
+      const line = geom.coordinates.slice().sort((a, b) => (b && b.length || 0) - (a && a.length || 0))[0];
+      return line && line.length ? line[Math.floor(line.length / 2)] : null;
+    }
+    return null;
+  }
+
+  function featureAnchorCoord(feature) {
+    return geometryAnchorCoord(feature && feature.geometry);
+  }
+
+  function cloneFeatureWithProps(feature, extraProps) {
+    if (!feature || !feature.geometry) return null;
+    return {
+      type: 'Feature',
+      geometry: feature.geometry,
+      properties: Object.assign({}, feature.properties || {}, extraProps || {})
+    };
+  }
+
+  function nearbyContextFeatures(fc, center, radiusKm, limit, predicate, propBuilder) {
+    const features = fc && Array.isArray(fc.features) ? fc.features : [];
+    const scored = [];
+    features.forEach((feature, i) => {
+      if (predicate && !predicate(feature)) return;
+      const coord = featureAnchorCoord(feature);
+      if (!coord) return;
+      const distKm = center ? coordDistKm(coord, center) : 0;
+      if (center && radiusKm && distKm > radiusKm) return;
+      const extra = typeof propBuilder === 'function' ? propBuilder(feature, distKm, i) : {};
+      const copy = cloneFeatureWithProps(feature, Object.assign({ __distKm: distKm }, extra || {}));
+      if (copy) scored.push({ feature: copy, distKm });
+    });
+    scored.sort((a, b) => a.distKm - b.distKm);
+    return scored.slice(0, Math.max(1, limit || scored.length)).map(row => row.feature);
+  }
+
+  function anchorPointFeatures(features, propBuilder) {
+    const out = [];
+    (features || []).forEach((feature, i) => {
+      const coord = featureAnchorCoord(feature);
+      if (!coord) return;
+      const props = typeof propBuilder === 'function' ? propBuilder(feature, i) : (feature.properties || {});
+      const point = pointFeatureFromCoord(coord, props);
+      if (point) out.push(point);
+    });
+    return out;
+  }
+
+  function splitDiffSignalColor(side, lens, value, diff) {
+    if (side === 'before') {
+      if (lens.id === 'electricity') return ramp_RedGreen(clamp(1 - value, 0, 1));
+      if (lens.id === 'buildings') return '#60a5fa';
+      return lens.color;
+    }
+    if (Math.abs(diff) < 0.00005) return '#22d3ee';
+    return scenarioDeltaColour(diff, lens);
+  }
+
+  function scenarioDiffPressurePointFeatures(grid, lens, side, building, opts) {
+    opts = opts || {};
+    const center = building ? [Number(building.lng), Number(building.lat)] : null;
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    const radiusKm = Number(opts.radiusKm) || 0;
+    const limit = Number(opts.limit) || 90;
+    const out = [];
+    features.forEach((feature, i) => {
+      const coord = pointOrCentroid(feature && feature.geometry);
+      if (!coord) return;
+      if (center && radiusKm && coordDistKm(coord, center) > radiusKm) return;
+      const props = feature.properties || {};
+      const value = clamp(Number(scenarioDiffMetricValue(feature, lens)) || 0, 0, 1.5);
+      const diff = Number(scenarioDeltaValue(feature, lens)) || 0;
+      const influence = Number(props.intensity) || 0;
+      const magnitude = side === 'after'
+        ? clamp(Math.max(Math.abs(diff) * 8, influence, value * 0.22), 0.07, 1)
+        : clamp(Math.max(value, influence * 0.65), 0.06, 1);
+      const p = pointFeatureFromCoord(coord, {
+        id: 'scenario-' + lens.id + '-' + side + '-' + (props.cell_id || props.cellId || i),
+        color: splitDiffSignalColor(side, lens, value, diff),
+        value: value,
+        delta: diff,
+        magnitude: magnitude,
+        active: 0
+      });
+      if (p) out.push(p);
+    });
+    if (side === 'after' && center) {
+      const concrete = concreteImpactsForBranchYear(activeBranch(), opts.year || scenarioDiffYear()) || {};
+      const siteMagnitude = (() => {
+        if (lens.id === 'jobs') return clamp(Math.abs(Number(concrete.jobs && concrete.jobs.netJobsEstimate) || 0) / 900, 0.25, 1);
+        if (lens.id === 'electricity') return clamp(Math.abs(Number(concrete.electricity && concrete.electricity.peakKwChange) || 0) / 2800, 0.25, 1);
+        if (lens.id === 'services') return clamp(Math.abs(Number(concrete.services && concrete.services.netServiceDemand) || 0) / 3600, 0.25, 1);
+        if (lens.id === 'buildings') {
+          const area = Number(building && building.buildingConfig && building.buildingConfig.footprintSqm) || 900;
+          const floors = Number(building && building.buildingConfig && building.buildingConfig.floors) || Number(building && building.floors) || 8;
+          return clamp((Math.sqrt(area) / 45) + floors / 28, 0.32, 1);
+        }
+        return 0.6;
+      })();
+      const site = pointFeatureFromCoord(center, {
+        id: 'scenario-' + lens.id + '-site-demand',
+        color: lens.id === 'electricity' ? '#ef4444' : lens.color,
+        value: 1,
+        delta: siteMagnitude,
+        magnitude: siteMagnitude,
+        active: 1
+      });
+      if (site) out.unshift(site);
+    }
+    out.sort((a, b) => {
+      const aa = a.properties && a.properties.active ? 1 : 0;
+      const ba = b.properties && b.properties.active ? 1 : 0;
+      if (aa !== ba) return ba - aa;
+      return (Number(b.properties && b.properties.magnitude) || 0) -
+        (Number(a.properties && a.properties.magnitude) || 0);
+    });
+    return out.slice(0, Math.max(1, limit));
+  }
+
+  function scenarioDiffMeanDelta(grid, lens) {
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    const values = features.map(feature => Number(scenarioDeltaValue(feature, lens))).filter(Number.isFinite);
+    return values.length ? mean(values) : 0;
+  }
+
+  function scenarioDiffContextPressurePoints(features, lens, side, prefix, grid, limit) {
+    const avgDiff = scenarioDiffMeanDelta(grid, lens);
+    const source = (features || []).slice(0, Math.max(0, limit || 0));
+    return anchorPointFeatures(source, (feature, i) => {
+      const props = feature.properties || {};
+      const distKm = Number(props.__distKm);
+      const distanceWeight = Number.isFinite(distKm) ? clamp(1 - distKm / 4, 0.14, 1) : 0.45;
+      const sourceWeight = Number.isFinite(Number(props.__weight)) ? Number(props.__weight) : distanceWeight;
+      const magnitude = clamp(sourceWeight * (side === 'after' ? 0.62 : 0.34) + Math.abs(avgDiff) * 4.8, 0.08, side === 'after' ? 0.92 : 0.5);
+      return {
+        id: prefix + '-' + side + '-' + i,
+        color: splitDiffSignalColor(side, lens, magnitude, avgDiff),
+        value: magnitude,
+        delta: avgDiff,
+        magnitude: magnitude,
+        active: 0,
+        anchor: 1
+      };
+    });
+  }
+
+  function addScenarioDiffPressureLayers(map, sourceId, prefix, side, refLayerId) {
+    map.addLayer({
+      id: prefix + '-halo',
+      type: 'circle',
+      source: sourceId,
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 7, 1, side === 'after' ? 30 : 22],
+        'circle-color': ['get', 'color'],
+        'circle-opacity': side === 'after' ? 0.34 : 0.2,
+        'circle-blur': 0.58
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: prefix + '-core',
+      type: 'circle',
+      source: sourceId,
+      paint: {
+        'circle-radius': ['case', ['==', ['get', 'active'], 1], 6, ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.2, 1, 7.4]],
+        'circle-color': ['get', 'color'],
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 1.1,
+        'circle-opacity': 0.94
+      }
+    }, refLayerId);
+  }
+
+  async function addJobsScenarioDiffLayers(map, side, grid, building, year, refLayerId) {
+    if (!map || currentScenarioDiffLens().id !== 'jobs') return false;
+    const lens = currentScenarioDiffLens();
+    const center = [Number(building.lng), Number(building.lat)];
+    const services = await loadContextLayer('source-ni-services-osm');
+    const transport = await loadContextLayer('source-ni-transport-stops-osm');
+    const serviceFeatures = nearbyContextFeatures(services, center, 3.2, 180, null, (feature, distKm) => ({
+      __weight: clamp(1 - distKm / 3.2, 0.15, 1)
+    }));
+    const transportFeatures = nearbyContextFeatures(transport, center, 3.2, 120, null, (feature, distKm) => ({
+      __weight: clamp(1 - distKm / 3.2, 0.12, 1)
+    }));
+    const pressure = scenarioDiffPressurePointFeatures(grid, lens, side, building, { year, limit: side === 'after' ? 95 : 70 })
+      .concat(scenarioDiffContextPressurePoints(serviceFeatures.concat(transportFeatures), lens, side, 'jobs-anchor-pressure', grid, side === 'after' ? 70 : 45));
+
+    map.addSource('jobs-diff-services', { type: 'geojson', data: diffFeatureCollection(serviceFeatures) });
+    map.addSource('jobs-diff-transport', { type: 'geojson', data: diffFeatureCollection(transportFeatures) });
+    map.addSource('jobs-diff-pressure', { type: 'geojson', data: diffFeatureCollection(pressure) });
+    map.addLayer({
+      id: 'jobs-diff-services-halo',
+      type: 'circle',
+      source: 'jobs-diff-services',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 15],
+        'circle-color': '#a855f7',
+        'circle-opacity': ['interpolate', ['linear'], ['get', '__weight'], 0, 0.08, 1, 0.24],
+        'circle-blur': 0.7
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'jobs-diff-services-core',
+      type: 'circle',
+      source: 'jobs-diff-services',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 1.8, 16, 5.2],
+        'circle-color': '#d946ef',
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 0.8,
+        'circle-opacity': 0.82
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'jobs-diff-transport-core',
+      type: 'circle',
+      source: 'jobs-diff-transport',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 1.7, 16, 4.6],
+        'circle-color': '#22d3ee',
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 0.75,
+        'circle-opacity': 0.78
+      }
+    }, refLayerId);
+    addScenarioDiffPressureLayers(map, 'jobs-diff-pressure', 'jobs-diff-pressure', side, refLayerId);
+    return serviceFeatures.length > 0 || transportFeatures.length > 0 || pressure.length > 0;
+  }
+
+  async function addElectricityScenarioDiffLayers(map, side, grid, building, year, refLayerId) {
+    if (!map || currentScenarioDiffLens().id !== 'electricity') return false;
+    const lens = currentScenarioDiffLens();
+    const center = [Number(building.lng), Number(building.lat)];
+    const power = await loadContextLayer('source-ni-power-grid-osm');
+    const electricity = await loadElectricityYear(Math.min(2026, Math.max(2016, Number(year) || 2026)));
+    const lineFeatures = nearbyContextFeatures(power, center, 4.2, 220, feature => {
+      const type = feature && feature.geometry && feature.geometry.type;
+      return type === 'LineString' || type === 'MultiLineString';
+    }, feature => ({ __powerType: (feature.properties && (feature.properties.power || feature.properties.osm_power)) || 'line' }));
+    const assetSource = nearbyContextFeatures(electricity || power, center, 4.2, 180, feature => {
+      const type = feature && feature.geometry && feature.geometry.type;
+      return type !== 'LineString' && type !== 'MultiLineString';
+    });
+    const assetPoints = anchorPointFeatures(assetSource, (feature, i) => {
+      const props = feature.properties || {};
+      const load = Number(props.grid_load_pct);
+      return Object.assign({}, props, {
+        id: props.source_id || props.id || ('grid-asset-' + i),
+        grid_load_pct: Number.isFinite(load) ? load : 58,
+        headroom_pct: Number.isFinite(Number(props.headroom_pct)) ? Number(props.headroom_pct) : 42
+      });
+    });
+    const pressure = scenarioDiffPressurePointFeatures(grid, lens, side, building, { year, limit: side === 'after' ? 85 : 60 })
+      .concat(scenarioDiffContextPressurePoints(assetPoints, lens, side, 'electric-anchor-pressure', grid, side === 'after' ? 55 : 35));
+    const loadColor = [
+      'interpolate', ['linear'],
+      ['coalesce', ['to-number', ['get', 'grid_load_pct']], 58],
+      0, '#22c55e',
+      55, '#22c55e',
+      70, '#eab308',
+      85, '#fb923c',
+      100, '#ef4444'
+    ];
+
+    map.addSource('electric-diff-lines', { type: 'geojson', data: diffFeatureCollection(lineFeatures) });
+    map.addSource('electric-diff-assets', { type: 'geojson', data: diffFeatureCollection(assetPoints) });
+    map.addSource('electric-diff-pressure', { type: 'geojson', data: diffFeatureCollection(pressure) });
+    map.addLayer({
+      id: 'electric-diff-line-glow',
+      type: 'line',
+      source: 'electric-diff-lines',
+      paint: {
+        'line-color': '#22d3ee',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 11, 3, 16, 11],
+        'line-opacity': 0.18,
+        'line-blur': 2.5
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-line-core',
+      type: 'line',
+      source: 'electric-diff-lines',
+      paint: {
+        'line-color': '#06b6d4',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0.9, 16, 3.1],
+        'line-opacity': 0.8
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-asset-bleed',
+      type: 'circle',
+      source: 'electric-diff-assets',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 14, 16, 54],
+        'circle-color': loadColor,
+        'circle-opacity': 0.14,
+        'circle-blur': 0.85
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-asset-core',
+      type: 'circle',
+      source: 'electric-diff-assets',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 2.2, 16, 7.5],
+        'circle-color': loadColor,
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 1,
+        'circle-opacity': 0.9
+      }
+    }, refLayerId);
+    addScenarioDiffPressureLayers(map, 'electric-diff-pressure', 'electric-diff-pressure', side, refLayerId);
+    return lineFeatures.length > 0 || assetPoints.length > 0 || pressure.length > 0;
+  }
+
+  async function addBuildingsScenarioDiffLayers(map, side, grid, building, year, refLayerId) {
+    if (!map || currentScenarioDiffLens().id !== 'buildings') return false;
+    const lens = currentScenarioDiffLens();
+    const center = [Number(building.lng), Number(building.lat)];
+    const buildings = await loadContextLayer('belfast-ni-buildings-3d');
+    const existing = nearbyContextFeatures(buildings, center, 2.1, 900, feature => {
+      const type = feature && feature.geometry && feature.geometry.type;
+      return type === 'Polygon' || type === 'MultiPolygon';
+    }, feature => {
+      const props = feature.properties || {};
+      const firstYear = Number(props.replay_first_visible_year);
+      return {
+        __existingColor: Number.isFinite(firstYear) && firstYear >= 2020 ? '#facc15' : '#3b82f6'
+      };
+    });
+    const pressure = scenarioDiffPressurePointFeatures(grid, lens, side, building, { year, limit: side === 'after' ? 95 : 65 })
+      .concat(scenarioDiffContextPressurePoints(existing, lens, side, 'building-anchor-pressure', grid, side === 'after' ? 70 : 45));
+
+    map.addSource('buildings-diff-existing', { type: 'geojson', data: diffFeatureCollection(existing) });
+    map.addSource('buildings-diff-pressure', { type: 'geojson', data: diffFeatureCollection(pressure) });
+    map.addLayer({
+      id: 'buildings-diff-existing-fill',
+      type: 'fill',
+      source: 'buildings-diff-existing',
+      paint: {
+        'fill-color': ['get', '__existingColor'],
+        'fill-opacity': side === 'after' ? 0.18 : 0.26,
+        'fill-outline-color': 'rgba(96,165,250,0.28)'
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'buildings-diff-existing-3d',
+      type: 'fill-extrusion',
+      source: 'buildings-diff-existing',
+      paint: {
+        'fill-extrusion-color': ['get', '__existingColor'],
+        'fill-extrusion-height': ['coalesce', ['to-number', ['get', 'replay_height_m']], ['*', ['coalesce', ['to-number', ['get', 'levels']], ['to-number', ['get', 'building:levels']], 4], 3], 12],
+        'fill-extrusion-base': 0,
+        'fill-extrusion-opacity': side === 'after' ? 0.46 : 0.58
+      }
+    }, refLayerId);
+    addScenarioDiffPressureLayers(map, 'buildings-diff-pressure', 'buildings-diff-pressure', side, refLayerId);
+    return existing.length > 0 || pressure.length > 0;
+  }
+
+  async function addScenarioDiffRealLayers(map, side, grid, building, year, refLayerId) {
+    const lens = currentScenarioDiffLens();
+    if (lens.id === 'traffic') return addTrafficScenarioDiffLayers(map, side, grid, building, year, refLayerId);
+    if (lens.id === 'jobs') return addJobsScenarioDiffLayers(map, side, grid, building, year, refLayerId);
+    if (lens.id === 'electricity') return addElectricityScenarioDiffLayers(map, side, grid, building, year, refLayerId);
+    if (lens.id === 'buildings') return addBuildingsScenarioDiffLayers(map, side, grid, building, year, refLayerId);
+    if (lens.id === 'services') return addPublicTransportDiffLayers(map, side, year, activeBranch(), refLayerId, grid, building);
+    return false;
+  }
+
+  function addScenarioDiffCellPolygonLayers(map, side, grid, activeLens, refLayerId) {
+    const features = (grid && grid.features) ? grid.features.map(f => {
+      const props = f.properties || {};
+      const value = scenarioDiffMetricValue(f, activeLens);
+      const diff = scenarioDeltaValue(f, activeLens);
+      const neutralAffected = Math.abs(diff) < 0.00005;
+      const goodness = activeLens.goodDirection === 'up' ? value : (1 - value);
+      const color = side === 'before'
+        ? ramp_RedGreen(clamp(goodness, 0, 1))
+        : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, activeLens));
+      const opacity = side === 'before'
+        ? clamp(0.12 + value * 0.7, 0.14, 0.82)
+        : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
+      return Object.assign({}, f, {
+        properties: Object.assign({}, props, {
+          __color: color,
+          __opacity: opacity
+        })
+      });
+    }) : [];
+    map.addSource('cells', { type: 'geojson', data: { type: 'FeatureCollection', features: features } });
+    map.addLayer({
+      id: 'cells-fill',
+      type: 'fill',
+      source: 'cells',
+      paint: { 'fill-color': ['get', '__color'], 'fill-opacity': ['get', '__opacity'] }
+    }, refLayerId);
+    map.addLayer({
+      id: 'cells-line',
+      type: 'line',
+      source: 'cells',
+      paint: { 'line-color': 'rgba(226,232,240,0.16)', 'line-width': 0.45 }
+    }, refLayerId);
+  }
+
   async function buildScenarioDiffMapInContainer(container, side, grid, building, year, showBuilding, mapStore) {
     if (!container) return null;
     container.innerHTML = '';
@@ -5318,43 +6561,13 @@
     return new Promise(resolve => {
       map.on('load', async () => {
         const activeLens = currentScenarioDiffLens();
-        const features = (grid && grid.features) ? grid.features.map(f => {
-          const props = f.properties || {};
-          const value = scenarioDiffMetricValue(f, activeLens);
-          const diff = scenarioDeltaValue(f, activeLens);
-          const neutralAffected = Math.abs(diff) < 0.00005;
-          const goodness = activeLens.goodDirection === 'up' ? value : (1 - value);
-          const color = side === 'before'
-            ? ramp_RedGreen(clamp(goodness, 0, 1))
-            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, activeLens));
-          const opacity = side === 'before'
-            ? clamp(0.12 + value * 0.7, 0.14, 0.82)
-            : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
-          return Object.assign({}, f, {
-            properties: Object.assign({}, props, {
-              __color: color,
-              __opacity: opacity
-            })
-          });
-        }) : [];
         const refLayerId = (() => {
           const ls = map.getStyle().layers || [];
           for (const l of ls) if (l.type === 'symbol') return l.id;
           return undefined;
         })();
-        map.addSource('cells', { type: 'geojson', data: { type: 'FeatureCollection', features: features } });
-        map.addLayer({
-          id: 'cells-fill',
-          type: 'fill',
-          source: 'cells',
-          paint: { 'fill-color': ['get', '__color'], 'fill-opacity': ['get', '__opacity'] }
-        }, refLayerId);
-        map.addLayer({
-          id: 'cells-line',
-          type: 'line',
-          source: 'cells',
-          paint: { 'line-color': 'rgba(226,232,240,0.16)', 'line-width': 0.45 }
-        }, refLayerId);
+        const renderedRealLayers = await addScenarioDiffRealLayers(map, side, grid, building, year, refLayerId);
+        if (!renderedRealLayers) addScenarioDiffCellPolygonLayers(map, side, grid, activeLens, refLayerId);
 
         const markerFeature = { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: center } };
         map.addSource('site', { type: 'geojson', data: { type: 'FeatureCollection', features: [markerFeature] } });
@@ -5399,7 +6612,6 @@
             }
           }, refLayerId);
         }
-        await addPublicTransportDiffLayers(map, side, year, activeBranch(), refLayerId);
         requestAnimationFrame(() => {
           try { map.resize(); } catch (_) {}
           resolve(map);
@@ -5833,6 +7045,7 @@
         }
       });
     }
+    return true;
   }
 
   function metricColor(metric) {
@@ -5924,6 +7137,114 @@
     };
   }
 
+  function baselineTrafficForecastDemandPoints(year, opts) {
+    opts = opts || {};
+    const centre = Array.isArray(opts.centre || opts.center) ? (opts.centre || opts.center) : null;
+    const radiusKm = Number(opts.radiusKm) || 0;
+    const limit = Math.max(1, Math.min(260, Number(opts.limit) || 140));
+    const cells = state.baselineForecast && Array.isArray(state.baselineForecast.cells)
+      ? state.baselineForecast.cells
+      : [];
+    const out = [];
+    cells.forEach(cell => {
+      const row = cell.forecastByYear && cell.forecastByYear[String(year)];
+      if (!row) return;
+      const coord = Array.isArray(cell.centroid) ? cell.centroid : polygonCentroid(cell.geometry);
+      if (centre && radiusKm && coordDistKm(coord, centre) > radiusKm) return;
+      const future = Number(row.traffic);
+      const base = Number(cell.baseline2025 && cell.baseline2025.traffic);
+      if (!Number.isFinite(future)) return;
+      const delta = Number.isFinite(base) ? future - base : future;
+      const intensity = clamp(future * 0.82 + Math.abs(delta) * 3.6, 0.05, 1);
+      const feature = pointFeatureFromCoord(coord, {
+        id: 'baseline-forecast-traffic-' + (cell.cellId || out.length),
+        intensity: intensity,
+        delta: delta,
+        polarity: delta <= -0.005 ? 1 : -1,
+        active: 0
+      });
+      if (feature) out.push(feature);
+    });
+    out.sort((a, b) => {
+      const ap = a.properties || {}, bp = b.properties || {};
+      const as = (Number(ap.intensity) || 0) + Math.abs(Number(ap.delta) || 0) * 1.8;
+      const bs = (Number(bp.intensity) || 0) + Math.abs(Number(bp.delta) || 0) * 1.8;
+      return bs - as;
+    });
+    return out.slice(0, limit);
+  }
+
+  function futureTrafficDemandPoints(branch, year, scenarioHeatmap) {
+    let points = baselineTrafficForecastDemandPoints(year);
+    if (scenarioHeatmap && Array.isArray(scenarioHeatmap.points) && scenarioHeatmap.points.length) {
+      points = points.concat(scenarioHeatmap.points.map((p, i) => {
+        const props = p.properties || {};
+        return pointFeatureFromCoord(p.geometry && p.geometry.coordinates, {
+          id: props.id || ('forecast-traffic-' + i),
+          intensity: clamp(Number(props.intensity) || 0.25, 0.05, 1),
+          polarity: Number.isFinite(Number(props.polarity)) ? Number(props.polarity) : -1,
+          active: 0
+        });
+      }).filter(Boolean));
+    } else if (window.BelfastPredictor && branch) {
+      (branch.items || []).forEach(item => {
+        if (item.type !== 'building' || item.year > year) return;
+        const generated = window.BelfastPredictor.generateHeatmapPoints(item, year, 'traffic') || [];
+        points = points.concat(generated.map((p, i) => pointFeatureFromCoord(p.geometry && p.geometry.coordinates, {
+          id: (item.id || 'building') + '-traffic-' + i,
+          intensity: clamp(Number(p.properties && p.properties.intensity) || 0.15, 0.04, 1),
+          polarity: Number.isFinite(Number(p.properties && p.properties.polarity)) ? Number(p.properties.polarity) : -1,
+          active: 0
+        })).filter(Boolean));
+      });
+    }
+
+    (branch && branch.items || []).forEach(item => {
+      let coord = null;
+      if (item.type === 'road') {
+        const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
+        const loc = locationFromCoords(path);
+        if (loc) coord = [loc.lng, loc.lat];
+      } else if (item.type === 'building' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+        coord = [Number(item.lng), Number(item.lat)];
+      }
+      if (!coord) return;
+      const isRoad = item.type === 'road';
+      const feature = pointFeatureFromCoord(coord, {
+        id: item.id,
+        intensity: isRoad ? 0.9 : 0.72,
+        polarity: isRoad ? 1 : -1,
+        active: 1
+      });
+      if (feature) points.push(feature);
+    });
+
+    points.sort((a, b) => (Number(b.properties && b.properties.intensity) || 0) - (Number(a.properties && a.properties.intensity) || 0));
+    return points.slice(0, 180);
+  }
+
+  function refreshFutureTrafficSwarm(branch, scenarioHeatmap) {
+    if (!trafficSimReady(updateImpactRipples)) return;
+    const demand = futureTrafficDemandPoints(branch, state.year, scenarioHeatmap);
+    const centre = focusCoordForTraffic(branch, demand);
+    const concrete = concreteImpactsForBranchYear(branch, state.year);
+    const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+    const result = window.TrafficSim.runAgentSwarm({
+      branch: branch,
+      demandPoints: demand,
+      centre: centre,
+      radiusKm: demand.length ? 2.35 : 1.6,
+      density: clamp(150 + demand.length * 3 + trips / 80, 140, 520),
+      durationSeconds: 9,
+      seed: (state.year * 1103515245 + demand.length * 313) >>> 0,
+      maxSegments: 2200,
+      maxFlowSegments: 420,
+      maxPointFeatures: 28
+    });
+    window.TrafficSim.showAgentSwarmOverlay(result);
+    showCongestionLegend();
+  }
+
   function impactEpicentreFeatures(branch, metricId) {
     if (!branch) return [];
     const def = impactMetricDef(metricId);
@@ -5962,6 +7283,19 @@
     }
     const metric = state.impactMetric;
     const scenarioHeatmap = scenarioImpactHeatmap(branch, state.year, metric);
+    if (metric !== 'traffic' && window.TrafficSim && typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') {
+      window.TrafficSim.clearAgentSwarmOverlay();
+      if (congestionLegendEl) congestionLegendEl.style.display = 'none';
+    }
+    if (metric === 'traffic') {
+      if (state.map.getSource('impact-ripples')) state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-epicentres')) {
+        state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: impactEpicentreFeatures(branch, metric) });
+      }
+      refreshFutureTrafficSwarm(branch, scenarioHeatmap);
+      return;
+    }
     if (scenarioHeatmap) {
       if (metric === 'electricity') {
         if (state.map.getSource('impact-ripples')) {
@@ -6264,6 +7598,25 @@
       clearRoadPlanner: clearRoadPlanner,
       armRoadPlanner: armRoadPlanner,
       runRoadComparison: runRoadComparison,
+      getWorkspaceSplitDebug: function () {
+        function readMap(map) {
+          if (!map || !map.getStyle) return null;
+          const style = map.getStyle() || {};
+          const sourceIds = Object.keys(style.sources || {});
+          const layerIds = (style.layers || []).map(layer => layer.id);
+          const sourceCounts = {};
+          sourceIds.forEach(id => {
+            const source = map.getSource(id);
+            const data = source && source._data;
+            sourceCounts[id] = data && Array.isArray(data.features) ? data.features.length : null;
+          });
+          return { sourceIds, layerIds, sourceCounts };
+        }
+        return {
+          before: readMap(workspaceSplitMaps.before),
+          after: readMap(workspaceSplitMaps.after)
+        };
+      },
       get roadPlannerArmed() { return roadPlanner.armed; },
     };
   }

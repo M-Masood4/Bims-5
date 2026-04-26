@@ -25,8 +25,21 @@
 
   const VEHICLE_SOURCE_ID = 'traffic-sim-vehicles';
   const VEHICLE_LAYER_ID = 'traffic-sim-vehicles-layer';
+  const NETWORK_SOURCE_ID = 'traffic-sim-road-network';
+  const NETWORK_CASE_LAYER_ID = 'traffic-sim-road-network-case';
+  const NETWORK_LAYER_ID = 'traffic-sim-road-network-line';
   const CONGESTION_SOURCE_ID = 'traffic-sim-congestion';
+  const CONGESTION_GLOW_LAYER_ID = 'traffic-sim-congestion-glow';
   const CONGESTION_LAYER_ID = 'traffic-sim-congestion-layer';
+  const AGENT_BASE_SOURCE_ID = 'traffic-agent-swarm-base';
+  const AGENT_FLOW_SOURCE_ID = 'traffic-agent-swarm-flow';
+  const AGENT_POINT_SOURCE_ID = 'traffic-agent-swarm-points';
+  const AGENT_BASE_CASE_LAYER_ID = 'traffic-agent-swarm-base-case';
+  const AGENT_BASE_LAYER_ID = 'traffic-agent-swarm-base-line';
+  const AGENT_FLOW_GLOW_LAYER_ID = 'traffic-agent-swarm-flow-glow';
+  const AGENT_FLOW_LAYER_ID = 'traffic-agent-swarm-flow-line';
+  const AGENT_POINT_GLOW_LAYER_ID = 'traffic-agent-swarm-point-glow';
+  const AGENT_POINT_LAYER_ID = 'traffic-agent-swarm-point';
 
   // --- math helpers (operate on [lng,lat]) ----------------------------------
 
@@ -42,6 +55,50 @@
   }
   function lerp(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; }
   function rand(min, max) { return min + Math.random() * (max - min); }
+  function clamp01(n) { return Math.max(0, Math.min(1, Number(n) || 0)); }
+  function midpoint(a, b) { return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; }
+  function distKm(a, b) { return distMetres(a, b) / 1000; }
+  function pointSegmentDistanceKm(p, a, b) {
+    const ax = a[0] * M_PER_DEG_LNG, ay = a[1] * M_PER_DEG_LAT;
+    const bx = b[0] * M_PER_DEG_LNG, by = b[1] * M_PER_DEG_LAT;
+    const px = p[0] * M_PER_DEG_LNG, py = p[1] * M_PER_DEG_LAT;
+    const vx = bx - ax, vy = by - ay;
+    const wx = px - ax, wy = py - ay;
+    const c = vx * vx + vy * vy;
+    const t = c > 0 ? Math.max(0, Math.min(1, (wx * vx + wy * vy) / c)) : 0;
+    const qx = ax + vx * t, qy = ay + vy * t;
+    return Math.hypot(px - qx, py - qy) / 1000;
+  }
+  function highwayWeight(hw) {
+    if (!hw) return 0.45;
+    if (hw.indexOf('motorway') === 0) return 1.0;
+    if (hw.indexOf('trunk') === 0) return 0.92;
+    if (hw.indexOf('primary') === 0) return 0.84;
+    if (hw.indexOf('secondary') === 0) return 0.72;
+    if (hw.indexOf('tertiary') === 0) return 0.58;
+    if (hw === 'residential') return 0.42;
+    if (hw === 'service') return 0.24;
+    return 0.48;
+  }
+
+  function seededRandom(seed) {
+    let x = (seed == null ? 0xb1f55 : seed) >>> 0;
+    return function () {
+      x = (x * 1664525 + 1013904223) >>> 0;
+      return (x & 0xffffff) / 0xffffff;
+    };
+  }
+
+  function weightedPick(items, weightFn, rand01) {
+    let total = 0;
+    for (let i = 0; i < items.length; i++) total += Math.max(0.0001, weightFn(items[i]));
+    let roll = rand01() * total;
+    for (let i = 0; i < items.length; i++) {
+      roll -= Math.max(0.0001, weightFn(items[i]));
+      if (roll <= 0) return items[i];
+    }
+    return items[items.length - 1];
+  }
 
   // --- segment book-keeping --------------------------------------------------
 
@@ -55,6 +112,9 @@
     targetCount: 80,
     speedMultiplier: 1.0,
     congestionFeedback: true,
+    vehiclePreviewMs: 4000,
+    vehiclePreviewUntil: 0,
+    vehiclesVisible: true,
     metrics: { vehicles: 0, avgSpeed: 0, congested: 0 },
     onMetrics: null,
   };
@@ -74,18 +134,39 @@
         b: s.b,
         length: Math.max(20, distMetres(s.a, s.b)),
         source: s.source || 'osm',
+        highway: s.highway || '',
         occupants: new Set(),
       }));
     // Drop vehicles whose segment vanished
     state.vehicles = state.vehicles.filter(v => state.segments.find(s => s.id === v.segmentId));
   }
 
+  function userRoadSegmentsFromBranch(branch) {
+    const out = [];
+    const items = (branch && branch.items) || [];
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      if (it.type !== 'road') continue;
+      if (Array.isArray(it.path) && it.path.length >= 2) {
+        for (let j = 0; j + 1 < it.path.length; j++) {
+          out.push({
+            id: 'u-' + it.id + '-' + j,
+            a: it.path[j],
+            b: it.path[j + 1],
+            source: 'user',
+            highway: 'primary',
+          });
+        }
+      } else if (Array.isArray(it.start) && Array.isArray(it.end)) {
+        out.push({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user', highway: 'primary' });
+      }
+    }
+    return out;
+  }
+
   function setSegmentsFromBranch(branch) {
     if (!branch) { setSegments([]); return; }
-    const userRoads = (branch.items || [])
-      .filter(it => it.type === 'road' && Array.isArray(it.start) && Array.isArray(it.end))
-      .map(it => ({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user' }));
-    setSegments([...sampleOsmSegments(), ...userRoads]);
+    setSegments([...sampleOsmSegments(), ...userRoadSegmentsFromBranch(branch)]);
   }
 
   // ----- Real OSM road network ---------------------------------------------
@@ -251,7 +332,13 @@
                         : g.type === 'MultiLineString' ? g.coordinates : [];
             lines.forEach(coords => {
               for (let j = 0; j + 1 < coords.length; j++) {
-                out.push({ id: 'osm-' + (id++), a: coords[j], b: coords[j + 1], source: 'osm' });
+                out.push({
+                  id: 'osm-' + (id++),
+                  a: coords[j],
+                  b: coords[j + 1],
+                  source: 'osm',
+                  highway: (feats[i].properties && feats[i].properties.highway) || '',
+                });
                 if (out.length > 600) return;
               }
             });
@@ -267,6 +354,27 @@
     return syntheticBelfastSegments();
   }
 
+  function osmSegmentsForDemandCoverage(demand, radiusKm, maxRawSegments) {
+    if (!isOsmLoaded() || !demand.length) return [];
+    const out = [];
+    const seen = new Set();
+    const points = demand.slice().sort((a, b) => {
+      if (a.active !== b.active) return a.active ? -1 : 1;
+      return b.weight - a.weight;
+    });
+    for (let i = 0; i < points.length && out.length < maxRawSegments; i++) {
+      const local = osmSegmentsNear(points[i].coord, radiusKm);
+      for (let j = 0; j < local.length && out.length < maxRawSegments; j++) {
+        const seg = local[j];
+        const key = seg.id || (seg.a.join(',') + '>' + seg.b.join(','));
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(seg);
+      }
+    }
+    return out;
+  }
+
   // Synthetic Belfast lattice — used when OSM context isn't ready yet so the
   // sim still has something to animate.
   function syntheticBelfastSegments() {
@@ -279,8 +387,8 @@
         const a = [C[0] + dx * stepLng, C[1] + dy * stepLat];
         const b1 = [C[0] + (dx + 1) * stepLng, C[1] + dy * stepLat];
         const b2 = [C[0] + dx * stepLng, C[1] + (dy + 1) * stepLat];
-        if (dx < 7) segs.push({ id: 'syn-' + (id++), a, b: b1, source: 'osm' });
-        if (dy < 5) segs.push({ id: 'syn-' + (id++), a, b: b2, source: 'osm' });
+        if (dx < 7) segs.push({ id: 'syn-' + (id++), a, b: b1, source: 'osm', highway: 'secondary' });
+        if (dy < 5) segs.push({ id: 'syn-' + (id++), a, b: b2, source: 'osm', highway: 'tertiary' });
       }
     }
     return segs;
@@ -410,16 +518,39 @@
     return { type: 'FeatureCollection', features: feats.filter(Boolean) };
   }
 
+  function buildNetworkFeatures() {
+    const feats = [];
+    for (let i = 0; i < state.segments.length; i++) {
+      const s = state.segments[i];
+      feats.push({
+        type: 'Feature',
+        properties: {
+          source: s.source || 'osm',
+          highway: s.highway || '',
+          weight: highwayWeight(s.highway),
+          user: s.source === 'user' ? 1 : 0,
+        },
+        geometry: { type: 'LineString', coordinates: [s.a, s.b] },
+      });
+    }
+    return { type: 'FeatureCollection', features: feats };
+  }
+
   function buildCongestionFeatures() {
     const feats = [];
     for (let i = 0; i < state.segments.length; i++) {
       const s = state.segments[i];
       const cap = Math.max(2, Math.floor(s.length / 60));
       const ratio = Math.min(1, s.occupants.size / cap);
-      if (ratio < 0.15) continue;
+      if (ratio < 0.05) continue;
       feats.push({
         type: 'Feature',
-        properties: { congestion: ratio, user: s.source === 'user' ? 1 : 0 },
+        properties: {
+          congestion: ratio,
+          weight: highwayWeight(s.highway),
+          user: s.source === 'user' ? 1 : 0,
+          highway: s.highway || '',
+        },
         geometry: { type: 'LineString', coordinates: [s.a, s.b] },
       });
     }
@@ -430,8 +561,57 @@
     const map = state.map;
     if (!map || !map.isStyleLoaded || !map.isStyleLoaded()) return false;
 
+    if (!map.getSource(NETWORK_SOURCE_ID)) {
+      map.addSource(NETWORK_SOURCE_ID, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    }
+    if (!map.getLayer(NETWORK_CASE_LAYER_ID)) {
+      map.addLayer({
+        id: NETWORK_CASE_LAYER_ID,
+        type: 'line',
+        source: NETWORK_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.6, 13, 3.2, 16, 7.5],
+          'line-color': '#020617',
+          'line-opacity': 0.72,
+        },
+      });
+    }
+    if (!map.getLayer(NETWORK_LAYER_ID)) {
+      map.addLayer({
+        id: NETWORK_LAYER_ID,
+        type: 'line',
+        source: NETWORK_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.45, 14, 1.4, 16, 2.6],
+          'line-color': ['case', ['==', ['get', 'user'], 1], '#22d3ee', '#2563eb'],
+          'line-opacity': ['case', ['==', ['get', 'user'], 1], 0.84, 0.56],
+        },
+      });
+    }
+
     if (!map.getSource(CONGESTION_SOURCE_ID)) {
       map.addSource(CONGESTION_SOURCE_ID, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    }
+    if (!map.getLayer(CONGESTION_GLOW_LAYER_ID)) {
+      map.addLayer({
+        id: CONGESTION_GLOW_LAYER_ID,
+        type: 'line',
+        source: CONGESTION_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 5, 14, 12, 16, 22],
+          'line-color': ['interpolate', ['linear'], ['get', 'congestion'],
+            0.05, '#22d3ee',
+            0.25, '#34d399',
+            0.45, '#facc15',
+            0.70, '#fb923c',
+            1.0,  '#ef4444'],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'congestion'], 0.05, 0.08, 1, 0.32],
+          'line-blur': 3,
+        },
+      });
     }
     if (!map.getLayer(CONGESTION_LAYER_ID)) {
       map.addLayer({
@@ -440,13 +620,14 @@
         source: CONGESTION_SOURCE_ID,
         layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: {
-          'line-width': ['interpolate', ['linear'], ['get', 'congestion'], 0, 2, 1, 6],
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2, 14, 5.5, 16, 9],
           'line-color': ['interpolate', ['linear'], ['get', 'congestion'],
-            0.15, '#fde68a',
-            0.4,  '#fb923c',
-            0.7,  '#ef4444',
-            1.0,  '#7f1d1d'],
-          'line-opacity': 0.55,
+            0.05, '#22d3ee',
+            0.25, '#34d399',
+            0.45, '#facc15',
+            0.70, '#fb923c',
+            1.0,  '#ef4444'],
+          'line-opacity': 0.92,
         },
       });
     }
@@ -478,14 +659,22 @@
   function setDataIfReady() {
     if (!state.map) return;
     if (!ensureLayers()) return;
+    const network = state.map.getSource(NETWORK_SOURCE_ID);
+    if (network) network.setData(buildNetworkFeatures());
     const veh = state.map.getSource(VEHICLE_SOURCE_ID);
-    if (veh) veh.setData(buildVehicleFeatures());
+    if (veh) {
+      veh.setData(state.vehiclesVisible
+        ? buildVehicleFeatures()
+        : { type: 'FeatureCollection', features: [] });
+    }
     const cong = state.map.getSource(CONGESTION_SOURCE_ID);
     if (cong) cong.setData(buildCongestionFeatures());
   }
 
   function clearMapData() {
     if (!state.map) return;
+    const network = state.map.getSource(NETWORK_SOURCE_ID);
+    if (network) network.setData({ type: 'FeatureCollection', features: [] });
     const veh = state.map.getSource(VEHICLE_SOURCE_ID);
     if (veh) veh.setData({ type: 'FeatureCollection', features: [] });
     const cong = state.map.getSource(CONGESTION_SOURCE_ID);
@@ -506,6 +695,10 @@
     }
     ensurePopulation();
     step(dt);
+    if (state.vehiclePreviewUntil && performance.now() >= state.vehiclePreviewUntil) {
+      state.vehiclesVisible = false;
+      state.vehiclePreviewUntil = 0;
+    }
     setDataIfReady();
     state.rafId = requestAnimationFrame(loop);
   }
@@ -526,12 +719,23 @@
     setSegmentsFromBranch(branch);
   }
 
+  function previewVehicles(ms) {
+    const previewMs = typeof ms === 'number' ? ms : state.vehiclePreviewMs;
+    state.vehiclesVisible = previewMs !== 0;
+    state.vehiclePreviewUntil = previewMs > 0 ? performance.now() + previewMs : 0;
+    setDataIfReady();
+  }
+
   function start(opts) {
-    if (state.running) return;
     if (opts && typeof opts.density === 'number') state.targetCount = clampInt(opts.density, 0, 400);
     if (opts && typeof opts.speed === 'number') state.speedMultiplier = Math.max(0.1, Math.min(3, opts.speed));
     if (opts && typeof opts.congestionFeedback === 'boolean') state.congestionFeedback = opts.congestionFeedback;
+    const previewMs = opts && typeof opts.vehiclePreviewMs === 'number'
+      ? opts.vehiclePreviewMs
+      : state.vehiclePreviewMs;
+    previewVehicles(previewMs);
     refreshSegments();
+    if (state.running) return;
     state.running = true;
     state.lastTs = 0;
     state.rafId = requestAnimationFrame(loop);
@@ -541,6 +745,8 @@
     state.running = false;
     if (state.rafId) cancelAnimationFrame(state.rafId);
     state.rafId = null;
+    state.vehiclePreviewUntil = 0;
+    state.vehiclesVisible = true;
     clearVehicles();
     clearMapData();
   }
@@ -926,28 +1132,418 @@
   // Roads with a `path` polyline expand into a chain of sub-segments so the
   // sim routes vehicles along the actual street alignment.
   function segmentsForBranch(branch) {
-    const userRoads = [];
-    const items = (branch && branch.items) || [];
-    for (let i = 0; i < items.length; i++) {
-      const it = items[i];
-      if (it.type !== 'road') continue;
-      if (Array.isArray(it.path) && it.path.length >= 2) {
-        for (let j = 0; j + 1 < it.path.length; j++) {
-          userRoads.push({
-            id: 'u-' + it.id + '-' + j,
-            a: it.path[j],
-            b: it.path[j + 1],
-            source: 'user',
-          });
-        }
-      } else if (Array.isArray(it.start) && Array.isArray(it.end)) {
-        userRoads.push({ id: 'u-' + it.id, a: it.start, b: it.end, source: 'user' });
-      }
-    }
-    return [...sampleOsmSegments(), ...userRoads];
+    return [...sampleOsmSegments(), ...userRoadSegmentsFromBranch(branch)];
   }
 
-  // ----- comparison overlay (the on-map "diff heatmap") --------------------
+  // ----- agent-swarm road pressure overlay ---------------------------------
+  // This mirrors the trafficjam visual approach: run simple agents through the
+  // local road graph, aggregate per-link volume/occupancy, then render coloured
+  // road outlines instead of a blob heatmap.
+
+  function normaliseDemandPoints(points) {
+    const out = [];
+    const raw = Array.isArray(points) ? points : [];
+    for (let i = 0; i < raw.length; i++) {
+      const p = raw[i];
+      let coord = null;
+      let props = {};
+      if (Array.isArray(p) && p.length >= 2) {
+        coord = [Number(p[0]), Number(p[1])];
+      } else if (p && p.geometry && p.geometry.type === 'Point') {
+        coord = p.geometry.coordinates;
+        props = p.properties || {};
+      } else if (p && Array.isArray(p.coord)) {
+        coord = p.coord;
+        props = p;
+      } else if (p && Array.isArray(p.coordinates)) {
+        coord = p.coordinates;
+        props = p;
+      }
+      if (!Array.isArray(coord) || coord.length < 2) continue;
+      const lng = Number(coord[0]), lat = Number(coord[1]);
+      if (!Number.isFinite(lng) || !Number.isFinite(lat)) continue;
+      const intensity = Number(props.intensity ?? props.weight ?? props.w ?? 1);
+      const polarity = Number(props.polarity ?? props.pressure ?? -1);
+      out.push({
+        id: props.id || ('demand-' + i),
+        coord: [lng, lat],
+        weight: clamp01(intensity) || 0.2,
+        polarity: Number.isFinite(polarity) ? polarity : -1,
+        active: !!props.active,
+      });
+    }
+    return out;
+  }
+
+  function demandCentre(points) {
+    if (!points.length) {
+      return (state.map && state.map.getCenter)
+        ? [state.map.getCenter().lng, state.map.getCenter().lat]
+        : [-5.93, 54.597];
+    }
+    let sx = 0, sy = 0, sw = 0;
+    for (let i = 0; i < points.length; i++) {
+      const w = Math.max(0.05, points[i].weight);
+      sx += points[i].coord[0] * w;
+      sy += points[i].coord[1] * w;
+      sw += w;
+    }
+    return sw ? [sx / sw, sy / sw] : points[0].coord;
+  }
+
+  function segmentDemandScore(seg, demand, centre, radiusKm) {
+    const hw = highwayWeight(seg.highway);
+    let score = 0.08 + hw * 0.34;
+    if (centre) {
+      score += Math.max(0, 1 - pointSegmentDistanceKm(centre, seg.a, seg.b) / Math.max(0.1, radiusKm)) * 0.18;
+    }
+    for (let i = 0; i < demand.length; i++) {
+      const p = demand[i];
+      const sigma = p.active ? 0.18 : 0.36;
+      const d = pointSegmentDistanceKm(p.coord, seg.a, seg.b);
+      const pressure = p.polarity >= 0 ? 0.38 : 1.0;
+      score += p.weight * pressure * Math.exp(-(d * d) / (2 * sigma * sigma));
+    }
+    return score;
+  }
+
+  function lineFeatureForSegment(seg, props) {
+    return {
+      type: 'Feature',
+      properties: Object.assign({
+        id: seg.id,
+        source: seg.source || 'osm',
+        highway: seg.highway || '',
+        weight: highwayWeight(seg.highway),
+      }, props || {}),
+      geometry: { type: 'LineString', coordinates: [seg.a, seg.b] },
+    };
+  }
+
+  function runAgentSwarm(opts) {
+    opts = opts || {};
+    const demand = normaliseDemandPoints(opts.demandPoints || opts.points || []);
+    const cityWide = !!opts.cityWide || opts.scope === 'city';
+    const centre = Array.isArray(opts.centre) ? opts.centre : demandCentre(demand);
+    const radiusLimit = cityWide ? 24 : 6;
+    const radiusFloor = cityWide ? 4 : 0.35;
+    const radiusKm = Math.max(radiusFloor, Math.min(radiusLimit, Number(opts.radiusKm) || (demand.length ? 2.2 : 1.4)));
+    const seed = opts.seed == null ? 0xb1f55 : opts.seed;
+    const rand01 = seededRandom(seed);
+    const density = clampInt(opts.density || Math.min(420, Math.max(120, 90 + demand.length * 16)), 20, 650);
+    const durationSeconds = Math.max(1, Math.min(45, Number(opts.durationSeconds) || 8));
+    const dt = 0.1;
+    const speedMul = Math.max(0.1, Math.min(3, Number(opts.speed) || state.speedMultiplier || 1));
+
+    let raw = Array.isArray(opts.segments) && opts.segments.length
+      ? opts.segments
+      : (isOsmLoaded()
+        ? (cityWide
+          ? osmSegmentsForDemandCoverage(
+            demand,
+            Math.max(0.55, Math.min(1.2, Number(opts.cityDemandRadiusKm) || 0.78)),
+            Math.max(1200, Math.min(18000, Number(opts.cityRawSegmentLimit) || 12000))
+          )
+          : osmSegmentsNear(centre, radiusKm * 1.25))
+        : sampleOsmSegments());
+    if (cityWide && !raw.length && isOsmLoaded()) raw = osmAllSegments.slice();
+    raw = raw.concat(userRoadSegmentsFromBranch(opts.branch));
+
+    let scored = [];
+    const scoringCentre = cityWide ? null : centre;
+    for (let i = 0; i < raw.length; i++) {
+      const s = raw[i];
+      if (!s || !Array.isArray(s.a) || !Array.isArray(s.b)) continue;
+      if (!cityWide && centre && pointSegmentDistanceKm(centre, s.a, s.b) > radiusKm) continue;
+      const score = segmentDemandScore(s, demand, scoringCentre, radiusKm);
+      scored.push({ raw: s, score: score });
+    }
+    if (!scored.length) {
+      return {
+        base: { type: 'FeatureCollection', features: [] },
+        flow: { type: 'FeatureCollection', features: [] },
+        points: { type: 'FeatureCollection', features: [] },
+        summary: { vehicles: 0, avgSpeed: 0, congested: 0 },
+      };
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+    const maxSegmentLimit = cityWide ? 5600 : 2600;
+    const maxSegments = Math.max(200, Math.min(maxSegmentLimit, Number(opts.maxSegments) || (cityWide ? 4200 : 1800)));
+    if (scored.length > maxSegments) scored = scored.slice(0, maxSegments);
+
+    const segments = scored.map((entry, i) => ({
+      id: entry.raw.id || ('swarm-' + i),
+      a: entry.raw.a,
+      b: entry.raw.b,
+      length: Math.max(20, distMetres(entry.raw.a, entry.raw.b)),
+      source: entry.raw.source || 'osm',
+      highway: entry.raw.highway || '',
+      spawnWeight: Math.max(0.02, entry.score),
+      occupants: new Set(),
+      occSum: 0,
+      occSamples: 0,
+      through: 0,
+    }));
+
+    const vehicles = [];
+    for (let i = 0; i < density; i++) {
+      const seg = weightedPick(segments, s => s.spawnWeight, rand01);
+      const v = {
+        id: i,
+        segmentId: seg.id,
+        t: rand01(),
+        forward: rand01() > 0.5,
+        baseSpeed: (7 + rand01() * 8) * (0.88 + highwayWeight(seg.highway) * 0.28),
+        jitter: 0.82 + rand01() * 0.36,
+        totalSpeed: 0,
+        samples: 0,
+      };
+      seg.occupants.add(v.id);
+      vehicles.push(v);
+    }
+
+    const segById = new Map(segments.map(s => [s.id, s]));
+    function neighbour(prev, fromPoint) {
+      const candidates = [];
+      for (let i = 0; i < segments.length; i++) {
+        const s = segments[i];
+        if (s.id === prev.id) continue;
+        if (distMetres(s.a, fromPoint) < 28 || distMetres(s.b, fromPoint) < 28) {
+          candidates.push(s);
+          if (candidates.length >= 10) break;
+        }
+      }
+      return candidates.length
+        ? weightedPick(candidates, s => s.spawnWeight, rand01)
+        : weightedPick(segments, s => s.spawnWeight, rand01);
+    }
+
+    let speedSum = 0, speedCount = 0, congestedSamples = 0;
+    const ticks = Math.max(1, Math.floor(durationSeconds / dt));
+    for (let tick = 0; tick < ticks; tick++) {
+      for (let i = 0; i < segments.length; i++) {
+        segments[i].occSum += segments[i].occupants.size;
+        segments[i].occSamples++;
+      }
+      for (let i = 0; i < vehicles.length; i++) {
+        const v = vehicles[i];
+        const seg = segById.get(v.segmentId);
+        if (!seg) continue;
+        const cap = Math.max(2, Math.floor(seg.length / 55));
+        const congestion = Math.min(1, seg.occupants.size / cap);
+        const eff = v.baseSpeed * v.jitter * speedMul * (1 - 0.66 * congestion);
+        speedSum += eff;
+        speedCount++;
+        if (congestion > 0.55) congestedSamples++;
+        v.totalSpeed += eff;
+        v.samples++;
+        v.t += (v.forward ? 1 : -1) * (eff / seg.length) * dt;
+        if (v.t > 1 || v.t < 0) {
+          seg.occupants.delete(v.id);
+          seg.through++;
+          const fromPoint = v.t > 1 ? seg.b : seg.a;
+          const next = neighbour(seg, fromPoint);
+          const forward = distMetres(next.a, fromPoint) < distMetres(next.b, fromPoint);
+          v.segmentId = next.id;
+          v.t = forward ? 0 : 1;
+          v.forward = forward;
+          next.occupants.add(v.id);
+        }
+      }
+    }
+
+    let maxThrough = 1, maxSpawn = 1;
+    for (let i = 0; i < segments.length; i++) {
+      maxThrough = Math.max(maxThrough, segments[i].through);
+      maxSpawn = Math.max(maxSpawn, segments[i].spawnWeight);
+    }
+
+    const baseFeatures = [];
+    let flowFeatures = [];
+    for (let i = 0; i < segments.length; i++) {
+      const s = segments[i];
+      const cap = Math.max(2, Math.floor(s.length / 55));
+      const occRatio = (s.occSamples ? s.occSum / s.occSamples : 0) / cap;
+      const throughRatio = s.through / maxThrough;
+      const demandRatio = s.spawnWeight / maxSpawn;
+      const congestion = clamp01(occRatio * 0.58 + throughRatio * 0.28 + demandRatio * 0.52);
+      baseFeatures.push(lineFeatureForSegment(s, { congestion: 0, flow: 0 }));
+      if (congestion >= 0.18 || s.source === 'user') {
+        flowFeatures.push(lineFeatureForSegment(s, {
+          congestion: congestion,
+          flow: throughRatio,
+          demand: demandRatio,
+          volume: s.through,
+        }));
+      }
+    }
+    flowFeatures.sort((a, b) => (b.properties.congestion || 0) - (a.properties.congestion || 0));
+    const maxFlowLimit = cityWide ? 1400 : 900;
+    const maxFlowSegments = Math.max(80, Math.min(maxFlowLimit, Number(opts.maxFlowSegments) || (cityWide ? 900 : 420)));
+    if (flowFeatures.length > maxFlowSegments) flowFeatures = flowFeatures.slice(0, maxFlowSegments);
+
+    let pointData = demand.slice().sort((a, b) => {
+      if (a.active !== b.active) return a.active ? -1 : 1;
+      return b.weight - a.weight;
+    });
+    const maxPointFeatures = Math.max(0, Math.min(80, Number(opts.maxPointFeatures) || 24));
+    if (pointData.length > maxPointFeatures) pointData = pointData.slice(0, maxPointFeatures);
+    const pointFeatures = pointData.map((p, i) => ({
+      type: 'Feature',
+      properties: {
+        id: p.id || ('demand-' + i),
+        intensity: p.weight,
+        active: p.active ? 1 : 0,
+        polarity: p.polarity,
+        color: p.polarity >= 0 ? '#22c55e' : (p.active ? '#ef4444' : '#facc15'),
+      },
+      geometry: { type: 'Point', coordinates: p.coord },
+    }));
+
+    return {
+      base: { type: 'FeatureCollection', features: baseFeatures },
+      flow: { type: 'FeatureCollection', features: flowFeatures },
+      points: { type: 'FeatureCollection', features: pointFeatures },
+      summary: {
+        vehicles: vehicles.length,
+        avgSpeed: speedCount ? speedSum / speedCount : 0,
+        congested: speedCount ? congestedSamples / speedCount : 0,
+      },
+    };
+  }
+
+  function ensureAgentSwarmLayers() {
+    if (!state.map) return false;
+    const empty = { type: 'FeatureCollection', features: [] };
+    if (!state.map.getSource(AGENT_BASE_SOURCE_ID)) state.map.addSource(AGENT_BASE_SOURCE_ID, { type: 'geojson', data: empty });
+    if (!state.map.getSource(AGENT_FLOW_SOURCE_ID)) state.map.addSource(AGENT_FLOW_SOURCE_ID, { type: 'geojson', data: empty });
+    if (!state.map.getSource(AGENT_POINT_SOURCE_ID)) state.map.addSource(AGENT_POINT_SOURCE_ID, { type: 'geojson', data: empty });
+
+    if (!state.map.getLayer(AGENT_BASE_CASE_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_BASE_CASE_LAYER_ID,
+        type: 'line',
+        source: AGENT_BASE_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.8, 13, 3.5, 16, 8],
+          'line-color': '#020617',
+          'line-opacity': 0.74,
+        },
+      });
+    }
+    if (!state.map.getLayer(AGENT_BASE_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_BASE_LAYER_ID,
+        type: 'line',
+        source: AGENT_BASE_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.45, 13, 1.2, 16, 2.4],
+          'line-color': ['interpolate', ['linear'], ['get', 'weight'], 0.2, '#1d4ed8', 0.65, '#0284c7', 1.0, '#22d3ee'],
+          'line-opacity': 0.72,
+        },
+      });
+    }
+    if (!state.map.getLayer(AGENT_FLOW_GLOW_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_FLOW_GLOW_LAYER_ID,
+        type: 'line',
+        source: AGENT_FLOW_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 6, 13, 13, 16, 24],
+          'line-color': ['interpolate', ['linear'], ['get', 'congestion'],
+            0.00, '#2563eb',
+            0.18, '#22d3ee',
+            0.38, '#34d399',
+            0.58, '#facc15',
+            0.78, '#fb923c',
+            1.00, '#ef4444'],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'congestion'], 0, 0.04, 1, 0.26],
+          'line-blur': 3.2,
+        },
+      });
+    }
+    if (!state.map.getLayer(AGENT_FLOW_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_FLOW_LAYER_ID,
+        type: 'line',
+        source: AGENT_FLOW_SOURCE_ID,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2.2, 13, 4.8, 16, 9.5],
+          'line-color': ['interpolate', ['linear'], ['get', 'congestion'],
+            0.00, '#2563eb',
+            0.18, '#22d3ee',
+            0.38, '#34d399',
+            0.58, '#facc15',
+            0.78, '#fb923c',
+            1.00, '#ef4444'],
+          'line-opacity': 0.96,
+        },
+      });
+    }
+    if (!state.map.getLayer(AGENT_POINT_GLOW_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_POINT_GLOW_LAYER_ID,
+        type: 'circle',
+        source: AGENT_POINT_SOURCE_ID,
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['get', 'intensity'], 0, 7, 1, 18],
+          'circle-color': ['get', 'color'],
+          'circle-opacity': 0.22,
+          'circle-blur': 0.8,
+        },
+      });
+    }
+    if (!state.map.getLayer(AGENT_POINT_LAYER_ID)) {
+      state.map.addLayer({
+        id: AGENT_POINT_LAYER_ID,
+        type: 'circle',
+        source: AGENT_POINT_SOURCE_ID,
+        paint: {
+          'circle-radius': ['case', ['==', ['get', 'active'], 1], 5, 3],
+          'circle-color': ['get', 'color'],
+          'circle-stroke-color': '#111827',
+          'circle-stroke-width': 1.2,
+          'circle-opacity': 0.96,
+        },
+      });
+    }
+    return true;
+  }
+
+  function showAgentSwarmOverlay(result) {
+    if (!ensureAgentSwarmLayers()) {
+      if (state.map && state.map.once) state.map.once('styledata', () => showAgentSwarmOverlay(result));
+      return false;
+    }
+    const base = result && result.base ? result.base : { type: 'FeatureCollection', features: [] };
+    const flow = result && result.flow ? result.flow : { type: 'FeatureCollection', features: [] };
+    const points = result && result.points ? result.points : { type: 'FeatureCollection', features: [] };
+    const baseSrc = state.map.getSource(AGENT_BASE_SOURCE_ID);
+    const flowSrc = state.map.getSource(AGENT_FLOW_SOURCE_ID);
+    const pointSrc = state.map.getSource(AGENT_POINT_SOURCE_ID);
+    if (baseSrc) baseSrc.setData(base);
+    if (flowSrc) flowSrc.setData(flow);
+    if (pointSrc) pointSrc.setData(points);
+    return true;
+  }
+
+  function clearAgentSwarmOverlay() {
+    if (!state.map) return;
+    const empty = { type: 'FeatureCollection', features: [] };
+    const baseSrc = state.map.getSource(AGENT_BASE_SOURCE_ID);
+    const flowSrc = state.map.getSource(AGENT_FLOW_SOURCE_ID);
+    const pointSrc = state.map.getSource(AGENT_POINT_SOURCE_ID);
+    if (baseSrc) baseSrc.setData(empty);
+    if (flowSrc) flowSrc.setData(empty);
+    if (pointSrc) pointSrc.setData(empty);
+  }
+
+  // ----- comparison overlay (the on-map road-link pressure view) -----------
   // Mirrors the look of the historical Traffic lens: thick coloured lines
   // along the road network showing where the candidate road relieves or
   // worsens congestion. Lives on the main map, not in the modal.
@@ -990,14 +1586,14 @@
         layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: {
           'line-width': ['interpolate', ['linear'], ['zoom'], 11, 2.4, 16, 7],
-          // delta < 0 → relief (green ramp); delta > 0 → worse (red ramp)
-          'line-color': ['interpolate', ['linear'], ['get', 'delta'],
-            -0.40, '#16a34a',
-            -0.10, '#86efac',
-             0.00, '#94a3b8',
-             0.10, '#fb923c',
-             0.40, '#dc2626'],
-          'line-opacity': ['interpolate', ['linear'], ['abs', ['get', 'delta']], 0, 0.35, 0.4, 0.95],
+          'line-color': ['interpolate', ['linear'], ['get', 'after'],
+            0.00, '#2563eb',
+            0.18, '#22d3ee',
+            0.38, '#34d399',
+            0.58, '#facc15',
+            0.78, '#fb923c',
+            1.00, '#ef4444'],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'after'], 0, 0.28, 1, 0.96],
         },
       });
     }
@@ -1096,6 +1692,10 @@
     pathToPolyline: pathToPolyline,
     runComparison: runComparison,
     segmentsForBranch: segmentsForBranch,
+    runAgentSwarm: runAgentSwarm,
+    showAgentSwarmOverlay: showAgentSwarmOverlay,
+    clearAgentSwarmOverlay: clearAgentSwarmOverlay,
+    previewVehicles: previewVehicles,
     sampleOsmSegments: sampleOsmSegments,
     showComparisonOverlay: showComparisonOverlay,
     clearComparisonOverlay: clearComparisonOverlay,

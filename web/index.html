@@ -78,11 +78,16 @@
       </div>
 
       <div class="toolbar-right">
+        <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters">
+          <button class="lens-tab" data-lens="traffic" type="button" aria-pressed="false" title="Traffic filter" style="--lens-color:#fb923c">Traffic</button>
+          <button class="lens-tab" data-lens="jobs" type="button" aria-pressed="false" title="Jobs filter" style="--lens-color:#a855f7">Jobs</button>
+          <button class="lens-tab" data-lens="electricity" type="button" aria-pressed="false" title="Electricity filter" style="--lens-color:#06b6d4">Electricity</button>
+          <button class="lens-tab" data-lens="services" type="button" aria-pressed="false" title="Public Transit filter" style="--lens-color:#22c55e">Public Transit</button>
+        </div>
         <div class="toolbar-view-toggle" role="group" aria-label="Map view">
           <button class="toolbar-view-btn active" type="button" data-view="2D" title="2D map" aria-label="2D map">2D</button>
           <button class="toolbar-view-btn" type="button" data-view="3D" title="3D view" aria-label="3D view">3D</button>
         </div>
-        <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters"></div>
         <button class="icon-btn" id="exportBtn" type="button" title="Export">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span>Export</span>
@@ -215,6 +220,7 @@
         </button>
       </div>
       <div class="viewing-label">Viewing branch <strong id="activeBranchName">Baseline</strong> - <span id="activeYearLabel">2026</span></div>
+      <div id="selectedEventSummary" class="event-summary-card" hidden></div>
 
       <div class="section-title scenario-tree-title">
         <span id="tlBranchName">Additions</span>
