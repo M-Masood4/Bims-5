@@ -15,6 +15,7 @@ class ScenarioRepository:
         network_config: dict | None = None,
         description: str | None = None,
         matsim_config: dict | None = None,
+        target_year: int = 2026,
     ) -> Scenario:
         async with self.session_factory() as session:
             scenario = Scenario(
@@ -23,6 +24,7 @@ class ScenarioRepository:
                 network_config=network_config,
                 plan_params=plan_params,
                 matsim_config=matsim_config,
+                target_year=target_year,
             )
             session.add(scenario)
             await session.commit()
@@ -47,6 +49,7 @@ class ScenarioRepository:
             Scenario.name,
             Scenario.description,
             Scenario.plan_params,
+            Scenario.target_year,
             Scenario.created_at,
             Scenario.updated_at,
         ]
@@ -68,6 +71,7 @@ class ScenarioRepository:
         network_config: dict | None = None,
         plan_params: dict | None = None,
         matsim_config: dict | None = None,
+        target_year: int | None = None,
     ) -> Scenario | None:
         async with self.session_factory() as session:
             scenario = await session.get(Scenario, scenario_id)
@@ -83,6 +87,8 @@ class ScenarioRepository:
                 scenario.plan_params = plan_params
             if matsim_config is not None:
                 scenario.matsim_config = matsim_config
+            if target_year is not None:
+                scenario.target_year = target_year
             await session.commit()
             await session.refresh(scenario)
             return scenario

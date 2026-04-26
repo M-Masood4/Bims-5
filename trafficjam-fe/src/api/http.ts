@@ -13,7 +13,7 @@ const BACKEND_URL =
 // Any endpoint that is in  the set will be routed to the map data service
 // In the future we will likely have a singular proxy that will handle all routing
 // So this logic will not be needed.
-const MAP_DATA_KEYS = new Set<EndpointKey>(["network"]);
+const MAP_DATA_KEYS = new Set<EndpointKey>(["network", "futureLayers"]);
 
 function getBaseUrl(key: EndpointKey): string {
   return MAP_DATA_KEYS.has(key) ? MAP_DATA_URL : BACKEND_URL;
@@ -118,6 +118,9 @@ export function buildStartRunForm(params: StartRunParams): FormData {
   if (params.randomSeed !== undefined)
     form.append("randomSeed", params.randomSeed.toString());
   if (params.note) form.append("note", params.note);
+  if (params.engineType) form.append("engine_type", params.engineType);
+  if (params.maxAgents !== undefined)
+    form.append("max_agents", params.maxAgents.toString());
   return form;
 }
 

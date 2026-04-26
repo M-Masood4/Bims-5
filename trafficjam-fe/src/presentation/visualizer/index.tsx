@@ -1,14 +1,12 @@
 import {
   DeckGL,
   TripsLayer,
-  ScatterplotLayer,
   PathLayer,
   HeatmapLayer,
 } from "deck.gl";
 import { Map } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MAPBOX_TOKEN } from "../../constants/map";
-import { getVehiclePositions } from "../../utils/trip-interpolation";
 import type { Trip } from "../../types";
 import {
   useSimulationTime,
@@ -22,7 +20,8 @@ import { AnalyticsPanel } from "./components/analytics-panel";
 import { useLiveSimulation } from "../../hooks/use-live-simulation";
 import { useLinkVolumes } from "../../hooks";
 import type { LinkVolumeParsed } from "../../hooks/use-link-volumes";
-import { useState } from "react";
+import { ScorecardPanel } from "../../components/scorecard-panel/scorecard-panel";
+import { useState, useMemo } from "react";
 
 interface VisualizerProps {
   scenarioId: string;
@@ -36,28 +35,22 @@ interface HeatmapPoint {
 }
 
 function useLayers(trips: Trip[], simulation: SimulationTimeState) {
-  return [
-    new TripsLayer({
-      id: "trails",
-      data: trips,
-      getPath: (d: Trip) => d.path,
-      getTimestamps: (d: Trip) => d.timestamps,
-      getColor: [253, 128, 93],
-      widthMinPixels: 2,
-      trailLength: 300,
-      currentTime: simulation.time,
-    }),
-
-    new ScatterplotLayer({
-      id: "agents",
-      data: getVehiclePositions(trips, simulation.time),
-      getPosition: (d: [number, number]) => d,
-      getFillColor: [255, 220, 0],
-      getRadius: 30,
-      radiusMinPixels: 4,
-      radiusMaxPixels: 8,
-    }),
-  ];
+  return useMemo(
+    () => [
+      new TripsLayer({
+        id: "trails",
+        data: trips,
+        getPath: (d: Trip) => d.path,
+        getTimestamps: (d: Trip) => d.timestamps,
+        updateTriggers: { getPath: trips, getTimestamps: trips },
+        getColor: [253, 128, 93],
+        widthMinPixels: 3,
+        trailLength: 200,
+        currentTime: simulation.time,
+      }),
+    ],
+    [trips, simulation.time],
+  );
 }
 
 function buildHeatmapPoints(
@@ -86,65 +79,66 @@ function useStaticLayers(
   linkVolume: LinkVolumeParsed[] | undefined,
   trips: Trip[],
 ) {
-  const heatmapData = buildHeatmapPoints(linkVolume, trips);
+  return useMemo(() => {
+    const heatmapData = buildHeatmapPoints(linkVolume, trips);
+    if (!show || heatmapData.length === 0) return [];
 
-  if (!show || heatmapData.length === 0) return [];
+    const heatmapLayer = new HeatmapLayer<HeatmapPoint>({
+      id: "belfast-traffic-heatmap",
+      data: heatmapData,
+      getPosition: (d) => d.position,
+      getWeight: (d) => d.weight,
+      radiusPixels: 55,
+      intensity: 1.4,
+      threshold: 0.03,
+      aggregation: "SUM",
+      colorRange: [
+        [33, 102, 172, 0],
+        [103, 169, 207, 150],
+        [209, 229, 240, 185],
+        [253, 219, 199, 210],
+        [239, 138, 98, 230],
+        [178, 24, 43, 245],
+      ],
+    });
 
-  const heatmapLayer = new HeatmapLayer<HeatmapPoint>({
-    id: "belfast-traffic-heatmap",
-    data: heatmapData,
-    getPosition: (d) => d.position,
-    getWeight: (d) => d.weight,
-    radiusPixels: 55,
-    intensity: 1.4,
-    threshold: 0.03,
-    aggregation: "SUM",
-    colorRange: [
-      [33, 102, 172, 0],
-      [103, 169, 207, 150],
-      [209, 229, 240, 185],
-      [253, 219, 199, 210],
-      [239, 138, 98, 230],
-      [178, 24, 43, 245],
-    ],
-  });
+    if (!linkVolume?.length) return [heatmapLayer];
 
-  if (!linkVolume?.length) return [heatmapLayer];
+    const maxVol = Math.max(1, ...linkVolume.map((d) => d.vol_car));
 
-  const maxVol = Math.max(1, ...linkVolume.map((d) => d.vol_car));
+    const getColor = (vol: number) => {
+      const normalized = Math.min(vol / maxVol, 1);
+      if (normalized < 0.25) {
+        const t = normalized / 0.25;
+        return [0, 128 + t * 127, 255, 180];
+      } else if (normalized < 0.5) {
+        const t = (normalized - 0.25) / 0.25;
+        return [t * 255, 255, 255 - t * 255, 180];
+      } else if (normalized < 0.75) {
+        const t = (normalized - 0.5) / 0.25;
+        return [255, 255 - t * 80, 0, 180];
+      } else {
+        const t = (normalized - 0.75) / 0.25;
+        return [255, 175 - t * 175, 0, 180];
+      }
+    };
 
-  const getColor = (vol: number) => {
-    const normalized = Math.min(vol / maxVol, 1);
-
-    if (normalized < 0.25) {
-      const t = normalized / 0.25;
-      return [0, 128 + t * 127, 255, 180];
-    } else if (normalized < 0.5) {
-      const t = (normalized - 0.25) / 0.25;
-      return [t * 255, 255, 255 - t * 255, 180];
-    } else if (normalized < 0.75) {
-      const t = (normalized - 0.5) / 0.25;
-      return [255, 255 - t * 80, 0, 180];
-    } else {
-      const t = (normalized - 0.75) / 0.25;
-      return [255, 175 - t * 175, 0, 180];
-    }
-  };
-
-  return [
-    heatmapLayer,
-    new PathLayer<LinkVolumeParsed>({
-      id: "link-volume",
-      data: linkVolume,
-      pickable: true,
-      rounded: true,
-      capRounded: true,
-      getPath: (d) => d.coordinates,
-      getWidth: (d) => Math.max(1, (d.vol_car / maxVol) * 15),
-      widthUnits: "pixels",
-      getColor: (d) => getColor(d.vol_car) as [number, number, number, number],
-    }),
-  ];
+    return [
+      heatmapLayer,
+      new PathLayer<LinkVolumeParsed>({
+        id: "link-volume",
+        data: linkVolume,
+        pickable: true,
+        rounded: true,
+        capRounded: true,
+        getPath: (d) => d.coordinates,
+        getWidth: (d) => Math.max(1, (d.vol_car / maxVol) * 15),
+        widthUnits: "pixels",
+        getColor: (d) =>
+          getColor(d.vol_car) as [number, number, number, number],
+      }),
+    ];
+  }, [show, linkVolume, trips]);
 }
 
 export function Visualizer({ scenarioId, runId, onBack }: VisualizerProps) {
@@ -176,6 +170,7 @@ export function Visualizer({ scenarioId, runId, onBack }: VisualizerProps) {
         runId={runId}
         open={showAnalytics}
       />
+      <ScorecardPanel scenarioId={scenarioId} runId={runId} />
     </div>
   );
 }

@@ -129,6 +129,7 @@ function toScenarioSummary(s: ApiScenario): Scenario {
     name: s.name,
     description: s.description ?? undefined,
     agentConfig: parseAgentConfig(s.plan_params),
+    targetYear: s.target_year ?? 2026,
     createdAt: s.created_at,
     updatedAt: s.updated_at,
   }

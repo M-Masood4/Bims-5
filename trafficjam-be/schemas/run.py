@@ -1,13 +1,14 @@
 import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
-from db.models import RunStatus
+from db.models import RunStatus, EngineType
 
 
 class RunCreate(BaseModel):
     scenario_id: uuid.UUID = Field(description="Parent scenario UUID")
     run_id: uuid.UUID | None = Field(default=None, description="Optional client-supplied run UUID")
     nats_subject: str | None = Field(default=None, description="NATS subject override for event streaming")
+    engine_type: EngineType = Field(default=EngineType.MATSIM, description="Simulation engine: MATSIM or WORLDMOVE")
 
 
 class RunStatusUpdate(BaseModel):
@@ -21,6 +22,7 @@ class RunResponse(BaseModel):
     id: uuid.UUID = Field(description="Run UUID")
     scenario_id: uuid.UUID = Field(description="Parent scenario UUID")
     status: RunStatus = Field(description="Current run status")
+    engine_type: EngineType = Field(description="Simulation engine used")
     nats_subject: str | None = Field(description="NATS subject used for event streaming")
     event_count: int = Field(description="Total simulation events produced")
     duration_seconds: float | None = Field(description="Total simulation duration in seconds")

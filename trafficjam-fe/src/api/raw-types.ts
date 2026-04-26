@@ -40,6 +40,7 @@ export interface ApiScenario {
   name: string
   description: string | null
   plan_params: Record<string, unknown> | string | null
+  target_year?: number
   created_at: string
   updated_at: string
   network_config?: Record<string, unknown> | null
@@ -77,6 +78,10 @@ export interface StartRunParams {
   iterations?: number
   randomSeed?: number
   note?: string
+  baseYear?: number
+  forecastYear?: number
+  engineType?: "MATSIM" | "WORLDMOVE"
+  maxAgents?: number
 }
 
 export interface StartRunResult {

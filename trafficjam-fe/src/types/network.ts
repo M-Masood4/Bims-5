@@ -18,6 +18,8 @@ export interface TrafficLink {
     maxspeed?: number;
     oneway?: boolean;
     name?: string;
+    avOnly?: boolean;
+    futureTech?: string;
   };
 }
 

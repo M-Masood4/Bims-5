@@ -1,6 +1,6 @@
 import asyncio
 import json
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Callable, Awaitable
 
 from nats.js import JetStreamContext
 from nats.errors import TimeoutError as NatsTimeoutError
@@ -17,7 +17,10 @@ class EventConsumer:
         return f"sim.{self.scenario_id}.{self.run_id}.{channel}"
 
     async def stream_events(
-        self, request: Request, is_replay: bool = False
+        self,
+        request: Request,
+        is_replay: bool = False,
+        should_stop: Callable[[], Awaitable[bool]] | None = None,
     ) -> AsyncGenerator[dict, None]:
         sub = await self.js.subscribe(self._subject("events"), ordered_consumer=True)
 
@@ -27,10 +30,21 @@ class EventConsumer:
                     break
                 try:
                     msg = await sub.next_msg(timeout=5.0)
-                    yield {"data": msg.data.decode(), "event": "simulation_event"}
+                    raw = msg.data.decode()
+                    try:
+                        parsed = json.loads(raw)
+                        if isinstance(parsed, list):
+                            for item in parsed:
+                                yield {"data": json.dumps(item), "event": "simulation_event"}
+                        else:
+                            yield {"data": raw, "event": "simulation_event"}
+                    except (json.JSONDecodeError, TypeError):
+                        yield {"data": raw, "event": "simulation_event"}
                     await msg.ack()
                 except NatsTimeoutError:
                     if is_replay:
+                        break
+                    if should_stop and await should_stop():
                         break
                 except asyncio.CancelledError:
                     break

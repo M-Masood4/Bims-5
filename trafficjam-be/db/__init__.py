@@ -1,5 +1,5 @@
 from db.database import engine, async_session_factory
-from db.models import Run, RunStatus, Scenario
+from db.models import Run, RunStatus, EngineType, Scenario
 from db.repository import RunRepository
 from db.scenario_repository import ScenarioRepository
 

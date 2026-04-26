@@ -80,7 +80,33 @@ services:
       - "5173:5173"
     depends_on:
       - backend
-      - map-data
+  worldmove:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worldmove
+    container_name: bims5-worldmove
+    environment:
+      NATS_URL: "nats://nats:4222"
+      DATA_DIR: "/data"
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./worldmove-sim/data:/data
+    depends_on:
+      nats:
+        condition: service_healthy
+
+  ai-logic:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ai
+    container_name: bims5-ai
+    env_file:
+      - .env
+    environment:
+      GEMINI_MODEL: "gemini-2.0-flash"
+    ports:
+      - "8003:8003"
 
 volumes:
   bims5_db_data:

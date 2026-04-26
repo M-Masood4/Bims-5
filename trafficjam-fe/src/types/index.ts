@@ -19,5 +19,5 @@ export type {
   ModeShareByDistance,
   ScoreStatRow,
 } from "./insights";
-export type { AgentConfig, RunStatus, Run, Scenario } from "./scenarios";
+export type { AgentConfig, EngineType, RunStatus, Run, Scenario, Scorecard, ScorecardGrade, FutureLayer } from "./scenarios";
 export type { Trip } from "./matsim-events";

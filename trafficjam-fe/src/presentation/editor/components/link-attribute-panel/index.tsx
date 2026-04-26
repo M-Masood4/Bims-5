@@ -52,6 +52,8 @@ export function LinkAttributePanel({
     const hasUniqueLanes = new Set(allLanes).size === 1;
     const hasUniqueMaxspeed = new Set(allMaxspeeds).size === 1;
     const hasUniqueOneway = new Set(allOneways).size === 1;
+    const hasUniqueAvOnly = new Set(links.map((l) => l.tags.avOnly)).size === 1;
+    const hasUniqueFutureTech = new Set(links.map((l) => l.tags.futureTech)).size === 1;
 
     return {
       name: !hasUniqueName,
@@ -59,6 +61,8 @@ export function LinkAttributePanel({
       lanes: !hasUniqueLanes,
       maxspeed: !hasUniqueMaxspeed,
       oneway: !hasUniqueOneway,
+      avOnly: !hasUniqueAvOnly,
+      futureTech: !hasUniqueFutureTech,
     };
   }, [links, isSingleLink]);
 

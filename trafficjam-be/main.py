@@ -23,11 +23,23 @@ def configure_multipart_limits(max_part_size: int) -> None:
             kwdefaults["max_part_size"] = max_part_size
 
 
+async def _ensure_simulations_stream(js) -> None:
+    try:
+        await js.add_stream(
+            name="SIMULATIONS",
+            subjects=["sim.>"],
+            max_msgs_per_subject=100_000,
+        )
+    except Exception:
+        pass
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
     app.state.nc = await nats_lib.connect(settings.nats_url)
     app.state.js = app.state.nc.jetstream()
+    await _ensure_simulations_stream(app.state.js)
     app.state.status_worker = asyncio.create_task(monitor_all_statuses(app.state.js))
     yield
     app.state.status_worker.cancel()
@@ -38,11 +50,11 @@ async def lifespan(app: FastAPI):
 TAGS_METADATA = [
     {
         "name": "scenarios",
-        "description": "Manage simulation scenarios — named configurations combining a road network, agent plan parameters, and MATSim settings.",
+        "description": "Manage simulation scenarios — named configurations combining a road network, agent plan parameters, and simulation settings.",
     },
     {
         "name": "runs",
-        "description": "Start and monitor simulation runs within a scenario. Events stream over SSE; output files are served from NATS Object Store.",
+        "description": "Start and monitor simulation runs within a scenario. Supports MATSim (high fidelity) and WorldMove (high scale) engines. Events stream over SSE; output files are served from NATS Object Store.",
     },
 ]
 
@@ -52,11 +64,11 @@ configure_multipart_limits(settings.multipart_max_part_size_bytes)
 app = FastAPI(
     title="BIMS 5 Backend",
     description=(
-        "Orchestrates traffic simulations powered by **MATSim**. "
+        "Orchestrates traffic simulations powered by **MATSim** (high fidelity) and **WorldMove** (high scale). "
         "Scenarios define the road network and agent behaviour; runs execute the simulation "
         "and stream events back to the frontend in real time via Server-Sent Events (SSE) over NATS JetStream."
     ),
-    version="1.0.0",
+    version="2.0.0",
     openapi_tags=TAGS_METADATA,
     lifespan=lifespan,
 )

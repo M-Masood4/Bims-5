@@ -29,6 +29,7 @@ services:
       DATABASE_URL: "${DATABASE_URL}"
       NATS_URL: "nats://nats:4222"
       SIMENGINE_URL: "http://simengine:8080"
+      AI_SERVICE_URL: "http://ai-logic:8003"
     ports:
       - "8001:8001"
     depends_on:
@@ -62,6 +63,33 @@ services:
     depends_on:
       - backend
       - map-data
+
+  worldmove:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worldmove
+    container_name: bims5-worldmove
+    environment:
+      NATS_URL: "nats://nats:4222"
+      DATA_DIR: "/data"
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./worldmove-sim/data:/data
+    depends_on:
+      nats:
+        condition: service_healthy
+
+  ai-logic:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ai
+    container_name: bims5-ai
+    environment:
+      GEMINI_API_KEY: "${GEMINI_API_KEY}"
+      GEMINI_MODEL: "gemini-2.0-flash"
+    ports:
+      - "8003:8003"
 
 volumes:
   bims5_db_data:

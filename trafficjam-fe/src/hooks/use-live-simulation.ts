@@ -3,7 +3,7 @@ import { api } from "../api/client";
 import type { Trip } from "../types";
 import type { StreamedEvent } from "../api/raw-types";
 
-const BATCH_SIZE = 50;
+const BATCH_SIZE = 500;
 
 const VEHICLE_LINK_EVENTS = new Set(["entered link", "left link", "vehicle enters traffic", "vehicle leaves traffic"]);
 

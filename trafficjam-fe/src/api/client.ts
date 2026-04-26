@@ -29,7 +29,7 @@ import type {
   StartRunResult,
   CreateRunResult,
 } from "./raw-types";
-import type { Scenario, AgentConfig, Run } from "../types";
+import type { Scenario, AgentConfig, Run, Scorecard, FutureLayer } from "../types";
 import type { Network, LngLatBounds } from "../types";
 
 async function fetchNetwork(bounds: LngLatBounds): Promise<Network> {
@@ -56,11 +56,13 @@ async function getScenario(
 async function createScenario(
   name: string,
   config: AgentConfig,
+  targetYear?: number,
 ): Promise<Scenario> {
   const raw = await postJson<ApiScenario>(resolveUrl("createScenario"), {
     name,
     plan_params: config,
     network_config: null,
+    target_year: targetYear ?? 2026,
   });
   return toFullScenario(raw);
 }
@@ -73,6 +75,7 @@ async function updateScenario(
   if (updates.name !== undefined) body.name = updates.name;
   if (updates.description !== undefined) body.description = updates.description;
   if (updates.agentConfig !== undefined) body.plan_params = updates.agentConfig;
+  if (updates.targetYear !== undefined) body.target_year = updates.targetYear;
   await putJson(resolveUrl("updateScenario", { id }), body);
 }
 
@@ -140,6 +143,20 @@ async function getSimwrapperFile<T>(
   return parseSimwrapperResponse<T>(res, filename);
 }
 
+async function fetchScorecard(
+  scenarioId: string,
+  runId: string,
+): Promise<Scorecard> {
+  const url = resolveUrl("scorecard", { id: scenarioId, runId });
+  return getJson<Scorecard>(url);
+}
+
+async function fetchFutureLayers(year?: number): Promise<FutureLayer[]> {
+  const base = resolveUrl("futureLayers");
+  const url = year ? `${base}?year=${year}` : base;
+  return getJson<FutureLayer[]>(url);
+}
+
 export const api = {
   fetchNetwork,
   listScenarios,
@@ -153,4 +170,7 @@ export const api = {
   startRun,
   streamEvents,
   getSimwrapperFile,
+  fetchScorecard,
+  fetchFutureLayers,
 };
+

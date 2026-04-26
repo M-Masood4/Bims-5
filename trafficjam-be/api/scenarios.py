@@ -49,6 +49,7 @@ async def create_scenario(
         network_config=body.network_config,
         plan_params=body.plan_params,
         matsim_config=body.matsim_config,
+        target_year=body.target_year,
     )
 
 
@@ -68,6 +69,7 @@ async def update_scenario(
         name=body.name,
         description=body.description,
         plan_params=body.plan_params,
+        target_year=body.target_year,
     )
     if not scenario:
         raise HTTPException(status_code=404, detail="Scenario not found")

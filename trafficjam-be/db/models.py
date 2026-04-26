@@ -18,6 +18,11 @@ class RunStatus(str, enum.Enum):
     FAILED = "failed"
 
 
+class EngineType(str, enum.Enum):
+    MATSIM = "MATSIM"
+    WORLDMOVE = "WORLDMOVE"
+
+
 class Scenario(Base):
     __tablename__ = "scenarios"
 
@@ -27,6 +32,7 @@ class Scenario(Base):
     network_config: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     plan_params: Mapped[dict] = mapped_column(JSONB, nullable=False)
     matsim_config: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    target_year: Mapped[int] = mapped_column(Integer, nullable=False, default=2026)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
@@ -39,6 +45,7 @@ class Run(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     scenario_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("scenarios.id"), nullable=False, index=True)
     status: Mapped[RunStatus] = mapped_column(Enum(RunStatus, values_callable=lambda e: [x.value for x in e]), nullable=False, default=RunStatus.PENDING)
+    engine_type: Mapped[EngineType] = mapped_column(Enum(EngineType, values_callable=lambda e: [x.value for x in e]), nullable=False, default=EngineType.MATSIM)
     nats_subject: Mapped[str | None] = mapped_column(Text, nullable=True)
     iterations: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     random_seed: Mapped[int | None] = mapped_column(Integer, nullable=True)
