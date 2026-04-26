@@ -837,6 +837,12 @@
           config: building.buildingConfig || buildingConfigForPreset(building.preset),
           delivery: { startYear: START_YEAR, completionYear: FINAL_YEAR }
         },
+        branch: {
+          id: branch.id,
+          name: branch.name,
+          objective: objectiveForBranch(branch)
+        },
+        interventions: scenarioInterventionsForBranch(branch, building),
         startYear: START_YEAR,
         baselineYear: BASE_YEAR,
         horizonYear: FINAL_YEAR
@@ -963,6 +969,86 @@
     if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
     afterChange();
     toast('Added Road segment to ' + branch.name);
+  }
+
+  function locationFromCoords(coords) {
+    if (!Array.isArray(coords) || !coords.length) return null;
+    let lng = 0;
+    let lat = 0;
+    let count = 0;
+    coords.forEach(coord => {
+      if (!Array.isArray(coord) || coord.length < 2) return;
+      const x = Number(coord[0]);
+      const y = Number(coord[1]);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+      lng += x;
+      lat += y;
+      count++;
+    });
+    return count ? { lng: lng / count, lat: lat / count } : null;
+  }
+
+  function scenarioInterventionFromItem(item, primaryBuilding) {
+    if (!item || item.id === primaryBuilding.id) return null;
+    if (item.type === 'building' && item.postcode) {
+      return {
+        id: item.id,
+        type: 'building',
+        location: { lng: item.lng, lat: item.lat },
+        postcode: item.postcode,
+        config: item.buildingConfig || buildingConfigForPreset(item.preset),
+        rationale: 'Additional staged building in the active branch.'
+      };
+    }
+    if (item.type === 'road') {
+      const path = Array.isArray(item.path) && item.path.length >= 2
+        ? item.path
+        : [item.start, item.end].filter(Array.isArray);
+      if (path.length < 2) return null;
+      return {
+        id: item.id,
+        type: 'road',
+        label: item.label || 'New Road',
+        path,
+        start: path[0],
+        end: path[path.length - 1],
+        location: locationFromCoords(path),
+        mode: 'road_capacity',
+        radiusM: 850,
+        year: item.year || START_YEAR,
+        rationale: 'User-staged road included in the full forecast run.'
+      };
+    }
+    if (item.type === 'infrastructure') {
+      return {
+        id: item.id,
+        type: 'transformer',
+        label: item.label || 'Transformer',
+        location: { lng: item.lng, lat: item.lat },
+        radiusM: 650,
+        year: item.year || START_YEAR,
+        rationale: 'User-staged transformer included in electricity and services planning.'
+      };
+    }
+    if (item.type === 'park') {
+      return {
+        id: item.id,
+        type: 'green_corridor',
+        label: item.label || 'Park',
+        location: { lng: item.lng, lat: item.lat },
+        bufferRadiusM: 450,
+        radiusM: 450,
+        year: item.year || START_YEAR,
+        rationale: 'User-staged green space included as environmental mitigation.'
+      };
+    }
+    return null;
+  }
+
+  function scenarioInterventionsForBranch(branch, primaryBuilding) {
+    return (branch.items || [])
+      .map(item => scenarioInterventionFromItem(item, primaryBuilding))
+      .filter(Boolean);
   }
 
   function removeItem(itemId) {

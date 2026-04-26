@@ -1,4 +1,5 @@
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -47,6 +48,60 @@ class ForecastArtifactTests(unittest.TestCase):
                 for metric in METRICS:
                     self.assertGreaterEqual(row[metric], 0, f"{cell['cellId']} {year} {metric}")
                     self.assertLessEqual(row[metric], 1, f"{cell['cellId']} {year} {metric}")
+
+    def test_forecast_accepts_staged_road_and_transformer(self) -> None:
+        script = r"""
+const scenario = require('./lib/scenario-studio');
+const result = scenario.runForecastScenario({
+  postcode: 'BT7 1NN',
+  building: {
+    config: {
+      size: 'medium',
+      buildingType: 'apartments',
+      affordabilityMix: 'affordable',
+      floors: 8,
+      footprintSqm: 1500
+    }
+  },
+  interventions: [
+    {
+      id: 'road-test',
+      type: 'road',
+      path: [[-5.935, 54.59], [-5.932, 54.592], [-5.929, 54.594]],
+      radiusM: 850
+    },
+    {
+      id: 'tx-test',
+      type: 'transformer',
+      location: { lng: -5.931, lat: 54.593 },
+      radiusM: 650
+    }
+  ],
+  startYear: 2026,
+  baselineYear: 2025,
+  horizonYear: 2036
+}, process.cwd());
+const branch = result.scenarioBranches.find((item) => item.objective === 'user_proposal') || result.scenarioBranches[0];
+console.log(JSON.stringify({
+  userInterventions: result.userInterventions.map((item) => item.type),
+  branchInterventions: branch.interventions.map((item) => item.type),
+  diff2036: branch.timelineByYear['2036'].diffFromBaseline
+}));
+"""
+        completed = subprocess.run(
+            ["node", "-e", script],
+            cwd=REPO_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        data = json.loads(completed.stdout)
+        self.assertEqual(data["userInterventions"], ["road", "transformer"])
+        self.assertIn("road", data["branchInterventions"])
+        self.assertIn("transformer", data["branchInterventions"])
+        self.assertLess(data["diff2036"]["traffic"], 0)
+        self.assertLess(data["diff2036"]["electricity"], 0)
+        self.assertNotEqual(data["diff2036"]["services"], 0)
 
 
 if __name__ == "__main__":
