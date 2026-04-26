@@ -168,7 +168,7 @@
     { id: 'services', label: 'Public Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
   const DEFAULT_LENS = 'buildings';
-  const LENS_FILTER_IDS = [DEFAULT_LENS, 'traffic', 'jobs', 'electricity', 'services'];
+  const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
   const BELFAST_CENTER = [-5.9301, 54.5973];
   const PLANNING_ENGINES = [
     { id: 'traffic', label: 'Traffic', color: '#fb923c', objective: 'traffic_mitigation' },
@@ -4142,15 +4142,14 @@
 
   function toggleLensFilter(lensId) {
     if (!LENS_FILTER_IDS.includes(lensId)) return;
-    if (lensId === DEFAULT_LENS || state.lens === lensId) setLens(DEFAULT_LENS);
-    else setLens(lensId);
+    setLens(state.lens === lensId ? DEFAULT_LENS : lensId);
   }
 
   function renderLensTabs() {
     const host = ensureToolbarLensHost();
     if (!host) return;
-    // Lens filters live in both modes. Buildings is the default base view;
-    // clicking an active non-building filter again returns to Buildings.
+    // Lens filters live in both modes. Buildings is the hidden default base
+    // view; clicking an active filter again returns to Buildings.
     host.hidden = false;
     host.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
       const active = l.id === state.lens ? ' active' : '';
@@ -7624,6 +7623,7 @@
       setMode('historical');
     }
     syncTopNavForMode();
+    renderLensTabs();
 
     // View toggle
     if (els.viewToggleButtons) {
