@@ -112,7 +112,10 @@
 
   function ensureLayers() {
     if (!map) return false;
-    if (!map.isStyleLoaded || !map.isStyleLoaded()) return false;
+    // Mapbox addSource/addLayer queue safely once the basic 'load' event has
+    // fired — we don't strictly need isStyleLoaded() to be true. Gate only on
+    // the style object existing.
+    try { if (!map.getStyle || !map.getStyle()) return false; } catch (_) { return false; }
     if (!map.getSource(STOPS_SOURCE)) {
       map.addSource(STOPS_SOURCE, { type: 'geojson', data: emptyFC() });
     }

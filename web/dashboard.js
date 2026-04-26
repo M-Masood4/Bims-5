@@ -4634,7 +4634,10 @@
   // and has placed roads/buildings on the active branch.
   function refreshTransitLayer() {
     if (!window.TransitEngine || !window.TransitEngine.isLoaded || !window.TransitEngine.isLoaded()) return;
-    if (state.lens !== 'transit') {
+    // The lens kept its internal 'services' id for data continuity but is
+    // displayed as "Transit". Either id arms the transit layer.
+    const isTransit = state.lens === 'transit' || state.lens === 'services';
+    if (!isTransit) {
       window.TransitEngine.clear();
       updateTransitImpactCard(null);
       return;
@@ -4655,8 +4658,9 @@
   function updateTransitImpactCard(result) {
     const host = els.impactStack;
     if (!host) return;
+    const isTransit = state.lens === 'transit' || state.lens === 'services';
     let card = host.querySelector('[data-card="transit-summary"]');
-    if (state.lens !== 'transit' || !result) { if (card) card.remove(); return; }
+    if (!isTransit || !result) { if (card) card.remove(); return; }
     const s = result.summary || {};
     const net = s.netReliefIndex || 0;
     const verdict = net > 0.3 ? 'Net relief' : net < -0.3 ? 'Net strain' : 'Network neutral';
