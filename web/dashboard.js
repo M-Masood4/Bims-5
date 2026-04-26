@@ -2809,6 +2809,109 @@
     saveState();
   }
 
+  function defaultForkBranchName(branch, commit) {
+    const source = String((branch && branch.name) || 'Branch').replace(/\s*\(No Changes\)\s*/i, '').trim() || 'Branch';
+    const suffix = commit && commit.year ? ' ' + commit.year : '';
+    const name = source + ' fork' + suffix;
+    return name.length > 60 ? name.slice(0, 57) + '...' : name;
+  }
+
+  function openBranchPointModal(sourceBranch, target) {
+    if (!sourceBranch) return;
+    const commit = commitContextForTarget(sourceBranch, target);
+    const snapshot = snapshotItemsForCommit(sourceBranch, target);
+    const usedColors = new Set(state.branches.map(b => b.color));
+    let chosenColor = SWATCH_COLORS.find(c => !usedColors.has(c)) || sourceBranch.color || SWATCH_COLORS[0];
+    let chosenName = defaultForkBranchName(sourceBranch, commit);
+
+    openModalCustom('Start Branch Here', function (body, close) {
+      const swatches = SWATCH_COLORS.map(c =>
+        '<div class="color-swatch' + (c === chosenColor ? ' active' : '') + '" data-color="' + c + '" style="background:' + c + ';color:' + c + '"></div>'
+      ).join('');
+      body.innerHTML = '' +
+        '<div class="new-branch-form">' +
+          '<div><label class="field-label">Branch name</label>' +
+            '<input class="text-input" id="newBranchName" value="' + escapeHtml(chosenName) + '" maxlength="60"></div>' +
+          '<div><label class="field-label">Color</label>' +
+            '<div class="color-grid" id="colorGrid">' + swatches + '</div></div>' +
+          '<div class="inspect-row"><span class="k">Source</span><span class="v" style="color:' + escapeHtml(sourceBranch.color || '#3b82f6') + '">' + escapeHtml(sourceBranch.name || 'Branch') + '</span></div>' +
+          '<div class="inspect-row"><span class="k">Point</span><span class="v">' + escapeHtml(commit.title || 'Branch point') + '</span></div>' +
+          '<div class="inspect-row"><span class="k">Copied</span><span class="v">' + snapshot.length + ' addition' + (snapshot.length === 1 ? '' : 's') + ' through ' + commit.year + '</span></div>' +
+          '<div style="display:flex;gap:8px;margin-top:6px">' +
+            '<button class="modal-btn secondary" id="newBranchCancel" type="button">Cancel</button>' +
+            '<button class="modal-btn" id="newBranchCreate" type="button">Create Branch</button>' +
+          '</div>' +
+        '</div>';
+
+      const nameInput = body.querySelector('#newBranchName');
+      body.querySelectorAll('.color-swatch').forEach(s => {
+        s.addEventListener('click', () => {
+          chosenColor = s.getAttribute('data-color');
+          body.querySelectorAll('.color-swatch').forEach(x => x.classList.toggle('active', x === s));
+        });
+      });
+      body.querySelector('#newBranchCancel').addEventListener('click', close);
+      body.querySelector('#newBranchCreate').addEventListener('click', () => {
+        chosenName = (nameInput.value || '').trim();
+        if (!chosenName) { nameInput.focus(); return; }
+        createBranchFromPoint(chosenName, chosenColor, sourceBranch, target);
+        close();
+      });
+      nameInput.focus();
+      nameInput.select();
+    });
+  }
+
+  function createBranchFromPoint(name, color, sourceBranch, target) {
+    const branch = sourceBranch || activeBranch();
+    if (!branch) return null;
+    const commit = commitContextForTarget(branch, target);
+    const items = cloneItemsWithFreshIds(snapshotItemsForCommit(branch, target));
+    const newBranch = {
+      id: uid('br'),
+      name: name,
+      color: color,
+      parentId: branch.id,
+      items,
+      scenarioResult: null,
+      scenarioStaged: items.length > 0,
+      branchPoint: {
+        sourceBranchId: branch.id,
+        sourceItemId: commit.itemId || null,
+        sourceLogId: commit.logId || null,
+        title: commit.title,
+        year: commit.year,
+        createdAt: new Date().toISOString()
+      },
+      activityLog: [{
+        id: uid('act'),
+        type: 'activity',
+        title: 'Branch started here',
+        detail: 'Forked from ' + (branch.name || 'branch') + ' at ' + (commit.title || 'selected point') + '.',
+        year: commit.year,
+        createdAt: new Date().toISOString(),
+        data: {
+          sourceBranchId: branch.id,
+          sourceItemId: commit.itemId || null,
+          sourceLogId: commit.logId || null
+        }
+      }]
+    };
+    if (branch.plannerEngine) newBranch.plannerEngine = branch.plannerEngine;
+    if (branch.forecastObjective) newBranch.forecastObjective = branch.forecastObjective;
+    state.branches.push(newBranch);
+    state.activeBranchId = newBranch.id;
+    renderBranchSelect();
+    renderBranches();
+    renderImpact();
+    renderItemsOnMap();
+    renderLeftSidebar();
+    updateScenarioDiffButton();
+    toast('Started branch "' + name + '" from ' + (commit.title || 'branch history'));
+    saveState();
+    return newBranch;
+  }
+
   function deleteBranch(id) {
     const b = state.branches.find(x => x.id === id);
     if (!b) return;
@@ -3118,8 +3221,10 @@
     const isItem = Boolean(target.itemId);
     const inspectBtn = els.nodeMenu.querySelector('[data-act="inspect"]');
     const deleteBtn = els.nodeMenu.querySelector('[data-act="delete"]');
+    const forkBtn = els.nodeMenu.querySelector('[data-act="fork-here"]');
     if (inspectBtn) inspectBtn.hidden = !isItem;
     if (deleteBtn) deleteBtn.hidden = !isItem;
+    if (forkBtn) forkBtn.hidden = !(isItem || target.logId);
     els.nodeMenu.style.left = (event.clientX) + 'px';
     els.nodeMenu.style.top = (event.clientY) + 'px';
     els.nodeMenu.hidden = false;
@@ -3279,6 +3384,11 @@
         const branch = state.branches.find(x => x.id === nodeMenuTarget.branchId);
         const item = branch ? branch.items.find(i => i.id === nodeMenuTarget.itemId) : null;
         const log = branch ? (branch.activityLog || []).find(entry => entry.id === nodeMenuTarget.logId) : null;
+        if (act === 'fork-here') {
+          closeMenus();
+          if (branch) openBranchPointModal(branch, nodeMenuTarget);
+          return;
+        }
         if (act === 'branch-variations') {
           createPlannerVariationsFromNode(nodeMenuTarget);
           closeMenus();
