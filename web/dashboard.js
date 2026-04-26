@@ -402,11 +402,14 @@
       'rcCongBefore', 'rcCongAfter', 'rcCongDelta', 'rcCongArrow',
       'rcFlowBefore', 'rcFlowAfter', 'rcFlowDelta', 'rcFlowArrow',
       'rcUsage', 'roadCompareSummary',
-      'planRoadHint', 'planRoadStep', 'planRoadCancel'
+      'planRoadHint', 'planRoadStep', 'planRoadCancel',
+      // New light-theme layout
+      'leftSidebarTitle', 'leftSidebarSubtitle', 'leftSidebarFilter', 'leftSidebarList',
+      'timelineYears', 'timelineDots', 'timelineFilled'
     ];
     ids.forEach(id => { els[id] = document.getElementById(id); });
-    els.mapCanvas = document.querySelector('.map-canvas');
-    els.modifyButtons = els.modifyList ? els.modifyList.querySelectorAll('.modify-btn') : [];
+    els.mapCanvas = document.querySelector('.map-wrapper') || document.querySelector('.map-canvas');
+    els.modifyButtons = els.modifyList ? els.modifyList.querySelectorAll('.tool-btn, .modify-btn') : [];
     els.viewToggleButtons = els.viewToggle ? els.viewToggle.querySelectorAll('button') : [];
     els.bottomTabs = document.querySelectorAll('.bn-btn');
     els.topTabs = els.topNav ? els.topNav.querySelectorAll('.nav-btn') : [];
@@ -1275,14 +1278,23 @@
     if (!els.tlYearNow) return;
     const sim = isSimYear(state.year);
     els.tlYearNow.textContent = state.year;
-    els.tlYearNow.className = 'tl-year-now' + (sim ? ' simulation' : '');
+    els.tlYearNow.className = 'now-label' + (sim ? ' simulation' : '');
 
     const idx = ALL_YEARS.indexOf(state.year);
     const pct = idx === -1 ? 0 : (idx / (ALL_YEARS.length - 1)) * 100;
-    els.tlProgress.style.width = pct + '%';
-    els.tlProgress.className = 'tl-progress' + (sim ? ' simulation' : '');
-    els.tlThumb.style.left = pct + '%';
-    els.tlThumb.className = 'tl-thumb' + (sim ? ' simulation' : '');
+    if (els.tlProgress) {
+      els.tlProgress.style.width = pct + '%';
+      els.tlProgress.className = 'tl-progress' + (sim ? ' simulation' : '');
+    }
+    if (els.tlThumb) {
+      els.tlThumb.style.left = pct + '%';
+      els.tlThumb.className = 'tl-thumb' + (sim ? ' simulation' : '');
+    }
+    if (els.timelineFilled) els.timelineFilled.style.width = pct + '%';
+
+    // New dot-based timeline (light-theme layout). Lazy-build labels + dots
+    // once, then re-paint the active state on each year change.
+    renderTimelineDots();
 
     // Render marks (only every other year to fit)
     if (els.tlMarks && !els.tlMarks.dataset.built) {
@@ -1305,8 +1317,175 @@
 
     // Active branch tag
     if (els.tagYear) els.tagYear.textContent = state.year;
-    if (els.tagYear) els.tagYear.style.color = sim ? 'var(--purple-2)' : 'var(--blue-2)';
-    if (els.tagYear) els.tagYear.style.background = sim ? 'rgba(168,85,247,0.18)' : 'rgba(59,130,246,0.18)';
+    if (els.tagYear) els.tagYear.style.color = sim ? 'var(--purple)' : 'var(--blue)';
+    if (els.tagYear) els.tagYear.style.background = sim ? 'rgba(168,85,247,0.10)' : 'rgba(59,130,246,0.10)';
+  }
+
+  // Year-strip + dot timeline that lives in the new light-theme layout.
+  // Lazy-builds the labels + dots on first call, then just retags which dot
+  // is current.
+  function renderTimelineDots() {
+    if (!els.timelineDots || !els.timelineYears) return;
+    const cur = ALL_YEARS.indexOf(state.year);
+    if (!els.timelineDots.dataset.built) {
+      els.timelineYears.innerHTML = ALL_YEARS.map(y => '<span>' + y + '</span>').join('');
+      els.timelineDots.innerHTML = ALL_YEARS.map((y, i) =>
+        '<button class="t-dot" data-tl-year="' + y + '" type="button" aria-label="' + y + '"></button>'
+      ).join('');
+      els.timelineDots.querySelectorAll('.t-dot').forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const y = parseInt(dot.getAttribute('data-tl-year'), 10);
+          if (Number.isFinite(y)) setYear(y);
+        });
+      });
+      els.timelineDots.dataset.built = '1';
+    }
+    els.timelineDots.querySelectorAll('.t-dot').forEach((dot, i) => {
+      dot.classList.remove('current', 'future');
+      if (i === cur) dot.classList.add('current');
+      else if (i > cur) dot.classList.add('future');
+    });
+  }
+
+  // ---------- LEFT SIDEBAR (Events / Activity Log) ----------
+  // Historical years (≤ 2025) → "Events" view: pulls from the in-app event
+  // catalogue (eventsForCurrentYearAndLens) and lists historical milestones.
+  // Simulation years (≥ 2026) → "Activity Log" view: a chronological log of
+  // user actions on the active branch (placed buildings, planned roads, run
+  // simulations).
+  const LENS_ICONS = {
+    traffic: '🛣️', jobs: '💼', electricity: '⚡', buildings: '🏢', services: '🌳',
+    bus: '🚌', metro: '🚇', cycle: '🚲', park: '🌿', star: '⭐', water: '💧', people: '👥',
+    home: '🏠', office: '🏢',
+  };
+  const LENS_TINTS = {
+    traffic: '#fffbe6', jobs: '#f0eaff', electricity: '#fff5eb',
+    buildings: '#eaf4ff', services: '#edfaf0',
+  };
+
+  function renderLeftSidebar() {
+    if (!els.leftSidebarList || !els.leftSidebarTitle) return;
+    const hist = isHistoricalMode();
+    els.leftSidebarTitle.textContent = hist ? 'Events' : 'Activity Log';
+    if (els.leftSidebarSubtitle) {
+      els.leftSidebarSubtitle.innerHTML = hist
+        ? 'What happens<br>as time goes on'
+        : 'Your scenario actions<br>and simulation runs';
+    }
+    if (els.leftSidebarFilter) els.leftSidebarFilter.style.display = hist ? '' : 'none';
+    if (hist) renderLeftSidebarEvents();
+    else      renderLeftSidebarActivity();
+  }
+
+  function renderLeftSidebarEvents() {
+    if (!els.leftSidebarList) return;
+    const filterId = els.leftSidebarFilter ? els.leftSidebarFilter.value : 'all';
+    // Pull events for the currently-selected year+lens. If a category filter
+    // is active, also pull that lens's events so the user can browse outside
+    // the active lens.
+    let events = [];
+    try { events = eventsForCurrentYearAndLens() || []; } catch (_) { events = []; }
+    if (filterId !== 'all' && filterId !== state.lens) {
+      // fire-and-forget — load + re-render once it resolves
+      loadEventsForYearLens(state.year, filterId).then(() => renderLeftSidebar());
+      const cached = state.eventsForYearCache;
+      if (cached && cached.signal === filterId) events = cached.events || [];
+    }
+    if (!events.length) {
+      els.leftSidebarList.innerHTML =
+        '<div style="padding:20px 16px;font-size:11.5px;color:var(--text-mute);line-height:1.5">No events catalogued for this year and lens. Try another lens or scrub the timeline.</div>';
+      return;
+    }
+    els.leftSidebarList.innerHTML = events.slice(0, 60).map(ev => {
+      const lensId = ev.signal || state.lens;
+      const tint = LENS_TINTS[lensId] || '#eaf4ff';
+      const icon = LENS_ICONS[lensId] || '•';
+      const title = escapeHtml(ev.title || ev.label || ('Event ' + (ev.id || '')));
+      const sub = escapeHtml(ev.subtitle || ev.location || ev.placeName || '');
+      const date = escapeHtml(ev.date || (ev.year ? String(ev.year) : ''));
+      const active = (ev.id && ev.id === state.activeEventId) ? ' active' : '';
+      return '<div class="event-item' + active + '" data-event-id="' + escapeHtml(ev.id || '') + '">' +
+        '<div class="event-icon" style="background:' + tint + '">' + icon + '</div>' +
+        '<div class="event-info">' +
+          '<div class="event-title">' + title + '</div>' +
+          (sub ? '<div class="event-sub">' + sub + '</div>' : '') +
+          (date ? '<div class="event-date">' + date + '</div>' : '') +
+        '</div></div>';
+    }).join('');
+    els.leftSidebarList.querySelectorAll('.event-item').forEach(node => {
+      node.addEventListener('click', () => {
+        const id = node.getAttribute('data-event-id');
+        if (id && typeof selectEvent === 'function') selectEvent(id);
+      });
+    });
+  }
+
+  function renderLeftSidebarActivity() {
+    if (!els.leftSidebarList) return;
+    const branch = activeBranch();
+    if (!branch) { els.leftSidebarList.innerHTML = ''; return; }
+    const items = (branch.items || []).slice().sort((a, b) => (b.year || 0) - (a.year || 0));
+    const entries = [];
+    entries.push({
+      icon: '🌳',
+      tint: '#edfaf0',
+      title: 'Branch: ' + (branch.name || 'Untitled'),
+      sub: branch.locked ? 'Baseline (read-only)' : 'Active scenario',
+      date: 'now',
+    });
+    items.forEach(it => {
+      let icon = '➕', tint = '#fff5eb', title = 'Item';
+      if (it.type === 'building') {
+        icon = '🏢'; tint = '#eaf4ff';
+        title = 'Added ' + (it.label || 'Building');
+      } else if (it.type === 'road') {
+        icon = '🛣️'; tint = '#fffbe6';
+        const len = Array.isArray(it.path) ? it.path.length : 2;
+        title = 'Planned road · ' + (len - 1) + ' segments';
+      } else if (it.type === 'park') {
+        icon = '🌿'; tint = '#edfaf0';
+        title = 'Added Park';
+      } else if (it.type === 'infrastructure') {
+        icon = '⚡'; tint = '#fff5eb';
+        title = 'Added Infrastructure';
+      }
+      entries.push({
+        icon: icon, tint: tint,
+        title: title,
+        sub: it.preset ? capitalise(String(it.preset).replace(/_/g, ' ')) : (it.label || ''),
+        date: 'Year ' + (it.year || state.year),
+      });
+    });
+    if (entries.length === 1) {
+      entries.push({
+        icon: '✨', tint: '#f8f9fc',
+        title: 'Nothing planned yet',
+        sub: 'Add buildings or roads on the map to fill this log.',
+        date: '',
+      });
+    }
+    els.leftSidebarList.innerHTML = entries.map(e =>
+      '<div class="event-item">' +
+        '<div class="event-icon" style="background:' + e.tint + '">' + e.icon + '</div>' +
+        '<div class="event-info">' +
+          '<div class="event-title">' + escapeHtml(e.title) + '</div>' +
+          (e.sub ? '<div class="event-sub">' + escapeHtml(e.sub) + '</div>' : '') +
+          (e.date ? '<div class="event-date">' + escapeHtml(e.date) + '</div>' : '') +
+        '</div></div>'
+    ).join('');
+  }
+
+  function attachLeftSidebar() {
+    if (els.leftSidebarFilter) {
+      els.leftSidebarFilter.addEventListener('change', () => {
+        // Map "all" to the active lens; everything else drives a new lens.
+        const v = els.leftSidebarFilter.value;
+        if (v && v !== 'all' && LENSES.find(l => l.id === v)) setLens(v);
+        renderLeftSidebar();
+      });
+    }
+    // First paint
+    renderLeftSidebar();
   }
 
   function attachTimelineEvents() {
@@ -1380,6 +1559,7 @@
     renderItemsOnMap();
     renderActiveInfo();
     renderMapSubtitle();
+    renderLeftSidebar();
     if (isHistoricalMode()) {
       renderHistoricalBranchesPanel();
       renderCompareSection();
@@ -1415,25 +1595,25 @@
 
   function renderModify() {
     if (isHistoricalMode()) { renderHistoricalModifyPanel(); return; }
-    // Restore standard modify panel content if historical mode left it modified
-    if (els.modifyList && els.modifyList.dataset.histInjected === '1') {
-      // Restore from saved HTML
-      els.modifyList.innerHTML = els.modifyList.dataset.simHtml || '';
-      els.modifyList.dataset.histInjected = '';
-      // Re-cache button handles
-      els.modifyButtons = els.modifyList.querySelectorAll('.modify-btn');
-      attachModifyEvents();
-    }
-    // Save the original sim modify list once
-    if (els.modifyList && !els.modifyList.dataset.simHtml) {
-      els.modifyList.dataset.simHtml = els.modifyList.innerHTML;
+    // Re-enable the toolbar tools when leaving historical mode (the
+    // historical render dims them).
+    if (els.modifyButtons) {
+      els.modifyButtons.forEach(btn => {
+        btn.removeAttribute('disabled');
+        btn.style.opacity = '';
+      });
     }
     if (els.modifySub) els.modifySub.style.color = '';
     if (els.presetSection) els.presetSection.style.display = state.activeTool === 'building' ? '' : 'none';
     if (!els.modifyButtons) return;
     els.modifyButtons.forEach(btn => {
       const t = btn.getAttribute('data-tool');
-      btn.classList.toggle('active', t === state.activeTool);
+      // "Select" is the implicit default — show it as active when no tool
+      // is active (since the user is free to click anything on the map).
+      const isSelect = t === 'select';
+      const active = isSelect ? !state.activeTool : (t === state.activeTool);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
     // Hide presets unless "building" tool active
     const showPresets = state.activeTool === 'building';
@@ -1493,6 +1673,13 @@
     els.modifyButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const t = btn.getAttribute('data-tool');
+        // The "Select" tool is a no-op cursor — clear any active tool.
+        if (t === 'select') {
+          state.activeTool = null;
+          state.pendingRoadStart = null;
+          renderModify();
+          return;
+        }
         // Roads now flow through the postcode → junction picker. If the
         // planner isn't armed yet, push the user to the search box rather
         // than letting them free-click points that won't sit on real roads.
@@ -1628,39 +1815,46 @@
 
   function renderBranches() {
     if (!els.branchList) return;
-    if (isHistoricalMode()) { renderHistoricalBranchesPanel(); return; }
-    // Restore branches panel content from sim mode
-    if (els.newBranchBtn) els.newBranchBtn.style.display = '';
-    const branchesPanel = els.branchList.closest('.branches-panel');
-    if (branchesPanel) {
-      const sub = branchesPanel.querySelector('.panel-sub');
-      if (sub) sub.textContent = 'Create and manage different simulation paths';
-      const h3 = branchesPanel.querySelector('h3');
-      if (h3) h3.innerHTML = '3. Scenario Branches';
-    }
-    els.branchList.className = 'branch-list';
-    if (!state.branches.length) {
-      els.branchList.innerHTML = '<div class="branch-empty">No branches yet. Click "New Branch" to start.</div>';
+    if (isHistoricalMode()) {
+      // In the new layout the branches panel doesn't get hijacked into an
+      // events list anymore — events live in the left sidebar. Hide branch
+      // cards in historical mode for clarity.
+      els.branchList.innerHTML = '';
+      els.branchList.className = 'branch-cards';
+      if (els.newBranchBtn) els.newBranchBtn.style.display = 'none';
+      renderActiveInfo();
+      renderBranchTimeline();
+      renderTagDot();
       return;
     }
-    els.branchList.innerHTML = state.branches.map(branchItemHTML).join('');
-    els.branchList.querySelectorAll('.branch-item').forEach(el => {
+    if (els.newBranchBtn) els.newBranchBtn.style.display = '';
+    els.branchList.className = 'branch-cards';
+    if (!state.branches.length) {
+      els.branchList.innerHTML = '<div class="branch-empty" style="font-size:11.5px;color:var(--text-mute);padding:8px 0;">No branches yet — click "New Branch" to start.</div>';
+      return;
+    }
+    els.branchList.innerHTML = state.branches.map(branchCardHTML).join('');
+    els.branchList.querySelectorAll('.branch-card').forEach(el => {
       const id = el.getAttribute('data-branch-id');
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('.branch-more')) return;
-        setActiveBranch(id);
+      el.addEventListener('click', (e) => { setActiveBranch(id); });
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        openBranchMenu(id, el);
       });
-      const more = el.querySelector('.branch-more');
-      if (more) {
-        more.addEventListener('click', (e) => {
-          e.stopPropagation();
-          openBranchMenu(id, more);
-        });
-      }
     });
     renderActiveInfo();
     renderBranchTimeline();
     renderTagDot();
+  }
+
+  function branchCardHTML(b) {
+    const active = b.id === state.activeBranchId ? ' active' : '';
+    const sub = b.locked ? 'Baseline (locked)' : ((b.items || []).length + ' item' + ((b.items || []).length === 1 ? '' : 's'));
+    return '<div class="branch-card' + active + '" data-branch-id="' + b.id + '" tabindex="0">' +
+      '<div class="branch-dot" style="background:' + (b.color || '#3b82f6') + '"></div>' +
+      '<div class="branch-card-title">' + escapeHtml(b.name || 'Branch') + '</div>' +
+      '<div class="branch-card-sub">' + escapeHtml(sub) + '</div>' +
+    '</div>';
   }
 
   function branchItemHTML(b) {
@@ -2974,6 +3168,7 @@
       updateImpactRipples();
       updateImpactLensUI();
     }
+    renderLeftSidebar();
     updateScenarioDiffButton();
     saveState();
   }
@@ -3117,6 +3312,7 @@
     renderImpact();
     renderActiveInfo();
     renderCompareSection();
+    renderLeftSidebar();
     if (state.mapLoaded) {
       renderHistoricalMapLayers();
       renderItemsOnMap();
@@ -3855,24 +4051,26 @@
 
   function renderHistoricalModifyPanel() {
     if (!els.modifyList) return;
-    // Save original sim HTML once
-    if (!els.modifyList.dataset.simHtml) els.modifyList.dataset.simHtml = els.modifyList.innerHTML;
-    els.modifyList.dataset.histInjected = '1';
+    // The new layout keeps the same toolbar tools visible in both modes —
+    // historical mode used to hijack this strip with lens buttons, but
+    // those now live in the right sidebar's tabs. We just dim/disable the
+    // editing tools in historical mode so the user knows they can't place.
     if (els.presetSection) els.presetSection.style.display = 'none';
     if (els.modifySub) {
-      els.modifySub.innerHTML = 'Pick a signal to inspect across ' + state.year + '. Switch years with the slider.';
+      els.modifySub.innerHTML = 'Historical mode — pick a lens on the right and a year to inspect.';
       els.modifySub.style.color = '';
     }
-    els.modifyList.innerHTML = LENSES.map(l => {
-      const active = l.id === state.lens ? ' active' : '';
-      return '<button class="modify-btn lens-mb' + active + '" data-lens="' + l.id + '" type="button" style="--lens-color:' + l.color + '">' +
-        '<span class="lens-dot" style="width:9px;height:9px;border-radius:50%;background:' + l.color + ';box-shadow:0 0 6px ' + l.color + '"></span>' +
-        l.label +
-        '</button>';
-    }).join('');
-    els.modifyList.querySelectorAll('.lens-mb').forEach(b => {
-      b.addEventListener('click', () => setLens(b.getAttribute('data-lens')));
-    });
+    if (els.modifyButtons) {
+      els.modifyButtons.forEach(btn => {
+        const t = btn.getAttribute('data-tool');
+        const isSelect = t === 'select';
+        btn.classList.toggle('active', isSelect);
+        if (!isSelect) {
+          btn.setAttribute('disabled', 'disabled');
+          btn.style.opacity = '0.5';
+        }
+      });
+    }
     if (els.mapCanvas) els.mapCanvas.classList.remove('placing', 'removing');
     if (els.cursorHint) els.cursorHint.hidden = true;
   }
@@ -4950,6 +5148,7 @@
     attachPostcodeSearch();
     attachTrafficSim();
     attachRoadCompare();
+    attachLeftSidebar();
 
     // Apply persisted collapse state. Mode is now derived from the year — see
     // setYear()'s auto-mode logic. We just need to make sure the persisted

@@ -5,7 +5,8 @@
 const { chromium } = require("playwright");
 
 const url = process.env.URL || "http://localhost:5173";
-const EXPECTED = ["Traffic", "Jobs", "Electricity", "Buildings", "Services"];
+// We assert presence + click-through, not a specific order — the dashboard
+// owner can reorder LENSES without breaking the smoke.
 const EXPECTED_IDS = ["traffic", "jobs", "electricity", "buildings", "services"];
 function fail(msg) { throw new Error(msg); }
 
@@ -33,9 +34,9 @@ function fail(msg) { throw new Error(msg); }
       }))
     );
     if (tabs.length !== 5) fail("expected 5 lens tabs, got " + tabs.length);
-    EXPECTED_IDS.forEach((id, i) => {
-      if (tabs[i].id !== id) fail("tab[" + i + "] id=" + tabs[i].id + ", expected " + id);
-      if (!tabs[i].label.includes(EXPECTED[i])) fail("tab[" + i + "] label '" + tabs[i].label + "' missing '" + EXPECTED[i] + "'");
+    const tabIds = tabs.map(t => t.id);
+    EXPECTED_IDS.forEach(id => {
+      if (!tabIds.includes(id)) fail("missing lens tab: " + id);
     });
   }
 

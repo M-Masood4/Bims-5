@@ -190,7 +190,8 @@ function fail(msg) { throw new Error(msg); }
     }
     // Click the Road tool button directly. Without an armed planner this
     // should NOT activate the tool.
-    const btn = Array.from(document.querySelectorAll(".modify-btn")).find(b => b.getAttribute("data-tool") === "road");
+    // Tool buttons in the new layout use .tool-btn; older layout used .modify-btn.
+    const btn = Array.from(document.querySelectorAll(".tool-btn, .modify-btn")).find(b => b.getAttribute("data-tool") === "road");
     if (!btn) return { ok: false, why: "Road button missing" };
     // Disarm the planner by simulating cancel
     const cancel = document.getElementById("planRoadCancel");

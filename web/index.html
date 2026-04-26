@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -6,7 +6,7 @@
 <title>Belfast 2016-2036 - Simulation Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
@@ -14,245 +14,232 @@
 
 <div class="app">
 
-  <!-- ========== HEADER ========== -->
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21h18"/><path d="M5 21V7l5-4 5 4v14"/><path d="M15 21V11l4-2v12"/><path d="M9 9v.01"/><path d="M9 13v.01"/><path d="M9 17v.01"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <h1>BELFAST</h1>
-        <small>2016 - 2036</small>
-      </div>
-    </div>
+  <!-- ========== LEFT SIDEBAR (Events / Activity Log) ========== -->
+  <aside class="left-sidebar">
+    <h2 id="leftSidebarTitle">Events</h2>
+    <p class="left-subtitle" id="leftSidebarSubtitle">What happens<br>as time goes on</p>
+    <select id="leftSidebarFilter" class="category-select">
+      <option value="all">All Categories</option>
+      <option value="traffic">Traffic</option>
+      <option value="jobs">Jobs</option>
+      <option value="electricity">Electricity</option>
+      <option value="buildings">Buildings</option>
+      <option value="services">Services</option>
+    </select>
+    <div id="leftSidebarList" class="events-list"></div>
+  </aside>
 
-    <nav class="nav" id="topNav">
-      <button class="nav-btn" data-mode-tab="historical">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
-        Historical View
-      </button>
-      <button class="nav-btn active" data-mode-tab="simulation">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6"/><path d="M10 3v6L4 21h16L14 9V3"/></svg>
-        Simulation Mode
-      </button>
-      <button class="nav-btn" data-mode-tab="compare">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
-        Compare &amp; Insights
-      </button>
-      <button class="nav-btn" data-mode-tab="library">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
-        Data Library
-      </button>
-    </nav>
+  <!-- ========== CENTER (Toolbar + Map + Timeline) ========== -->
+  <main class="center-area">
 
-    <div class="top-right">
-      <button class="icon-btn" id="settingsBtn" type="button">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.86 1.18 1.43 2.11 1.43H21a2 2 0 1 1 0 4h-.09c-.93 0-1.75.57-2.11 1.43z"/></svg>
-        Settings
-      </button>
-      <button class="icon-btn" id="helpBtn" type="button">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Help
-      </button>
-      <button class="icon-btn square" id="themeBtn" type="button" title="Toggle theme">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- ========== MAIN GRID ========== -->
-  <div class="main">
-
-    <!-- 1: ADD / MODIFY -->
-    <div class="panel modify-panel-host">
-      <div class="panel-title">1. Add / Modify</div>
-      <div class="panel-sub" id="modifySub">Pick an element, then click on the map to place it</div>
-
-      <div class="modify-list" id="modifyList">
-        <button class="modify-btn" data-tool="building">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/><path d="M8 6h.01"/><path d="M12 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/></svg>
-          Building
-        </button>
-        <button class="modify-btn" data-tool="road">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v3"/><path d="M12 11v3"/><path d="M12 17v3"/></svg>
-          Road
-        </button>
-        <button class="modify-btn" data-tool="park">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12c0-3.87 3.13-7 7-7s7 3.13 7 7c0 1.5-.5 2.91-1.4 4-.83 1.05-2.05 1.83-3.5 2.16"/></svg>
-          Park / Green Space
-        </button>
-        <button class="modify-btn" data-tool="infrastructure">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/><path d="M3 13h18"/><path d="M9 21V13"/><path d="M15 21V13"/></svg>
-          Infrastructure
-        </button>
-        <button class="modify-btn danger" data-tool="remove">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          Remove
-        </button>
-      </div>
-
-      <div class="preset-section" id="presetSection">
-        <div class="preset-label" id="presetLabel">Building Presets</div>
-        <div class="preset-grid" id="presetGrid"></div>
-      </div>
-    </div>
-
-    <!-- 3: MAP -->
-    <div class="panel map-panel">
-      <div class="map-header">
-        <div class="map-title">
-          <h2>BELFAST CITY EVOLUTION</h2>
-          <small id="mapSubtitle">Showing 2026 - present day baseline <span class="info-i" title="Drop a building or road, then advance the timeline to project impact through 2036.">i</span></small>
+    <!-- Top toolbar -->
+    <header class="toolbar">
+      <div class="toolbar-brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l5-4 5 4v14"/><path d="M15 21V11l4-2v12"/></svg>
         </div>
-        <div class="lens-tabs" id="lensTabs" hidden></div>
-        <div class="view-toggle" id="viewToggle">
-          <button class="active" data-view="2D" type="button">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
-            2D Map View
+        <div class="brand-text">
+          <strong>Belfast</strong>
+          <small>2016 – 2036</small>
+        </div>
+      </div>
+
+      <nav id="topNav" class="top-nav" aria-label="Mode">
+        <button class="nav-btn" data-mode-tab="historical" type="button">Historical</button>
+        <button class="nav-btn active" data-mode-tab="simulation" type="button">Simulation</button>
+        <button class="nav-btn" data-mode-tab="compare" type="button">Compare</button>
+        <button class="nav-btn" data-mode-tab="library" type="button">Library</button>
+      </nav>
+
+      <div class="tools-host">
+        <div class="modify-list" id="modifyList" role="toolbar" aria-label="Edit tools">
+          <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l4 10 2-5 5-2z" stroke-linejoin="round"/></svg>
+            <span>Select</span>
           </button>
-          <button data-view="3D" type="button">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>
-            3D View
+          <button class="tool-btn" data-tool="building" type="button" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/></svg>
+            <span>Buildings</span>
+          </button>
+          <button class="tool-btn" data-tool="road" type="button" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h12M2 5h4m4 0h4M2 11h4m4 0h4" stroke-linecap="round"/></svg>
+            <span>Roads</span>
+          </button>
+          <button class="tool-btn" data-tool="park" type="button" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12c0-3.87 3.13-7 7-7s7 3.13 7 7"/></svg>
+            <span>Park</span>
+          </button>
+          <button class="tool-btn" data-tool="infrastructure" type="button" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2L5 9h4l-2 5 6-7H9l2-5z" stroke-linejoin="round"/></svg>
+            <span>Electricity</span>
+          </button>
+          <button class="tool-btn danger" data-tool="remove" type="button" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            <span>Remove</span>
           </button>
         </div>
-      </div>
-
-      <div class="map-canvas">
-        <div id="map" aria-label="Belfast map"></div>
-        <div class="map-overlay" id="mapOverlay" aria-hidden="true">
-          <div class="overlay-loader">
-            <div class="loader-ring"></div>
-            <span>Loading Belfast...</span>
-          </div>
-        </div>
-        <div class="map-cursor-hint" id="cursorHint" hidden>
-          <span id="cursorHintText">Click on the map to place</span>
-        </div>
-        <div class="map-active-tag" id="activeBranchTag">
-          <span class="tag-dot" id="tagDot"></span>
-          <span id="tagName">Baseline</span>
-          <span class="tag-year" id="tagYear">2026</span>
-        </div>
-        <button class="scenario-diff-btn" id="scenarioDiffBtn" type="button" hidden>View Diff</button>
-        <div class="map-search" id="mapSearch">
-          <form id="postcodeForm" autocomplete="off">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input id="postcodeInput" type="search" placeholder="Full Belfast postcode (BT7 1NN)" maxlength="20" />
-            <button type="submit">Go</button>
-          </form>
-          <div class="map-search-status" id="mapSearchStatus" hidden></div>
-          <ul class="map-search-suggest" id="mapSearchSuggest" hidden></ul>
-          <div class="plan-road-hint" id="planRoadHint" hidden>
-            <span class="plan-road-step" id="planRoadStep">Click two glowing junctions to plan a road</span>
-            <button type="button" class="plan-road-cancel" id="planRoadCancel" title="Clear junctions">&times;</button>
-          </div>
-        </div>
-
-        <!-- Predicted impact heatmap controls (sim mode only) -->
-        <div class="impact-lens" id="impactLens" hidden>
-          <div class="impact-lens-head">
-            <span class="impact-lens-title">Predicted Impact</span>
-            <span class="impact-lens-year" id="impactLensYear">+0 yrs</span>
-          </div>
-          <div class="impact-lens-tabs" id="impactLensTabs"></div>
-          <div class="impact-lens-legend" id="impactLensLegend"></div>
-        </div>
-
-        <!-- Similar historical events overlay -->
-        <div class="similar-events" id="similarEvents" hidden>
-          <div class="similar-events-head">
-            <span>Similar Past Events</span>
-            <span class="similar-events-conf" id="similarEventsConf"></span>
-          </div>
-          <div class="similar-events-list" id="similarEventsList"></div>
+        <div class="preset-section" id="presetSection" hidden>
+          <span class="preset-label" id="presetLabel">Building presets</span>
+          <div class="preset-grid" id="presetGrid"></div>
         </div>
       </div>
 
-      <div class="timeline-bar">
+      <div class="toolbar-right">
+        <button class="icon-btn" id="exportBtn" type="button" title="Export">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export</span>
+        </button>
+        <button class="icon-btn icon-only" id="settingsBtn" type="button" title="Settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.86 1.18 1.43 2.11 1.43H21a2 2 0 1 1 0 4h-.09c-.93 0-1.75.57-2.11 1.43z"/></svg>
+        </button>
+        <button class="icon-btn icon-only" id="helpBtn" type="button" title="Help">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <button class="icon-btn icon-only" id="themeBtn" type="button" title="Toggle theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="icon-btn icon-only" id="aboutBtn" type="button" title="About">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Map area -->
+    <div class="map-wrapper">
+      <div id="map" aria-label="Belfast map"></div>
+
+      <div class="map-overlay" id="mapOverlay" aria-hidden="true">
+        <div class="overlay-loader">
+          <div class="loader-ring"></div>
+          <span>Loading Belfast…</span>
+        </div>
+      </div>
+
+      <!-- Search bar floating top-left of the map -->
+      <div class="map-search" id="mapSearch">
+        <form id="postcodeForm" autocomplete="off">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="postcodeInput" type="search" placeholder="Search postcode (BT1, BT7…)" maxlength="20" />
+          <button type="submit">Go</button>
+        </form>
+        <div class="map-search-status" id="mapSearchStatus" hidden></div>
+        <ul class="map-search-suggest" id="mapSearchSuggest" hidden></ul>
+        <div class="plan-road-hint" id="planRoadHint" hidden>
+          <span class="plan-road-step" id="planRoadStep">Click two glowing junctions to plan a road</span>
+          <button type="button" class="plan-road-cancel" id="planRoadCancel" title="Clear junctions">&times;</button>
+        </div>
+      </div>
+
+      <div class="map-active-tag" id="activeBranchTag">
+        <span class="tag-dot" id="tagDot"></span>
+        <span id="tagName">Baseline</span>
+        <span class="tag-year" id="tagYear">2026</span>
+      </div>
+
+      <div class="map-cursor-hint" id="cursorHint" hidden>
+        <span id="cursorHintText">Click on the map to place</span>
+      </div>
+
+      <div class="impact-lens" id="impactLens" hidden>
+        <div class="impact-lens-head">
+          <span class="impact-lens-title">Predicted Impact</span>
+          <span class="impact-lens-year" id="impactLensYear">+0 yrs</span>
+        </div>
+        <div class="impact-lens-tabs" id="impactLensTabs"></div>
+        <div class="impact-lens-legend" id="impactLensLegend"></div>
+      </div>
+
+      <div class="similar-events" id="similarEvents" hidden>
+        <div class="similar-events-head">
+          <span>Similar Past Events</span>
+          <span class="similar-events-conf" id="similarEventsConf"></span>
+        </div>
+        <div class="similar-events-list" id="similarEventsList"></div>
+      </div>
+
+      <!-- Map controls (right side) -->
+      <div class="map-controls" id="viewToggle">
+        <button class="map-ctrl-btn active" type="button" data-view="2D" title="2D map">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
+        </button>
+        <button class="map-ctrl-btn" type="button" data-view="3D" title="3D view">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </button>
+        <button class="map-ctrl-btn" id="collapseBtn" type="button" title="Collapse panels">
+          <svg id="collapseIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline (dot-based) -->
+    <div class="timeline-bar">
+      <div id="timelineYears" class="timeline-years"></div>
+      <div class="timeline-track" id="tlTrack">
+        <div class="timeline-line"></div>
+        <div class="timeline-filled" id="timelineFilled"></div>
+        <div class="timeline-progress" id="tlProgress" hidden></div>
+        <div class="timeline-thumb" id="tlThumb" hidden></div>
+        <div class="timeline-dots" id="timelineDots"></div>
+        <div class="timeline-marks" id="tlMarks" hidden></div>
+      </div>
+      <div class="timeline-labels">
+        <span class="hist-label">◀ Historical Data (2016 – 2026)</span>
+        <span class="now-label" id="tlYearNow">2026</span>
+        <span class="future-label">Simulation (2026 – 2036) ▶</span>
+      </div>
+      <div class="timeline-controls">
         <button class="tl-btn" id="tlPrev" type="button" title="Previous year">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button class="tl-btn" id="tlPlay" type="button" title="Play / pause">
-          <svg id="tlPlayIcon" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <button class="tl-btn" id="tlPlay" type="button" title="Play">
+          <svg id="tlPlayIcon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </button>
-        <div class="tl-year-now" id="tlYearNow">2026</div>
-        <div class="tl-track" id="tlTrack">
-          <div class="tl-line"></div>
-          <div class="tl-progress" id="tlProgress"></div>
-          <div class="tl-thumb" id="tlThumb"></div>
-          <div class="tl-marks" id="tlMarks"></div>
-        </div>
         <button class="tl-btn" id="tlNext" type="button" title="Next year">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="tl-btn collapse-btn" id="collapseBtn" type="button" title="Collapse panels for more map space">
-          <svg id="collapseIcon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
+      <span id="mapSubtitle" hidden></span>
     </div>
+  </main>
 
-    <!-- 4: IMPACT -->
-    <div class="panel impact-panel">
-      <div class="panel-title" id="impactTitle">Impact Overview (2026)</div>
-      <div class="impact-stack" id="impactStack"></div>
-      <button class="show-all" id="showAllBtn" type="button">
-        Show All Indicators
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-    </div>
+  <!-- ========== RIGHT SIDEBAR ========== -->
+  <aside class="right-sidebar">
+    <div id="lensTabs" class="right-tabs" role="tablist"></div>
 
-    <!-- 5: ABOUT -->
-    <div class="panel about-panel">
-      <h4>About This Project</h4>
-      <p>Explore how Belfast has changed since 2016 and simulate future scenarios up to 2036. Drop buildings, roads or parks into a branch and watch the impact ripple across population, traffic, air quality and the city economy.</p>
-      <button class="about-btn" id="aboutBtn" type="button">Project Info</button>
-    </div>
+    <div class="right-content">
+      <div id="modifySub" hidden></div>
 
-    <!-- 5: BRANCHES -->
-    <div class="panel branches-panel">
-      <h3>2. Scenario Branches</h3>
-      <div class="panel-sub">Create and manage different simulation paths</div>
+      <div class="section-title">
+        <span>Branching</span>
+        <span class="info-icon" title="Compare what-if scenarios" id="showAllBtn">i</span>
+      </div>
+      <div class="viewing-label">Viewing branch <strong id="activeBranchName">Baseline</strong> · <span id="activeYearLabel">2026</span></div>
+
+      <div id="branchList" class="branch-cards"></div>
       <button class="new-branch-btn" id="newBranchBtn" type="button">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Branch
       </button>
-      <div class="branch-list" id="branchList"></div>
-    </div>
 
-    <!-- 7: BRANCH TIMELINE -->
-    <div class="panel timeline-panel">
-      <div class="tl-header">
-        <h3>BRANCH TIMELINE <span id="tlBranchName"></span></h3>
+      <div class="section-title scenario-tree-title">
+        <span id="tlBranchName">Scenario tree</span>
       </div>
-      <div class="tl-svg-wrap" id="branchTimelineWrap">
-        <svg id="branchTimelineSvg" viewBox="0 0 940 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="scenario-tree" id="branchTimelineWrap">
+        <svg class="tree-svg" id="branchTimelineSvg" viewBox="0 0 258 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
-      <div class="tl-help">
-        Click any node to inspect <span>&middot;</span> Drag a node to move year <span>&middot;</span> Right-click to delete
+
+      <div class="info-box">
+        <span class="info-box-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="7" r="3" stroke="#3b82f6" stroke-width="1.5"/><circle cx="5" cy="16" r="3" stroke="#3b82f6" stroke-width="1.5"/><circle cx="17" cy="16" r="3" stroke="#3b82f6" stroke-width="1.5"/><path d="M11 10v3" stroke="#3b82f6" stroke-width="1.3" stroke-linecap="round"/><path d="M11 13L7 15M11 13L15 15" stroke="#3b82f6" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
+        <p>Create multiple scenarios and see how different decisions shape Belfast's future.</p>
       </div>
-    </div>
 
-    <!-- 7: SIMULATE & COMPARE -->
-    <div class="panel compare-panel">
-      <h3>3. Simulate &amp; Compare</h3>
-      <div class="panel-sub">Run simulation and compare results</div>
+      <div class="section-title impact-title">
+        <span id="impactTitle">Impact Overview</span>
+      </div>
+      <div id="impactStack" class="impact-stack"></div>
 
-      <button class="run-btn" id="runBtn" type="button">
-        <span id="runBtnLabel">Run Simulation</span>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </button>
-      <button class="compare-btn" id="compareBtn" type="button">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
-        Compare Branches
-      </button>
-      <button class="compare-btn road-compare-btn" id="roadCompareBtn" type="button" title="Pick a postcode, plan a road, see before/after impact">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v14"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
-        Plan New Road
-      </button>
-
-      <!-- Roads / Traffic Simulator (lightweight, in-page) -->
       <div class="traffic-sim-section" id="trafficSimSection">
         <div class="traffic-sim-head">
           <span class="traffic-sim-title">Roads &amp; Traffic Sim</span>
@@ -278,64 +265,33 @@
           <div><span>Avg speed</span><b id="trafficSimSpeedStat">0 m/s</b></div>
           <div><span>Congested</span><b id="trafficSimCongested">0%</b></div>
         </div>
-        <div class="traffic-sim-hint">Animates vehicles over OSM roads + roads you place. Toggles on automatically when running a simulation.</div>
       </div>
-
-      <div class="active-info">
-        <div class="active-row"><span>Active Branch</span><span>Year</span></div>
-        <div class="active-vals"><span id="activeBranchName">Baseline</span><span id="activeYearLabel">2026</span></div>
-      </div>
-
-      <button class="export-btn" id="exportBtn" type="button">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export Results
-      </button>
     </div>
 
-  </div>
-
-  <!-- ========== BOTTOM NAV ========== -->
-  <nav class="bottomnav">
-    <div class="bn-tabs">
-      <button class="bn-btn active" data-bottom-tab="dashboard" type="button">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        Dashboard
+    <div class="right-footer">
+      <button class="view-diff-btn" id="scenarioDiffBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/><path d="M7 6h2M7 10h2" stroke-linecap="round"/></svg>
+        View Diff
       </button>
-      <button class="bn-btn" data-bottom-tab="map" type="button">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Map Explorer
+      <button class="view-diff-btn" id="compareBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        Compare Branches
       </button>
-      <button class="bn-btn" data-bottom-tab="analytics" type="button">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 17V9"/><path d="M12 17v-5"/><path d="M17 17v-3"/></svg>
-        Data Analytics
+      <button class="view-diff-btn road-compare-btn" id="roadCompareBtn" type="button" title="Plan a new road and see its impact">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v14"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+        Plan New Road
       </button>
-      <button class="bn-btn" data-bottom-tab="community" type="button">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Community Insights
-      </button>
-      <button class="bn-btn" data-bottom-tab="reports" type="button">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-        Reports
+      <button class="run-sim-btn" id="runBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5V3z"/></svg>
+        <span id="runBtnLabel">Run Simulation</span>
       </button>
     </div>
+  </aside>
 
-    <div class="bn-right">
-      <div class="bcc-logo">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
-      </div>
-      <div>
-        <div style="font-size:10px;font-weight:600;color:#fff;line-height:1.1">Belfast</div>
-        <div style="font-size:10px;color:var(--text-dim);line-height:1.1">City Council</div>
-      </div>
-      <div class="bn-divider"></div>
-      <span>Urban Intelligence Lab</span>
-    </div>
-  </nav>
 </div>
 
 <!-- ========== POPUPS / MODALS ========== -->
 
-<!-- Branch context menu -->
 <div id="branchMenu" class="ctx-menu" hidden>
   <button data-act="rename">Rename</button>
   <button data-act="duplicate">Duplicate</button>
@@ -343,14 +299,12 @@
   <button data-act="delete" class="danger">Delete branch</button>
 </div>
 
-<!-- Node context menu -->
 <div id="nodeMenu" class="ctx-menu" hidden>
   <button data-act="inspect">Inspect</button>
   <button data-act="goto">Go to year</button>
   <button data-act="delete" class="danger">Delete item</button>
 </div>
 
-<!-- Compare modal -->
 <div id="compareModal" class="modal" hidden>
   <div class="modal-backdrop" data-close></div>
   <div class="modal-card large">
@@ -362,7 +316,6 @@
   </div>
 </div>
 
-<!-- Diff modal: side-by-side before/after for historical events -->
 <div id="diffModal" class="modal" hidden>
   <div class="modal-backdrop" data-close></div>
   <div class="modal-card xl">
@@ -388,7 +341,6 @@
   </div>
 </div>
 
-<!-- Road Impact Comparison modal: shows the before/after of adding a new road -->
 <div id="roadCompareModal" class="modal" hidden>
   <div class="modal-backdrop" data-close></div>
   <div class="modal-card xl">
@@ -413,32 +365,10 @@
           </div>
         </div>
         <div class="rc-stats">
-          <div class="rc-stat" data-stat="speed">
-            <div class="rc-stat-label">Average speed</div>
-            <div class="rc-stat-row"><span class="rc-stat-before" id="rcSpeedBefore">—</span><span class="rc-stat-arrow" id="rcSpeedArrow">→</span><span class="rc-stat-after" id="rcSpeedAfter">—</span></div>
-            <div class="rc-stat-delta" id="rcSpeedDelta">—</div>
-          </div>
-          <div class="rc-stat" data-stat="congestion">
-            <div class="rc-stat-label">Congested time</div>
-            <div class="rc-stat-row"><span class="rc-stat-before" id="rcCongBefore">—</span><span class="rc-stat-arrow" id="rcCongArrow">→</span><span class="rc-stat-after" id="rcCongAfter">—</span></div>
-            <div class="rc-stat-delta" id="rcCongDelta">—</div>
-          </div>
-          <div class="rc-stat" data-stat="throughput">
-            <div class="rc-stat-label">Distance moved</div>
-            <div class="rc-stat-row"><span class="rc-stat-before" id="rcFlowBefore">—</span><span class="rc-stat-arrow" id="rcFlowArrow">→</span><span class="rc-stat-after" id="rcFlowAfter">—</span></div>
-            <div class="rc-stat-delta" id="rcFlowDelta">—</div>
-          </div>
-          <div class="rc-stat" data-stat="usage">
-            <div class="rc-stat-label">Vehicles using new road</div>
-            <div class="rc-stat-row"><span class="rc-stat-after" id="rcUsage">—</span></div>
-            <div class="rc-stat-delta">over the simulated window</div>
-          </div>
-        </div>
-        <div class="rc-legend">
-          <span class="rc-leg-item"><i class="rc-sw rc-sw-relief"></i> Relieved (less congested)</span>
-          <span class="rc-leg-item"><i class="rc-sw rc-sw-neutral"></i> Unchanged</span>
-          <span class="rc-leg-item"><i class="rc-sw rc-sw-worse"></i> Worsened (more congested)</span>
-          <span class="rc-leg-item"><i class="rc-sw rc-sw-new"></i> New road</span>
+          <div class="rc-stat"><div class="rc-stat-label">Average speed</div><div class="rc-stat-row"><span class="rc-stat-before" id="rcSpeedBefore">—</span><span class="rc-stat-arrow" id="rcSpeedArrow">→</span><span class="rc-stat-after" id="rcSpeedAfter">—</span></div><div class="rc-stat-delta" id="rcSpeedDelta">—</div></div>
+          <div class="rc-stat"><div class="rc-stat-label">Congested time</div><div class="rc-stat-row"><span class="rc-stat-before" id="rcCongBefore">—</span><span class="rc-stat-arrow" id="rcCongArrow">→</span><span class="rc-stat-after" id="rcCongAfter">—</span></div><div class="rc-stat-delta" id="rcCongDelta">—</div></div>
+          <div class="rc-stat"><div class="rc-stat-label">Distance moved</div><div class="rc-stat-row"><span class="rc-stat-before" id="rcFlowBefore">—</span><span class="rc-stat-arrow" id="rcFlowArrow">→</span><span class="rc-stat-after" id="rcFlowAfter">—</span></div><div class="rc-stat-delta" id="rcFlowDelta">—</div></div>
+          <div class="rc-stat"><div class="rc-stat-label">Vehicles using new road</div><div class="rc-stat-row"><span class="rc-stat-after" id="rcUsage">—</span></div><div class="rc-stat-delta">over the simulated window</div></div>
         </div>
         <div class="rc-summary" id="roadCompareSummary"></div>
       </div>
@@ -446,7 +376,6 @@
   </div>
 </div>
 
-<!-- Inspect modal -->
 <div id="inspectModal" class="modal" hidden>
   <div class="modal-backdrop" data-close></div>
   <div class="modal-card">
@@ -458,7 +387,6 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast" hidden></div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
