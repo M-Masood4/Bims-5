@@ -155,7 +155,7 @@
     { id: 'jobs',        label: 'Jobs',        color: '#a855f7', goodDirection: 'up',   valueProp: 'jobs',        deltaProp: 'jobs_delta_previous',        contextLayer: null },
     { id: 'buildings',   label: 'Buildings',   color: '#3b82f6', goodDirection: 'up',   valueProp: 'buildings',   deltaProp: 'buildings_delta_previous',   contextLayer: 'belfast-ni-buildings-3d' },
     { id: 'electricity', label: 'Electricity', color: '#06b6d4', goodDirection: 'down', valueProp: 'electricity', deltaProp: 'electricity_delta_previous', contextLayer: 'source-ni-power-grid-osm' },
-    { id: 'transit',     label: 'Transit',     color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: 'transit-stops-circle' }
+    { id: 'services',    label: 'Transit',     color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: 'transit-stops-circle' }
   ];
 
   function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES.find(l => l.id === DEFAULT_LENS) || LENSES[0]; }
@@ -165,7 +165,7 @@
     { id: 'jobs', label: 'Jobs', source: 'jobs', color: '#a855f7', goodDirection: 'up' },
     { id: 'buildings', label: 'Buildings', source: 'population', color: '#3b82f6', goodDirection: 'up' },
     { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDirection: 'down' },
-    { id: 'services', label: 'Services', source: 'services', color: '#22c55e', goodDirection: 'up' }
+    { id: 'services', label: 'Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
   const DEFAULT_LENS = 'buildings';
   const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
@@ -393,7 +393,9 @@
       if (data.activeBuildingPreset) state.activeBuildingPreset = data.activeBuildingPreset;
       if (Number.isFinite(data.nextItemId)) state.nextItemId = data.nextItemId;
       if (typeof data.bottomCollapsed === 'boolean') state.bottomCollapsed = data.bottomCollapsed;
-      if (data.lens && LENSES.find(l => l.id === data.lens)) state.lens = data.lens;
+      // Migration: old saves used 'services' for the now-renamed Transit lens.
+      const lens = data.lens === 'services' ? 'transit' : data.lens;
+      if (lens && LENSES.find(l => l.id === lens)) state.lens = lens;
       if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
 
@@ -555,6 +557,15 @@
       // ripple animation, keyboard shortcuts, drag-to-relocate placed items).
       if (window.MapUX && typeof window.MapUX.init === 'function') {
         window.MapUX.init({ map: state.map });
+      }
+      // Transit engine — paints the 1k+ OSM transit stops network and
+      // forecasts per-stop access deltas when the user adds roads/buildings.
+      if (window.TransitEngine && typeof window.TransitEngine.init === 'function') {
+        window.TransitEngine.init({ map: state.map });
+        if (typeof window.TransitEngine.preload === 'function') {
+          window.TransitEngine.preload('/api/layers/2026/source-ni-transport-stops-osm')
+            .then(() => { refreshTransitLayer(); });
+        }
       }
     });
 
@@ -1396,13 +1407,14 @@
   // user actions on the active branch (placed buildings, planned roads, run
   // simulations).
   const LENS_ICONS = {
-    traffic: '🛣️', jobs: '💼', electricity: '⚡', buildings: '🏢', services: '🌳',
+    traffic: '🛣️', jobs: '💼', electricity: '⚡', buildings: '🏢',
+    transit: '🚌', services: '🚌',
     bus: '🚌', metro: '🚇', cycle: '🚲', park: '🌿', star: '⭐', water: '💧', people: '👥',
     home: '🏠', office: '🏢',
   };
   const LENS_TINTS = {
     traffic: '#fffbe6', jobs: '#f0eaff', electricity: '#fff5eb',
-    buildings: '#eaf4ff', services: '#edfaf0',
+    buildings: '#eaf4ff', transit: '#edfaf0', services: '#edfaf0',
   };
 
   function renderLeftSidebar() {
@@ -1631,6 +1643,7 @@
       updateImpactLensUI();
     }
     updateScenarioDiffButton();
+    refreshTransitLayer();
     refreshWorkspaceSplit();
     saveState();
   }
@@ -3472,6 +3485,7 @@
       updateImpactLensUI();
     }
     renderLeftSidebar();
+    refreshTransitLayer();
     updateScenarioDiffButton();
     saveState();
   }
@@ -3654,6 +3668,7 @@
       if (isHistoricalMode()) renderHistoricalMapLayers();
       else { updateImpactRipples(); updateImpactLensUI(); }
     }
+    refreshTransitLayer();
     refreshWorkspaceSplit();
     saveState();
   }
@@ -4613,6 +4628,49 @@
     state.workspaceSplitContext = null;
   }
 
+  // ---- Transit lens orchestration ---------------------------------------
+  // Paints the transit network on the map when the active lens is 'transit',
+  // and overlays per-stop forecast deltas when the user is in a sim year
+  // and has placed roads/buildings on the active branch.
+  function refreshTransitLayer() {
+    if (!window.TransitEngine || !window.TransitEngine.isLoaded || !window.TransitEngine.isLoaded()) return;
+    if (state.lens !== 'transit') {
+      window.TransitEngine.clear();
+      updateTransitImpactCard(null);
+      return;
+    }
+    const yr = state.year;
+    if (yr < START_YEAR) {
+      window.TransitEngine.showForYear(yr);
+      updateTransitImpactCard(null);
+    } else {
+      const branch = activeBranch();
+      const result = window.TransitEngine.showForecast({ branch: branch, year: yr });
+      updateTransitImpactCard(result);
+    }
+  }
+
+  // Pin a small "Transit access · network impact" card at the top of the
+  // impact stack so the forecast summary text shows up next to the chart.
+  function updateTransitImpactCard(result) {
+    const host = els.impactStack;
+    if (!host) return;
+    let card = host.querySelector('[data-card="transit-summary"]');
+    if (state.lens !== 'transit' || !result) { if (card) card.remove(); return; }
+    const s = result.summary || {};
+    const net = s.netReliefIndex || 0;
+    const verdict = net > 0.3 ? 'Net relief' : net < -0.3 ? 'Net strain' : 'Network neutral';
+    const verdictClass = net > 0.3 ? 'up' : net < -0.3 ? 'down' : 'neutral';
+    const html =
+      '<div class="metric-card" data-card="transit-summary">' +
+        '<div><div class="name">Transit access</div>' +
+          '<div class="val">' + (s.affectedStops || 0) + ' stops</div></div>' +
+        '<div class="delta ' + verdictClass + '">' + escapeHtml(verdict) + '</div>' +
+      '</div>';
+    if (card) card.outerHTML = html;
+    else host.insertAdjacentHTML('afterbegin', html);
+  }
+
   async function openScenarioDiffModal() {
     if (!els.workspaceSplit) return;
     const branch = activeBranch();
@@ -5326,10 +5384,14 @@
     { id: 'jobs',        label: 'Jobs',        source: 'jobs',        color: '#a855f7', goodDir: 'up' },
     { id: 'buildings',   label: 'Buildings',   source: 'population',  color: '#3b82f6', goodDir: 'up' },
     { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDir: 'down' },
-    { id: 'services',    label: 'Services',    source: 'services',    color: '#22c55e', goodDir: 'up' }
+    { id: 'services',    label: 'Transit',     source: 'services',    color: '#22c55e', goodDir: 'up' }
   ];
 
-  function impactMetricDef(id) { return IMPACT_METRICS.find(m => m.id === id) || IMPACT_METRICS[0]; }
+  function impactMetricDef(id) {
+    // Backward compat: older sessions stored 'transit' for the services lens.
+    if (id === 'transit') return IMPACT_METRICS.find(m => m.id === 'services') || IMPACT_METRICS[0];
+    return IMPACT_METRICS.find(m => m.id === id) || IMPACT_METRICS[0];
+  }
   function impactMetricSource(id) { return impactMetricDef(id).source || id; }
 
   function ensureImpactLayers() {
