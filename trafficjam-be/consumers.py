@@ -1,85 +1,78 @@
 import asyncio
 import json
-from collections.abc import AsyncGenerator, Callable, Awaitable
+from collections.abc import AsyncGenerator, Awaitable, Callable
 
 from nats.js import JetStreamContext
 from nats.errors import TimeoutError as NatsTimeoutError
-from starlette.requests import Request
+from fastapi import Request
 
-
-class EventConsumer:
-    def __init__(self, js: JetStreamContext, scenario_id: str, run_id: str):
+class RunEventConsumer:
+    def __init__(self, js: JetStreamContext, run_id: str):
         self.js = js
-        self.scenario_id = scenario_id
         self.run_id = run_id
-
-    def _subject(self, channel: str) -> str:
-        return f"sim.{self.scenario_id}.{self.run_id}.{channel}"
+        self.stream_name = f"run_{run_id.replace('-', '_')}"
+        self.subject = f"run.{run_id}.events"
 
     async def stream_events(
         self,
         request: Request,
-        is_replay: bool = False,
-        should_stop: Callable[[], Awaitable[bool]] | None = None,
+        is_replay: bool,
+        check_done: Callable[[], Awaitable[bool]]
     ) -> AsyncGenerator[dict, None]:
-        sub = await self.js.subscribe(self._subject("events"), ordered_consumer=True)
-
+        """
+        Streams events from NATS JetStream.
+        If is_replay is True, it stops once it reaches the end of the current stream.
+        """
         try:
+            # Replay means we start from the beginning
+            # Non-replay means we start from now
+            sub = await self.js.subscribe(
+                self.subject,
+                deliver_policy="all" if is_replay else "new",
+            )
+
+            # For replay, we need to know how many messages are in the stream right now
+            last_seq = 0
+            if is_replay:
+                try:
+                    stream_info = await self.js.stream_info(self.stream_name)
+                    last_seq = stream_info.state.last_seq
+                except Exception:
+                    # Stream might not exist yet if no events fired
+                    last_seq = 0
+
             while True:
                 if await request.is_disconnected():
                     break
+
                 try:
-                    msg = await sub.next_msg(timeout=5.0)
-                    raw = msg.data.decode()
-                    try:
-                        parsed = json.loads(raw)
-                        if isinstance(parsed, list):
-                            for item in parsed:
-                                yield {"data": json.dumps(item), "event": "simulation_event"}
-                        else:
-                            yield {"data": raw, "event": "simulation_event"}
-                    except (json.JSONDecodeError, TypeError):
-                        yield {"data": raw, "event": "simulation_event"}
+                    msg = await sub.next_msg(timeout=1.0)
                     await msg.ack()
-                except NatsTimeoutError:
-                    if is_replay:
+                    
+                    data = json.loads(msg.data.decode())
+                    yield {
+                        "event": "message",
+                        "id": str(msg.metadata.sequence.stream),
+                        "data": json.dumps(data)
+                    }
+
+                    # If we are replaying and just hit the last sequence that existed when we started, stop.
+                    if is_replay and msg.metadata.sequence.stream >= last_seq:
                         break
-                    if should_stop and await should_stop():
-                        break
-                except asyncio.CancelledError:
-                    break
-        finally:
-            await sub.unsubscribe()
 
-    async def listen_status(self) -> any:
-        sub = await self.js.subscribe(self._subject("status"), ordered_consumer=True)
-
-        try:
-            msg = await sub.next_msg(timeout=None)
-            return json.loads(msg.data.decode())
-        except (NatsTimeoutError, asyncio.CancelledError):
-            return None
-        finally:
-            await sub.unsubscribe()
-
-    async def listen_all_statuses(self) -> AsyncGenerator[tuple[str, str, any], None]:
-        sub = await self.js.subscribe("sim.*.*.status", ordered_consumer=True)
-        try:
-            while True:
-                try:
-                    msg = await sub.next_msg(timeout=5.0)
-                    subject_parts = msg.subject.split(".")
-                    if len(subject_parts) >= 4:
-                        scenario_id = subject_parts[1]
-                        run_id = subject_parts[2]
-                        data = json.loads(msg.data.decode())
-                        yield scenario_id, run_id, data
-                    await msg.ack()
                 except NatsTimeoutError:
+                    # If not replaying, check if the run is actually finished
+                    if not is_replay:
+                        if await check_done():
+                            # One last check for any messages that arrived while checking
+                            break
                     continue
-                except asyncio.CancelledError:
-                    break
+
+        except Exception as e:
+            yield {
+                "event": "error",
+                "data": json.dumps({"error": str(e)})
+            }
         finally:
-            await sub.unsubscribe()
-
-
+            if 'sub' in locals():
+                await sub.unsubscribe()

@@ -1,103 +1,57 @@
 import asyncio
-import logging
 from contextlib import asynccontextmanager
 
+import httpx
 import nats as nats_lib
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.requests import Request as StarletteRequest
 
-from config import get_settings
-from db import engine
-from services.status_monitor import monitor_all_statuses
-from api.scenarios import router as scenarios_router
-from api.runs import router as runs_router
-
-logging.basicConfig(level=logging.INFO)
+from trafficjam_be.api import runs, scenarios
+from trafficjam_be.config import get_settings
+from trafficjam_be.services.status_monitor import monitor_all_statuses
 
 
-def configure_multipart_limits(max_part_size: int) -> None:
-    for method in (StarletteRequest.form, StarletteRequest._get_form):
-        kwdefaults = getattr(method, "__kwdefaults__", None)
-        if kwdefaults and "max_part_size" in kwdefaults:
-            kwdefaults["max_part_size"] = max_part_size
-
-
-async def _ensure_simulations_stream(js) -> None:
+async def _ensure_simulations_stream(js):
+    """Ensure the simulations stream exists for status tracking"""
     try:
-        await js.add_stream(
-            name="SIMULATIONS",
-            subjects=["sim.>"],
-            max_msgs_per_subject=100_000,
-        )
+        await js.add_stream(name="simulations", subjects=["simulation.status.*"])
     except Exception:
+        # Stream might already exist
         pass
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Setup NATS
     settings = get_settings()
     app.state.nc = await nats_lib.connect(settings.nats_url)
     app.state.js = app.state.nc.jetstream()
+    
+    # Setup HTTP Client
+    app.state.http_client = httpx.AsyncClient(timeout=60.0)
+    
     await _ensure_simulations_stream(app.state.js)
     app.state.status_worker = asyncio.create_task(monitor_all_statuses(app.state.js))
     yield
     app.state.status_worker.cancel()
-    await app.state.nc.drain()
-    await engine.dispose()
+    await app.state.http_client.aclose()
+    await app.state.nc.close()
 
 
-TAGS_METADATA = [
-    {
-        "name": "scenarios",
-        "description": "Manage simulation scenarios — named configurations combining a road network, agent plan parameters, and simulation settings.",
-    },
-    {
-        "name": "runs",
-        "description": "Start and monitor simulation runs within a scenario. Supports MATSim (high fidelity) and WorldMove (high scale) engines. Events stream over SSE; output files are served from NATS Object Store.",
-    },
-]
-
-settings = get_settings()
-configure_multipart_limits(settings.multipart_max_part_size_bytes)
-
-app = FastAPI(
-    title="BIMS 5 Backend",
-    description=(
-        "Orchestrates traffic simulations powered by **MATSim** (high fidelity) and **WorldMove** (high scale). "
-        "Scenarios define the road network and agent behaviour; runs execute the simulation "
-        "and stream events back to the frontend in real time via Server-Sent Events (SSE) over NATS JetStream."
-    ),
-    version="2.0.0",
-    openapi_tags=TAGS_METADATA,
-    lifespan=lifespan,
-)
-app.include_router(scenarios_router)
-app.include_router(runs_router)
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["Content-Encoding"],
 )
 
-
-@app.middleware("http")
-async def decompress_gzip_request(request: Request, call_next):
-    if request.headers.get("content-encoding") == "gzip":
-        import gzip
-        body = await request.body()
-        request._body = gzip.decompress(body)
-    return await call_next(request)
+app.include_router(scenarios.router)
+app.include_router(runs.router)
 
 
-@app.get("/")
-def root():
-    return {"message": "Hello World! This is the main page."}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+@app.get("/health")
+async def health():
+    return {"status": "ok"}

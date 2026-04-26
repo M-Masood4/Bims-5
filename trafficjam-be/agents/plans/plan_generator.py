@@ -1,4 +1,5 @@
 import random
+from dataclasses import dataclass
 from datetime import time
 
 from haversine import haversine
@@ -26,6 +27,36 @@ from .activity_scheduler import (
 from ..config import AgentConfig
 from .strategies import PlanStrategy
 from ..constants import SHOP_TYPES
+
+
+@dataclass(frozen=True)
+class PlanContext:
+    shops: list[Building]
+    hotspots: list[Building]
+
+
+def _is_shop(b: Building) -> bool:
+    return (
+        b.type in SHOP_TYPES
+        or bool(b.get_tag("shop"))
+        or b.get_tag("amenity") == "marketplace"
+    )
+
+
+def _is_active_hotspot(b: Building) -> bool:
+    h = b.hotspot
+    return bool(
+        h
+        and h.trafficPercentage > 0
+        and h.startTime
+        and h.endTime
+    )
+
+
+def build_plan_context(buildings: list[Building]) -> PlanContext:
+    shops = [b for b in buildings if _is_shop(b)]
+    hotspots = [b for b in buildings if _is_active_hotspot(b)]
+    return PlanContext(shops=shops, hotspots=hotspots)
 
 
 def _get_mode(agent: Agent) -> str:
@@ -58,25 +89,23 @@ def _minutes_to_time(minutes: int) -> time:
 
 
 def _find_nearby_shopping(
-    home: Building, buildings: list[Building], agent_config: AgentConfig
+    home: Building, shops: list[Building], agent_config: AgentConfig
 ) -> Building | None:
     home_pos = (home.position[1], home.position[0])
+    max_dist = agent_config.max_shopping_distance_km
 
-    shops = []
-    for b in buildings:
-        is_shop = b.type in SHOP_TYPES
-        has_tag = b.get_tag("shop") or b.get_tag("amenity") == "marketplace"
-        if is_shop or has_tag:
-            b_pos = (b.position[1], b.position[0])
-            dist = haversine(home_pos, b_pos)
-            if dist <= agent_config.max_shopping_distance_km:
-                shops.append((b, dist))
+    nearby: list[tuple[Building, float]] = []
+    for b in shops:
+        b_pos = (b.position[1], b.position[0])
+        dist = haversine(home_pos, b_pos)
+        if dist <= max_dist:
+            nearby.append((b, dist))
 
-    if not shops:
+    if not nearby:
         return None
 
-    shops.sort(key=lambda x: x[1])
-    return random.choice(shops[: min(5, len(shops))])[0]
+    nearby.sort(key=lambda x: x[1])
+    return random.choice(nearby[: min(5, len(nearby))])[0]
 
 
 def generate_plan_adult_dropoff_work(
@@ -133,7 +162,7 @@ def generate_plan_adult_dropoff_work(
 
 def generate_plan_adult_work(
     adult: Adult,
-    buildings: list[Building],
+    ctx: PlanContext,
     agent_config: AgentConfig,
     with_shopping: bool = True,
 ) -> DailyPlan | None:
@@ -158,7 +187,7 @@ def generate_plan_adult_work(
     )
 
     if with_shopping and should_go_shopping(agent_config):
-        shop = _find_nearby_shopping(adult.home, buildings, agent_config)
+        shop = _find_nearby_shopping(adult.home, ctx.shops, agent_config)
         if shop:
             _add(
                 plan,
@@ -207,7 +236,7 @@ def generate_plan_child(
 
 def _generate_errand_plan(
     adult: Adult,
-    buildings: list[Building],
+    ctx: PlanContext,
     agent_config: AgentConfig,
     healthcare_chance: float = 0.0,
 ) -> DailyPlan:
@@ -221,7 +250,7 @@ def _generate_errand_plan(
         end_time=generate_departure_time_elderly(),
     )
 
-    shop = _find_nearby_shopping(adult.home, buildings, agent_config)
+    shop = _find_nearby_shopping(adult.home, ctx.shops, agent_config)
     if shop:
         act_type = (
             ActivityType.HEALTHCARE
@@ -242,20 +271,20 @@ def _generate_errand_plan(
 
 
 def generate_plan_non_employed(
-    adult: Adult, buildings: list[Building], agent_config: AgentConfig
+    adult: Adult, ctx: PlanContext, agent_config: AgentConfig
 ) -> DailyPlan | None:
     if adult.employed or adult.age >= agent_config.elderly_age_threshold:
         return None
-    return _generate_errand_plan(adult, buildings, agent_config)
+    return _generate_errand_plan(adult, ctx, agent_config)
 
 
 def generate_plan_elderly(
-    adult: Adult, buildings: list[Building], agent_config: AgentConfig
+    adult: Adult, ctx: PlanContext, agent_config: AgentConfig
 ) -> DailyPlan | None:
     if adult.age < agent_config.elderly_age_threshold:
         return None
     return _generate_errand_plan(
-        adult, buildings, agent_config, healthcare_chance=agent_config.healthcare_chance
+        adult, ctx, agent_config, healthcare_chance=agent_config.healthcare_chance
     )
 
 
@@ -321,17 +350,16 @@ def _insert_hotspot_into_plan(
 
 
 def _append_hotspot_visit(
-    plan: DailyPlan, buildings: list[Building], agent_type: str, mode: str
+    plan: DailyPlan, hotspots: list[Building], agent_type: str, mode: str
 ) -> None:
     eligible: list[tuple[Building, str]] = []
-    for b in buildings:
-        if not b.hotspot or b.hotspot.trafficPercentage <= 0:
+    for b in hotspots:
+        h = b.hotspot
+        if h is None:
             continue
-        if not b.hotspot.startTime or not b.hotspot.endTime:
+        if h.agentTypes and agent_type not in h.agentTypes:
             continue
-        if b.hotspot.agentTypes and agent_type not in b.hotspot.agentTypes:
-            continue
-        timing = _get_hotspot_timing(agent_type, b.hotspot.startTime)
+        timing = _get_hotspot_timing(agent_type, h.startTime)
         if timing is None:
             continue
         eligible.append((b, timing))
@@ -352,7 +380,7 @@ class ChildPlanStrategy:
     def supports(self, agent: Agent, config: AgentConfig) -> bool:
         return isinstance(agent, Child)
 
-    def generate(self, agent: Agent, buildings: list[Building], config: AgentConfig) -> DailyPlan | None:
+    def generate(self, agent: Agent, ctx: PlanContext, config: AgentConfig) -> DailyPlan | None:
         return generate_plan_child(agent, config)  # type: ignore[arg-type]
 
 
@@ -366,7 +394,7 @@ class AdultDropoffWorkStrategy:
             and agent.children[0].school is not None
         )
 
-    def generate(self, agent: Agent, buildings: list[Building], config: AgentConfig) -> DailyPlan | None:
+    def generate(self, agent: Agent, ctx: PlanContext, config: AgentConfig) -> DailyPlan | None:
         return generate_plan_adult_dropoff_work(agent, config)  # type: ignore[arg-type]
 
 
@@ -374,24 +402,24 @@ class ElderlyStrategy:
     def supports(self, agent: Agent, config: AgentConfig) -> bool:
         return isinstance(agent, Adult) and agent.age >= config.elderly_age_threshold
 
-    def generate(self, agent: Agent, buildings: list[Building], config: AgentConfig) -> DailyPlan | None:
-        return generate_plan_elderly(agent, buildings, config)  # type: ignore[arg-type]
+    def generate(self, agent: Agent, ctx: PlanContext, config: AgentConfig) -> DailyPlan | None:
+        return generate_plan_elderly(agent, ctx, config)  # type: ignore[arg-type]
 
 
 class EmployedAdultStrategy:
     def supports(self, agent: Agent, config: AgentConfig) -> bool:
         return isinstance(agent, Adult) and agent.employed
 
-    def generate(self, agent: Agent, buildings: list[Building], config: AgentConfig) -> DailyPlan | None:
-        return generate_plan_adult_work(agent, buildings, config)  # type: ignore[arg-type]
+    def generate(self, agent: Agent, ctx: PlanContext, config: AgentConfig) -> DailyPlan | None:
+        return generate_plan_adult_work(agent, ctx, config)  # type: ignore[arg-type]
 
 
 class NonEmployedAdultStrategy:
     def supports(self, agent: Agent, config: AgentConfig) -> bool:
         return isinstance(agent, Adult)
 
-    def generate(self, agent: Agent, buildings: list[Building], config: AgentConfig) -> DailyPlan | None:
-        return generate_plan_non_employed(agent, buildings, config)  # type: ignore[arg-type]
+    def generate(self, agent: Agent, ctx: PlanContext, config: AgentConfig) -> DailyPlan | None:
+        return generate_plan_non_employed(agent, ctx, config)  # type: ignore[arg-type]
 
 
 PLAN_STRATEGIES: list[PlanStrategy] = [
@@ -404,10 +432,10 @@ PLAN_STRATEGIES: list[PlanStrategy] = [
 
 
 def generate_plan_for_agent(
-    agent: Agent, buildings: list[Building], agent_config: AgentConfig
+    agent: Agent, ctx: PlanContext, agent_config: AgentConfig
 ) -> DailyPlan | None:
     strategy = next((s for s in PLAN_STRATEGIES if s.supports(agent, agent_config)), None)
-    plan = strategy.generate(agent, buildings, agent_config) if strategy else None
+    plan = strategy.generate(agent, ctx, agent_config) if strategy else None
     if plan is not None:
-        _append_hotspot_visit(plan, buildings, _get_agent_type(agent, agent_config), _get_mode(agent))
+        _append_hotspot_visit(plan, ctx.hotspots, _get_agent_type(agent, agent_config), _get_mode(agent))
     return plan

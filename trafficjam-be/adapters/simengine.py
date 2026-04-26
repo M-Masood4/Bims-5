@@ -24,8 +24,9 @@ class SimulationEnginePort(Protocol):
 
 
 class HttpSimEngineAdapter:
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, client: httpx.AsyncClient | None = None):
         self.base_url = base_url
+        self._client = client
 
     async def start(
         self,
@@ -46,7 +47,9 @@ class HttpSimEngineAdapter:
         if random_seed is not None:
             data["randomSeed"] = random_seed
 
-        async with httpx.AsyncClient() as client:
+        client = self._client or httpx.AsyncClient()
+        owns_client = self._client is None
+        try:
             response = await client.post(
                 f"{self.base_url}/api/simulations",
                 files=files,
@@ -55,3 +58,6 @@ class HttpSimEngineAdapter:
             )
             response.raise_for_status()
             return SimulationStartResult(simulation_id=response.json()["simulationId"])
+        finally:
+            if owns_client:
+                await client.aclose()

@@ -13,10 +13,12 @@ from agents.plans.plan_generator import (
     ElderlyStrategy,
     EmployedAdultStrategy,
     NonEmployedAdultStrategy,
+    PlanContext,
     generate_plan_for_agent,
 )
 
 CONFIG = AgentConfig()
+CTX = PlanContext(shops=[], hotspots=[])
 
 BUILDING = Building(
     id="b1",
@@ -87,19 +89,19 @@ class TestChildPlanStrategy:
 
     def test_generate_returns_none_when_needs_dropoff(self):
         child = make_child(needs_dropoff=True)
-        assert self.strategy.generate(child, [], CONFIG) is None
+        assert self.strategy.generate(child, CTX, CONFIG) is None
 
     def test_generate_returns_none_when_no_school(self):
         child = make_child(school=None)
-        assert self.strategy.generate(child, [], CONFIG) is None
+        assert self.strategy.generate(child, CTX, CONFIG) is None
 
     def test_generate_returns_none_when_too_young(self):
         child = make_child(age=CONFIG.min_independent_school_age - 1)
-        assert self.strategy.generate(child, [], CONFIG) is None
+        assert self.strategy.generate(child, CTX, CONFIG) is None
 
     def test_generate_returns_plan_for_independent_child(self):
         child = make_child(age=CONFIG.min_independent_school_age, needs_dropoff=False)
-        plan = self.strategy.generate(child, [], CONFIG)
+        plan = self.strategy.generate(child, CTX, CONFIG)
         assert plan is not None
         activity_types = [a.type for a in plan.activities]
         assert ActivityType.HOME in activity_types
@@ -141,7 +143,7 @@ class TestAdultDropoffWorkStrategy:
         assert self.strategy.supports(adult, CONFIG) is False
 
     def test_generate_plan_contains_education_and_work(self):
-        plan = self.strategy.generate(self._dropoff_adult(), [], CONFIG)
+        plan = self.strategy.generate(self._dropoff_adult(), CTX, CONFIG)
         assert plan is not None
         activity_types = [a.type for a in plan.activities]
         assert ActivityType.EDUCATION in activity_types
@@ -164,7 +166,7 @@ class TestElderlyStrategy:
 
     def test_generate_returns_plan(self):
         adult = make_adult(age=CONFIG.elderly_age_threshold)
-        plan = self.strategy.generate(adult, [], CONFIG)
+        plan = self.strategy.generate(adult, CTX, CONFIG)
         assert plan is not None
         assert plan.activities[0].type == ActivityType.HOME
 
@@ -182,7 +184,7 @@ class TestEmployedAdultStrategy:
         assert self.strategy.supports(make_child(), CONFIG) is False
 
     def test_generate_plan_contains_work(self):
-        plan = self.strategy.generate(make_adult(), [], CONFIG)
+        plan = self.strategy.generate(make_adult(), CTX, CONFIG)
         assert plan is not None
         activity_types = [a.type for a in plan.activities]
         assert ActivityType.WORK in activity_types
@@ -201,15 +203,15 @@ class TestNonEmployedAdultStrategy:
         assert self.strategy.supports(make_child(), CONFIG) is False
 
     def test_generate_returns_none_for_employed(self):
-        assert self.strategy.generate(make_adult(employed=True), [], CONFIG) is None
+        assert self.strategy.generate(make_adult(employed=True), CTX, CONFIG) is None
 
     def test_generate_returns_none_for_elderly(self):
         adult = make_adult(employed=False, age=CONFIG.elderly_age_threshold)
-        assert self.strategy.generate(adult, [], CONFIG) is None
+        assert self.strategy.generate(adult, CTX, CONFIG) is None
 
     def test_generate_returns_plan_for_non_employed(self):
         adult = make_adult(employed=False, age=CONFIG.elderly_age_threshold - 1)
-        plan = self.strategy.generate(adult, [], CONFIG)
+        plan = self.strategy.generate(adult, CTX, CONFIG)
         assert plan is not None
 
 
@@ -266,14 +268,14 @@ class TestPlanStrategyRegistry:
 class TestGeneratePlanForAgent:
     def test_child_gets_child_plan(self):
         child = make_child(age=CONFIG.min_independent_school_age, needs_dropoff=False)
-        plan = generate_plan_for_agent(child, [], CONFIG)
+        plan = generate_plan_for_agent(child, CTX, CONFIG)
         assert plan is not None
         assert ActivityType.EDUCATION in [a.type for a in plan.activities]
 
     def test_employed_adult_with_dropoff_gets_dropoff_plan(self):
         child = make_child(needs_dropoff=True, school=SCHOOL)
         adult = make_adult(needs_to_dropoff_children=True, children=[child])
-        plan = generate_plan_for_agent(adult, [], CONFIG)
+        plan = generate_plan_for_agent(adult, CTX, CONFIG)
         assert plan is not None
         activity_types = [a.type for a in plan.activities]
         assert ActivityType.WORK in activity_types
@@ -281,12 +283,12 @@ class TestGeneratePlanForAgent:
 
     def test_elderly_gets_elderly_plan(self):
         adult = make_adult(age=CONFIG.elderly_age_threshold, employed=False)
-        plan = generate_plan_for_agent(adult, [], CONFIG)
+        plan = generate_plan_for_agent(adult, CTX, CONFIG)
         assert plan is not None
 
     def test_employed_adult_gets_work_plan(self):
         adult = make_adult(employed=True, needs_to_dropoff_children=False)
-        plan = generate_plan_for_agent(adult, [], CONFIG)
+        plan = generate_plan_for_agent(adult, CTX, CONFIG)
         assert plan is not None
         assert ActivityType.WORK in [a.type for a in plan.activities]
 
@@ -294,18 +296,18 @@ class TestGeneratePlanForAgent:
         child = make_child(
             age=CONFIG.min_independent_school_age - 1, needs_dropoff=False
         )
-        plan = generate_plan_for_agent(child, [], CONFIG)
+        plan = generate_plan_for_agent(child, CTX, CONFIG)
         assert plan is None
 
     def test_plan_starts_and_ends_at_home(self):
         adult = make_adult(employed=True)
-        plan = generate_plan_for_agent(adult, [], CONFIG)
+        plan = generate_plan_for_agent(adult, CTX, CONFIG)
         assert plan is not None
         assert plan.activities[0].type == ActivityType.HOME
         assert plan.activities[-1].type == ActivityType.HOME
 
     def test_activities_and_legs_are_consistent(self):
         adult = make_adult(employed=True)
-        plan = generate_plan_for_agent(adult, [], CONFIG)
+        plan = generate_plan_for_agent(adult, CTX, CONFIG)
         assert plan is not None
         assert len(plan.transport) == len(plan.activities) - 1

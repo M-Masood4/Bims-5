@@ -4,7 +4,7 @@ from io import StringIO
 from agents.agent_creation import create_agents_from_network
 from agents.config import AgentConfig
 from agents.models import Building
-from agents.plans.plan_generator import generate_plan_for_agent
+from agents.plans.plan_generator import build_plan_context, generate_plan_for_agent
 from agents.plans.xml_writer import MATSimXMLWriter
 
 
@@ -40,8 +40,10 @@ def generate_plans_xml(
         max_agents=max_agents,
     )
 
+    ctx = build_plan_context(buildings)
+
     for agent in agents:
-        plan = generate_plan_for_agent(agent, buildings, agent_config)
+        plan = generate_plan_for_agent(agent, ctx, agent_config)
         if plan:
             writer.add_person_plan(agent.id, plan)
 

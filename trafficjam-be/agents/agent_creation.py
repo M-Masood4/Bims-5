@@ -5,7 +5,11 @@ import uuid
 from .models import Building, Child, Adult, Agent, TransportMode
 from .geo import calculate_area_wgs84
 from .population import estimate_population
-from .work_assignment import assign_work_location
+from .work_assignment import (
+    assign_work_location,
+    calculate_work_distribution_weights,
+    categorize_work_buildings,
+)
 from .school_assignment import assign_school_to_child, get_schools_from_buildings
 from .agent_attributes import (
     generate_child_age,
@@ -46,7 +50,8 @@ def create_child(
 
 def create_adult(
     home: Building,
-    buildings: list[Building],
+    work_categories: list[tuple[str, list[Building]]],
+    work_weights: list[float],
     has_transport: bool,
     needs_to_dropoff_children: bool,
     children_ids: list[Child],
@@ -79,14 +84,15 @@ def create_adult(
     )
 
     if employed:
-        adult = assign_work_location(adult, buildings)
+        adult = assign_work_location(adult, work_categories, work_weights)
 
     return adult
 
 
 def create_household(
     home: Building,
-    buildings: list[Building],
+    work_categories: list[tuple[str, list[Building]]],
+    work_weights: list[float],
     schools: list[Building],
     kindergartens: list[Building],
     has_transport: bool,
@@ -105,7 +111,8 @@ def create_household(
         is_dropper = (i == 0) and len(children_needing_dropoff) > 0
         adult = create_adult(
             home,
-            buildings,
+            work_categories,
+            work_weights,
             has_transport,
             is_dropper,
             children_ids if is_dropper else [],
@@ -141,6 +148,9 @@ def create_agents_from_network(
     schools, kindergartens = get_schools_from_buildings(buildings)
     has_transport = len(transport_routes) > 0
 
+    work_category_map = categorize_work_buildings(buildings)
+    work_categories, work_weights = calculate_work_distribution_weights(work_category_map)
+
     agents: list[Agent] = []
     avg_household_size = 2.5
     num_households = int(total_population / avg_household_size)
@@ -148,7 +158,7 @@ def create_agents_from_network(
     for _ in range(num_households):
         home = random.choice(residential_buildings)
         household = create_household(
-            home, buildings, schools, kindergartens, has_transport, cfg
+            home, work_categories, work_weights, schools, kindergartens, has_transport, cfg
         )
         agents.extend(household)
 
