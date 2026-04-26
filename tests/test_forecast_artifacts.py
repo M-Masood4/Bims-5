@@ -82,10 +82,12 @@ const result = scenario.runForecastScenario({
   horizonYear: 2036
 }, process.cwd());
 const branch = result.scenarioBranches.find((item) => item.objective === 'user_proposal') || result.scenarioBranches[0];
+const concrete = branch.timelineByYear['2036'].concreteImpacts;
 console.log(JSON.stringify({
   userInterventions: result.userInterventions.map((item) => item.type),
   branchInterventions: branch.interventions.map((item) => item.type),
-  diff2036: branch.timelineByYear['2036'].diffFromBaseline
+  diff2036: branch.timelineByYear['2036'].diffFromBaseline,
+  concrete2036: concrete
 }));
 """
         completed = subprocess.run(
@@ -102,6 +104,16 @@ console.log(JSON.stringify({
         self.assertLess(data["diff2036"]["traffic"], 0)
         self.assertLess(data["diff2036"]["electricity"], 0)
         self.assertNotEqual(data["diff2036"]["services"], 0)
+        concrete = data["concrete2036"]
+        self.assertEqual(concrete["modelBasis"], "2016-2025 trained forecast artifact plus deterministic planners")
+        for metric in ("traffic", "jobs", "electricity", "services"):
+            self.assertIn("method", concrete[metric])
+        self.assertIsInstance(concrete["traffic"]["netDailyTrips"], (int, float))
+        self.assertIsInstance(concrete["jobs"]["netJobsEstimate"], (int, float))
+        self.assertIsInstance(concrete["electricity"]["peakKwChange"], (int, float))
+        self.assertIsInstance(concrete["services"]["netServiceDemand"], (int, float))
+        self.assertLess(concrete["traffic"]["netDailyTrips"], concrete["traffic"]["dailyTripsAdded"])
+        self.assertGreater(concrete["electricity"]["transformerReliefKw"], 0)
 
 
 if __name__ == "__main__":

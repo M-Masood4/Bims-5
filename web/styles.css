@@ -595,6 +595,54 @@ button:focus-visible, [role="button"]:focus-visible {
 .metric-sub { font-size: 9.5px; color: var(--text-mute); margin-bottom: 2px; }
 .spark { width: 100%; height: 14px; }
 
+.concrete-impact-card {
+  padding: 9px 10px;
+  background: rgba(255,255,255,0.018);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.concrete-impact-head,
+.concrete-impact-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  column-gap: 8px;
+  align-items: baseline;
+}
+.concrete-impact-head {
+  grid-template-columns: 1fr auto;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.concrete-impact-row span {
+  color: var(--text-dim);
+  font-size: 10.5px;
+}
+.concrete-impact-row strong {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 0;
+}
+.concrete-impact-row small {
+  grid-column: 2;
+  color: var(--text-mute);
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+.concrete-impact-foot {
+  color: var(--text-mute);
+  font-size: 9px;
+  line-height: 1.25;
+  border-top: 1px solid rgba(80,120,180,0.14);
+  padding-top: 6px;
+}
+
 .show-all {
   margin-top: 6px;
   width: 100%;
@@ -1713,6 +1761,27 @@ button:focus-visible, [role="button"]:focus-visible {
 .diff-stat .delta-line.flat { color: var(--text-mute); font-weight: 500; }
 .diff-stat.lens { border-color: var(--lens-color); background: color-mix(in srgb, var(--lens-color) 8%, transparent); }
 
+.diff-concrete-data {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.2fr repeat(4, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.018);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-dim);
+  font-size: 10.5px;
+}
+.diff-concrete-data strong {
+  color: var(--text);
+  font-size: 11px;
+}
+.diff-concrete-data span {
+  min-width: 0;
+}
+
 .diff-evidence {
   padding: 10px 14px;
   background: rgba(255,255,255,0.018);
@@ -1835,7 +1904,7 @@ button:focus-visible, [role="button"]:focus-visible {
   position: absolute;
   top: 14px;
   right: 14px;
-  width: 226px;
+  width: 320px;
   background: rgba(8, 16, 32, 0.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1867,7 +1936,7 @@ button:focus-visible, [role="button"]:focus-visible {
 }
 .impact-lens-tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 3px;
   margin-bottom: 8px;
 }
@@ -1877,13 +1946,15 @@ button:focus-visible, [role="button"]:focus-visible {
   color: var(--text-dim);
   border-radius: 5px;
   padding: 5px 2px;
-  font-size: 9.5px;
+  font-size: 8.8px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  text-transform: none;
+  letter-spacing: 0;
   cursor: pointer;
   transition: all 0.12s;
   text-align: center;
+  min-width: 0;
+  white-space: nowrap;
 }
 .impact-lens-tab:hover {
   color: var(--text);
@@ -1920,6 +1991,7 @@ button:focus-visible, [role="button"]:focus-visible {
 .impact-lens-confidence-dot.high { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
 .impact-lens-confidence-dot.medium { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
 .impact-lens-confidence-dot.low { background: #fb923c; box-shadow: 0 0 6px #fb923c; }
+.impact-lens-confidence-dot.pending { background: #64748b; box-shadow: 0 0 6px #64748b; }
 
 /* ============== SIMILAR HISTORICAL EVENTS OVERLAY ============== */
 .similar-events {

@@ -767,33 +767,36 @@ async function handleScenarioStudioRun(req, res) {
   let siteContext = null;
   try {
     payload = await readJsonRequest(req, 1_500_000);
-    const resolvedPostcode = payload.resolvedPostcode || payload.postcodeResolution || scenarioStudio.resolvePostcode(payload.postcode || payload.building?.postcode || "", rootDir);
-    if (!resolvedPostcode.canPlace) {
+    const postcodeValue = payload.postcode || payload.building?.postcode || "";
+    const suppliedLocation = payload.building?.location || payload.location;
+    const resolvedPostcode = payload.resolvedPostcode || payload.postcodeResolution || (postcodeValue ? scenarioStudio.resolvePostcode(postcodeValue, rootDir) : null);
+    const useResolvedPostcode = Boolean(resolvedPostcode?.canPlace);
+    if (!useResolvedPostcode && !suppliedLocation) {
       sendJson(res, 422, {
         ok: false,
         geminiRequired: false,
-        error: "A full Belfast postcode is required before placing a building",
+        error: "A full Belfast postcode or a valid map point is required before placing a building",
         postcode: resolvedPostcode,
-        warnings: resolvedPostcode.warnings || []
+        warnings: resolvedPostcode?.warnings || []
       });
       return;
     }
     building = scenarioStudio.createBuildingIntervention({
       ...(payload.building || payload),
-      postcode: resolvedPostcode.postcode,
-      resolvedPostcode,
-      location: payload.building?.location || resolvedPostcode.location,
+      postcode: useResolvedPostcode ? resolvedPostcode.postcode : null,
+      resolvedPostcode: useResolvedPostcode ? resolvedPostcode : null,
+      location: suppliedLocation || resolvedPostcode.location,
       startYear: payload.startYear || 2026,
       completionYear: payload.horizonYear || 2036,
-      requireResolvedPostcode: true
+      requireResolvedPostcode: useResolvedPostcode
     }, rootDir);
     validation = scenarioStudio.validatePlacement({
       location: building.location,
       geometry: building.geometry,
       config: building.config,
-      postcode: resolvedPostcode.postcode,
-      resolvedPostcode,
-      requireResolvedPostcode: true
+      postcode: useResolvedPostcode ? resolvedPostcode.postcode : null,
+      resolvedPostcode: useResolvedPostcode ? resolvedPostcode : null,
+      requireResolvedPostcode: useResolvedPostcode
     }, rootDir);
     siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
 
@@ -812,8 +815,8 @@ async function handleScenarioStudioRun(req, res) {
     if (!useGemini) {
       const forecast = scenarioStudio.runForecastScenario({
         ...payload,
-        postcode: resolvedPostcode.postcode,
-        resolvedPostcode,
+        postcode: useResolvedPostcode ? resolvedPostcode.postcode : null,
+        resolvedPostcode: useResolvedPostcode ? resolvedPostcode : null,
         building
       }, rootDir);
       const critic = scenarioStudio.critiqueSimulation({
@@ -886,8 +889,8 @@ async function handleScenarioStudioRun(req, res) {
     const forecast = scenarioStudio.runForecastScenario({
       ...payload,
       scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
-      postcode: resolvedPostcode.postcode,
-      resolvedPostcode,
+      postcode: useResolvedPostcode ? resolvedPostcode.postcode : null,
+      resolvedPostcode: useResolvedPostcode ? resolvedPostcode : null,
       building,
       variants
     }, rootDir);
