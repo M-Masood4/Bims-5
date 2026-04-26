@@ -31,17 +31,13 @@
 
   const BASE_SOURCE = 'pt-base-stops';
   const ROUTE_SOURCE = 'pt-base-routes';
-  const ROUTE_GLOW_LAYER = 'pt-route-glow';
   const ROUTE_LINE_LAYER = 'pt-route-line';
   const ROUTE_STOP_LAYER = 'pt-route-nodes';
-  const BASE_HEAT_LAYER = 'pt-access-heat';
-  const BASE_HALO_LAYER = 'pt-stop-halo';
   const BASE_CORE_LAYER = 'pt-stop-core';
+  const BASE_SYMBOL_LAYER = 'pt-stop-symbols';
   const FORECAST_SOURCE = 'pt-forecast-stops';
   const FORECAST_ROUTE_SOURCE = 'pt-forecast-routes';
-  const FORECAST_ROUTE_GLOW_LAYER = 'pt-forecast-route-glow';
   const FORECAST_ROUTE_LINE_LAYER = 'pt-forecast-route-line';
-  const FORECAST_HALO_LAYER = 'pt-forecast-halo';
   const FORECAST_CORE_LAYER = 'pt-forecast-core';
 
   const M_PER_DEG_LAT = 111320;
@@ -297,6 +293,13 @@
     return '#16a34a';
   }
 
+  function modeSymbol(mode) {
+    if (mode === 'rail') return 'R';
+    if (mode === 'glider') return 'G';
+    if (mode === 'park_ride') return 'P';
+    return 'B';
+  }
+
   function normaliseStop(feature, index) {
     const props = feature.properties || {};
     const mode = classifyMode(props);
@@ -388,20 +391,11 @@
     if (!map.getSource(FORECAST_SOURCE)) map.addSource(FORECAST_SOURCE, { type: 'geojson', data: emptyFC() });
     if (!map.getSource(FORECAST_ROUTE_SOURCE)) map.addSource(FORECAST_ROUTE_SOURCE, { type: 'geojson', data: emptyFC() });
 
-    if (!map.getLayer(ROUTE_GLOW_LAYER)) {
-      map.addLayer({
-        id: ROUTE_GLOW_LAYER,
-        type: 'line',
-        source: ROUTE_SOURCE,
-        paint: {
-          'line-color': ['get', 'color'],
-          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 4, 1, 11],
-          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.14, 1, 0.36],
-          'line-blur': 3.5
-        },
-        layout: { 'line-cap': 'round', 'line-join': 'round' }
-      });
-    }
+    ['pt-access-heat', 'pt-stop-halo', 'pt-route-glow', 'pt-forecast-route-glow', 'pt-forecast-halo'].forEach(layerId => {
+      if (!map.getLayer(layerId)) return;
+      try { map.removeLayer(layerId); } catch (_) {}
+    });
+
     if (!map.getLayer(ROUTE_LINE_LAYER)) {
       map.addLayer({
         id: ROUTE_LINE_LAYER,
@@ -409,8 +403,8 @@
         source: ROUTE_SOURCE,
         paint: {
           'line-color': ['get', 'color'],
-          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.4, 1, 3.8],
-          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.36, 1, 0.86]
+          'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.2, 1, 3.1],
+          'line-opacity': ['interpolate', ['linear'], ['get', 'strength'], 0, 0.52, 1, 0.9]
         },
         layout: { 'line-cap': 'round', 'line-join': 'round' }
       });
@@ -422,86 +416,58 @@
         source: BASE_SOURCE,
         filter: ['==', ['get', 'routeNode'], 1],
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 3.4, 15, 5.6],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 2.2, 15, 4.1],
           'circle-color': '#ffffff',
           'circle-stroke-color': ['get', 'routeColor'],
-          'circle-stroke-width': 1.7,
-          'circle-opacity': 0.9
+          'circle-stroke-width': 1.2,
+          'circle-opacity': 0.82
         }
       });
     }
 
-    if (!map.getLayer(BASE_HEAT_LAYER)) {
-      map.addLayer({
-        id: BASE_HEAT_LAYER,
-        type: 'heatmap',
-        source: BASE_SOURCE,
-        maxzoom: 17,
-        paint: {
-          'heatmap-weight': ['get', 'weight'],
-          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.35, 14, 0.75, 17, 1.05],
-          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 16, 14, 34, 17, 58],
-          'heatmap-opacity': 0.34,
-          'heatmap-color': [
-            'interpolate', ['linear'], ['heatmap-density'],
-            0, 'rgba(0,0,0,0)',
-            0.18, 'rgba(6,182,212,0.20)',
-            0.42, 'rgba(34,197,94,0.36)',
-            0.72, 'rgba(132,204,22,0.48)',
-            1, 'rgba(250,204,21,0.56)'
-          ]
-        }
-      });
-    }
-    if (!map.getLayer(BASE_HALO_LAYER)) {
-      map.addLayer({
-        id: BASE_HALO_LAYER,
-        type: 'circle',
-        source: BASE_SOURCE,
-        paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 3.5, 14, 7, 17, 13],
-          'circle-color': ['get', 'color'],
-          'circle-opacity': 0.16,
-          'circle-blur': 0.45
-        }
-      });
-    }
     if (!map.getLayer(BASE_CORE_LAYER)) {
       map.addLayer({
         id: BASE_CORE_LAYER,
         type: 'circle',
         source: BASE_SOURCE,
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.8, 14, 3.5, 17, 5.4],
-          'circle-color': ['get', 'color'],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 14, 2.4, 17, 3.4],
+          'circle-color': ['get', 'routeColor'],
           'circle-stroke-color': '#ffffff',
-          'circle-stroke-width': 1,
-          'circle-opacity': 0.9
+          'circle-stroke-width': 0.7,
+          'circle-opacity': 0.88
         }
       });
     }
-    [ROUTE_GLOW_LAYER, ROUTE_LINE_LAYER, ROUTE_STOP_LAYER].forEach(layerId => {
+    if (!map.getLayer(BASE_SYMBOL_LAYER)) {
+      map.addLayer({
+        id: BASE_SYMBOL_LAYER,
+        type: 'symbol',
+        source: BASE_SOURCE,
+        layout: {
+          'text-field': ['get', 'stopSymbol'],
+          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 10, 6.5, 14, 8.2, 17, 10],
+          'text-allow-overlap': false,
+          'text-ignore-placement': false,
+          'text-padding': 1
+        },
+        paint: {
+          'text-color': '#0f172a',
+          'text-halo-color': '#ffffff',
+          'text-halo-width': 0.65,
+          'text-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0, 11.5, 0.84, 15, 0.96]
+        }
+      });
+    }
+    [ROUTE_LINE_LAYER, ROUTE_STOP_LAYER, BASE_CORE_LAYER, BASE_SYMBOL_LAYER].forEach(layerId => {
       if (!map.getLayer(layerId)) return;
-      const beforeForecast = map.getLayer(FORECAST_ROUTE_GLOW_LAYER) ? FORECAST_ROUTE_GLOW_LAYER : undefined;
+      const beforeForecast = map.getLayer(FORECAST_ROUTE_LINE_LAYER) ? FORECAST_ROUTE_LINE_LAYER : undefined;
       try {
         if (beforeForecast) map.moveLayer(layerId, beforeForecast);
         else map.moveLayer(layerId);
       } catch (_) {}
     });
-    if (!map.getLayer(FORECAST_ROUTE_GLOW_LAYER)) {
-      map.addLayer({
-        id: FORECAST_ROUTE_GLOW_LAYER,
-        type: 'line',
-        source: FORECAST_ROUTE_SOURCE,
-        paint: {
-          'line-color': ['get', 'deltaColor'],
-          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 6, 1, 18],
-          'line-opacity': 0.28,
-          'line-blur': 5
-        },
-        layout: { 'line-cap': 'round', 'line-join': 'round' }
-      });
-    }
     if (!map.getLayer(FORECAST_ROUTE_LINE_LAYER)) {
       map.addLayer({
         id: FORECAST_ROUTE_LINE_LAYER,
@@ -509,24 +475,11 @@
         source: FORECAST_ROUTE_SOURCE,
         paint: {
           'line-color': ['get', 'deltaColor'],
-          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 6.6],
-          'line-opacity': 0.9,
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 1.7, 1, 4.6],
+          'line-opacity': 0.88,
           'line-dasharray': [1.3, 0.7]
         },
         layout: { 'line-cap': 'round', 'line-join': 'round' }
-      });
-    }
-    if (!map.getLayer(FORECAST_HALO_LAYER)) {
-      map.addLayer({
-        id: FORECAST_HALO_LAYER,
-        type: 'circle',
-        source: FORECAST_SOURCE,
-        paint: {
-          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 7, 1, 28],
-          'circle-color': ['get', 'deltaColor'],
-          'circle-opacity': 0.34,
-          'circle-blur': 0.45
-        }
       });
     }
     if (!map.getLayer(FORECAST_CORE_LAYER)) {
@@ -535,11 +488,11 @@
         type: 'circle',
         source: FORECAST_SOURCE,
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.5, 1, 8],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2, 1, 5.4],
           'circle-color': ['get', 'deltaColor'],
-          'circle-stroke-color': '#0f172a',
-          'circle-stroke-width': 1.2,
-          'circle-opacity': 0.94
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 0.9,
+          'circle-opacity': 0.9
         }
       });
     }
@@ -600,6 +553,7 @@
         evidenceCount: stop.evidenceCount,
         weight: stop.weight,
         color: stop.color,
+        stopSymbol: modeSymbol(stop.mode),
         routeNode: meta ? 1 : 0,
         routeColor: meta ? meta.color : stop.color,
         routeName: meta ? meta.routeName : '',

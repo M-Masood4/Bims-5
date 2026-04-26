@@ -569,6 +569,7 @@
       renderItemsOnMap();
       if (isHistoricalMode()) renderHistoricalMapLayers();
       else { updateImpactRipples(); updateImpactLensUI(); }
+      syncCityBuildingHeightContext();
       updateScenarioDiffButton();
       // Hand the map to the traffic-sim engine so it can draw vehicle layers.
       if (window.TrafficSim) {
@@ -1845,6 +1846,7 @@
       updateImpactRipples();
       updateImpactLensUI();
     }
+    syncCityBuildingHeightContext();
     updateScenarioDiffButton();
     updateRunButtonLabel();
     refreshTransitLayer();
@@ -3870,6 +3872,7 @@
         state.map.setLayoutProperty('items-buildings-3d', 'visibility', v === '3D' ? 'visible' : 'none');
       }
       if (isHistoricalMode()) renderHistoricalMapLayers();
+      syncCityBuildingHeightContext();
     }
     updateScenarioDiffButton();
     saveState();
@@ -4111,6 +4114,7 @@
         if (state.map.getSource('impact-ripples')) state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
         if (state.map.getSource('impact-epicentres')) state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
       }
+      syncCityBuildingHeightContext();
     }
     updateScenarioDiffButton();
     updateRunButtonLabel();
@@ -4494,6 +4498,77 @@
     refreshHighlightedCells();
   }
 
+  function cityBuildingFilter() {
+    return ['<=', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year];
+  }
+
+  function cityBuildingColorExpression(focused) {
+    if (focused) {
+      return [
+        'case',
+        ['==', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year],
+        '#facc15',
+        '#3b82f6'
+      ];
+    }
+    return [
+      'case',
+      ['==', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year],
+      '#f59e0b',
+      '#64748b'
+    ];
+  }
+
+  function cityBuildingHeightExpression(scale) {
+    return [
+      '*',
+      ['coalesce',
+        ['to-number', ['get', 'replay_height_m']],
+        ['to-number', ['get', 'height']],
+        ['*', ['coalesce', ['to-number', ['get', 'building:levels']], 4], 3],
+        12
+      ],
+      scale
+    ];
+  }
+
+  function applyCityBuildingHeightStyle(focused) {
+    const map = state.map;
+    if (!map || !map.getLayer('ctx-buildings-3d')) return;
+    map.setFilter('ctx-buildings-3d', cityBuildingFilter());
+    map.setPaintProperty('ctx-buildings-3d', 'fill-extrusion-color', cityBuildingColorExpression(focused));
+    map.setPaintProperty('ctx-buildings-3d', 'fill-extrusion-height', cityBuildingHeightExpression(focused ? 1 : 0.82));
+    map.setPaintProperty('ctx-buildings-3d', 'fill-extrusion-opacity', focused ? 0.78 : 0.42);
+  }
+
+  function loadCityBuildingContext() {
+    loadContextLayer('belfast-ni-buildings-3d').then(data => {
+      if (data && state.map && state.map.getSource('ctx-buildings')) {
+        state.map.getSource('ctx-buildings').setData(data);
+      }
+    });
+  }
+
+  function syncCityBuildingHeightContext() {
+    if (!state.mapLoaded || !state.map) return;
+    if (state.view !== '3D') {
+      if (state.map.getLayer('ctx-buildings-3d')) {
+        state.map.setLayoutProperty('ctx-buildings-3d', 'visibility', 'none');
+      }
+      return;
+    }
+    ensureHistoricalSourcesAndLayers();
+    const focused = isHistoricalMode() && state.lens === 'buildings';
+    applyCityBuildingHeightStyle(focused);
+    if (state.map.getLayer('ctx-buildings-fill')) {
+      state.map.setLayoutProperty('ctx-buildings-fill', 'visibility', 'none');
+    }
+    if (state.map.getLayer('ctx-buildings-3d')) {
+      state.map.setLayoutProperty('ctx-buildings-3d', 'visibility', 'visible');
+    }
+    loadCityBuildingContext();
+  }
+
   function showContextForLens(lens) {
     const map = state.map;
     const id = lens.id;
@@ -4501,33 +4576,21 @@
     const isTraffic = id === 'traffic';
     const isElec = id === 'electricity';
     const isJobs = id === 'jobs';
-    const isPublicTransit = id === 'services';
-    // Jobs and public transit keep the smooth point heatmap. Traffic now uses
-    // a trafficjam-style agent swarm rendered as coloured road links.
-    const useHeatmap = isJobs || isPublicTransit;
+    // Jobs keeps the smooth point heatmap. Public Transit is handled by the
+    // route/stop overlay in transit-engine.js so it reads like a network map.
+    const useHeatmap = isJobs;
 
     // Water always on as soft base.
     map.setLayoutProperty('ctx-water-fill', 'visibility', 'visible');
 
     // Buildings: filtered by year, 2D fill or 3D extrusion. Highlight new this year in yellow.
     if (map.getLayer('ctx-buildings-fill')) {
-      map.setFilter('ctx-buildings-fill', ['<=', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year]);
-      map.setPaintProperty('ctx-buildings-fill', 'fill-color', [
-        'case',
-        ['==', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year],
-        '#facc15', '#3b82f6'
-      ]);
+      map.setFilter('ctx-buildings-fill', cityBuildingFilter());
+      map.setPaintProperty('ctx-buildings-fill', 'fill-color', cityBuildingColorExpression(true));
     }
-    if (map.getLayer('ctx-buildings-3d')) {
-      map.setFilter('ctx-buildings-3d', ['<=', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year]);
-      map.setPaintProperty('ctx-buildings-3d', 'fill-extrusion-color', [
-        'case',
-        ['==', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year],
-        '#facc15', '#3b82f6'
-      ]);
-    }
+    applyCityBuildingHeightStyle(isBuildings);
     map.setLayoutProperty('ctx-buildings-fill', 'visibility', isBuildings && state.view === '2D' ? 'visible' : 'none');
-    map.setLayoutProperty('ctx-buildings-3d',   'visibility', isBuildings && state.view === '3D' ? 'visible' : 'none');
+    map.setLayoutProperty('ctx-buildings-3d',   'visibility', state.view === '3D' ? 'visible' : 'none');
 
     // Traffic: real road network underneath the heatmap
     map.setLayoutProperty('ctx-roads-line', 'visibility', isTraffic ? 'visible' : 'none');
@@ -4539,16 +4602,17 @@
       if (map.getLayer(L)) map.setLayoutProperty(L, 'visibility', isElec ? 'visible' : 'none');
     });
 
-    // Jobs use service anchors; public transit uses the real OSM stop points.
+    // Jobs use service anchors plus nearby transport stops. Public Transit
+    // keeps context circles hidden; transit-engine.js draws the compact stops.
     map.setLayoutProperty('ctx-services-circle', 'visibility', isJobs ? 'visible' : 'none');
-    map.setLayoutProperty('ctx-transport-circle', 'visibility', (isJobs || isPublicTransit) ? 'visible' : 'none');
+    map.setLayoutProperty('ctx-transport-circle', 'visibility', isJobs ? 'visible' : 'none');
 
-    // Smooth heatmap for jobs/public transit; traffic uses road-link swarm lines.
+    // Smooth heatmap for jobs; traffic uses road-link swarm lines.
     map.setLayoutProperty('lens-heatmap', 'visibility', useHeatmap ? 'visible' : 'none');
     if (useHeatmap) {
       // Color ramp per lens. The first stop has alpha so areas outside the
       // cell coverage (water, off-extent) stay transparent; everywhere inside
-      // the city renders a graded traffic, jobs, or public-transit surface.
+      // the city renders a graded jobs surface.
       const ramps = {
         traffic:  ['interpolate', ['linear'], ['heatmap-density'],
           0,   'rgba(0,0,0,0)',
@@ -4592,12 +4656,12 @@
 
     // Lazy-fetch the relevant 2026 context layer geojsons.
     const wantsByLayer = {
-      'belfast-ni-buildings-3d':       isBuildings,
+      'belfast-ni-buildings-3d':       isBuildings || state.view === '3D',
       'source-ni-roads-osm':           isTraffic,
       'source-ni-power-grid-osm':      isElec,
       'source-ni-water-osm':           true,
       'source-ni-services-osm':        isJobs,
-      'source-ni-transport-stops-osm': isJobs || isPublicTransit
+      'source-ni-transport-stops-osm': isJobs
     };
     Object.keys(wantsByLayer).forEach(layerId => {
       if (!wantsByLayer[layerId]) return;
@@ -4621,7 +4685,7 @@
   //
   //   traffic  → all geocoded traffic events for the year
   //   jobs     -> job events + transport stops + services POIs (proxy for job access)
-  //   services -> public-transit events + real Belfast OSM transport stops
+  //   services -> drawn separately by transit-engine.js as route lines and stop symbols
   async function refreshCellsHeatmapPoints(lens) {
     if (!state.map || !state.map.getSource('cells-points')) return;
     const features = [];
@@ -4719,7 +4783,38 @@
     return mapCentreCoord();
   }
 
-  function historicalTrafficDemandPoints(events, activeEventId) {
+  function historicalTrafficCellDemandPoints(grid) {
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    if (!features.length) return [];
+    const values = features
+      .map(f => Number(f.properties && f.properties.traffic))
+      .filter(Number.isFinite);
+    const min = values.length ? Math.min(...values) : 0;
+    const max = values.length ? Math.max(...values) : 1;
+    const span = Math.max(0.0001, max - min);
+    return features.map((feature, i) => {
+      const props = feature.properties || {};
+      const coord = polygonCentroid(feature.geometry);
+      const value = Number(props.traffic);
+      if (!coord || !Number.isFinite(value)) return null;
+      const normalised = (value - min) / span;
+      const pressure = Number(props.traffic_pressure);
+      const delta = Number(props.traffic_delta_previous);
+      const pressureScore = Number.isFinite(pressure) ? pressure : normalised;
+      const deltaScore = Number.isFinite(delta) ? Math.max(0, delta) * 5 : 0;
+      return pointFeatureFromCoord(coord, {
+        id: 'historical-traffic-cell-' + (props.cell_id || i),
+        intensity: clamp(0.14 + normalised * 0.58 + pressureScore * 0.18 + deltaScore, 0.12, 0.92),
+        polarity: -1,
+        active: 0,
+        cityCell: 1,
+        traffic: value
+      });
+    }).filter(Boolean);
+  }
+
+  function historicalTrafficDemandPoints(events, activeEventId, grid) {
+    const cityCellPoints = historicalTrafficCellDemandPoints(grid);
     const buckets = new Map();
     const cell = 0.0035; // roughly 250m in Belfast; keeps demand city-wide without thousands of agents.
     (events || []).forEach(ev => {
@@ -4760,7 +4855,9 @@
       return (Number(b.properties && b.properties.intensity) || 0) -
         (Number(a.properties && a.properties.intensity) || 0);
     });
-    return points.slice(0, 520);
+    if (!cityCellPoints.length) return points.slice(0, 520);
+    const eventLimit = Math.max(120, 520 - cityCellPoints.length);
+    return cityCellPoints.concat(points.slice(0, eventLimit));
   }
 
   async function refreshHistoricalTrafficSwarm() {
@@ -4768,12 +4865,15 @@
     if (!trafficSimReady(refreshHistoricalTrafficSwarm)) return;
     const requestId = (state._trafficAgentRequestId || 0) + 1;
     state._trafficAgentRequestId = requestId;
-    const data = await loadEventsForYearLens(state.year, 'traffic');
+    const [data, grid] = await Promise.all([
+      loadEventsForYearLens(state.year, 'traffic'),
+      loadGridYear(state.year)
+    ]);
     if (state._trafficAgentRequestId !== requestId || !isHistoricalMode() || state.lens !== 'traffic') return;
     const events = data && Array.isArray(data.events) ? data.events : [];
     const activeEvent = state.activeEventId ? events.find(e => e.id === state.activeEventId) : null;
     const activeCoord = activeEvent ? realEventCoords(activeEvent) : null;
-    const demand = historicalTrafficDemandPoints(events, state.activeEventId);
+    const demand = historicalTrafficDemandPoints(events, state.activeEventId, grid);
     if (activeCoord && !demand.some(f => f.properties && f.properties.active)) {
       const activePoint = pointFeatureFromCoord(activeCoord, { id: state.activeEventId || 'selected-traffic-event', intensity: 1, polarity: -1, active: 1 });
       if (activePoint) demand.unshift(activePoint);
@@ -4783,12 +4883,16 @@
       centre: BELFAST_CENTER,
       radiusKm: 14.5,
       cityWide: true,
+      cityCoverage: 'whole-belfast',
+      wholeCityRoads: true,
+      cityRawSegmentLimit: 26000,
+      cityDemandRadiusKm: 0.95,
       density: clamp(260 + demand.length * 0.8, 320, 640),
       durationSeconds: 9,
       seed: (state.year * 2654435761 + demand.length * 97) >>> 0,
       branch: activeBranch(),
-      maxSegments: 5200,
-      maxFlowSegments: 980,
+      maxSegments: 8200,
+      maxFlowSegments: 1300,
       maxPointFeatures: 72
     });
     window.TrafficSim.showAgentSwarmOverlay(result);
@@ -5574,43 +5678,13 @@
     map.addSource('pt-diff-base-routes', { type: 'geojson', data: baseRoutes });
     map.addSource('pt-diff-forecast-routes', { type: 'geojson', data: forecastRoutes });
     map.addLayer({
-      id: 'pt-diff-base-heat',
-      type: 'heatmap',
-      source: 'pt-diff-base',
-      paint: {
-        'heatmap-weight': ['get', 'weight'],
-        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.22, 15, 0.55],
-        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 16, 15, 38],
-        'heatmap-opacity': 0.22,
-        'heatmap-color': [
-          'interpolate', ['linear'], ['heatmap-density'],
-          0, 'rgba(0,0,0,0)',
-          0.25, 'rgba(34,197,94,0.25)',
-          0.7, 'rgba(6,182,212,0.36)',
-          1, 'rgba(250,204,21,0.46)'
-        ]
-      }
-    }, refLayerId);
-    map.addLayer({
-      id: 'pt-diff-base-route-glow',
-      type: 'line',
-      source: 'pt-diff-base-routes',
-      paint: {
-        'line-color': ['get', 'color'],
-        'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 4, 1, 11],
-        'line-opacity': 0.22,
-        'line-blur': 3.5
-      },
-      layout: { 'line-cap': 'round', 'line-join': 'round' }
-    }, refLayerId);
-    map.addLayer({
       id: 'pt-diff-base-route-line',
       type: 'line',
       source: 'pt-diff-base-routes',
       paint: {
         'line-color': ['get', 'color'],
-        'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.5, 1, 3.8],
-        'line-opacity': 0.78
+        'line-width': ['interpolate', ['linear'], ['get', 'strength'], 0, 1.2, 1, 3.1],
+        'line-opacity': 0.86
       },
       layout: { 'line-cap': 'round', 'line-join': 'round' }
     }, refLayerId);
@@ -5619,59 +5693,36 @@
       type: 'circle',
       source: 'pt-diff-base',
       paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 16, 4.6],
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.3, 16, 3.4],
         'circle-color': ['get', 'color'],
         'circle-stroke-color': '#ffffff',
-        'circle-stroke-width': 0.8,
-        'circle-opacity': 0.86
+        'circle-stroke-width': 0.7,
+        'circle-opacity': 0.88
       }
     }, refLayerId);
     if (side === 'after') {
-      map.addLayer({
-        id: 'pt-diff-forecast-route-glow',
-        type: 'line',
-        source: 'pt-diff-forecast-routes',
-        paint: {
-          'line-color': ['get', 'deltaColor'],
-          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 6, 1, 18],
-          'line-opacity': 0.3,
-          'line-blur': 5
-        },
-        layout: { 'line-cap': 'round', 'line-join': 'round' }
-      }, refLayerId);
       map.addLayer({
         id: 'pt-diff-forecast-route-line',
         type: 'line',
         source: 'pt-diff-forecast-routes',
         paint: {
           'line-color': ['get', 'deltaColor'],
-          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 6.6],
-          'line-opacity': 0.9,
+          'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 1.7, 1, 4.6],
+          'line-opacity': 0.88,
           'line-dasharray': [1.3, 0.7]
         },
         layout: { 'line-cap': 'round', 'line-join': 'round' }
-      }, refLayerId);
-      map.addLayer({
-        id: 'pt-diff-forecast-halo',
-        type: 'circle',
-        source: 'pt-diff-forecast',
-        paint: {
-          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 7, 1, 24],
-          'circle-color': ['get', 'deltaColor'],
-          'circle-opacity': 0.34,
-          'circle-blur': 0.45
-        }
       }, refLayerId);
       map.addLayer({
         id: 'pt-diff-forecast-core',
         type: 'circle',
         source: 'pt-diff-forecast',
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 7.6],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2, 1, 5.4],
           'circle-color': ['get', 'deltaColor'],
-          'circle-stroke-color': '#0f172a',
-          'circle-stroke-width': 1,
-          'circle-opacity': 0.95
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 0.9,
+          'circle-opacity': 0.9
         }
       }, refLayerId);
     }

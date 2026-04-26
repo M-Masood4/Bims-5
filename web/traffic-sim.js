@@ -182,7 +182,10 @@
   let osmAllSegments = null;       // Array<{id, a, b, source:'osm', highway}>
   let osmGrid = null;              // Map<gridKey, Array<segIndex>>
   let osmLoadPromise = null;
+  let osmWholeCitySamples = new Map();
   const OSM_CELL = 0.001;          // ≈110m at this latitude
+  const WHOLE_CITY_CELL_LNG = 0.006;
+  const WHOLE_CITY_CELL_LAT = 0.004;
 
   function osmGridKey(coord) {
     return Math.round(coord[0] / OSM_CELL) + '|' + Math.round(coord[1] / OSM_CELL);
@@ -252,12 +255,14 @@
         }
         osmGrid = grid;
         osmAllSegments = segs;
+        osmWholeCitySamples = new Map();
         return segs;
       })
       .catch(err => {
         console.warn('TrafficSim: failed to preload OSM roads, falling back to synthetic grid', err);
         osmAllSegments = [];
         osmGrid = new Map();
+        osmWholeCitySamples = new Map();
         return osmAllSegments;
       });
     return osmLoadPromise;
@@ -373,6 +378,108 @@
       }
     }
     return out;
+  }
+
+  function segmentStableKey(seg) {
+    if (seg && seg.id) return String(seg.id);
+    return seg && Array.isArray(seg.a) && Array.isArray(seg.b)
+      ? seg.a.join(',') + '>' + seg.b.join(',')
+      : '';
+  }
+
+  function wholeCityBucketKey(seg) {
+    const mid = midpoint(seg.a, seg.b);
+    return Math.floor(mid[0] / WHOLE_CITY_CELL_LNG) + '|' + Math.floor(mid[1] / WHOLE_CITY_CELL_LAT);
+  }
+
+  function segmentPriority(seg) {
+    return highwayWeight(seg.highway) * 1000 + Math.min(300, distMetres(seg.a, seg.b));
+  }
+
+  function osmSegmentsForWholeCity(maxRawSegments) {
+    if (!isOsmLoaded()) return [];
+    const limit = Math.max(1200, Math.min(osmAllSegments.length, Math.round(Number(maxRawSegments) || 24000)));
+    const cacheKey = String(limit);
+    if (osmWholeCitySamples.has(cacheKey)) return osmWholeCitySamples.get(cacheKey);
+    if (osmAllSegments.length <= limit) {
+      const all = osmAllSegments.slice();
+      osmWholeCitySamples.set(cacheKey, all);
+      return all;
+    }
+
+    const buckets = new Map();
+    for (let i = 0; i < osmAllSegments.length; i++) {
+      const seg = osmAllSegments[i];
+      if (!seg || !Array.isArray(seg.a) || !Array.isArray(seg.b)) continue;
+      const key = wholeCityBucketKey(seg);
+      let bucket = buckets.get(key);
+      if (!bucket) { bucket = []; buckets.set(key, bucket); }
+      bucket.push(seg);
+    }
+    const bucketList = Array.from(buckets.values())
+      .map(bucket => bucket.sort((a, b) => segmentPriority(b) - segmentPriority(a)))
+      .sort((a, b) => segmentPriority(b[0]) - segmentPriority(a[0]));
+
+    const out = [];
+    const seen = new Set();
+    let cursor = 0;
+    while (out.length < limit) {
+      let added = false;
+      for (let i = 0; i < bucketList.length && out.length < limit; i++) {
+        const seg = bucketList[i][cursor];
+        if (!seg) continue;
+        const key = segmentStableKey(seg);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(seg);
+        added = true;
+      }
+      if (!added) break;
+      cursor++;
+    }
+    osmWholeCitySamples.set(cacheKey, out);
+    return out;
+  }
+
+  function selectWholeCityScoredSegments(scored, maxSegments) {
+    const buckets = new Map();
+    for (let i = 0; i < scored.length; i++) {
+      const entry = scored[i];
+      if (!entry || !entry.raw || !Array.isArray(entry.raw.a) || !Array.isArray(entry.raw.b)) continue;
+      const key = wholeCityBucketKey(entry.raw);
+      let bucket = buckets.get(key);
+      if (!bucket) { bucket = []; buckets.set(key, bucket); }
+      bucket.push(entry);
+    }
+    const bucketList = Array.from(buckets.values())
+      .map(bucket => bucket.sort((a, b) => b.score - a.score))
+      .sort((a, b) => b[0].score - a[0].score);
+    const selected = [];
+    const seen = new Set();
+    const coverageTarget = Math.min(maxSegments, Math.max(Math.ceil(maxSegments * 0.55), bucketList.length));
+    let cursor = 0;
+    while (selected.length < coverageTarget) {
+      let added = false;
+      for (let i = 0; i < bucketList.length && selected.length < coverageTarget; i++) {
+        const entry = bucketList[i][cursor];
+        if (!entry) continue;
+        const key = segmentStableKey(entry.raw);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        selected.push(entry);
+        added = true;
+      }
+      if (!added) break;
+      cursor++;
+    }
+    for (let i = 0; i < scored.length && selected.length < maxSegments; i++) {
+      const entry = scored[i];
+      const key = segmentStableKey(entry.raw);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      selected.push(entry);
+    }
+    return selected;
   }
 
   // Synthetic Belfast lattice — used when OSM context isn't ready yet so the
@@ -1224,6 +1331,7 @@
     opts = opts || {};
     const demand = normaliseDemandPoints(opts.demandPoints || opts.points || []);
     const cityWide = !!opts.cityWide || opts.scope === 'city';
+    const wholeCityRoads = cityWide && (opts.wholeCityRoads || opts.cityCoverage === 'whole-city' || opts.cityCoverage === 'whole-belfast');
     const centre = Array.isArray(opts.centre) ? opts.centre : demandCentre(demand);
     const radiusLimit = cityWide ? 24 : 6;
     const radiusFloor = cityWide ? 4 : 0.35;
@@ -1239,11 +1347,13 @@
       ? opts.segments
       : (isOsmLoaded()
         ? (cityWide
-          ? osmSegmentsForDemandCoverage(
-            demand,
-            Math.max(0.55, Math.min(1.2, Number(opts.cityDemandRadiusKm) || 0.78)),
-            Math.max(1200, Math.min(18000, Number(opts.cityRawSegmentLimit) || 12000))
-          )
+          ? (wholeCityRoads
+            ? osmSegmentsForWholeCity(Math.max(1200, Math.min(36000, Number(opts.cityRawSegmentLimit) || 24000)))
+            : osmSegmentsForDemandCoverage(
+              demand,
+              Math.max(0.55, Math.min(1.2, Number(opts.cityDemandRadiusKm) || 0.78)),
+              Math.max(1200, Math.min(18000, Number(opts.cityRawSegmentLimit) || 12000))
+            ))
           : osmSegmentsNear(centre, radiusKm * 1.25))
         : sampleOsmSegments());
     if (cityWide && !raw.length && isOsmLoaded()) raw = osmAllSegments.slice();
@@ -1268,9 +1378,11 @@
     }
 
     scored.sort((a, b) => b.score - a.score);
-    const maxSegmentLimit = cityWide ? 5600 : 2600;
+    const maxSegmentLimit = wholeCityRoads ? 9200 : cityWide ? 5600 : 2600;
     const maxSegments = Math.max(200, Math.min(maxSegmentLimit, Number(opts.maxSegments) || (cityWide ? 4200 : 1800)));
-    if (scored.length > maxSegments) scored = scored.slice(0, maxSegments);
+    if (scored.length > maxSegments) {
+      scored = wholeCityRoads ? selectWholeCityScoredSegments(scored, maxSegments) : scored.slice(0, maxSegments);
+    }
 
     const segments = scored.map((entry, i) => ({
       id: entry.raw.id || ('swarm-' + i),
@@ -1379,7 +1491,7 @@
       }
     }
     flowFeatures.sort((a, b) => (b.properties.congestion || 0) - (a.properties.congestion || 0));
-    const maxFlowLimit = cityWide ? 1400 : 900;
+    const maxFlowLimit = wholeCityRoads ? 1800 : cityWide ? 1400 : 900;
     const maxFlowSegments = Math.max(80, Math.min(maxFlowLimit, Number(opts.maxFlowSegments) || (cityWide ? 900 : 420)));
     if (flowFeatures.length > maxFlowSegments) flowFeatures = flowFeatures.slice(0, maxFlowSegments);
 
