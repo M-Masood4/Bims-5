@@ -34,14 +34,12 @@
 
     <!-- Top toolbar -->
     <header class="toolbar">
-      <div class="toolbar-brand">
-        <div class="brand-icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l5-4 5 4v14"/><path d="M15 21V11l4-2v12"/></svg>
-        </div>
-        <div class="brand-text">
-          <strong>Belfast</strong>
-          <small>2016 – 2036</small>
-        </div>
+      <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters">
+        <button class="lens-tab active" data-lens="buildings" type="button" aria-pressed="true" title="Buildings filter" style="--lens-color:#3b82f6">Buildings</button>
+        <button class="lens-tab" data-lens="traffic" type="button" aria-pressed="false" title="Traffic filter" style="--lens-color:#fb923c">Traffic</button>
+        <button class="lens-tab" data-lens="jobs" type="button" aria-pressed="false" title="Jobs filter" style="--lens-color:#a855f7">Jobs</button>
+        <button class="lens-tab" data-lens="electricity" type="button" aria-pressed="false" title="Electricity filter" style="--lens-color:#06b6d4">Electricity</button>
+        <button class="lens-tab" data-lens="services" type="button" aria-pressed="false" title="Public Transit filter" style="--lens-color:#22c55e">Public Transit</button>
       </div>
 
       <div class="tools-host">
@@ -74,13 +72,6 @@
       </div>
 
       <div class="toolbar-right">
-        <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters">
-          <button class="lens-tab active" data-lens="buildings" type="button" aria-pressed="true" title="Buildings filter" style="--lens-color:#3b82f6">Buildings</button>
-          <button class="lens-tab" data-lens="traffic" type="button" aria-pressed="false" title="Traffic filter" style="--lens-color:#fb923c">Traffic</button>
-          <button class="lens-tab" data-lens="jobs" type="button" aria-pressed="false" title="Jobs filter" style="--lens-color:#a855f7">Jobs</button>
-          <button class="lens-tab" data-lens="electricity" type="button" aria-pressed="false" title="Electricity filter" style="--lens-color:#06b6d4">Electricity</button>
-          <button class="lens-tab" data-lens="services" type="button" aria-pressed="false" title="Public Transit filter" style="--lens-color:#22c55e">Public Transit</button>
-        </div>
         <button class="icon-btn" id="exportBtn" type="button" title="Export">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span>Export</span>
@@ -146,6 +137,16 @@
           <span class="similar-events-conf" id="similarEventsConf"></span>
         </div>
         <div class="similar-events-list" id="similarEventsList"></div>
+      </div>
+
+      <!-- T4.3: Buildability legend. Visible only while the green build-area
+           overlay is shown (Building tool active in a sim year). -->
+      <div class="buildability-legend" id="buildabilityLegend" hidden>
+        <span class="bl-swatch" id="buildabilityLegendSwatch"></span>
+        <span class="bl-text">
+          <strong id="buildabilityLegendLabel">Sites buildable for Residential</strong>
+          <span class="bl-sub">Brighter green = better fit. Switch presets to re-score.</span>
+        </span>
       </div>
 
       <!-- Map controls (right side) -->
@@ -242,10 +243,12 @@
       </div>
       <div id="branchList" class="branch-addition-list"></div>
 
-      <div class="section-title impact-title">
-        <span id="impactTitle">Impact Overview</span>
+      <!-- Impact Overview UI removed from sidebar. The stub elements below
+           keep internal rendering hooks alive without showing to the user. -->
+      <div hidden aria-hidden="true">
+        <span id="impactTitle"></span>
+        <div id="impactStack"></div>
       </div>
-      <div id="impactStack" class="impact-stack"></div>
 
       <div class="traffic-sim-section" id="trafficSimSection">
         <div class="traffic-sim-head">
@@ -276,6 +279,17 @@
     </div>
 
     <div class="right-footer">
+      <!-- T4.1: Run Simulation progress overlay. Sits inline above the footer
+           buttons; replaces them visually while the AI scenario is running so
+           the user sees what's happening and can cancel. -->
+      <div class="sim-progress" id="simProgress" hidden role="status" aria-live="polite">
+        <div class="sim-progress-row">
+          <span class="sim-spinner" aria-hidden="true"></span>
+          <span class="sim-progress-label" id="simProgressLabel">Calling AI planner…</span>
+          <button type="button" class="sim-progress-cancel" id="simProgressCancel">Cancel</button>
+        </div>
+        <div class="sim-progress-bar"><div class="sim-progress-fill" id="simProgressFill"></div></div>
+      </div>
       <button class="view-diff-btn" id="scenarioDiffBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/><path d="M7 6h2M7 10h2" stroke-linecap="round"/></svg>
         View Diff
@@ -283,12 +297,6 @@
       <button class="view-diff-btn" id="compareBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
-      </button>
-      <!-- T3.2: AI variations promoted out of the right-click context menu. -->
-      <button class="view-diff-btn ai-variations-btn" id="plannerVariationsBtn" type="button" disabled
-        title="Add an item to this branch first, then generate four AI alternatives">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"/><path d="M19 16l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
-        AI: 4 Variations
       </button>
       <button class="run-sim-btn" id="runBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5V3z"/></svg>
@@ -314,7 +322,6 @@
   <div class="ctx-menu-separator"></div>
   <button data-act="fork-here">Start new branch here</button>
   <div class="ctx-menu-separator"></div>
-  <button data-act="branch-variations">Create 4 planner variations</button>
   <button data-act="branch-traffic">Traffic variation</button>
   <button data-act="branch-jobs">Jobs variation</button>
   <button data-act="branch-electricity">Electricity variation</button>

@@ -62,18 +62,7 @@
   }
 
   function buildScenarioMemo(commit) {
-    const fields = [
-      "REPLAY_BELFAST",
-      "v=1",
-      "hash=" + commit.scenarioHash,
-      "uri=" + commit.metadataUri,
-      "data=" + commit.dataVersion,
-      "engine=" + commit.engineVersion,
-      "agents=" + commit.agentVersion
-    ];
-    let memo = fields.join("|");
-    if (bytes(memo).length <= MAX_MEMO_BYTES) return memo;
-    memo = [
+    let memo = [
       "REPLAY_BELFAST",
       "v=1",
       "hash=" + commit.scenarioHash,
@@ -95,20 +84,38 @@
   }
 
   function walletProvider() {
-    const provider = window.solana;
-    if (provider && provider.isPhantom) return provider;
-    return provider || null;
+    const candidates = [
+      window.phantom && window.phantom.solana,
+      window.solana,
+      window.solflare,
+      window.backpack && window.backpack.solana
+    ];
+    for (const candidate of candidates) {
+      if (candidate && (typeof candidate.connect === "function" || typeof candidate.signTransaction === "function" || typeof candidate.signAndSendTransaction === "function")) {
+        return candidate;
+      }
+    }
+    return null;
   }
 
   async function connectWallet() {
     const provider = walletProvider();
     if (!provider) {
-      const error = new Error("Phantom or another Solana wallet was not found.");
+      const error = new Error("No Solana wallet detected. Install Phantom (https://phantom.app) or another Solana wallet, then refresh.");
       error.code = "WALLET_MISSING";
       throw error;
     }
-    if (!provider.publicKey || !provider.isConnected) {
-      await provider.connect();
+    try {
+      if (!provider.publicKey || !provider.isConnected) {
+        await provider.connect();
+      }
+    } catch (connectError) {
+      if (connectError && (connectError.code === 4001 || /reject|denied|cancel/i.test(String(connectError.message || "")))) {
+        throw connectError;
+      }
+      const error = new Error("Could not connect to the Solana wallet: " + (connectError && connectError.message || "unknown error"));
+      error.code = "WALLET_NOT_CONNECTED";
+      throw error;
     }
     if (!provider.publicKey) {
       const error = new Error("Wallet connection did not return a public key.");
@@ -170,8 +177,10 @@
     const message = String(error && (error.message || error.reason || error) || "");
     const code = error && error.code;
     if (code === 4001 || /reject|denied|cancel/i.test(message)) return "Signature rejected in wallet.";
-    if (code === "WALLET_MISSING") return "Install or unlock Phantom to publish the scenario commit.";
-    if (code === "WALLET_NOT_CONNECTED") return "Wallet connection was not completed.";
+    if (code === "WALLET_MISSING") return "No Solana wallet detected — install Phantom (phantom.app) or another Solana wallet, then refresh.";
+    if (code === "WALLET_NOT_CONNECTED") return "Wallet connection was not completed. Unlock your wallet and try again.";
+    if (code === "WALLET_UNSUPPORTED") return "The connected wallet cannot sign Solana transactions.";
+    if (/insufficient.*lamports|debit an account but found no record/i.test(message)) return "Wallet has no devnet SOL. Visit faucet.solana.com to fund the wallet, then retry.";
     if (/failed to fetch|network|fetch/i.test(message)) return "Solana RPC is unavailable right now. Try again in a moment.";
     if (code === "TX_FAILED") return "The Solana transaction failed during confirmation.";
     return message || "Could not publish the scenario commit.";
@@ -181,10 +190,10 @@
     const config = await solanaConfig();
     const hash = await hashScenarioProof(proof);
     const scenarioHash = "sha256:" + hash;
-    const metadataUri = config.appUrl.replace(/\/+$/, "") + "/api/scenarios/" + encodeURIComponent(proof.scenarioId) + "/proof";
-    const uriHash = await hashScenarioProof({ metadataUri });
+    const proofPath = "/api/scenarios/" + encodeURIComponent(proof.scenarioId) + "/proof";
+    const metadataUri = config.appUrl.replace(/\/+$/, "") + proofPath;
 
-    const response = await fetch(metadataUri, {
+    const response = await fetch(proofPath, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ proof })
@@ -196,10 +205,12 @@
     if (stored.hash && stored.hash !== hash) {
       throw new Error("Server proof hash did not match the browser hash.");
     }
+    const storedMetadataUri = stored.metadataUri || metadataUri;
+    const uriHash = await hashScenarioProof({ metadataUri: storedMetadataUri });
 
     const memo = buildScenarioMemo({
       scenarioHash,
-      metadataUri,
+      metadataUri: storedMetadataUri,
       metadataUriHash: "sha256:" + uriHash,
       dataVersion: proof.dataVersion || DATA_VERSION,
       engineVersion: proof.engineVersion || ENGINE_VERSION,
@@ -212,7 +223,7 @@
       publicKey: tx.publicKey,
       scenarioHash,
       hash,
-      metadataUri,
+      metadataUri: storedMetadataUri,
       memo,
       explorerUrl: explorerUrl(tx.signature, config.cluster || "devnet"),
       publishedAt: new Date().toISOString()

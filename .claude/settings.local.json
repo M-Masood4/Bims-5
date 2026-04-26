@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C C:/Users/ayush/Bims-5 log --oneline -20 --all -- \"web/solana*\" \"lib/scenario-proof*\" \"server.js\")"
+    ]
+  }
+}

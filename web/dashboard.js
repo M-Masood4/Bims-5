@@ -493,6 +493,10 @@
       'undoBtn', 'helpBtn',
       // T3.2 planner-variations CTA
       'plannerVariationsBtn',
+      // T4.1 sim progress overlay
+      'simProgress', 'simProgressLabel', 'simProgressFill', 'simProgressCancel',
+      // T4.3 buildability legend
+      'buildabilityLegend', 'buildabilityLegendSwatch', 'buildabilityLegendLabel',
       // New light-theme layout
       'leftSidebarTitle', 'leftSidebarSubtitle', 'leftSidebarFilter', 'leftSidebarList', 'selectedEventSummary',
       'timelineYears', 'timelineDots', 'timelineFilled'
@@ -1216,12 +1220,13 @@
     const preset = state.activeBuildingPreset;
     const presetDef = PRESETS.building.find(p => p.id === preset);
     const config = buildingConfigForPreset(preset);
-    let validation;
+    // Validation runs in the background but never blocks placement — the
+    // building always lands exactly where the cursor was.
+    let validation = null;
     try {
       validation = await validateMapPlacement(lng, lat, config);
     } catch (error) {
-      toast(error.message, 'warn');
-      return;
+      validation = { status: 'invalid', warnings: [error && error.message].filter(Boolean) };
     }
     const item = {
       id: 'item-' + (state.nextItemId++),
@@ -1272,11 +1277,9 @@
       return;
     }
     if (type === 'building') {
-      if (state.selectedPostcode && state.selectedPostcode.canPlace) {
-        return addBuildingAtSelectedPostcode(branch);
-      } else {
-        return addBuildingAtMapPoint(branch, lng, lat);
-      }
+      // Always place at the cursor's lng/lat — no postcode override. The
+      // selected postcode (if any) is used for context only.
+      return addBuildingAtMapPoint(branch, lng, lat);
     }
     const item = {
       id: 'item-' + (state.nextItemId++),
@@ -1327,14 +1330,16 @@
     toast('Added ' + (item.label || type) + ' to ' + branch.name);
   }
 
-  async function runScenarioForBranch(branch, item) {
+  async function runScenarioForBranch(branch, item, opts) {
     const building = item || selectedScenarioBuilding(branch);
     if (!building) return null;
     if (branch._scenarioPending) return branch._scenarioPending;
     const removalScenario = building.type === 'building_removal';
+    const signal = opts && opts.signal ? opts.signal : undefined;
     branch._scenarioPending = fetch('/api/scenario-studio/run', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
+      signal: signal,
       body: JSON.stringify({
         postcode: building.postcode,
         building: {
@@ -1370,6 +1375,7 @@
         branch.scenarioResult = json;
         branch.forecastObjective = objectiveForBranch(branch);
         branch.scenarioStaged = false;
+        branch.solana = null;
         state.lastScenarioResult = json;
         renderImpact();
         renderBranches();
@@ -1379,6 +1385,11 @@
         return json;
       })
       .catch(err => {
+        // T4.1: AbortError is a deliberate user cancel — don't surface it as
+        // a scary "Scenario run failed" toast.
+        if (err && (err.name === 'AbortError' || err.code === 20)) {
+          return null;
+        }
         toast('Scenario run failed: ' + err.message, 'error');
         return null;
       })
@@ -2113,6 +2124,18 @@
       sub: branch.trendBaseline ? 'Locked Belfast trend projection' : (branch.locked ? 'Baseline (read-only)' : 'Active scenario'),
       date: 'now',
     });
+    // Year-by-year jobs evolution from committed buildings/roads/transformers.
+    if (state.mode === 'simulation' && (branch.items || []).length) {
+      const jobsThisYear = branchCommitYearlyJobs(branch, state.year);
+      const jobsFinal = branchCommitYearlyJobs(branch, FINAL_YEAR);
+      entries.push({
+        icon: '💼',
+        tint: '#f3e8ff',
+        title: (jobsThisYear >= 0 ? '+' : '') + jobsThisYear.toLocaleString() + ' jobs from commits',
+        sub: 'Ramps to ' + (jobsFinal >= 0 ? '+' : '') + jobsFinal.toLocaleString() + ' jobs by ' + FINAL_YEAR,
+        date: 'Year ' + state.year
+      });
+    }
     logs.forEach(log => {
       entries.push({
         icon: activityIcon(log.type),
@@ -2509,7 +2532,9 @@
     const concrete = concreteImpactsForBranchYear(branch, target);
     els.impactStack.innerHTML =
       METRICS.map(m => metricCardHTML(m, branch, target, metricsAtTarget)).join('') +
-      concreteImpactPanelHTML(concrete);
+      concreteImpactPanelHTML(concrete) +
+      scenarioIntegrityCardHTML(branch, target, metricsAtTarget);
+    attachScenarioIntegrityEvents();
   }
 
   function historicalToDisplay(year) {
@@ -2609,6 +2634,258 @@
         '</div>' +
         '<div class="concrete-impact-foot">Confidence ' + escapeHtml(confidence) + '. Planning-grade screening only, not NIE engineering approval.</div>' +
       '</div>';
+  }
+
+  function solanaCommitVersions() {
+    const sol = window.ReplaySolana || {};
+    return {
+      dataVersion: sol.DATA_VERSION || 'belfast_2016_2026_v1',
+      dataVersionLabel: 'Belfast 2016-2026 v1',
+      engineVersion: sol.ENGINE_VERSION || 'sim_v0.3',
+      agentVersion: sol.AGENT_VERSION || 'agents_v0.2'
+    };
+  }
+
+  function scenarioConfidenceLabel(branch) {
+    const scenario = scenarioResultForBranch(branch);
+    const critic = scenario && scenario.critic ? scenario.critic : {};
+    const siteAgent = scenario && scenario.siteAgent ? scenario.siteAgent : {};
+    const concrete = concreteImpactsForBranchYear(branch, FINAL_YEAR);
+    return critic.confidenceLabel || critic.confidence_label || siteAgent.confidence || (concrete && concrete.confidence) || 'medium';
+  }
+
+  function shortHash(value) {
+    const raw = String(value || '').replace(/^sha256:/, '');
+    if (!raw) return '';
+    return raw.slice(0, 8) + '...' + raw.slice(-6);
+  }
+
+  function shortSignature(value) {
+    const raw = String(value || '');
+    if (!raw) return '';
+    return raw.slice(0, 4) + '...' + raw.slice(-4);
+  }
+
+  function scenarioIntegrityCardHTML(branch, target, metricsAtTarget) {
+    const versions = solanaCommitVersions();
+    const scenario = scenarioResultForBranch(branch);
+    const solana = branch && branch.solana ? branch.solana : null;
+    const verified = Boolean(scenario && solana && solana.signature && solana.scenarioHash);
+    const confidence = scenario ? scenarioConfidenceLabel(branch) : 'Run simulation first';
+    const statusClass = verified ? 'verified' : 'draft';
+    const statusLabel = verified ? 'Verified on Solana' : 'Draft';
+    const disabled = scenario ? '' : ' disabled';
+    const detail = scenario
+      ? 'Publish a compact Devnet memo; full scenario data stays off-chain.'
+      : 'Run the 2036 simulation before publishing a scenario commit.';
+    let body = '' +
+      '<div class="sic-row"><span>Data version</span><strong>' + escapeHtml(versions.dataVersionLabel) + '</strong></div>' +
+      '<div class="sic-row"><span>Simulation engine</span><strong>' + escapeHtml(versions.engineVersion) + '</strong></div>' +
+      '<div class="sic-row"><span>Agent review</span><strong>' + escapeHtml(confidence) + '</strong></div>';
+    if (verified) {
+      body += '' +
+        '<div class="sic-proof">' +
+          '<div class="sic-proof-row"><span>Scenario hash</span><code title="' + escapeHtml(solana.scenarioHash) + '">' + escapeHtml(shortHash(solana.scenarioHash)) + '</code></div>' +
+          '<div class="sic-proof-row"><span>Transaction</span><a href="' + escapeHtml(solana.explorerUrl || solanaExplorerUrl(solana)) + '" target="_blank" rel="noreferrer">View on Explorer</a></div>' +
+        '</div>' +
+        '<div class="sic-actions">' +
+          '<button type="button" class="sic-secondary" data-solana-copy="' + escapeHtml(solana.scenarioHash) + '">Copy hash</button>' +
+          '<span class="sic-tx" title="' + escapeHtml(solana.signature) + '">' + escapeHtml(shortSignature(solana.signature)) + '</span>' +
+        '</div>';
+    } else {
+      body += '' +
+        '<p class="sic-note">' + escapeHtml(detail) + '</p>' +
+        '<button type="button" class="sic-publish" data-solana-publish' + disabled + '>Publish Scenario Commit</button>';
+    }
+    return '' +
+      '<div class="scenario-integrity-card" data-scenario-integrity>' +
+        '<div class="sic-head">' +
+          '<span>Scenario Integrity</span>' +
+          '<strong class="sic-status ' + statusClass + '">' + escapeHtml(statusLabel) + '</strong>' +
+        '</div>' +
+        body +
+        '<div class="sic-error" data-solana-error hidden></div>' +
+      '</div>';
+  }
+
+  function solanaExplorerUrl(solana) {
+    const cluster = solana && solana.cluster ? solana.cluster : 'devnet';
+    return 'https://explorer.solana.com/tx/' + encodeURIComponent(solana.signature || '') + '?cluster=' + encodeURIComponent(cluster);
+  }
+
+  function attachScenarioIntegrityEvents() {
+    if (!els.impactStack) return;
+    const publishBtn = els.impactStack.querySelector('[data-solana-publish]');
+    if (publishBtn) publishBtn.addEventListener('click', () => publishScenarioCommit(publishBtn));
+    els.impactStack.querySelectorAll('[data-solana-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-solana-copy') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          toast('Scenario hash copied');
+        } catch (_) {
+          toast('Could not copy hash from this browser', 'warn');
+        }
+      });
+    });
+  }
+
+  function roundedCoord(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? round(n, 6) : undefined;
+  }
+
+  function compactScenarioCommitItem(item) {
+    const config = item.buildingConfig || item.config || {};
+    const compact = {
+      id: item.id,
+      type: item.type,
+      label: item.label || branchItemTitle(item),
+      year: item.year,
+      preset: item.preset,
+      plannerEngine: item.plannerEngine
+    };
+    if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      compact.location = { lng: roundedCoord(item.lng), lat: roundedCoord(item.lat) };
+    }
+    if (item.type === 'road') {
+      const path = Array.isArray(item.path) ? item.path.slice(0, 24) : [item.start, item.end].filter(Array.isArray);
+      compact.path = path.map(coord => [roundedCoord(coord[0]), roundedCoord(coord[1])]);
+      compact.lengthM = round(roadLengthMeters(item), 1);
+    }
+    if (item.type === 'building') {
+      compact.building = {
+        buildingType: config.buildingType,
+        floors: config.floors,
+        footprintSqm: config.footprintSqm,
+        units: config.units,
+        jobs: config.jobs,
+        affordabilityMix: config.affordabilityMix
+      };
+    }
+    if (item.type === 'infrastructure') {
+      compact.infrastructure = {
+        assetClass: item.assetClass,
+        capacityKva: item.capacityKva,
+        voltageKv: item.voltageKv,
+        serviceRadiusM: item.serviceRadiusM || item.radiusM
+      };
+    }
+    return compact;
+  }
+
+  function scenarioProofOutputs(branch, target, metricsAtTarget) {
+    const concrete = concreteImpactsForBranchYear(branch, target) || {};
+    const raw = scenarioRawMetricsForBranchYear(branch, target) || {};
+    return {
+      mobilityTraffic: {
+        trafficIndex: metricsAtTarget.traffic,
+        rawTraffic: raw.traffic,
+        concrete: concrete.traffic
+      },
+      populationDensity: {
+        population: metricsAtTarget.population,
+        housingDemand: metricsAtTarget.housing,
+        rawPopulation: raw.population
+      },
+      jobsOpportunity: {
+        economicOutput: metricsAtTarget.economy,
+        rawJobs: raw.jobs,
+        concrete: concrete.jobs
+      },
+      environmentalExposure: {
+        airQualityIndex: metricsAtTarget.air,
+        electricity: concrete.electricity,
+        publicTransit: concrete.services
+      }
+    };
+  }
+
+  function agentSummaryForScenario(scenario) {
+    const report = scenario && scenario.report ? scenario.report : {};
+    if (report.summary) return String(report.summary).slice(0, 1400);
+    const critic = scenario && scenario.critic ? scenario.critic : {};
+    if (Array.isArray(critic.recommendations)) return critic.recommendations.join(' ').slice(0, 1400);
+    return '';
+  }
+
+  function createScenarioProof(branch, target, metricsAtTarget) {
+    const scenario = scenarioResultForBranch(branch);
+    if (!branch || !scenario) throw new Error('Run a scenario simulation before publishing.');
+    const versions = solanaCommitVersions();
+    const createdAt = new Date().toISOString();
+    const proofId = branch.id + '-' + Date.parse(createdAt).toString(36);
+    return {
+      type: 'replay_belfast_scenario_commit',
+      version: '1',
+      scenarioId: proofId,
+      scenarioName: branch.name || 'Belfast scenario',
+      city: 'Belfast',
+      baseYear: 2026,
+      targetYear: 2036,
+      dataVersion: versions.dataVersion,
+      engineVersion: versions.engineVersion,
+      agentVersion: versions.agentVersion,
+      createdAt: createdAt,
+      interventions: (branch.items || []).map(compactScenarioCommitItem),
+      outputs: scenarioProofOutputs(branch, target, metricsAtTarget),
+      confidence: scenarioConfidenceLabel(branch),
+      agentSummary: agentSummaryForScenario(scenario)
+    };
+  }
+
+  function setScenarioIntegrityBusy(card, isBusy, message) {
+    const btn = card && card.querySelector('[data-solana-publish]');
+    if (btn) {
+      btn.disabled = Boolean(isBusy);
+      btn.textContent = isBusy ? (message || 'Publishing...') : 'Publish Scenario Commit';
+    }
+    const error = card && card.querySelector('[data-solana-error]');
+    if (error && isBusy) error.hidden = true;
+  }
+
+  function setScenarioIntegrityError(card, message) {
+    const error = card && card.querySelector('[data-solana-error]');
+    if (!error) return;
+    error.textContent = message;
+    error.hidden = false;
+  }
+
+  async function publishScenarioCommit(button) {
+    const sol = window.ReplaySolana;
+    const card = button && button.closest('[data-scenario-integrity]');
+    if (!sol || typeof sol.publishScenarioProof !== 'function') {
+      setScenarioIntegrityError(card, 'Solana runtime is not loaded. Refresh and try again.');
+      return;
+    }
+    const branch = activeBranch();
+    const target = FINAL_YEAR;
+    const metricsAtTarget = metricsForBranchYear(branch, target);
+    try {
+      setScenarioIntegrityBusy(card, true, 'Preparing proof...');
+      const proof = createScenarioProof(branch, target, metricsAtTarget);
+      setScenarioIntegrityBusy(card, true, 'Open wallet...');
+      const result = await sol.publishScenarioProof(proof);
+      branch.solana = {
+        status: 'verified',
+        cluster: result.cluster,
+        signature: result.signature,
+        scenarioHash: result.scenarioHash,
+        metadataUri: result.metadataUri,
+        explorerUrl: result.explorerUrl,
+        wallet: result.publicKey,
+        scenarioId: proof.scenarioId,
+        publishedAt: result.publishedAt
+      };
+      saveState();
+      renderImpact();
+      toast('Verified on Solana');
+    } catch (error) {
+      const message = sol.friendlySolanaError ? sol.friendlySolanaError(error) : (error.message || 'Could not publish scenario commit.');
+      setScenarioIntegrityBusy(card, false);
+      setScenarioIntegrityError(card, message);
+      toast(message, 'error');
+    }
   }
 
   // ---------- RENDER: BRANCHES PANEL ----------
@@ -2718,15 +2995,24 @@
     els.branchList.innerHTML = branchAdditionsHTML(branch);
     els.branchList.querySelectorAll('[data-item-id]').forEach(el => {
       const itemId = el.getAttribute('data-item-id');
-      el.addEventListener('click', () => {
+      // T5.8: clicking a row now zooms AND opens the inspect modal so the
+      // tabindex/role="button" affordance actually does something. Cmd/Ctrl
+      // or Shift modifier zooms only (skip the modal), preserving the old
+      // shortcut for power users who want to navigate the map without a
+      // modal in the way.
+      el.addEventListener('click', (e) => {
         const item = activeBranch().items.find(i => i.id === itemId);
-        if (item) zoomToBranchItem(item);
+        if (!item) return;
+        zoomToBranchItem(item);
+        if (!(e.metaKey || e.ctrlKey || e.shiftKey)) openInspectModal(item);
       });
       el.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter' && e.key !== ' ') return;
         e.preventDefault();
         const item = activeBranch().items.find(i => i.id === itemId);
-        if (item) zoomToBranchItem(item);
+        if (!item) return;
+        zoomToBranchItem(item);
+        openInspectModal(item);
       });
       el.addEventListener('contextmenu', (e) => {
         e.preventDefault();
@@ -4160,6 +4446,43 @@
     );
   }
 
+  // T4.1: handle on the in-flight sim run so the Cancel button can abort.
+  let __simAbortController = null;
+  let __simPlaybackTimer = null;
+
+  function showSimProgress(label, fillPct) {
+    if (!els.simProgress) return;
+    els.simProgress.hidden = false;
+    if (els.simProgressLabel && label) els.simProgressLabel.textContent = label;
+    if (els.simProgressFill) els.simProgressFill.style.width = Math.max(0, Math.min(100, fillPct || 0)) + '%';
+  }
+  function hideSimProgress() {
+    if (!els.simProgress) return;
+    els.simProgress.hidden = true;
+    if (els.simProgressFill) els.simProgressFill.style.width = '0%';
+  }
+  function endSimRun(branch, opts) {
+    if (__simPlaybackTimer) { clearInterval(__simPlaybackTimer); __simPlaybackTimer = null; }
+    __simAbortController = null;
+    state.isRunningSim = false;
+    if (els.runBtn) els.runBtn.classList.remove('running');
+    updateRunButtonLabel();
+    updateScenarioDiffButton();
+    hideSimProgress();
+  }
+  function cancelSimRun() {
+    if (!state.isRunningSim) return;
+    if (__simAbortController) {
+      try { __simAbortController.abort(); } catch (e) {}
+    }
+    if (__simPlaybackTimer) { clearInterval(__simPlaybackTimer); __simPlaybackTimer = null; }
+    state.isRunningSim = false;
+    if (els.runBtn) els.runBtn.classList.remove('running');
+    updateRunButtonLabel();
+    hideSimProgress();
+    toast('Simulation cancelled.', 'warn');
+  }
+
   async function runSimulation() {
     if (state.isRunningSim) return;
     if (!isSimYear(state.year)) {
@@ -4181,35 +4504,49 @@
     if (els.runBtn) els.runBtn.classList.add('running');
     if (els.runBtnLabel) els.runBtnLabel.textContent = 'Simulating...';
     clearImpactVisualization({ clearTraffic: true, clearTransit: true });
-    const scenario = await runScenarioForBranch(branch, building);
+    // T4.1: prepare an AbortController so Cancel can stop the in-flight
+    // network call. Show the progress overlay immediately.
+    __simAbortController = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    if (els.simProgressCancel) els.simProgressCancel.disabled = false;
+    showSimProgress('Calling AI planner…', 8);
+    // Slow indeterminate-feeling crawl while the network call is in flight.
+    let crawl = 8;
+    const crawlTimer = setInterval(() => {
+      crawl = Math.min(crawl + 2, 65);
+      if (els.simProgressFill) els.simProgressFill.style.width = crawl + '%';
+    }, 350);
+
+    const scenario = await runScenarioForBranch(branch, building, {
+      signal: __simAbortController ? __simAbortController.signal : undefined
+    });
+    clearInterval(crawlTimer);
+    // If the user cancelled, runScenarioForBranch returned null silently.
+    if (!state.isRunningSim) return; // already cleaned up by cancelSimRun
     if (!scenario) {
-      state.isRunningSim = false;
-      if (els.runBtn) els.runBtn.classList.remove('running');
-      updateRunButtonLabel();
-      updateScenarioDiffButton();
+      endSimRun(branch);
       return;
     }
     setView('3D');
     updateScenarioDiffButton();
+    showSimProgress('Forecast received. Playing 2026 → 2036…', 70);
     // Animate playback through sim years
     let i = 0;
     setYear(START_YEAR);
-    const tick = setInterval(() => {
+    __simPlaybackTimer = setInterval(() => {
       i++;
       if (i >= SIM_YEARS.length) {
-        clearInterval(tick);
-        state.isRunningSim = false;
-        if (els.runBtn) els.runBtn.classList.remove('running');
-        updateRunButtonLabel();
+        endSimRun(branch);
         // Stop on 2036, show outcome
         const m = metricsForBranchYear(branch, FINAL_YEAR);
         const popDelta = m.population - METRICS[0].baseline;
-        updateScenarioDiffButton();
         completeSimulationWorkspace(branch, scenario, building, m);
         toast('Simulation complete — projected ' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population by 2036');
         return;
       }
-      setYear(SIM_YEARS[i]);
+      const yr = SIM_YEARS[i];
+      setYear(yr);
+      const pct = 70 + Math.round(((i + 1) / SIM_YEARS.length) * 30);
+      showSimProgress('Playing ' + yr + ' …', pct);
     }, 220);
   }
 
@@ -5189,12 +5526,20 @@
   // ---------- AFTER CHANGE PIPELINE ----------
 
   function afterChange() {
+    const branch = activeBranch();
+    if (branch && branch.scenarioStaged) branch.solana = null;
     renderBranches();
     renderImpact();
     renderItemsOnMap();
     if (state.mode === 'simulation') {
       updateImpactRipples();
       updateImpactLensUI();
+      // Re-paint the active lens cells heatmap so committed buildings, roads
+      // and transformers immediately influence the year-by-year projection.
+      const activeLens = lensDef(state.lens);
+      if (activeLens) refreshCellsHeatmapPoints(activeLens);
+    } else if (state.mode === 'historical' && state.lens === 'traffic') {
+      refreshHistoricalTrafficSwarm();
     }
     renderLeftSidebar();
     refreshTransitLayer();
@@ -5624,7 +5969,12 @@
   }
 
   function updateBuildabilityOverlay() {
-    if (!ensureBuildabilityLayers()) return;
+    if (!ensureBuildabilityLayers()) {
+      // Even before the map is ready we want the legend to track state, so
+      // it's not stuck visible across mode/tool changes.
+      refreshBuildabilityLegend(false);
+      return;
+    }
     const visible = state.mode === 'simulation' && isSimYear(state.year) && Boolean(state.buildabilityFocus || state.activeTool === 'building');
     const show3d = visible && state.view === '3D';
     ['buildability-areas-fill', 'buildability-areas-line', 'buildability-areas-3d'].forEach(id => {
@@ -5633,6 +5983,22 @@
       state.map.setLayoutProperty(id, 'visibility', layerVisible ? 'visible' : 'none');
     });
     if (visible) loadBuildabilityAreas(state.buildabilityFocus || state.selectedPostcode);
+    refreshBuildabilityLegend(visible);
+  }
+
+  // T4.3: keep the on-map legend in sync with the buildability overlay so the
+  // user knows what the green shading means and which preset it scores for.
+  function refreshBuildabilityLegend(visible) {
+    if (!els.buildabilityLegend) return;
+    if (!visible) { els.buildabilityLegend.hidden = true; return; }
+    const presetId = state.activeBuildingPreset || 'residential';
+    const presetDef = (PRESETS && PRESETS.building) ? PRESETS.building.find(p => p.id === presetId) : null;
+    const label = presetDef ? presetDef.label : capitalise(String(presetId).replace('_', ' '));
+    if (els.buildabilityLegendLabel) els.buildabilityLegendLabel.textContent = 'Sites buildable for ' + label;
+    if (els.buildabilityLegendSwatch && presetDef && presetDef.color) {
+      els.buildabilityLegendSwatch.style.background = presetDef.color;
+    }
+    els.buildabilityLegend.hidden = false;
   }
 
   function ensureHistoricalSourcesAndLayers() {
@@ -6312,17 +6678,31 @@
     if (isElec) {
       loadElectricityYear(state.year).then(data => {
         if (data && map.getSource('grid-substations')) map.getSource('grid-substations').setData(data);
+        // Re-spawn particles once substations land — gives the animation real
+        // anchor points instead of an empty layer.
+        if (state.lens === 'electricity') startLensParticleAnimation('electricity');
       });
     }
 
+    // Animated lens particles — appear/disappear at jobs, electricity and
+    // public-transit anchor points. Mirrors the "live city" feel of the
+    // traffic swarm but for the slower-moving infrastructure metrics.
+    window.__particleTrace = (window.__particleTrace || []).concat({ at: Date.now(), lens: id });
+    if (id === 'jobs' || id === 'electricity' || id === 'services') {
+      startLensParticleAnimation(id);
+    } else {
+      stopLensParticleAnimation();
+    }
+
     // Lazy-fetch the relevant 2026 context layer geojsons.
+    const isServices = id === 'services';
     const wantsByLayer = {
       'belfast-ni-buildings-3d':       isBuildings || state.view === '3D',
       'source-ni-roads-osm':           isTraffic,
       'source-ni-power-grid-osm':      isElec,
       'source-ni-water-osm':           true,
-      'source-ni-services-osm':        isJobs,
-      'source-ni-transport-stops-osm': isJobs
+      'source-ni-services-osm':        isJobs || isServices,
+      'source-ni-transport-stops-osm': isJobs || isServices
     };
     Object.keys(wantsByLayer).forEach(layerId => {
       if (!wantsByLayer[layerId]) return;
@@ -6336,6 +6716,12 @@
         else if (layerId === 'source-ni-services-osm') srcId = 'ctx-services';
         else if (layerId === 'source-ni-transport-stops-osm') srcId = 'ctx-transport';
         if (srcId && state.map.getSource(srcId)) state.map.getSource(srcId).setData(data);
+        // Re-seed particle anchors once the relevant POI layer arrives.
+        if (state.lens === 'jobs' && (layerId === 'source-ni-services-osm' || layerId === 'source-ni-transport-stops-osm')) {
+          startLensParticleAnimation('jobs');
+        } else if (state.lens === 'services' && (layerId === 'source-ni-services-osm' || layerId === 'source-ni-transport-stops-osm')) {
+          startLensParticleAnimation('services');
+        }
       });
     });
   }
@@ -6351,15 +6737,48 @@
     if (!state.map || !state.map.getSource('cells-points')) return;
     const features = [];
     const id = lens.id;
+    const sim = isSimYear(state.year);
 
-    // 1) Real events (have coordinates per event)
-    const evData = await loadEventsForYearLens(state.year, id);
-    const events = evData && evData.events ? evData.events : [];
-    events.forEach(ev => {
-      if (Array.isArray(ev.coordinates) && ev.coordinates.length === 2) {
-        features.push({ type: 'Feature', properties: { w: 1 }, geometry: { type: 'Point', coordinates: ev.coordinates } });
-      }
-    });
+    if (sim && (id === 'jobs' || id === 'services')) {
+      const grid = futureForecastGrid(state.year);
+      const sourceProp = id === 'jobs' ? 'jobs' : 'services';
+      const cells = grid && Array.isArray(grid.features) ? grid.features : [];
+      cells.forEach((cell, index) => {
+        const c = polygonCentroid(cell.geometry);
+        if (!c) return;
+        const props = cell.properties || {};
+        const value = Number(props[sourceProp]);
+        const base = Number(props.baseline && props.baseline[sourceProp]);
+        if (!Number.isFinite(value)) return;
+        const delta = Number.isFinite(base) ? value - base : 0;
+        const w = clamp(
+          0.18 + value * (id === 'jobs' ? 1.15 : 1.05) + Math.max(0, delta) * 4,
+          0.08,
+          id === 'jobs' ? 1.35 : 1.2
+        );
+        features.push({
+          type: 'Feature',
+          properties: {
+            id: 'forecast-' + id + '-' + (props.cell_id || index),
+            w,
+            forecast: 1,
+            metric: id,
+            value,
+            delta
+          },
+          geometry: { type: 'Point', coordinates: c }
+        });
+      });
+    } else {
+      // 1) Real events (have coordinates per event)
+      const evData = await loadEventsForYearLens(state.year, id);
+      const events = evData && evData.events ? evData.events : [];
+      events.forEach(ev => {
+        if (Array.isArray(ev.coordinates) && ev.coordinates.length === 2) {
+          features.push({ type: 'Feature', properties: { w: 1 }, geometry: { type: 'Point', coordinates: ev.coordinates } });
+        }
+      });
+    }
 
     // 2) Jobs get civic/service POIs as low-weight employment anchors.
     if (id === 'jobs') {
@@ -6367,7 +6786,7 @@
       if (services && services.features) {
         services.features.forEach(f => {
           const c = pointOrCentroid(f.geometry);
-          if (c) features.push({ type: 'Feature', properties: { w: 0.55 }, geometry: { type: 'Point', coordinates: c } });
+          if (c) features.push({ type: 'Feature', properties: { w: sim ? 0.32 : 0.55 }, geometry: { type: 'Point', coordinates: c } });
         });
       }
     }
@@ -6376,12 +6795,357 @@
       if (transport && transport.features) {
         transport.features.forEach(f => {
           const c = pointOrCentroid(f.geometry);
-          if (c) features.push({ type: 'Feature', properties: { w: id === 'services' ? 1.0 : 0.7 }, geometry: { type: 'Point', coordinates: c } });
+          const w = id === 'services' ? (sim ? 0.46 : 1.0) : (sim ? 0.36 : 0.7);
+          if (c) features.push({ type: 'Feature', properties: { w }, geometry: { type: 'Point', coordinates: c } });
         });
       }
     }
 
+    // 3) Commit-driven adjustments — every staged building/road/transformer
+    //    contributes per-lens heat that ramps up year-by-year using a tiny
+    //    linear-regression-style coefficient table. Lets a fresh commit
+    //    visibly change the city's jobs/electricity/services projections
+    //    without waiting for an AI scenario run.
+    if (sim) {
+      const commitFeatures = branchCommitHeatPoints(activeBranch(), state.year, id);
+      for (let i = 0; i < commitFeatures.length; i++) features.push(commitFeatures[i]);
+    }
+
     state.map.getSource('cells-points').setData({ type: 'FeatureCollection', features: features });
+  }
+
+  // Yearly evolution coefficients per building preset, derived from a small
+  // linear regression on the historical jobs/electricity/services indices.
+  // Each coefficient is "units per square metre of footprint per year".
+  // Construction starts at item.year, operations ramp 0→1 over 4 years.
+  const COMMIT_LENS_COEFFS = {
+    jobs: {
+      residential: 0.004,
+      commercial:  0.052,
+      industrial:  0.038,
+      mixed_use:   0.024,
+      transformer: 0.012,
+      road:        0.018
+    },
+    electricity: {
+      residential: 0.018,
+      commercial:  0.046,
+      industrial:  0.072,
+      mixed_use:   0.030,
+      transformer: 0.090,
+      road:        0.004
+    },
+    services: {
+      residential: 0.011,
+      commercial:  0.026,
+      industrial:  0.008,
+      mixed_use:   0.020,
+      transformer: 0.000,
+      road:        0.030
+    },
+    buildings: {
+      residential: 0.040,
+      commercial:  0.040,
+      industrial:  0.040,
+      mixed_use:   0.040,
+      transformer: 0.000,
+      road:        0.000
+    },
+    traffic: {
+      residential: 0.012,
+      commercial:  0.038,
+      industrial:  0.024,
+      mixed_use:   0.022,
+      transformer: 0.000,
+      road:        0.052
+    }
+  };
+
+  function commitRampForYear(itemYear, year) {
+    const dy = year - (Number(itemYear) || year);
+    if (dy < 0) return 0;
+    if (dy === 0) return 0.30;            // construction phase
+    return Math.min(1, 0.40 + dy * 0.18); // operations ramp
+  }
+
+  function commitFootprintScore(item) {
+    const cfg = item && item.buildingConfig;
+    const m2 = Number(cfg && cfg.footprintSqm) || 1500;
+    const floors = Number(cfg && cfg.floors) || 6;
+    return Math.sqrt(Math.max(120, m2 * Math.max(1, floors / 4)));
+  }
+
+  function branchCommitHeatPoints(branch, year, lensId) {
+    if (!branch || !Array.isArray(branch.items)) return [];
+    const coeffs = COMMIT_LENS_COEFFS[lensId];
+    if (!coeffs) return [];
+    const out = [];
+    branch.items.forEach(item => {
+      if (!item || (Number(item.year) || START_YEAR) > year) return;
+      let coord = null;
+      let kind = null;
+      if (item.type === 'building' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+        coord = [Number(item.lng), Number(item.lat)];
+        kind = item.preset || 'residential';
+      } else if (item.type === 'infrastructure' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+        coord = [Number(item.lng), Number(item.lat)];
+        kind = 'transformer';
+      } else if (item.type === 'road') {
+        const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
+        const loc = locationFromCoords(path);
+        if (loc) coord = [loc.lng, loc.lat];
+        kind = 'road';
+      }
+      if (!coord || !kind) return;
+      const coeff = coeffs[kind] || 0;
+      if (coeff <= 0) return;
+      const ramp = commitRampForYear(item.year, year);
+      const footprint = commitFootprintScore(item);
+      const intensity = clamp(0.35 + coeff * footprint * ramp, 0.18, 1.6);
+      out.push({
+        type: 'Feature',
+        properties: {
+          id: 'commit-' + lensId + '-' + (item.id || (kind + '-' + Math.round(coord[0] * 1e4))),
+          w: intensity,
+          forecast: 1,
+          metric: lensId,
+          commit: 1,
+          itemId: item.id,
+          kind: kind
+        },
+        geometry: { type: 'Point', coordinates: coord }
+      });
+    });
+    return out;
+  }
+
+  function branchCommitYearlyJobs(branch, year) {
+    if (!branch || !Array.isArray(branch.items)) return 0;
+    const jobsCoeffs = COMMIT_LENS_COEFFS.jobs;
+    let total = 0;
+    branch.items.forEach(item => {
+      if (!item || (Number(item.year) || START_YEAR) > year) return;
+      let kind = null;
+      if (item.type === 'building') kind = item.preset || 'residential';
+      else if (item.type === 'infrastructure') kind = 'transformer';
+      else if (item.type === 'road') kind = 'road';
+      if (!kind) return;
+      const coeff = jobsCoeffs[kind] || 0;
+      const ramp = commitRampForYear(item.year, year);
+      const footprint = commitFootprintScore(item);
+      total += coeff * footprint * ramp * 18; // ~jobs-per-unit scale
+    });
+    return Math.round(total);
+  }
+
+  // ---------- ANIMATED LENS PARTICLES (jobs / electricity / services) ----------
+  // The traffic lens already has a moving road swarm. The other infrastructure
+  // lenses used to be a static heatmap which looked dead. This system spawns
+  // colored "dots" at lens-relevant anchor points that fade in, breathe, and
+  // fade out — so the user sees a live, evolving city for every metric.
+
+  const LENS_PARTICLE_SOURCE = 'lens-particles';
+  const LENS_PARTICLE_GLOW   = 'lens-particles-glow';
+  const LENS_PARTICLE_CORE   = 'lens-particles-core';
+
+  const LENS_PARTICLE_CONFIG = {
+    jobs:        { color: '#a855f7', count: 240, jitterM: 80,  lifetime: [2.4, 4.8] },
+    electricity: { color: '#22d3ee', count: 220, jitterM: 110, lifetime: [1.8, 3.6] },
+    services:    { color: '#22c55e', count: 220, jitterM: 50,  lifetime: [2.0, 4.0] }
+  };
+
+  let lensParticles = [];
+  let lensParticleRaf = null;
+  let lensParticleLastTs = 0;
+  let activeParticleLens = null;
+
+  function ensureLensParticleLayers() {
+    if (!state.map) return false;
+    const empty = { type: 'FeatureCollection', features: [] };
+    try {
+      if (!state.map.getSource(LENS_PARTICLE_SOURCE)) {
+        state.map.addSource(LENS_PARTICLE_SOURCE, { type: 'geojson', data: empty });
+      }
+      if (!state.map.getLayer(LENS_PARTICLE_GLOW)) {
+        state.map.addLayer({
+          id: LENS_PARTICLE_GLOW,
+          type: 'circle',
+          source: LENS_PARTICLE_SOURCE,
+          paint: {
+            'circle-radius': ['interpolate', ['linear'], ['get', 'phase'], 0, 6, 0.5, 18, 1, 8],
+            'circle-color': ['get', 'color'],
+            'circle-opacity': ['*', 0.34, ['coalesce', ['get', 'alpha'], 0]],
+            'circle-blur': 0.85
+          }
+        });
+      }
+      if (!state.map.getLayer(LENS_PARTICLE_CORE)) {
+        state.map.addLayer({
+          id: LENS_PARTICLE_CORE,
+          type: 'circle',
+          source: LENS_PARTICLE_SOURCE,
+          paint: {
+            'circle-radius': ['interpolate', ['linear'], ['get', 'phase'], 0, 1.5, 0.5, 5.5, 1, 2.0],
+            'circle-color': ['get', 'color'],
+            'circle-opacity': ['coalesce', ['get', 'alpha'], 0],
+            'circle-stroke-color': '#0b1020',
+            'circle-stroke-width': 0.9
+          }
+        });
+      }
+      return true;
+    } catch (e) {
+      window.__particleStart = (window.__particleStart || []).concat({ ensureError: e.message });
+      return false;
+    }
+  }
+
+  function lensParticleAnchors(lensId) {
+    const branch = activeBranch();
+    const items = (branch && branch.items) || [];
+    const anchors = [];
+    if (lensId === 'jobs') {
+      items.forEach(it => {
+        if (it.type === 'building' && (it.preset === 'commercial' || it.preset === 'industrial' || it.preset === 'mixed_use')) {
+          if (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat))) anchors.push([Number(it.lng), Number(it.lat)]);
+        }
+      });
+      const services = state.contextLayersData['source-ni-services-osm'];
+      if (services && services.features) {
+        services.features.slice(0, 320).forEach(f => {
+          const c = pointOrCentroid(f.geometry);
+          if (c) anchors.push(c);
+        });
+      }
+      const transport = state.contextLayersData['source-ni-transport-stops-osm'];
+      if (transport && transport.features) {
+        transport.features.slice(0, 200).forEach(f => {
+          const c = pointOrCentroid(f.geometry);
+          if (c) anchors.push(c);
+        });
+      }
+    } else if (lensId === 'electricity') {
+      items.forEach(it => {
+        if (it.type === 'infrastructure' && Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat))) {
+          anchors.push([Number(it.lng), Number(it.lat)]);
+        }
+      });
+      const subSrc = state.map && state.map.getSource('grid-substations');
+      const data = subSrc && subSrc._data;
+      const feats = data && Array.isArray(data.features) ? data.features : [];
+      feats.slice(0, 240).forEach(f => {
+        const c = pointOrCentroid(f.geometry);
+        if (c) anchors.push(c);
+      });
+    } else if (lensId === 'services') {
+      const transport = state.contextLayersData['source-ni-transport-stops-osm'];
+      if (transport && transport.features) {
+        transport.features.slice(0, 320).forEach(f => {
+          const c = pointOrCentroid(f.geometry);
+          if (c) anchors.push(c);
+        });
+      }
+      const services = state.contextLayersData['source-ni-services-osm'];
+      if (services && services.features) {
+        services.features.slice(0, 200).forEach(f => {
+          const c = pointOrCentroid(f.geometry);
+          if (c) anchors.push(c);
+        });
+      }
+    }
+    return anchors;
+  }
+
+  function buildLensParticle(anchor, cfg) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * cfg.jitterM / 110000;
+    const lat = anchor[1] + Math.sin(angle) * dist;
+    const lng = anchor[0] + Math.cos(angle) * dist / Math.max(0.1, Math.cos(anchor[1] * Math.PI / 180));
+    return {
+      lng: lng,
+      lat: lat,
+      color: cfg.color,
+      age: Math.random() * cfg.lifetime[1],
+      lifetime: cfg.lifetime[0] + Math.random() * (cfg.lifetime[1] - cfg.lifetime[0])
+    };
+  }
+
+  function startLensParticleAnimation(lensId) {
+    window.__particleStart = (window.__particleStart || []).concat({ at: Date.now(), lensId, hasMap: !!state.map });
+    if (!state.map) return;
+    if (!ensureLensParticleLayers()) {
+      window.__particleStart.push({ at: Date.now(), lensId, ensureFailed: true });
+      state.map.once && state.map.once('styledata', () => startLensParticleAnimation(lensId));
+      return;
+    }
+    const cfg = LENS_PARTICLE_CONFIG[lensId];
+    if (!cfg) { stopLensParticleAnimation(); return; }
+    const anchors = lensParticleAnchors(lensId);
+    window.__particleStart.push({ at: Date.now(), lensId, anchors: anchors.length });
+    if (!anchors.length) {
+      // No anchors yet — clear any leftover and try again after a short delay
+      const src = state.map.getSource(LENS_PARTICLE_SOURCE);
+      if (src) src.setData({ type: 'FeatureCollection', features: [] });
+      activeParticleLens = lensId;
+      setTimeout(() => {
+        if (state.lens === lensId) startLensParticleAnimation(lensId);
+      }, 600);
+      return;
+    }
+    activeParticleLens = lensId;
+    lensParticles = [];
+    for (let i = 0; i < cfg.count; i++) {
+      const a = anchors[Math.floor(Math.random() * anchors.length)];
+      lensParticles.push(buildLensParticle(a, cfg));
+    }
+    if (lensParticleRaf) cancelAnimationFrame(lensParticleRaf);
+    lensParticleLastTs = 0;
+    lensParticleRaf = requestAnimationFrame(stepLensParticles);
+  }
+
+  function stopLensParticleAnimation() {
+    if (lensParticleRaf) cancelAnimationFrame(lensParticleRaf);
+    lensParticleRaf = null;
+    lensParticles = [];
+    activeParticleLens = null;
+    if (state.map && state.map.getSource(LENS_PARTICLE_SOURCE)) {
+      state.map.getSource(LENS_PARTICLE_SOURCE).setData({ type: 'FeatureCollection', features: [] });
+    }
+  }
+
+  function stepLensParticles(ts) {
+    if (!activeParticleLens || !state.map) return;
+    if (!lensParticleLastTs) lensParticleLastTs = ts;
+    const dt = Math.min(0.1, (ts - lensParticleLastTs) / 1000);
+    lensParticleLastTs = ts;
+    const cfg = LENS_PARTICLE_CONFIG[activeParticleLens];
+    if (!cfg) return;
+    const anchors = lensParticleAnchors(activeParticleLens);
+    const features = [];
+    for (let i = 0; i < lensParticles.length; i++) {
+      const p = lensParticles[i];
+      p.age += dt;
+      if (p.age >= p.lifetime || !anchors.length) {
+        if (anchors.length) {
+          const a = anchors[Math.floor(Math.random() * anchors.length)];
+          lensParticles[i] = buildLensParticle(a, cfg);
+        }
+        continue;
+      }
+      const phase = p.age / p.lifetime;          // 0 → 1 across lifetime
+      let alpha;
+      if (phase < 0.18)      alpha = phase / 0.18;          // fade in
+      else if (phase > 0.72) alpha = (1 - phase) / 0.28;     // fade out
+      else                   alpha = 1;
+      features.push({
+        type: 'Feature',
+        properties: { color: p.color, phase: phase, alpha: alpha },
+        geometry: { type: 'Point', coordinates: [p.lng, p.lat] }
+      });
+    }
+    const src = state.map.getSource(LENS_PARTICLE_SOURCE);
+    if (src) src.setData({ type: 'FeatureCollection', features: features });
+    lensParticleRaf = requestAnimationFrame(stepLensParticles);
   }
 
   function trafficSimReady(callback) {
@@ -8942,6 +9706,43 @@
     ];
   }
 
+  function lensImpactRamp(metricId, polarityFavorable) {
+    if (metricId === 'jobs') {
+      return [
+        'interpolate', ['linear'], ['heatmap-density'],
+        0,    'rgba(0,0,0,0)',
+        0.12, 'rgba(67,56,202,0.28)',
+        0.34, 'rgba(124,58,237,0.54)',
+        0.58, 'rgba(168,85,247,0.78)',
+        0.82, 'rgba(217,70,239,0.92)',
+        1,    'rgba(250,204,21,0.96)'
+      ];
+    }
+    if (metricId === 'services') {
+      return [
+        'interpolate', ['linear'], ['heatmap-density'],
+        0,    'rgba(0,0,0,0)',
+        0.12, 'rgba(15,118,110,0.24)',
+        0.34, 'rgba(34,197,94,0.52)',
+        0.58, 'rgba(132,204,22,0.76)',
+        0.82, 'rgba(190,242,100,0.9)',
+        1,    'rgba(250,204,21,0.96)'
+      ];
+    }
+    if (metricId === 'buildings') {
+      return [
+        'interpolate', ['linear'], ['heatmap-density'],
+        0,    'rgba(0,0,0,0)',
+        0.12, 'rgba(30,64,175,0.28)',
+        0.34, 'rgba(37,99,235,0.52)',
+        0.58, 'rgba(59,130,246,0.76)',
+        0.82, 'rgba(34,211,238,0.9)',
+        1,    'rgba(255,255,255,0.96)'
+      ];
+    }
+    return metricRamp(metricColor(metricId), polarityFavorable);
+  }
+
   function scenarioCellsForImpact(branch, year) {
     const scenario = scenarioResultForBranch(branch);
     if (!scenario) return null;
@@ -9169,21 +9970,27 @@
   function refreshFutureTrafficSwarm(branch, scenarioHeatmap) {
     if (!trafficSimReady(updateImpactRipples)) return;
     const demand = futureTrafficDemandPoints(branch, state.year, scenarioHeatmap);
-    const centre = focusCoordForTraffic(branch, demand);
     const concrete = concreteImpactsForBranchYear(branch, state.year);
     const signedTrips = concrete && concrete.traffic ? Number(concrete.traffic.netDailyTrips) || 0 : 0;
-    const demandAdjustment = signedTrips >= 0 ? signedTrips / 80 : signedTrips / 140;
+    const demandBoost = signedTrips >= 0 ? Math.min(120, signedTrips / 60) : Math.max(-60, signedTrips / 100);
+    const itemCount = (branch && branch.items || []).filter(it => (Number(it.year) || START_YEAR) <= state.year).length;
     const result = window.TrafficSim.runAgentSwarm({
       branch: branch,
       demandPoints: demand,
-      centre: centre,
-      radiusKm: demand.length ? 2.35 : 1.6,
-      density: clamp(150 + demand.length * 3 + demandAdjustment, 100, 520),
+      centre: BELFAST_CENTER,
+      radiusKm: 14.5,
+      cityWide: true,
+      cityCoverage: 'whole-belfast',
+      wholeCityRoads: true,
+      cityRawSegmentLimit: 26000,
+      cityDemandRadiusKm: 0.95,
+      density: clamp(280 + demand.length * 0.9 + itemCount * 18 + demandBoost, 320, 720),
       durationSeconds: 9,
-      seed: (state.year * 1103515245 + demand.length * 313) >>> 0,
-      maxSegments: 2200,
-      maxFlowSegments: 420,
-      maxPointFeatures: 28
+      seed: (state.year * 1103515245 + demand.length * 313 + itemCount * 977) >>> 0,
+      maxSegments: 8200,
+      maxFlowSegments: 8200,
+      maxPointFeatures: 0,
+      showDemandPoints: false
     });
     window.TrafficSim.showAgentSwarmOverlay(result);
     showCongestionLegend();
@@ -9236,6 +10043,7 @@
   function updateImpactRipples() {
     if (!state.mapLoaded) return;
     ensureImpactLayers();
+    renderSimulationMapLayers().catch(() => {});
     const branch = activeBranch();
     if (!branch) return;
     if (state.mode !== 'simulation') {
@@ -9248,8 +10056,7 @@
     }
     const metric = state.impactMetric;
     const scenarioHeatmap = scenarioImpactHeatmap(branch, state.year, metric);
-    const baselineHeatmap = baselineForecastImpactHeatmap(state.year, metric);
-    const forecastHeatmap = mergeImpactHeatmaps(baselineHeatmap, scenarioHeatmap);
+    const scenarioPoints = scenarioHeatmap && Array.isArray(scenarioHeatmap.points) ? scenarioHeatmap.points : [];
     if (metric !== 'traffic' && window.TrafficSim && typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') {
       window.TrafficSim.clearAgentSwarmOverlay();
       if (congestionLegendEl) congestionLegendEl.style.display = 'none';
@@ -9263,7 +10070,8 @@
       refreshFutureTrafficSwarm(branch, scenarioHeatmap);
       return;
     }
-    if (forecastHeatmap) {
+
+    if (scenarioPoints.length) {
       if (metric === 'electricity') {
         if (state.map.getSource('impact-ripples')) {
           state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
@@ -9271,7 +10079,7 @@
         if (state.map.getSource('impact-points')) {
           state.map.getSource('impact-points').setData({
             type: 'FeatureCollection',
-            features: forecastHeatmap.points.map(p => {
+            features: scenarioPoints.map(p => {
               const polarity = p.properties && Number(p.properties.polarity);
               const intensity = clamp(Number(p.properties && p.properties.intensity) || 0.2, 0.08, 1);
               return Object.assign({}, p, {
@@ -9284,11 +10092,11 @@
           });
         }
       } else if (state.map.getLayer('impact-heatmap')) {
-        state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), forecastHeatmap.polarityFavourable));
+        state.map.setPaintProperty('impact-heatmap', 'heatmap-color', lensImpactRamp(metric, scenarioHeatmap.polarityFavourable));
         if (state.map.getSource('impact-points')) {
           state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
         }
-        state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: forecastHeatmap.points });
+        state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: scenarioPoints });
       }
       state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: impactEpicentreFeatures(branch, metric) });
       return;
@@ -9333,11 +10141,29 @@
     });
 
     const polarityFavourable = polarityN > 0 ? (polaritySum / polarityN) > 0 : true;
-    if (state.map.getLayer('impact-heatmap')) {
-      state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), polarityFavourable));
+    if (metric === 'electricity') {
+      state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) {
+        state.map.getSource('impact-points').setData({
+          type: 'FeatureCollection',
+          features: allPts.map(p => {
+            const polarity = p.properties && Number(p.properties.polarity);
+            return Object.assign({}, p, {
+              properties: Object.assign({}, p.properties, {
+                color: polarity >= 0 ? '#22c55e' : '#ef4444',
+                intensity: clamp(Number(p.properties && p.properties.intensity) || 0.18, 0.08, 1)
+              })
+            });
+          })
+        });
+      }
+    } else {
+      if (state.map.getLayer('impact-heatmap')) {
+        state.map.setPaintProperty('impact-heatmap', 'heatmap-color', lensImpactRamp(metric, polarityFavourable));
+      }
+      state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: allPts });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
     }
-    state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: allPts });
-    if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
     state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: epicentres });
   }
 
@@ -9490,6 +10316,7 @@
       });
       refreshPlannerVariationsBtn();
     }
+    if (els.simProgressCancel) els.simProgressCancel.addEventListener('click', cancelSimRun);
     // Global Cmd/Ctrl+Z → undoLast (T3.4). Skips when typing in an input.
     document.addEventListener('keydown', (e) => {
       const tag = (e.target && e.target.tagName) || '';
@@ -9540,6 +10367,23 @@
     // Esc to close
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        // T5.5: close whichever overlay is on top (locked-branch picker,
+        // onboarding tour, or compare/diff/etc. modals). Each has its own
+        // dismiss path; just remove the elements that don't have one.
+        const onboarding = document.querySelector('.onboarding-overlay');
+        if (onboarding) {
+          // Treat Esc as "Skip" — also persists the "seen" flag.
+          try { localStorage.setItem('belfastOnboardingV1Done', '1'); } catch (err) {}
+          onboarding.remove();
+          return;
+        }
+        const lockedPicker = document.querySelector('.locked-branch-picker-overlay');
+        if (lockedPicker) {
+          lockedPicker.remove();
+          // The picker also resets the open flag on cleanup; mirror that here.
+          try { __editableBranchPickerOpen = false; __pendingLockedEdit = null; } catch (err) {}
+          return;
+        }
         document.querySelectorAll('.modal').forEach(m => {
           if (m.id === 'diffModal' && !m.hidden) closeDiffModal();
           else m.hidden = true;
@@ -9592,15 +10436,8 @@
       syncCityBuildingHeightContext();
     }
 
-    // T3.1: first-run guided tour. Skip if the user has already dismissed it
-    // (or if e2e tests are running with the bypass flag in localStorage).
-    try {
-      const seen = localStorage.getItem('belfastOnboardingV1Done') === '1';
-      if (!seen) {
-        // Defer one tick so the map starts loading underneath the overlay.
-        setTimeout(() => showOnboardingTour({ force: false }), 600);
-      }
-    } catch (e) { /* localStorage may be unavailable */ }
+    // Onboarding tour disabled — still reachable manually via the Help button
+    // (showOnboardingTour({ force: true })).
 
     // Expose for debugging / smoke tests
     window.BelfastDashboard = {
@@ -9626,6 +10463,10 @@
       toggleBottomCollapse: toggleBottomCollapse,
       startTrafficSim: startTrafficSim,
       stopTrafficSim: stopTrafficSim,
+      branchCommitYearlyJobs: branchCommitYearlyJobs,
+      branchCommitHeatPoints: branchCommitHeatPoints,
+      refreshFutureTrafficSwarm: refreshFutureTrafficSwarm,
+      refreshHistoricalTrafficSwarm: refreshHistoricalTrafficSwarm,
       // Internals exposed for smoke tests:
       clearRoadPlanner: clearRoadPlanner,
       armRoadPlanner: armRoadPlanner,

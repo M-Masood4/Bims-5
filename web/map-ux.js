@@ -30,6 +30,25 @@
     remove: '#ef4444',
   };
 
+  // T5.3: when the active tool is "building", use the active preset's color
+  // (residential / commercial / industrial / mixed_use) so the hover preview
+  // and ripple match what's about to be placed. Mirrors PRESETS.building in
+  // dashboard.js — keep the two in sync if a new preset is added.
+  const BUILDING_PRESET_COLORS = {
+    residential: '#a855f7',
+    commercial:  '#06b6d4',
+    industrial:  '#fb923c',
+    mixed_use:   '#22c55e',
+  };
+  function colorForTool(tool) {
+    if (tool === 'building') {
+      const d = dash();
+      const preset = d && d.state && d.state.activeBuildingPreset;
+      return BUILDING_PRESET_COLORS[preset] || TOOL_COLORS.building;
+    }
+    return TOOL_COLORS[tool] || '#3b82f6';
+  }
+
   const TOOL_SHORTCUTS = {
     '1': 'select',
     '2': 'building',
@@ -141,7 +160,7 @@
       type: 'FeatureCollection',
       features: [{
         type: 'Feature',
-        properties: { color: TOOL_COLORS[tool] || '#3b82f6', tool: tool },
+        properties: { color: colorForTool(tool), tool: tool },
         geometry: { type: 'Point', coordinates: coord },
       }],
     });
@@ -155,7 +174,7 @@
     if (!ensureLayers()) return;
     const src = state.map.getSource(RIPPLE_SOURCE);
     if (!src) return;
-    const colour = TOOL_COLORS[tool] || '#3b82f6';
+    const colour = colorForTool(tool);
     const startedAt = performance.now();
     const duration = 720;
     function tick(now) {
@@ -210,8 +229,8 @@
     ghost.style.top = '-9999px';
     ghost.style.background = '#fff';
     ghost.style.boxShadow = '0 8px 22px rgba(0,0,0,0.18)';
-    ghost.style.border = '1.5px solid ' + (TOOL_COLORS[tool] || '#3b82f6');
-    ghost.style.color = TOOL_COLORS[tool] || '#3b82f6';
+    ghost.style.border = '1.5px solid ' + (colorForTool(tool));
+    ghost.style.color = colorForTool(tool);
     document.body.appendChild(ghost);
     state.dragGhostEl = ghost;
     if (e.dataTransfer) {
