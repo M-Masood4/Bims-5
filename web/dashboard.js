@@ -181,7 +181,9 @@
     { id: 'services', label: 'Public Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
   const DEFAULT_LENS = 'buildings';
-  const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
+  // T1.6: include "buildings" so the default lens is a visible chip,
+  // not an invisible state.
+  const LENS_FILTER_IDS = ['buildings', 'traffic', 'jobs', 'electricity', 'services'];
   const BELFAST_CENTER = [-5.9301, 54.5973];
   const PLANNING_ENGINES = [
     { id: 'traffic', label: 'Traffic', color: '#fb923c', objective: 'traffic_mitigation' },
@@ -485,6 +487,13 @@
 
   function ensureToolbarLensHost() {
     if (els.lensTabs && document.body.contains(els.lensTabs)) return els.lensTabs;
+    // Reuse the static lensTabs node if the HTML already provides one
+    // (otherwise we'd duplicate the chip strip). T1.7.
+    const existing = document.getElementById('lensTabs');
+    if (existing) {
+      els.lensTabs = existing;
+      return existing;
+    }
     const toolbarRight = document.querySelector('.toolbar-right');
     if (!toolbarRight) return null;
     const host = document.createElement('div');
@@ -492,8 +501,7 @@
     host.className = 'right-tabs';
     host.setAttribute('role', 'tablist');
     host.setAttribute('aria-label', 'Forecast filters');
-    const viewToggle = toolbarRight.querySelector('.toolbar-view-toggle');
-    toolbarRight.insertBefore(host, viewToggle || toolbarRight.firstChild);
+    toolbarRight.insertBefore(host, toolbarRight.firstChild);
     els.lensTabs = host;
     return host;
   }
@@ -1865,7 +1873,7 @@
     els.leftSidebarTitle.textContent = hist ? 'Events' : 'Activity Log';
     if (els.leftSidebarSubtitle) {
       els.leftSidebarSubtitle.innerHTML = hist
-        ? 'What happens<br>as time goes on'
+        ? 'Permits, openings,<br>and changes by year'
         : 'Your scenario actions<br>and simulation runs';
     }
     if (els.leftSidebarFilter) els.leftSidebarFilter.style.display = hist ? '' : 'none';
@@ -2129,11 +2137,12 @@
     if (els.modifyButtons) {
       els.modifyButtons.forEach(btn => {
         btn.removeAttribute('disabled');
+        btn.removeAttribute('aria-disabled');
         btn.style.opacity = '';
+        btn.style.cursor = '';
       });
     }
     if (els.modifySub) els.modifySub.style.color = '';
-    if (els.presetSection) els.presetSection.style.display = state.activeTool === 'building' ? '' : 'none';
     if (!els.modifyButtons) return;
     els.modifyButtons.forEach(btn => {
       const t = btn.getAttribute('data-tool');
@@ -2143,10 +2152,17 @@
       const active = isSelect ? !state.activeTool : (t === state.activeTool);
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      // Restore tool-disabled tooltip cleared by historical mode (T1.3).
+      if (btn.dataset.disabledTitle) {
+        btn.title = btn.dataset.disabledTitle;
+        delete btn.dataset.disabledTitle;
+      }
     });
-    // Hide presets unless "building" tool active
+    // Hide presets unless "building" tool active. Use the .hidden property
+    // (not style.display) — the element has a `hidden` HTML attribute that
+    // setting display='' alone won't override.
     const showPresets = state.activeTool === 'building';
-    if (els.presetSection) els.presetSection.style.display = showPresets ? '' : 'none';
+    if (els.presetSection) els.presetSection.hidden = !showPresets;
     if (els.modifySub) {
       if (state.activeTool) {
         els.modifySub.textContent = state.activeTool === 'building'
@@ -2252,7 +2268,10 @@
   function renderImpact() {
     if (!els.impactStack || !els.impactTitle) return;
     if (isHistoricalMode()) {
-      // Ensure grid is loaded for current year, then render
+      // T5.1: set the title synchronously so the year never lags behind the
+      // scrubber while loadGridYear() is in flight. renderHistoricalImpact()
+      // overwrites it with the same string after the grid resolves.
+      els.impactTitle.textContent = 'Year-over-year change (' + state.year + ')';
       loadGridYear(state.year).then(() => renderHistoricalImpact());
       return;
     }
@@ -2433,9 +2452,17 @@
 
   function renderBranchSelect() {
     if (!els.branchSelect) return;
+    // T1.5: drop the redundant "(baseline)" suffix — the baseline branch's
+    // own name already says "Baseline". Use a 🔒 prefix to signal read-only.
     els.branchSelect.innerHTML = state.branches.map(b => {
       const count = (b.items || []).length;
-      const label = (b.name || 'Branch') + (b.locked ? ' (' + (b.trendBaseline ? count + ' Belfast projected' : 'baseline') + ')' : ' - ' + count + ' item' + (count === 1 ? '' : 's'));
+      let label;
+      if (b.locked) {
+        const lockedDetail = b.trendBaseline ? count + ' Belfast projected' : 'read-only';
+        label = '🔒 ' + (b.name || 'Branch') + ' · ' + lockedDetail;
+      } else {
+        label = (b.name || 'Branch') + ' · ' + count + ' item' + (count === 1 ? '' : 's');
+      }
       return '<option value="' + escapeHtml(b.id) + '">' + escapeHtml(label) + '</option>';
     }).join('');
     els.branchSelect.value = state.activeBranchId;
@@ -2492,6 +2519,13 @@
       const itemId = el.getAttribute('data-diff-item-id');
       el.addEventListener('click', (e) => {
         e.stopPropagation();
+        // T1.2: pre-sim diff is meaningless. Direct the user to Run Simulation.
+        if (el.getAttribute('aria-disabled') === 'true' || el.dataset.needsSim === 'true') {
+          toast('Run Simulation first to see the diff for this addition.', 'warn');
+          if (els.runBtn) els.runBtn.classList.add('attention-pulse');
+          setTimeout(() => els.runBtn && els.runBtn.classList.remove('attention-pulse'), 1600);
+          return;
+        }
         handleBranchItemDiff(itemId);
       });
     });
@@ -2534,10 +2568,12 @@
   function branchLineHTML(rows) {
     return '<div class="branch-line">' + rows.map(row => {
       const clickable = (row.item || row.log) ? ' is-clickable' : '';
+      const tooltip = row.item ? branchItemTooltip(row.item) : (row.tooltip || '');
+      const titleAttr = tooltip ? ' title="' + escapeHtml(tooltip) + '"' : '';
       const itemAttr = row.item
         ? ' data-item-id="' + escapeHtml(row.item.id) + '" role="button" tabindex="0"'
         : (row.log ? ' data-log-id="' + escapeHtml(row.log.id) + '" role="button" tabindex="0"' : '');
-      return '<div class="branch-line-item' + clickable + '"' + itemAttr + '>' +
+      return '<div class="branch-line-item' + clickable + '"' + itemAttr + titleAttr + '>' +
         '<span class="branch-line-dot" style="--branch-line-color:' + escapeHtml(row.color || '#3b82f6') + '"></span>' +
         '<div class="branch-line-card">' +
           '<div class="branch-line-main">' +
@@ -2552,7 +2588,16 @@
 
   function branchItemDiffButtonHTML(item) {
     const label = 'View Diff';
-    return '<button class="branch-line-diff" type="button" data-diff-item-id="' + escapeHtml(item.id) + '" title="' + escapeHtml(label + ' for ' + branchItemTitle(item)) + '">' +
+    // The diff modal needs a scenarioResult on the active branch — show the
+    // button as disabled until the user has actually run a simulation,
+    // rather than letting the click toast an error (T1.2).
+    const branch = activeBranch();
+    const ready = !!scenarioResultForBranch(branch);
+    const tooltip = ready
+      ? label + ' for ' + branchItemTitle(item)
+      : 'Run Simulation first to compare ' + branchItemTitle(item) + ' against the no-build forecast.';
+    const disabledAttrs = ready ? '' : ' aria-disabled="true" data-needs-sim="true"';
+    return '<button class="branch-line-diff' + (ready ? '' : ' is-disabled') + '" type="button" data-diff-item-id="' + escapeHtml(item.id) + '" title="' + escapeHtml(tooltip) + '"' + disabledAttrs + '>' +
       '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/><path d="M7 6h2M7 10h2" stroke-linecap="round"/></svg>' +
       '<span>' + escapeHtml(label) + '</span>' +
     '</button>';
@@ -2580,22 +2625,37 @@
     if (item.trendBaseline && item.trendBaseline.reason) {
       return year + ' - ' + item.trendBaseline.reason;
     }
+    // T1.4: prefer a postcode; otherwise just say "custom location" and
+    // keep the precise coordinates in the row tooltip (see branchItemTooltip).
     if (item.type === 'building') {
-      const place = item.postcode || (Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'map point');
+      const place = item.postcode || 'custom location';
       return year + ' - ' + place;
     }
     if (item.type === 'building_removal') {
-      const place = Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'mapped footprint';
+      const place = item.postcode || 'mapped footprint';
       return year + ' - remove existing footprint at ' + place;
     }
     if (item.type === 'road') {
       const segments = Array.isArray(item.path) ? Math.max(1, item.path.length - 1) : 1;
       return year + ' - ' + segments + ' street segment' + (segments === 1 ? '' : 's');
     }
+    if (item.postcode) return year + ' - ' + item.postcode;
     if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
-      return year + ' - ' + locationLabel(item.lng, item.lat);
+      return year + ' - custom location';
     }
     return year;
+  }
+
+  // Verbose hover-tooltip with precise coords for power users (T1.4).
+  function branchItemTooltip(item) {
+    if (!item) return '';
+    const parts = [branchItemTitle(item)];
+    if (item.year) parts.push('Year ' + item.year);
+    if (item.postcode) parts.push(item.postcode);
+    if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      parts.push(locationLabel(item.lng, item.lat));
+    }
+    return parts.join(' · ');
   }
 
   function collectCoordinatePairs(value, out) {
@@ -3184,13 +3244,23 @@
     if (!els.branchMenu) return;
     menuTarget = branchId;
     const r = anchor.getBoundingClientRect();
-    els.branchMenu.style.left = (r.right - 140) + 'px';
-    els.branchMenu.style.top = (r.bottom + 4) + 'px';
-    els.branchMenu.hidden = false;
+    positionContextMenu(els.branchMenu, r.right - 140, r.bottom + 4);
   }
   function closeMenus() {
     if (els.branchMenu) els.branchMenu.hidden = true;
     if (els.nodeMenu) els.nodeMenu.hidden = true;
+  }
+  function positionContextMenu(menu, left, top) {
+    if (!menu) return;
+    const pad = 8;
+    menu.style.left = left + 'px';
+    menu.style.top = top + 'px';
+    menu.hidden = false;
+    const rect = menu.getBoundingClientRect();
+    const maxLeft = Math.max(pad, window.innerWidth - rect.width - pad);
+    const maxTop = Math.max(pad, window.innerHeight - rect.height - pad);
+    menu.style.left = clamp(left, pad, maxLeft) + 'px';
+    menu.style.top = clamp(top, pad, maxTop) + 'px';
   }
   function attachBranchMenuEvents() {
     if (!els.branchMenu) return;
@@ -3225,9 +3295,7 @@
     if (inspectBtn) inspectBtn.hidden = !isItem;
     if (deleteBtn) deleteBtn.hidden = !isItem;
     if (forkBtn) forkBtn.hidden = !(isItem || target.logId);
-    els.nodeMenu.style.left = (event.clientX) + 'px';
-    els.nodeMenu.style.top = (event.clientY) + 'px';
-    els.nodeMenu.hidden = false;
+    positionContextMenu(els.nodeMenu, event.clientX, event.clientY);
   }
 
   function renderBranchTimeline() {
@@ -4928,15 +4996,23 @@
       }, findFirstSymbolLayer());
     }
     if (!state.map.getLayer('buildability-areas-3d')) {
+      // T5.2: Mapbox GL doesn't accept data expressions on
+      // `fill-extrusion-opacity`; baking the per-feature alpha into the
+      // RGBA fill colour is the standard workaround and silences the
+      // "data expressions not supported" console spam.
       state.map.addLayer({
         id: 'buildability-areas-3d',
         type: 'fill-extrusion',
         source: 'buildability-areas',
         paint: {
-          'fill-extrusion-color': '#22c55e',
+          'fill-extrusion-color': [
+            'rgba',
+            34, 197, 94,
+            ['coalesce', ['get', '__buildableOpacity3d'], 0.0]
+          ],
           'fill-extrusion-height': ['case', ['==', ['get', 'buildable'], true], ['coalesce', ['get', '__buildableHeight'], 18], 0],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': ['coalesce', ['get', '__buildableOpacity3d'], 0.0]
+          'fill-extrusion-opacity': 1
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
@@ -6202,7 +6278,7 @@
     // historical mode used to hijack this strip with lens buttons, but
     // those now live in the right sidebar's tabs. We just dim/disable the
     // editing tools in historical mode so the user knows they can't place.
-    if (els.presetSection) els.presetSection.style.display = 'none';
+    if (els.presetSection) els.presetSection.hidden = true;
     if (els.modifySub) {
       els.modifySub.innerHTML = 'Historical mode — pick a lens on the right and a year to inspect.';
       els.modifySub.style.color = '';
@@ -6213,8 +6289,15 @@
         const isSelect = t === 'select';
         btn.classList.toggle('active', isSelect);
         if (!isSelect) {
-          btn.setAttribute('disabled', 'disabled');
+          // Dim, but keep clickable — the click handler already auto-jumps
+          // to the first sim year so the chosen tool is meaningful (T1.3).
+          if (!btn.dataset.disabledTitle) btn.dataset.disabledTitle = btn.title || '';
+          btn.title = (btn.dataset.disabledTitle || btn.getAttribute('aria-label') || 'Tool') +
+            ' — available in simulation years (2026–2036). Click to jump to 2026.';
+          btn.removeAttribute('disabled');
+          btn.setAttribute('aria-disabled', 'true');
           btn.style.opacity = '0.5';
+          btn.style.cursor = 'pointer';
         }
       });
     }

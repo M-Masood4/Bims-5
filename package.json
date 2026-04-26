@@ -12,7 +12,7 @@
     "build:transformer-model": "python scripts/build_transformer_model.py",
     "start": "node server.js",
     "verify": "node scripts/verify-manifest.js && node scripts/verify-forecast.js && node scripts/verify-transformer-model.js && node scripts/verify-trend-baseline.js",
-    "verify:browser": "node scripts/browser_smoke.js",
+    "verify:browser": "node scripts/browser_smoke.js && node scripts/dashboard_smoke.js",
     "test": "npm run build:manifest && npm run build:forecast && npm run verify"
   },
   "devDependencies": {

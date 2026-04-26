@@ -144,12 +144,15 @@ function assert(condition, message) {
       hasImpactStack: Boolean(document.querySelector("#impactStack")),
       hasImpactTitle: Boolean(document.querySelector("#impactTitle")),
       branchListText: document.querySelector("#branchList")?.textContent || "",
+      impactText: document.querySelector("#impactStack")?.textContent || "",
       population: metrics.population,
       traffic: metrics.traffic
     };
   });
-  assert(!sidebarState.hasImpactStack && !sidebarState.hasImpactTitle, "Impact overview should not render in the branch sidebar.");
+  assert(sidebarState.hasImpactStack && sidebarState.hasImpactTitle, "Impact overview did not render in the branch sidebar.");
   assert(sidebarState.branchListText.includes("Smoke road"), "Branch additions did not render in the right sidebar.");
+  assert(sidebarState.impactText.includes("Simulation Data"), "Concrete simulation data did not render in the impact panel.");
+  assert(sidebarState.impactText.includes("Transformer"), "Transformer concrete impact row did not render.");
   assert(Number.isFinite(sidebarState.population) && Number.isFinite(sidebarState.traffic), "Scenario metrics were not available.");
 
   const forkMenu = await page.evaluate(() => {
@@ -197,15 +200,28 @@ function assert(condition, message) {
   await page.waitForFunction(() => window.BelfastDashboard.state.lens === "electricity", null, { timeout: 10000 });
   await page.locator(".lens-tab", { hasText: "Jobs" }).click();
   await page.waitForFunction(() => window.BelfastDashboard.state.lens === "jobs", null, { timeout: 10000 });
+  const simulatedBranchId = await page.evaluate(() => window.BelfastDashboard.state.branches.find((branch) => branch.name === "Transformer Smoke")?.id || "");
+  assert(simulatedBranchId, "Could not find simulated Transformer Smoke branch.");
+  await page.locator("#branchSelect").selectOption(simulatedBranchId);
+  await page.waitForFunction((id) => window.BelfastDashboard.state.activeBranchId === id, simulatedBranchId, { timeout: 10000 });
+  await page.evaluate(() => window.BelfastDashboard.setYear(2036));
 
   const rendered = await page.evaluate(() => {
+    const text = document.querySelector("#impactStack")?.textContent || "";
     return {
-      impactOverviewPresent: Boolean(document.querySelector("#impactStack") || document.querySelector("#impactTitle")),
+      hasConcrete: Boolean(document.querySelector("[data-testid='concrete-impact-data']")),
+      hasTransformer: text.includes("Transformer"),
+      hasHeadroom: text.includes("headroom"),
+      hasConfidence: text.includes("Confidence"),
+      hasCapacityJobs: text.includes("capacity-enabled"),
       activeLens: window.BelfastDashboard.state.lens,
       activeYear: window.BelfastDashboard.state.year
     };
   });
-  assert(!rendered.impactOverviewPresent, "Impact overview reappeared in the right sidebar.");
+  assert(rendered.hasConcrete, "Concrete transformer impact panel did not render.");
+  assert(rendered.hasTransformer && rendered.hasHeadroom, "Transformer relief/headroom rows did not render.");
+  assert(rendered.hasConfidence, "Transformer confidence text did not render.");
+  assert(rendered.hasCapacityJobs, "Capacity-enabled jobs did not render.");
   assert(rendered.activeLens === "jobs", "Jobs lens did not activate.");
   assert(rendered.activeYear === 2036, "Scenario year did not stay on 2036.");
 

@@ -28,7 +28,7 @@ The shipped app is currently centered on:
 - `lib/scenario-studio.js` for the deterministic simulation engine
 - `scripts/build_mode_a_replay.py`, `scripts/train_forecast_model.py`, and `scripts/build_transformer_model.py` for data/model artifact generation
 
-The codebase also contains older or alternate frontend files, especially `web/app.js` and `web/scenario-studio.js`, that are present in the repo but are not loaded by the current `web/index.html`.
+The current frontend has a single production entrypoint: `web/index.html` loading `web/dashboard.js` plus the active map, traffic, transit, and impact modules.
 
 ## 2. What The App Actually Is
 
@@ -115,14 +115,9 @@ The repository is structured to keep everything local:
 - `scripts/verify-transformer-model.js`
   Node validation of transformer artifacts.
 
-### 3.6 Older or likely legacy frontend code
+### 3.6 Removed legacy frontend code
 
-- `web/app.js`
-  Older replay UI/controller. Present in repo, but not loaded by the current page.
-- `web/scenario-studio.js`
-  Older standalone Scenario Studio frontend. Also not loaded by the current page.
-
-These files still contain meaningful logic and historical design intent, but they are not the current production entrypoint.
+Older alternate entrypoints were removed because the live page does not load them and they made it easy to audit the wrong UI path. The active browser runtime is now centered on `web/dashboard.js`.
 
 ## 4. Active Runtime Architecture
 
@@ -1179,12 +1174,9 @@ There are browser smoke scripts under `scripts/`, but this repo’s most formal 
 - `lib/scenario-studio.js`
 - build scripts under `scripts/`
 
-### 24.2 Likely legacy or alternate UI path
+### 24.2 Legacy UI path
 
-- `web/app.js`
-- `web/scenario-studio.js`
-
-These are still useful for understanding historical product evolution, but they are not currently loaded by the live `index.html`.
+The old alternate UI path has been removed. Product behavior should be audited through `web/index.html`, `web/dashboard.js`, and the active modules loaded by that page.
 
 ## 25. Architectural Strengths
 
@@ -1236,7 +1228,7 @@ The historical replay and future forecast layers are conceptually related but no
 
 ### 26.5 Legacy code residue
 
-The presence of `web/app.js` and `web/scenario-studio.js` means a new engineer could read the wrong frontend first.
+The old alternate frontend entrypoints have been removed, reducing the chance that a new engineer reads the wrong runtime first.
 
 ## 27. Direct Answers To The ML / Model Question
 

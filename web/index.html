@@ -17,7 +17,7 @@
   <!-- ========== LEFT SIDEBAR (Events / Activity Log) ========== -->
   <aside class="left-sidebar">
     <h2 id="leftSidebarTitle">Events</h2>
-    <p class="left-subtitle" id="leftSidebarSubtitle">What happens<br>as time goes on</p>
+    <p class="left-subtitle" id="leftSidebarSubtitle">Permits, openings,<br>and changes by year</p>
     <select id="leftSidebarFilter" class="category-select">
       <option value="all">All Categories</option>
       <option value="traffic">Traffic</option>
@@ -46,23 +46,23 @@
 
       <div class="tools-host">
         <div class="modify-list" id="modifyList" role="toolbar" aria-label="Edit tools">
-          <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true" title="Select" aria-label="Select">
+          <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true" title="Select — click an item on the map to inspect it" aria-label="Select">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l4 10 2-5 5-2z" stroke-linejoin="round"/></svg>
             <span>Select</span>
           </button>
-          <button class="tool-btn" data-tool="building" type="button" aria-pressed="false" title="Buildings" aria-label="Buildings">
+          <button class="tool-btn" data-tool="building" type="button" aria-pressed="false" title="Buildings — click on the map to place a new building" aria-label="Buildings">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/></svg>
             <span>Buildings</span>
           </button>
-          <button class="tool-btn" data-tool="road" type="button" aria-pressed="false" title="Roads" aria-label="Roads">
+          <button class="tool-btn" data-tool="road" type="button" aria-pressed="false" title="Roads — search a postcode, then click two glowing junctions to plan a road" aria-label="Roads">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h12M2 5h4m4 0h4M2 11h4m4 0h4" stroke-linecap="round"/></svg>
             <span>Roads</span>
           </button>
-          <button class="tool-btn" data-tool="infrastructure" type="button" aria-pressed="false" title="Transformer" aria-label="Transformer">
+          <button class="tool-btn" data-tool="infrastructure" type="button" aria-pressed="false" title="Transformer — click on the map to add a grid transformer" aria-label="Transformer">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M7 6v4"/><path d="M17 6v4"/><rect x="7" y="10" width="10" height="7" rx="1.8"/><path d="M10 13h4"/><path d="M12 3v3"/><path d="M12 17v4"/><path d="M8 21h8"/><path d="M15 11l-4 5h4l-3 4"/></svg>
             <span>Transformer</span>
           </button>
-          <button class="tool-btn danger" data-tool="remove" type="button" aria-pressed="false" title="Remove" aria-label="Remove">
+          <button class="tool-btn danger" data-tool="remove" type="button" aria-pressed="false" title="Remove — click an item on the map to delete it from this branch" aria-label="Remove">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
             <span>Remove</span>
           </button>
@@ -75,14 +75,11 @@
 
       <div class="toolbar-right">
         <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters">
+          <button class="lens-tab active" data-lens="buildings" type="button" aria-pressed="true" title="Buildings filter" style="--lens-color:#3b82f6">Buildings</button>
           <button class="lens-tab" data-lens="traffic" type="button" aria-pressed="false" title="Traffic filter" style="--lens-color:#fb923c">Traffic</button>
           <button class="lens-tab" data-lens="jobs" type="button" aria-pressed="false" title="Jobs filter" style="--lens-color:#a855f7">Jobs</button>
           <button class="lens-tab" data-lens="electricity" type="button" aria-pressed="false" title="Electricity filter" style="--lens-color:#06b6d4">Electricity</button>
           <button class="lens-tab" data-lens="services" type="button" aria-pressed="false" title="Public Transit filter" style="--lens-color:#22c55e">Public Transit</button>
-        </div>
-        <div class="toolbar-view-toggle" role="group" aria-label="Map view">
-          <button class="toolbar-view-btn active" type="button" data-view="2D" title="2D map" aria-label="2D map">2D</button>
-          <button class="toolbar-view-btn" type="button" data-view="3D" title="3D view" aria-label="3D view">3D</button>
         </div>
         <button class="icon-btn" id="exportBtn" type="button" title="Export">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -222,6 +219,11 @@
         <span id="tlBranchName">Additions</span>
       </div>
       <div id="branchList" class="branch-addition-list"></div>
+
+      <div class="section-title impact-title">
+        <span id="impactTitle">Impact Overview</span>
+      </div>
+      <div id="impactStack" class="impact-stack"></div>
 
       <div class="traffic-sim-section" id="trafficSimSection">
         <div class="traffic-sim-head">
