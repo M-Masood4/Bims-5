@@ -41,6 +41,7 @@ const mimeTypes = {
   ".js": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".md": "text/markdown; charset=utf-8",
+  ".pdf": "application/pdf",
   ".png": "image/png",
   ".webp": "image/webp",
   ".jpg": "image/jpeg",
@@ -542,6 +543,604 @@ function reporterPrompt(simulation, critic) {
       critic_notes: critic
     })
   ].join("\n");
+}
+
+const EXPORT_REPORT_SCHEMA = {
+  type: "object",
+  properties: {
+    headline: { type: "string" },
+    executiveSummary: { type: "string" },
+    comparisonSummary: { type: "string" },
+    branchNarratives: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          branchName: { type: "string" },
+          explanation: { type: "string" },
+          opportunities: { type: "array", items: { type: "string" } },
+          risks: { type: "array", items: { type: "string" } },
+          nextSteps: { type: "array", items: { type: "string" } }
+        },
+        required: ["branchName", "explanation", "opportunities", "risks", "nextSteps"]
+      }
+    },
+    methodNotes: { type: "array", items: { type: "string" } }
+  },
+  required: ["headline", "executiveSummary", "comparisonSummary", "branchNarratives", "methodNotes"]
+};
+
+const REPORT_DISPLAY_METRICS = [
+  { id: "population", label: "Population", unit: "people", direction: "up" },
+  { id: "traffic", label: "Traffic Congestion", unit: "index", direction: "down" },
+  { id: "air", label: "Air Quality Index", unit: "AQI", direction: "up" },
+  { id: "housing", label: "Housing Demand", unit: "index", direction: "down" },
+  { id: "economy", label: "Economic Output", unit: "GBP billions", direction: "up" }
+];
+
+const REPORT_FORECAST_METRICS = [
+  "traffic",
+  "population",
+  "jobs",
+  "economy",
+  "housingPressure",
+  "services",
+  "electricity",
+  "environmentAir",
+  "greenScore",
+  "fairness",
+  "fiscalBalance",
+  "planningViability"
+];
+
+const CONCRETE_KEYS = {
+  traffic: ["dailyTripsAdded", "roadReliefTrips", "netDailyTrips", "meanCongestionDelta", "journeyTimeDeltaPct"],
+  jobs: ["grossJobsEstimate", "capacityEnabledJobs", "netJobsEstimate", "employmentAccessDelta"],
+  electricity: ["peakKwChange", "transformerReliefKw", "overloadRiskDelta", "loadIndexDelta", "p10", "p50", "p90"],
+  services: ["demandAdded", "capacityRelief", "netServiceDemand", "accessDelta"],
+  buildings: ["units", "floors", "footprintSqm", "grossFloorAreaSqm"]
+};
+
+function cleanText(value, fallback = "") {
+  const text = value === undefined || value === null ? fallback : String(value);
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function htmlEscape(value) {
+  return cleanText(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function arrayOf(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function numberOrNull(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function numericObject(input) {
+  const output = {};
+  Object.entries(input || {}).forEach(([key, value]) => {
+    const n = numberOrNull(value);
+    if (n !== null) output[key] = n;
+  });
+  return output;
+}
+
+function reportDeltaLabel(value) {
+  const n = numberOrNull(value);
+  if (n === null) return "n/a";
+  if (Math.abs(n) >= 1000) return `${n >= 0 ? "+" : ""}${Math.round(n).toLocaleString("en-GB")}`;
+  if (Math.abs(n) >= 10) return `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
+  return `${n >= 0 ? "+" : ""}${n.toFixed(3)}`;
+}
+
+function reportValue(metric, value) {
+  const n = numberOrNull(value);
+  if (n === null) return "n/a";
+  if (metric.id === "population") return Math.round(n).toLocaleString("en-GB");
+  if (metric.id === "economy") return `GBP ${n.toFixed(2)}B`;
+  if (metric.id === "air") return `${Math.round(n)} AQI`;
+  return n.toFixed(3);
+}
+
+function rawSignalValue(value) {
+  const n = numberOrNull(value);
+  if (n === null) return cleanText(value || "n/a");
+  if (Math.abs(n) >= 1000) return Math.round(n).toLocaleString("en-GB");
+  return n.toFixed(3);
+}
+
+function slugify(value, fallback = "report") {
+  return cleanText(value, fallback).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || fallback;
+}
+
+function normalizeReportItem(item = {}) {
+  const type = cleanText(item.type || item.interventionType || "item");
+  const label = cleanText(item.label || item.title || item.name || type);
+  const config = item.buildingConfig || item.config || {};
+  return {
+    id: cleanText(item.id || ""),
+    type,
+    label,
+    year: numberOrNull(item.year) || null,
+    preset: cleanText(item.preset || config.size || ""),
+    plannerEngine: cleanText(item.plannerEngine || ""),
+    details: {
+      buildingType: cleanText(config.buildingType || item.buildingType || ""),
+      affordabilityMix: cleanText(config.affordabilityMix || item.affordabilityMix || ""),
+      floors: numberOrNull(config.floors || item.floors),
+      footprintSqm: numberOrNull(config.footprintSqm || item.footprintSqm),
+      capacityKva: numberOrNull(item.capacityKva || config.capacityKva),
+      serviceRadiusM: numberOrNull(item.serviceRadiusM || item.radiusM || config.serviceRadiusM),
+      pathPoints: arrayOf(item.path).length,
+      roadLengthM: numberOrNull(item.lengthM)
+    }
+  };
+}
+
+function normalizeTimelineRow(row = {}) {
+  const year = numberOrNull(row.year);
+  if (year === null) return null;
+  return {
+    year,
+    metrics: numericObject(row.metrics),
+    rawForecastMetrics: numericObject(row.rawForecastMetrics)
+  };
+}
+
+function normalizeReportBranch(input = {}, index = 0) {
+  return {
+    id: cleanText(input.id || `branch-${index + 1}`),
+    name: cleanText(input.name || input.branchName || `Branch ${index + 1}`, `Branch ${index + 1}`),
+    color: cleanText(input.color || "#3b82f6"),
+    locked: Boolean(input.locked),
+    forecastObjective: cleanText(input.forecastObjective || input.objective || "user_proposal"),
+    metrics: numericObject(input.metrics),
+    baselineMetrics: numericObject(input.baselineMetrics),
+    rawForecastMetrics: numericObject(input.rawForecastMetrics),
+    diffFromBaseline: numericObject(input.diffFromBaseline),
+    concreteImpacts: input.concreteImpacts && typeof input.concreteImpacts === "object" ? input.concreteImpacts : null,
+    timeline: arrayOf(input.timeline).map(normalizeTimelineRow).filter(Boolean).slice(0, 40),
+    items: arrayOf(input.items).map(normalizeReportItem).slice(0, 80),
+    activityLog: arrayOf(input.activityLog).slice(-12).map((entry) => ({
+      title: cleanText(entry.title || entry.type || "Activity"),
+      detail: cleanText(entry.detail || ""),
+      year: numberOrNull(entry.year),
+      createdAt: cleanText(entry.createdAt || "")
+    })),
+    scenario: {
+      modelVersion: cleanText(input.scenario?.modelVersion || input.modelVersion || ""),
+      transformerModelVersion: cleanText(input.scenario?.transformerModelVersion || input.transformerModelVersion || ""),
+      recommendedBranch: cleanText(input.scenario?.recommendedBranch || input.recommendedBranch || ""),
+      reportHeadline: cleanText(input.scenario?.reportHeadline || ""),
+      reportSummary: cleanText(input.scenario?.reportSummary || ""),
+      confidenceLabel: cleanText(input.scenario?.confidenceLabel || "")
+    }
+  };
+}
+
+function buildExportReportModel(payload = {}) {
+  const branches = arrayOf(payload.branches).slice(0, 2).map(normalizeReportBranch);
+  if (!branches.length) {
+    const error = new Error("At least one branch is required for PDF export.");
+    error.statusCode = 400;
+    throw error;
+  }
+  const targetYear = numberOrNull(payload.targetYear || payload.year) || 2036;
+  const baselineYear = numberOrNull(payload.baselineYear) || 2025;
+  const forecastYears = arrayOf(payload.forecastYears).map(numberOrNull).filter((year) => year !== null);
+  const baselineMetrics = numericObject(payload.baselineMetrics || branches[0].baselineMetrics);
+  const rawBaselineMetrics = numericObject(payload.rawBaselineMetrics || payload.baselineRawForecastMetrics || {});
+  return {
+    generatedAt: cleanText(payload.generatedAt || new Date().toISOString()),
+    targetYear,
+    baselineYear,
+    forecastYears: forecastYears.length ? forecastYears : Array.from({ length: 11 }, (_, i) => 2026 + i),
+    exportMode: branches.length === 2 ? "two_branch" : "single_branch",
+    baselineMetrics,
+    rawBaselineMetrics,
+    branches,
+    source: {
+      app: cleanText(payload.source?.app || "Replay Belfast Scenario Studio"),
+      deterministicBasis: cleanText(payload.source?.deterministicBasis || "Local 2025 baseline forecast, deterministic scenario branches, and branch intervention data."),
+      generatedBy: cleanText(payload.source?.generatedBy || "Export button"),
+      note: cleanText(payload.source?.note || "")
+    }
+  };
+}
+
+function compactReportForGemini(report) {
+  return {
+    targetYear: report.targetYear,
+    baselineYear: report.baselineYear,
+    exportMode: report.exportMode,
+    baselineMetrics: report.baselineMetrics,
+    rawBaselineMetrics: report.rawBaselineMetrics,
+    branches: report.branches.map((branch) => ({
+      name: branch.name,
+      forecastObjective: branch.forecastObjective,
+      metrics: branch.metrics,
+      rawForecastMetrics: branch.rawForecastMetrics,
+      diffFromBaseline: branch.diffFromBaseline,
+      itemCount: branch.items.length,
+      items: branch.items.slice(0, 12),
+      concreteImpacts: branch.concreteImpacts,
+      scenario: branch.scenario
+    }))
+  };
+}
+
+function fallbackExportExplanation(report, detail = "") {
+  const branchNames = report.branches.map((branch) => branch.name).join(" and ");
+  const first = report.branches[0];
+  const second = report.branches[1];
+  const comparison = second
+    ? `${first.name} and ${second.name} are compared against the same ${report.baselineYear} no-build baseline. Differences in the tables come directly from the deterministic branch metrics supplied by the dashboard.`
+    : `${first.name} is compared against the ${report.baselineYear} no-build baseline. Differences in the tables come directly from deterministic branch metrics supplied by the dashboard.`;
+  return {
+    headline: `${branchNames} scenario report`,
+    executiveSummary: `This export packages the selected ${report.targetYear} branch data into a planner-ready PDF. Numeric values are deterministic outputs from the local forecast and branch state; narrative notes are constrained to those supplied values.`,
+    comparisonSummary: comparison,
+    branchNarratives: report.branches.map((branch) => ({
+      branchName: branch.name,
+      explanation: `${branch.name} includes ${branch.items.length} staged item${branch.items.length === 1 ? "" : "s"} and uses the ${branch.forecastObjective || "user_proposal"} objective. Review the scorecard, timeline, and concrete impact tables before treating the branch as delivery-ready.`,
+      opportunities: [
+        "Use the KPI scorecard to identify where the branch improves against the no-build baseline.",
+        "Use the intervention inventory to audit what drove the deterministic forecast."
+      ],
+      risks: [
+        "Forecast outputs are proxy estimates and do not replace engineering, transport, or planning review."
+      ],
+      nextSteps: [
+        "Validate high-impact measures with service owners.",
+        "Use the concrete impact table to decide where deeper evidence is needed."
+      ]
+    })),
+    methodNotes: [
+      "Gemini was not used for this export narrative." + (detail ? ` ${detail}` : ""),
+      "The PDF structure, headings, and table titles are deterministic and remain the same for every export."
+    ],
+    geminiUsed: false,
+    model: null,
+    error: detail
+  };
+}
+
+async function buildExportExplanation(report) {
+  if (!geminiKey()) return fallbackExportExplanation(report, "No Gemini key is configured.");
+  try {
+    const gemini = await callGeminiJson({
+      agentName: "PDF Export Reporter",
+      temperature: 0.2,
+      maxOutputTokens: 2200,
+      responseJsonSchema: EXPORT_REPORT_SCHEMA,
+      prompt: [
+        "You are the PDF Export Reporter for Replay Belfast.",
+        "Explain the selected scenario branch export using only the deterministic data provided.",
+        "Rules:",
+        "- Do not invent metrics, sources, places, dates, or claims.",
+        "- Keep wording useful to city planners and residents.",
+        "- Refer to tables by their fixed titles only when helpful.",
+        "- If two branches are supplied, compare them clearly. If one branch is supplied, compare it to the baseline.",
+        "- Return only JSON matching the schema.",
+        "Deterministic export payload:",
+        JSON.stringify(compactReportForGemini(report))
+      ].join("\n")
+    });
+    const parsed = requireKeys(gemini.json, ["headline", "executiveSummary", "comparisonSummary", "branchNarratives", "methodNotes"], "PDF Export Reporter response");
+    return { ...parsed, geminiUsed: true, model: gemini.model };
+  } catch (error) {
+    return fallbackExportExplanation(report, `Gemini explanation failed: ${error.message}`);
+  }
+}
+
+function tableHtml(title, headers, rows) {
+  const bodyRows = rows.length ? rows : [headers.map((_, index) => index === 0 ? "No data supplied" : "")];
+  return [
+    `<h3>${htmlEscape(title)}</h3>`,
+    "<table>",
+    "<thead><tr>",
+    headers.map((header) => `<th>${htmlEscape(header)}</th>`).join(""),
+    "</tr></thead>",
+    "<tbody>",
+    bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${htmlEscape(cell)}</td>`).join("")}</tr>`).join(""),
+    "</tbody>",
+    "</table>"
+  ].join("");
+}
+
+function listHtml(items) {
+  const safeItems = arrayOf(items).filter((item) => cleanText(item));
+  if (!safeItems.length) return "<p class=\"muted\">No notes supplied.</p>";
+  return `<ul>${safeItems.map((item) => `<li>${htmlEscape(item)}</li>`).join("")}</ul>`;
+}
+
+function scopeRows(report, explanation) {
+  return [
+    ["Export mode", report.exportMode === "two_branch" ? "Two branch comparison" : "Single branch report"],
+    ["Target year", String(report.targetYear)],
+    ["Baseline year", String(report.baselineYear)],
+    ["Branches exported", report.branches.map((branch) => branch.name).join("; ")],
+    ["Deterministic basis", report.source.deterministicBasis],
+    ["Gemini narrative", explanation.geminiUsed ? `Used ${explanation.model}` : "Not used; deterministic fallback narrative"],
+    ["Generated at", report.generatedAt]
+  ];
+}
+
+function branchSummaryRows(report) {
+  const a = report.branches[0];
+  const b = report.branches[1] || null;
+  const cell = (branch, key) => branch ? key(branch) : "-";
+  return [
+    ["Branch name", cell(a, (branch) => branch.name), cell(b, (branch) => branch.name)],
+    ["Branch id", cell(a, (branch) => branch.id), cell(b, (branch) => branch.id)],
+    ["Forecast objective", cell(a, (branch) => branch.forecastObjective), cell(b, (branch) => branch.forecastObjective)],
+    ["Staged items", cell(a, (branch) => String(branch.items.length)), cell(b, (branch) => String(branch.items.length))],
+    ["Scenario model", cell(a, (branch) => branch.scenario.modelVersion || "deterministic forecast"), cell(b, (branch) => branch.scenario.modelVersion || "deterministic forecast")],
+    ["Transformer model", cell(a, (branch) => branch.scenario.transformerModelVersion || "not supplied"), cell(b, (branch) => branch.scenario.transformerModelVersion || "not supplied")],
+    ["Recommended branch", cell(a, (branch) => branch.scenario.recommendedBranch || "not supplied"), cell(b, (branch) => branch.scenario.recommendedBranch || "not supplied")],
+    ["Confidence", cell(a, (branch) => branch.scenario.confidenceLabel || "not supplied"), cell(b, (branch) => branch.scenario.confidenceLabel || "not supplied")]
+  ];
+}
+
+function kpiRows(report) {
+  const a = report.branches[0];
+  const b = report.branches[1] || null;
+  return REPORT_DISPLAY_METRICS.map((metric) => {
+    const baseline = report.baselineMetrics[metric.id];
+    const aValue = a.metrics[metric.id];
+    const bValue = b ? b.metrics[metric.id] : null;
+    const aNum = numberOrNull(aValue);
+    const bNum = numberOrNull(bValue);
+    const baseNum = numberOrNull(baseline);
+    const delta = b
+      ? (aNum === null || bNum === null ? null : bNum - aNum)
+      : (aNum === null || baseNum === null ? null : aNum - baseNum);
+    const readoutBase = b ? `${b.name} minus ${a.name}` : `${a.name} minus baseline`;
+    return [
+      metric.label,
+      reportValue(metric, baseline),
+      reportValue(metric, aValue),
+      b ? reportValue(metric, bValue) : "-",
+      reportDeltaLabel(delta),
+      `${readoutBase}; ${metric.direction === "up" ? "higher is better" : "lower is better"}`
+    ];
+  });
+}
+
+function rawSignalRows(report) {
+  const rows = [];
+  for (const metric of REPORT_FORECAST_METRICS) {
+    const baseline = report.rawBaselineMetrics[metric];
+    const values = report.branches.map((branch) => branch.rawForecastMetrics[metric]);
+    const aValue = numberOrNull(values[0]);
+    const bValue = numberOrNull(values[1]);
+    const diff = report.branches[1]
+      ? (aValue === null || bValue === null ? null : bValue - aValue)
+      : report.branches[0].diffFromBaseline[metric];
+    rows.push([
+      metric,
+      baseline === undefined ? "n/a" : rawSignalValue(baseline),
+      rawSignalValue(values[0]),
+      report.branches[1] ? rawSignalValue(values[1]) : "-",
+      reportDeltaLabel(diff)
+    ]);
+  }
+  return rows;
+}
+
+function timelineRows(report) {
+  const years = report.forecastYears.filter((year) => year >= 2026 && year <= 2036);
+  const rows = [];
+  for (const year of years) {
+    for (const metric of REPORT_DISPLAY_METRICS) {
+      const aRow = report.branches[0].timeline.find((row) => row.year === year);
+      const bRow = report.branches[1]?.timeline.find((row) => row.year === year);
+      rows.push([
+        String(year),
+        metric.label,
+        reportValue(metric, report.baselineMetrics[metric.id]),
+        reportValue(metric, aRow?.metrics?.[metric.id]),
+        report.branches[1] ? reportValue(metric, bRow?.metrics?.[metric.id]) : "-"
+      ]);
+    }
+  }
+  return rows;
+}
+
+function concreteImpactRows(report) {
+  const rows = [];
+  for (const branch of report.branches) {
+    const impacts = branch.concreteImpacts || {};
+    for (const [domain, value] of Object.entries(impacts)) {
+      if (!value || typeof value !== "object" || Array.isArray(value)) continue;
+      const keys = CONCRETE_KEYS[domain] || Object.keys(value).filter((key) => key !== "method" && key !== "modelBasis").slice(0, 8);
+      for (const key of keys) {
+        if (value[key] === undefined) continue;
+        rows.push([
+          branch.name,
+          domain,
+          key,
+          rawSignalValue(value[key]),
+          cleanText(value.method || value.modelBasis || impacts.modelBasis || "deterministic scenario output")
+        ]);
+      }
+    }
+  }
+  return rows.slice(0, 90);
+}
+
+function interventionRows(report) {
+  const rows = [];
+  for (const branch of report.branches) {
+    for (const item of branch.items) {
+      const details = [];
+      if (item.details.buildingType) details.push(`type ${item.details.buildingType}`);
+      if (item.details.affordabilityMix) details.push(`mix ${item.details.affordabilityMix}`);
+      if (item.details.floors !== null) details.push(`${item.details.floors} floors`);
+      if (item.details.footprintSqm !== null) details.push(`${item.details.footprintSqm} sqm footprint`);
+      if (item.details.capacityKva !== null) details.push(`${item.details.capacityKva} kVA`);
+      if (item.details.serviceRadiusM !== null) details.push(`${item.details.serviceRadiusM} m radius`);
+      if (item.details.pathPoints) details.push(`${item.details.pathPoints} path points`);
+      rows.push([
+        branch.name,
+        item.year === null ? "n/a" : String(item.year),
+        item.type,
+        item.label,
+        details.join("; ") || "No extra deterministic details supplied"
+      ]);
+    }
+  }
+  return rows;
+}
+
+function narrativeHtml(report, explanation) {
+  return report.branches.map((branch) => {
+    const narrative = arrayOf(explanation.branchNarratives).find((item) => item.branchName === branch.name) || {};
+    return [
+      `<div class="narrative">`,
+      `<h3>${htmlEscape(branch.name)}</h3>`,
+      `<p>${htmlEscape(narrative.explanation || `${branch.name} is included in this export.`)}</p>`,
+      `<div class="note-grid">`,
+      `<div><h4>Opportunities</h4>${listHtml(narrative.opportunities)}</div>`,
+      `<div><h4>Risks</h4>${listHtml(narrative.risks)}</div>`,
+      `<div><h4>Next Steps</h4>${listHtml(narrative.nextSteps)}</div>`,
+      `</div>`,
+      `</div>`
+    ].join("");
+  }).join("");
+}
+
+function renderBranchReportHtml(report, explanation) {
+  return `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${htmlEscape(explanation.headline)}</title>
+<style>
+@page { size: A4; margin: 14mm 12mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; color: #172033; font-size: 10.5px; line-height: 1.42; margin: 0; }
+.cover { border-bottom: 2px solid #172033; padding-bottom: 14px; margin-bottom: 16px; }
+.kicker { color: #526173; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 9px; }
+h1 { font-size: 24px; line-height: 1.1; margin: 5px 0 8px; }
+h2 { font-size: 15px; margin: 18px 0 8px; padding-top: 6px; border-top: 1px solid #d8dee8; }
+h3 { font-size: 11px; margin: 12px 0 5px; color: #253145; }
+h4 { font-size: 10px; margin: 0 0 4px; color: #4b5b70; text-transform: uppercase; letter-spacing: 0.04em; }
+p { margin: 0 0 8px; }
+.meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.meta div { border: 1px solid #d8dee8; background: #f8fafc; padding: 7px; border-radius: 6px; }
+.meta span { display: block; color: #64748b; font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+.meta strong { display: block; margin-top: 2px; font-size: 11px; }
+table { width: 100%; border-collapse: collapse; margin: 4px 0 12px; page-break-inside: auto; }
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+th { background: #172033; color: #fff; text-align: left; padding: 5px 6px; font-size: 8.8px; text-transform: uppercase; letter-spacing: 0.04em; }
+td { border: 1px solid #d8dee8; padding: 5px 6px; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #f8fafc; }
+.summary { border-left: 4px solid #2563eb; background: #f8fafc; padding: 10px 12px; margin: 8px 0 12px; }
+.narrative { border: 1px solid #d8dee8; border-radius: 7px; padding: 9px; margin-bottom: 10px; }
+.note-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+ul { margin: 0; padding-left: 15px; }
+li { margin-bottom: 3px; }
+.muted { color: #64748b; }
+.footer-note { margin-top: 10px; color: #64748b; font-size: 9px; }
+.page-break { break-before: page; }
+</style>
+</head>
+<body>
+  <section class="cover">
+    <div class="kicker">Replay Belfast Scenario Export</div>
+    <h1>${htmlEscape(explanation.headline)}</h1>
+    <p>${htmlEscape(explanation.comparisonSummary)}</p>
+    <div class="meta">
+      <div><span>Target year</span><strong>${htmlEscape(report.targetYear)}</strong></div>
+      <div><span>Export mode</span><strong>${htmlEscape(report.exportMode === "two_branch" ? "Two branches" : "One branch")}</strong></div>
+      <div><span>Gemini</span><strong>${htmlEscape(explanation.geminiUsed ? explanation.model : "Fallback narrative")}</strong></div>
+    </div>
+  </section>
+
+  <h2>Section 1. Export Scope</h2>
+  ${tableHtml("Table 1. Export Scope and Data Sources", ["Field", "Value"], scopeRows(report, explanation))}
+
+  <h2>Section 2. Executive Explanation</h2>
+  <div class="summary">${htmlEscape(explanation.executiveSummary)}</div>
+
+  <h2>Section 3. Branch Summary</h2>
+  ${tableHtml("Table 2. Branch Summary", ["Field", "Branch A", "Branch B"], branchSummaryRows(report))}
+
+  <h2>Section 4. KPI Scorecard</h2>
+  ${tableHtml("Table 3. KPI Scorecard", ["Metric", "Baseline", "Branch A", "Branch B", "Delta", "Readout"], kpiRows(report))}
+  ${tableHtml("Table 4. Deterministic Forecast Signals", ["Signal", "Baseline", "Branch A", "Branch B", "Delta"], rawSignalRows(report))}
+
+  <h2 class="page-break">Section 5. Forecast Timeline</h2>
+  ${tableHtml("Table 5. Forecast Timeline", ["Year", "Metric", "Baseline", "Branch A", "Branch B"], timelineRows(report))}
+
+  <h2>Section 6. Concrete Impact Details</h2>
+  ${tableHtml("Table 6. Concrete Impact Details", ["Branch", "Domain", "Measure", "Value", "Method / Basis"], concreteImpactRows(report))}
+
+  <h2>Section 7. Intervention Inventory</h2>
+  ${tableHtml("Table 7. Intervention Inventory", ["Branch", "Year", "Type", "Label", "Deterministic Details"], interventionRows(report))}
+
+  <h2>Section 8. Gemini Planning Notes</h2>
+  ${narrativeHtml(report, explanation)}
+
+  <h2>Section 9. Method and Caveats</h2>
+  ${listHtml(explanation.methodNotes)}
+  <p class="footer-note">The headings and table titles in this PDF are fixed. Only branch content, metric values, and bounded narrative explanations change between exports.</p>
+</body>
+</html>`;
+}
+
+async function renderPdfFromHtml(html) {
+  const { chromium } = require("playwright");
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage({ viewport: { width: 1240, height: 1754 }, deviceScaleFactor: 1 });
+    await page.setContent(html, { waitUntil: "networkidle" });
+    return await page.pdf({
+      format: "A4",
+      printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: "<span></span>",
+      footerTemplate: "<div style=\"font-family:Arial,sans-serif;font-size:8px;color:#64748b;width:100%;padding:0 12mm;text-align:right;\">Replay Belfast Scenario Export - page <span class=\"pageNumber\"></span> of <span class=\"totalPages\"></span></div>",
+      margin: { top: "14mm", right: "12mm", bottom: "16mm", left: "12mm" }
+    });
+  } finally {
+    await browser.close();
+  }
+}
+
+async function handleBranchReportExport(req, res) {
+  try {
+    const payload = await readJsonRequest(req, 4_000_000);
+    const report = buildExportReportModel(payload);
+    const explanation = await buildExportExplanation(report);
+    const html = renderBranchReportHtml(report, explanation);
+    const pdf = await renderPdfFromHtml(html);
+    const filename = `belfast-${slugify(report.branches.map((branch) => branch.name).join("-vs-"), "branch-report")}-${report.targetYear}.pdf`;
+    res.writeHead(200, {
+      "content-type": "application/pdf",
+      "content-disposition": `attachment; filename="${filename}"`,
+      "content-length": pdf.length,
+      "cache-control": "no-store",
+      "x-gemini-used": explanation.geminiUsed ? "true" : "false"
+    });
+    res.end(pdf);
+  } catch (error) {
+    sendJson(res, error.statusCode || 500, {
+      ok: false,
+      error: "Could not export branch report PDF",
+      detail: error.message
+    });
+  }
 }
 
 async function handleGeminiCommitExplanation(req, res) {
@@ -1114,6 +1713,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && pathname === "/api/agents/explain-simulation") {
     handleExplainSimulation(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/export/branch-report") {
+    handleBranchReportExport(req, res);
     return;
   }
 

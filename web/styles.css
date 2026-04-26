@@ -1160,6 +1160,10 @@ button { font-family: inherit; }
   background: #fff;
   padding: 8px 10px;
   min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
 }
 .branch-line-item.is-clickable .branch-line-card {
   cursor: pointer;
@@ -1182,6 +1186,36 @@ button { font-family: inherit; }
   font-size: 10.5px;
   color: var(--text-mute);
   line-height: 1.35;
+}
+.branch-line-main {
+  min-width: 0;
+}
+.branch-line-diff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  align-self: stretch;
+  min-width: 82px;
+  padding: 6px 7px;
+  border: 1px solid var(--border-2);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--text-dim);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.branch-line-diff:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: #eff6ff;
+}
+.branch-line-diff:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
 }
 
 .scenario-tree { position: relative; width: 100%; margin-bottom: 14px; }

@@ -155,6 +155,8 @@
     lastScenarioResult: null,
     buildabilityLoaded: false,
     buildabilityLoading: false,
+    buildabilityPostcodeKey: null,
+    buildabilityFocus: null,
     cityBuildingSelectionAttached: false
   };
 
@@ -2429,22 +2431,24 @@
       const itemId = el.getAttribute('data-item-id');
       el.addEventListener('click', () => {
         const item = activeBranch().items.find(i => i.id === itemId);
-        if (item) openInspectModal(item);
+        if (item) zoomToBranchItem(item);
+      });
+      el.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        const item = activeBranch().items.find(i => i.id === itemId);
+        if (item) zoomToBranchItem(item);
       });
       el.addEventListener('contextmenu', (e) => {
         e.preventDefault();
         openNodeContextMenu({ branchId: branch.id, itemId: itemId }, e);
       });
     });
-    els.branchList.querySelectorAll('[data-log-id]').forEach(el => {
-      const logId = el.getAttribute('data-log-id');
-      el.addEventListener('click', () => {
-        const log = (activeBranch().activityLog || []).find(entry => entry.id === logId);
-        if (log) setYear(log.year || START_YEAR);
-      });
-      el.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        openNodeContextMenu({ branchId: branch.id, logId: logId }, e);
+    els.branchList.querySelectorAll('[data-diff-item-id]').forEach(el => {
+      const itemId = el.getAttribute('data-diff-item-id');
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleBranchItemDiff(itemId);
       });
     });
     renderActiveInfo();
@@ -2452,44 +2456,23 @@
   }
 
   function branchAdditionsHTML(branch) {
-    const rows = [{
-      title: BASE_YEAR + ' baseline',
-      detail: branch.locked ? 'No planned changes' : 'Branched from ' + parentBranchName(branch),
-      color: branch.color || '#3b82f6'
-    }];
-    const additions = [];
-    (branch.items || []).forEach((item, index) => additions.push({
+    const items = (branch && branch.items) || [];
+    if (!items.length) {
+      return '<div class="branch-empty" style="font-size:11.5px;color:var(--text-mute);padding:8px 0;">No additions yet. Add something on the map to start this branch.</div>';
+    }
+    const rows = items.map((item, index) => ({
       sortYear: item.year || START_YEAR,
-      sortTime: item.createdAt || '',
-      sortRank: index * 2,
+      sortTime: Date.parse(item.createdAt || '') || 0,
+      sortRank: index,
       row: {
         title: branchItemTitle(item),
         detail: branchItemDetail(item),
         color: item.color || branch.color || '#3b82f6',
         item
       }
-    }));
-    (branch.activityLog || []).forEach((log, index) => additions.push({
-      sortYear: log.year || START_YEAR,
-      sortTime: log.createdAt || '',
-      sortRank: index * 2 + 1,
-      row: {
-        title: log.title || 'Activity',
-        detail: (log.year ? ('Year ' + log.year + (log.detail ? ' - ' : '')) : '') + (log.detail || ''),
-        color: (log.data && log.data.color) || activityColor(log.type),
-        log
-      }
-    }));
-    additions
-      .sort((a, b) => (a.sortYear - b.sortYear) || String(a.sortTime).localeCompare(String(b.sortTime)) || (a.sortRank - b.sortRank))
-      .forEach(entry => rows.push(entry.row));
-    if (branch.scenarioResult && !(branch.activityLog || []).some(log => log.type === 'simulation')) {
-      rows.push({
-        title: 'Simulation run',
-        detail: branch.scenarioResult.recommendedBranch || 'Forecast ready',
-        color: '#22c55e'
-      });
-    }
+    }))
+      .sort((a, b) => (b.sortTime - a.sortTime) || ((b.sortYear || 0) - (a.sortYear || 0)) || (b.sortRank - a.sortRank))
+      .map(entry => entry.row);
     return branchLineHTML(rows);
   }
 
@@ -2502,11 +2485,22 @@
       return '<div class="branch-line-item' + clickable + '"' + itemAttr + '>' +
         '<span class="branch-line-dot" style="--branch-line-color:' + escapeHtml(row.color || '#3b82f6') + '"></span>' +
         '<div class="branch-line-card">' +
-          '<div class="branch-line-title">' + escapeHtml(row.title) + '</div>' +
-          '<div class="branch-line-detail">' + escapeHtml(row.detail || '') + '</div>' +
+          '<div class="branch-line-main">' +
+            '<div class="branch-line-title">' + escapeHtml(row.title) + '</div>' +
+            '<div class="branch-line-detail">' + escapeHtml(row.detail || '') + '</div>' +
+          '</div>' +
+          (row.item ? branchItemDiffButtonHTML(row.item) : '') +
         '</div>' +
       '</div>';
     }).join('') + '</div>';
+  }
+
+  function branchItemDiffButtonHTML(item) {
+    const label = item && item.type === 'road' ? 'View Traffic Diff' : 'View Diff';
+    return '<button class="branch-line-diff" type="button" data-diff-item-id="' + escapeHtml(item.id) + '" title="' + escapeHtml(label + ' for ' + branchItemTitle(item)) + '">' +
+      '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/><path d="M7 6h2M7 10h2" stroke-linecap="round"/></svg>' +
+      '<span>' + escapeHtml(label) + '</span>' +
+    '</button>';
   }
 
   function parentBranchName(branch) {
@@ -2543,6 +2537,91 @@
       return year + ' - ' + locationLabel(item.lng, item.lat);
     }
     return year;
+  }
+
+  function collectCoordinatePairs(value, out) {
+    if (!Array.isArray(value)) return;
+    if (value.length >= 2 && Number.isFinite(Number(value[0])) && Number.isFinite(Number(value[1]))) {
+      out.push([Number(value[0]), Number(value[1])]);
+      return;
+    }
+    value.forEach(part => collectCoordinatePairs(part, out));
+  }
+
+  function branchItemCoordinates(item) {
+    const coords = [];
+    if (!item) return coords;
+    if (item.type === 'road') {
+      collectCoordinatePairs(Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end], coords);
+    }
+    if (Array.isArray(item.footprint)) collectCoordinatePairs(item.footprint, coords);
+    if (item.geometry) collectCoordinatePairs(item.geometry.coordinates, coords);
+    if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) coords.push([Number(item.lng), Number(item.lat)]);
+    return coords;
+  }
+
+  function branchItemCenter(item) {
+    const coords = branchItemCoordinates(item);
+    const loc = locationFromCoords(coords);
+    return loc ? [loc.lng, loc.lat] : null;
+  }
+
+  function branchItemBounds(item) {
+    const coords = branchItemCoordinates(item);
+    if (!coords.length) return null;
+    let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
+    coords.forEach(coord => {
+      minLng = Math.min(minLng, coord[0]);
+      maxLng = Math.max(maxLng, coord[0]);
+      minLat = Math.min(minLat, coord[1]);
+      maxLat = Math.max(maxLat, coord[1]);
+    });
+    if (!Number.isFinite(minLng) || !Number.isFinite(minLat) || !Number.isFinite(maxLng) || !Number.isFinite(maxLat)) return null;
+    return [minLng, minLat, maxLng, maxLat];
+  }
+
+  function zoomToBranchItem(item) {
+    if (!item || !state.map) return;
+    state.lastPlacedItemId = item.id;
+    const targetYear = clamp(Number(item.year) || START_YEAR, START_YEAR, FINAL_YEAR);
+    if (state.year !== targetYear) setYear(targetYear);
+    const bounds = branchItemBounds(item);
+    if (bounds) {
+      const samePoint = Math.abs(bounds[0] - bounds[2]) < 0.00001 && Math.abs(bounds[1] - bounds[3]) < 0.00001;
+      if (!samePoint) {
+        state.map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
+          padding: { top: 96, bottom: 190, left: 140, right: 140 },
+          maxZoom: item.type === 'road' ? 16 : 16.4,
+          duration: 800,
+          pitch: state.view === '3D' ? 60 : 0,
+          bearing: state.view === '3D' ? -24 : 0
+        });
+        return;
+      }
+    }
+    const center = branchItemCenter(item);
+    if (center) {
+      state.map.flyTo({
+        center,
+        zoom: item.type === 'road' ? 15.6 : 16.2,
+        pitch: state.view === '3D' ? 60 : 0,
+        bearing: state.view === '3D' ? -24 : 0,
+        duration: 760
+      });
+    }
+  }
+
+  function handleBranchItemDiff(itemId) {
+    const branch = activeBranch();
+    const item = branch && (branch.items || []).find(i => i.id === itemId);
+    if (!item) return;
+    state.lastPlacedItemId = item.id;
+    if (item.type === 'road') {
+      roadPlanner.candidateRoadItemId = item.id;
+      runRoadComparison(item.id);
+      return;
+    }
+    openScenarioDiffModal(item.id);
   }
 
   function renderTagDot() {
@@ -3752,7 +3831,7 @@
 
   // Called by Run Simulation when the Road tool is selected. If a candidate
   // road already exists, run the impact comparison; otherwise prompt search.
-  function runRoadComparison() {
+  function runRoadComparison(itemId) {
     if (!window.TrafficSim || !window.TrafficSim.runComparison) {
       toast('Traffic engine not ready yet', 'warn');
       return;
@@ -3773,10 +3852,11 @@
       return;
     }
     let cand = roadItems[roadItems.length - 1];
-    if (roadPlanner.candidateRoadItemId) {
-      const found = roadItems.find(it => it.id === roadPlanner.candidateRoadItemId);
+    if (itemId || roadPlanner.candidateRoadItemId) {
+      const found = roadItems.find(it => it.id === (itemId || roadPlanner.candidateRoadItemId));
       if (found) cand = found;
     }
+    roadPlanner.candidateRoadItemId = cand.id;
 
     // Build the segment graph for the branch *without* the candidate, then
     // run with it appended as source:'candidate'. If the candidate has a
@@ -4436,6 +4516,20 @@
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
     }
+    if (!state.map.getLayer('buildability-areas-3d')) {
+      state.map.addLayer({
+        id: 'buildability-areas-3d',
+        type: 'fill-extrusion',
+        source: 'buildability-areas',
+        paint: {
+          'fill-extrusion-color': '#22c55e',
+          'fill-extrusion-height': ['case', ['==', ['get', 'buildable'], true], ['coalesce', ['get', '__buildableHeight'], 18], 0],
+          'fill-extrusion-base': 0,
+          'fill-extrusion-opacity': ['coalesce', ['get', '__buildableOpacity3d'], 0.0]
+        },
+        layout: { visibility: 'none' }
+      }, findFirstSymbolLayer());
+    }
     if (!state.map.getLayer('buildability-areas-line')) {
       state.map.addLayer({
         id: 'buildability-areas-line',
@@ -4452,15 +4546,33 @@
     return true;
   }
 
-  async function loadBuildabilityAreas() {
-    if (state.buildabilityLoaded || state.buildabilityLoading || !state.map) return;
+  function buildabilityKey(focus) {
+    if (!focus) return 'city';
+    const label = focus.postcode || focus.normalizedPostcode || focus.outcode || 'postcode';
+    const loc = focus.location || {};
+    return [label, Number(loc.lng || 0).toFixed(5), Number(loc.lat || 0).toFixed(5), state.activeBuildingPreset].join('|');
+  }
+
+  async function loadBuildabilityAreas(focus) {
+    const key = buildabilityKey(focus);
+    if (state.buildabilityLoaded && state.buildabilityPostcodeKey === key) return;
+    if (state.buildabilityLoading || !state.map) return;
     state.buildabilityLoading = true;
     try {
       const config = buildingConfigForPreset(state.activeBuildingPreset);
+      const location = focus && focus.location ? focus.location : null;
+      const radiusKm = focus
+        ? (focus.precision === 'outcode' ? 2.6 : 1.15)
+        : null;
       const res = await fetch('/api/building/buildable-areas?preset=' + encodeURIComponent(state.activeBuildingPreset), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ config })
+        body: JSON.stringify({
+          config,
+          postcode: focus ? (focus.postcode || focus.normalizedPostcode || focus.input) : null,
+          location,
+          radiusKm
+        })
       });
       const json = await res.json().catch(() => null);
       if (!res.ok || !json || !json.areas) throw new Error((json && (json.detail || json.error)) || 'buildability fetch failed');
@@ -4468,6 +4580,11 @@
         state.map.getSource('buildability-areas').setData(json.areas);
       }
       state.buildabilityLoaded = true;
+      state.buildabilityPostcodeKey = key;
+      const postcodeLabel = focus && (focus.postcode || focus.normalizedPostcode || focus.input);
+      if (postcodeLabel && json.buildableCount > 0) {
+        showSearchStatus(postcodeLabel + ' selected · ' + json.buildableCount + ' possible build areas highlighted');
+      }
     } catch (error) {
       console.warn('buildability overlay failed', error);
     } finally {
@@ -4477,11 +4594,14 @@
 
   function updateBuildabilityOverlay() {
     if (!ensureBuildabilityLayers()) return;
-    const visible = state.mode === 'simulation' && state.activeTool === 'building' && isSimYear(state.year);
-    ['buildability-areas-fill', 'buildability-areas-line'].forEach(id => {
-      if (state.map.getLayer(id)) state.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+    const visible = state.mode === 'simulation' && isSimYear(state.year) && Boolean(state.buildabilityFocus || state.activeTool === 'building');
+    const show3d = visible && state.view === '3D';
+    ['buildability-areas-fill', 'buildability-areas-line', 'buildability-areas-3d'].forEach(id => {
+      if (!state.map.getLayer(id)) return;
+      const layerVisible = id === 'buildability-areas-3d' ? show3d : visible;
+      state.map.setLayoutProperty(id, 'visibility', layerVisible ? 'visible' : 'none');
     });
-    if (visible) loadBuildabilityAreas();
+    if (visible) loadBuildabilityAreas(state.buildabilityFocus || state.selectedPostcode);
   }
 
   function ensureHistoricalSourcesAndLayers() {
@@ -6158,12 +6278,18 @@
     return true;
   }
 
-  async function openScenarioDiffModal() {
+  async function openScenarioDiffModal(itemId) {
     if (!els.workspaceSplit) return;
     const branch = activeBranch();
     const scenario = scenarioResultForBranch(branch);
-    const building = selectedScenarioBuilding(branch);
-    if (!scenario || !building) {
+    const primaryBuilding = selectedScenarioBuilding(branch);
+    const requestedItem = itemId ? ((branch.items || []).find(item => item.id === itemId) || null) : null;
+    if (requestedItem && requestedItem.type === 'road') {
+      runRoadComparison(requestedItem.id);
+      return;
+    }
+    const focusItem = (requestedItem && branchItemCenter(requestedItem)) ? requestedItem : primaryBuilding;
+    if (!scenario || !primaryBuilding || !focusItem) {
       toast('Run the simulation before opening a diff.', 'warn');
       updateScenarioDiffButton();
       return;
@@ -6187,18 +6313,20 @@
     if (els.diffModal) els.diffModal.hidden = true;
     if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + year;
     if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + year;
-    if (els.splitTitle) els.splitTitle.textContent = 'Before / After: ' + (building.postcode || 'selected postcode');
+    if (els.splitTitle) els.splitTitle.textContent = 'Before / After: ' + scenarioDiffFocusLabel(focusItem);
 
     const branchName = scenarioBranch ? (scenarioBranch.name || scenarioBranch.branchName || 'Selected branch') : branch.name;
     const confidence = scenarioBranch ? scenarioBranch.confidence : (scenario.confidence || 'medium');
 
     els.workspaceSplit.hidden = false;
-    state.workspaceSplitContext = { beforeFc, afterFc, scenario, scenarioBranch, branchId: branch.id, building, year };
+    state.workspaceSplitContext = { beforeFc, afterFc, scenario, scenarioBranch, branchId: branch.id, building: focusItem, primaryBuilding, year };
     updateWorkspaceSplitSummary();
     branch.lastScenarioDiff = {
       openedAt: new Date().toISOString(),
       year: year,
-      postcode: building.postcode,
+      itemId: focusItem.id,
+      itemLabel: scenarioDiffFocusLabel(focusItem),
+      postcode: focusItem.postcode,
       branchName: branchName,
       confidence: confidence,
       lens: state.lens,
@@ -6208,14 +6336,14 @@
       branch,
       'diff',
       'Split diff added',
-      'Before/after workspace for ' + (building.postcode || 'selected postcode'),
+      'Before/after workspace for ' + scenarioDiffFocusLabel(focusItem),
       year,
       branch.lastScenarioDiff
     );
 
     const maps = await Promise.all([
-      buildScenarioDiffMapInContainer(document.getElementById('splitMapBefore'), 'before', beforeFc, building, year, false, workspaceSplitMaps),
-      buildScenarioDiffMapInContainer(document.getElementById('splitMapAfter'), 'after', afterFc, building, year, true, workspaceSplitMaps)
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapBefore'), 'before', beforeFc, focusItem, year, false, workspaceSplitMaps),
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapAfter'), 'after', afterFc, focusItem, year, true, workspaceSplitMaps)
     ]);
     if (maps[0] && maps[1]) syncScenarioDiffCameras(maps[0], maps[1]);
   }
@@ -6265,10 +6393,25 @@
     return { before, after, diff, deltaPts, flat, favourable };
   }
 
+  function scenarioDiffFocusCoord(item) {
+    return branchItemCenter(item) || (item && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))
+      ? [Number(item.lng), Number(item.lat)]
+      : mapCentreCoord());
+  }
+
+  function scenarioDiffFocusLabel(item) {
+    if (!item) return 'selected site';
+    return item.postcode || item.resolvedPostcode?.postcode || item.existingBuildingName || branchItemTitle(item);
+  }
+
+  function scenarioDiffShowsBuilding(item) {
+    return !!item && (item.type === 'building' || item.type === 'building_removal');
+  }
+
   function scenarioDiffSummaryHTML(beforeFc, afterFc, scenario, scenarioBranch, branch, building, year) {
     const lens = currentScenarioDiffLens();
     const summary = scenarioDiffMetricSummary(beforeFc, afterFc, lens);
-    const postcode = building && (building.postcode || 'selected site');
+    const postcode = scenarioDiffFocusLabel(building);
     const concrete = scenarioBranch && scenarioBranch.timelineByYear
       ? scenarioBranch.timelineByYear[String(year)]?.concreteImpacts
       : null;
@@ -7116,7 +7259,8 @@
     if (!mp || !mp.token || !window.mapboxgl) return null;
 
     mapboxgl.accessToken = mp.token;
-    const center = [Number(building.lng), Number(building.lat)];
+    const center = scenarioDiffFocusCoord(building);
+    const showBuildingExtrusion = showBuilding && scenarioDiffShowsBuilding(building);
     const map = new mapboxgl.Map({
       container: container,
       style: mp.style || 'mapbox://styles/mapbox/dark-v11',
@@ -7147,16 +7291,16 @@
           id: 'site-glow',
           type: 'circle',
           source: 'site',
-          paint: { 'circle-radius': showBuilding ? 30 : 24, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-opacity': 0.2, 'circle-blur': 1.2 }
+          paint: { 'circle-radius': showBuildingExtrusion ? 30 : 24, 'circle-color': showBuildingExtrusion ? '#22d3ee' : ((building && building.color) || '#60a5fa'), 'circle-opacity': 0.2, 'circle-blur': 1.2 }
         });
         map.addLayer({
           id: 'site-circle',
           type: 'circle',
           source: 'site',
-          paint: { 'circle-radius': 8, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
+          paint: { 'circle-radius': 8, 'circle-color': showBuildingExtrusion ? '#22d3ee' : ((building && building.color) || '#60a5fa'), 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
         });
 
-        if (showBuilding) {
+        if (showBuildingExtrusion) {
           const ring = squareRing(center[0], center[1], Math.max(28, Math.sqrt((building.buildingConfig && building.buildingConfig.footprintSqm) || 900)));
           map.addSource('scenario-building', {
             type: 'geojson',
@@ -7202,7 +7346,8 @@
     if (!mp || !mp.token || !window.mapboxgl) return null;
 
     mapboxgl.accessToken = mp.token;
-    const center = [Number(building.lng), Number(building.lat)];
+    const center = scenarioDiffFocusCoord(building);
+    const showBuildingExtrusion = showBuilding && scenarioDiffShowsBuilding(building);
     const map = new mapboxgl.Map({
       container: container,
       style: mp.style || 'mapbox://styles/mapbox/dark-v11',
@@ -7263,16 +7408,16 @@
           id: 'site-glow',
           type: 'circle',
           source: 'site',
-          paint: { 'circle-radius': showBuilding ? 30 : 24, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-opacity': 0.2, 'circle-blur': 1.2 }
+          paint: { 'circle-radius': showBuildingExtrusion ? 30 : 24, 'circle-color': showBuildingExtrusion ? '#22d3ee' : ((building && building.color) || '#60a5fa'), 'circle-opacity': 0.2, 'circle-blur': 1.2 }
         });
         map.addLayer({
           id: 'site-circle',
           type: 'circle',
           source: 'site',
-          paint: { 'circle-radius': 8, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
+          paint: { 'circle-radius': 8, 'circle-color': showBuildingExtrusion ? '#22d3ee' : ((building && building.color) || '#60a5fa'), 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
         });
 
-        if (showBuilding) {
+        if (showBuildingExtrusion) {
           const ring = squareRing(center[0], center[1], Math.max(28, Math.sqrt((building.buildingConfig && building.buildingConfig.footprintSqm) || 900)));
           map.addSource('scenario-building', {
             type: 'geojson',
