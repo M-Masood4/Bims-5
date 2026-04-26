@@ -7,3 +7,5 @@ __pycache__/
 node_modules/
 build/
 output/
+.env.local
+node_modules
