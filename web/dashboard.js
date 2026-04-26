@@ -2179,6 +2179,7 @@
       els.mapCanvas.classList.toggle('removing', state.activeTool === 'remove');
     }
     updateBuildabilityOverlay();
+    syncRoadPlannerVisibility();
     syncCityBuildingHeightContext();
     updateRunButtonLabel();
     renderPresets();
@@ -2222,10 +2223,11 @@
           return;
         }
         closeWorkspaceSplit();
+        const activatingRoad = t === 'road' && state.activeTool !== 'road';
         // Roads now flow through the postcode → junction picker. If the
         // planner isn't armed yet, push the user to the search box rather
         // than letting them free-click points that won't sit on real roads.
-        if (t === 'road' && state.activeTool !== 'road' && !roadPlanner.armed) {
+        if (t === 'road' && state.activeTool !== 'road' && !roadPlanner.armed && !roadPlanner.searchCentre) {
           toast('Search a postcode — junctions you can connect will appear on the map.', 'warn');
           showPlanRoadHint('Search a postcode, then click two junctions to plan a road');
           if (els.postcodeInput) els.postcodeInput.focus();
@@ -2236,6 +2238,9 @@
           // Auto-jump to first sim year so the action is meaningful.
           // setYear() auto-flips mode to simulation as a side effect.
           setYear(START_YEAR);
+        }
+        if (activatingRoad && state.activeTool === 'road' && !roadPlanner.armed && roadPlanner.searchCentre) {
+          armRoadPlanner(roadPlanner.searchCentre);
         }
         renderModify();
       });
@@ -3680,8 +3685,8 @@
   // ROAD PLANNER — postcode → junctions → plan road → impact comparison
   // ================================================================
   // Workflow:
-  //   1. User searches a postcode. flyToResolvedPostcode() then arms the planner with
-  //      the searched coordinate (via armRoadPlanner).
+  //   1. User searches a postcode. The searched coordinate is stored, and
+  //      the Road tool arms the planner from that coordinate.
   //   2. We sample junction nodes from the OSM road network around that point
   //      and render them as glowing clickable circles.
   //   3. User clicks two junctions; we drop them as a candidate road into the
@@ -3693,6 +3698,7 @@
   const roadPlanner = {
     armed: false,
     centre: null,
+    searchCentre: null,
     junctions: [],
     pickedIds: [],         // up to 2 junction ids picked by the user
     candidateRoadItemId: null, // id of the most recently planned road in branch
@@ -3714,6 +3720,7 @@
           'circle-opacity': 0.18,
           'circle-blur': 0.3,
         },
+        layout: { visibility: 'none' }
       });
       state.map.addLayer({
         id: 'road-planner-junctions-dot',
@@ -3725,6 +3732,7 @@
           'circle-stroke-width': 2,
           'circle-stroke-color': ['case', ['==', ['get', 'picked'], 1], '#0e7490', '#1d4ed8'],
         },
+        layout: { visibility: 'none' }
       });
       // Click handler — pick a junction
       state.map.on('click', 'road-planner-junctions-dot', onJunctionClick);
@@ -3736,6 +3744,19 @@
       });
     }
     return true;
+  }
+
+  function syncRoadPlannerVisibility() {
+    if (!state.map) return;
+    const visible = state.activeTool === 'road' && roadPlanner.armed;
+    ['road-planner-junctions-halo', 'road-planner-junctions-dot'].forEach(id => {
+      if (state.map.getLayer(id)) {
+        state.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+      }
+    });
+    if (els.planRoadHint && state.activeTool !== 'road') {
+      els.planRoadHint.hidden = true;
+    }
   }
 
   function emptyFC() { return { type: 'FeatureCollection', features: [] }; }
@@ -3758,6 +3779,7 @@
     if (!ensureRoadPlannerLayers()) return;
     const src = state.map.getSource('road-planner-junctions');
     if (src) src.setData(junctionsAsFC());
+    syncRoadPlannerVisibility();
   }
 
   function clearRoadPlanner() {
@@ -3769,6 +3791,7 @@
       state.map.getSource('road-planner-junctions').setData(emptyFC());
     }
     if (els.planRoadHint) els.planRoadHint.hidden = true;
+    syncRoadPlannerVisibility();
   }
 
   function showPlanRoadHint(text) {
@@ -3780,6 +3803,18 @@
   // Called by the postcode search flow once we've zoomed to a location.
   function armRoadPlanner(centreCoord) {
     if (!Array.isArray(centreCoord) || centreCoord.length !== 2) return;
+    roadPlanner.searchCentre = centreCoord;
+    if (state.activeTool !== 'road') {
+      roadPlanner.armed = false;
+      roadPlanner.centre = null;
+      roadPlanner.junctions = [];
+      roadPlanner.pickedIds = [];
+      if (state.map && state.map.getSource('road-planner-junctions')) {
+        state.map.getSource('road-planner-junctions').setData(emptyFC());
+      }
+      syncRoadPlannerVisibility();
+      return;
+    }
     if (!window.TrafficSim || !window.TrafficSim.findJunctionNodes) return;
     if (state.year < START_YEAR) {
       // Only meaningful in simulation years (when user-added roads count).
@@ -3818,7 +3853,7 @@
   }
 
   function onJunctionClick(e) {
-    if (!roadPlanner.armed) return;
+    if (state.activeTool !== 'road' || !roadPlanner.armed) return;
     const f = e.features && e.features[0];
     if (!f) return;
     const id = f.properties && f.properties.id;

@@ -782,6 +782,10 @@ function fallbackExportExplanation(report, detail = "") {
   const branchNames = report.branches.map((branch) => branch.name).join(" and ");
   const first = report.branches[0];
   const second = report.branches[1];
+  const displayDetail = cleanText(detail)
+    .replace(/Gemini explanation failed:\s*/i, "External explanation failed: ")
+    .replace(/No Gemini key is configured\.?/i, "External explanation is not configured.")
+    .replace(/Gemini/gi, "external explanation");
   const comparison = second
     ? `${first.name} and ${second.name} are compared against the same ${report.baselineYear} no-build baseline. Differences in the tables come directly from the deterministic branch metrics supplied by the dashboard.`
     : `${first.name} is compared against the ${report.baselineYear} no-build baseline. Differences in the tables come directly from deterministic branch metrics supplied by the dashboard.`;
@@ -805,7 +809,7 @@ function fallbackExportExplanation(report, detail = "") {
       ]
     })),
     methodNotes: [
-      "Gemini was not used for this export narrative." + (detail ? ` ${detail}` : ""),
+      "Narrative text falls back to deterministic export wording when an external explanation is unavailable." + (displayDetail ? ` ${displayDetail}` : ""),
       "The PDF structure, headings, and table titles are deterministic and remain the same for every export."
     ],
     geminiUsed: false,
@@ -934,7 +938,7 @@ function kpiRows(report) {
       reportDeltaLabel(delta),
       `${readoutBase}; ${metric.direction === "up" ? "higher is better" : "lower is better"}`
     ];
-  });
+  }).filter((row) => row.slice(1, 4).some(suppliedCell));
 }
 
 function rawSignalRows(report) {
@@ -955,7 +959,7 @@ function rawSignalRows(report) {
       reportDeltaLabel(diff)
     ]);
   }
-  return rows;
+  return rows.filter((row) => row.slice(1).some(suppliedCell));
 }
 
 function timelineRows(report) {
@@ -974,7 +978,7 @@ function timelineRows(report) {
       ]);
     }
   }
-  return rows;
+  return rows.filter((row) => row.slice(3).some(suppliedCell));
 }
 
 function concreteImpactRows(report) {
@@ -1041,6 +1045,14 @@ function narrativeHtml(report, explanation) {
 }
 
 function renderBranchReportHtml(report, explanation) {
+  const scopeTable = tableHtml("Table 1. Export Scope and Data Sources", ["Field", "Value"], scopeRows(report, explanation));
+  const branchSummaryTable = tableHtml("Table 2. Branch Summary", ["Field", "Branch A", "Branch B"], branchSummaryRows(report));
+  const kpiTable = tableHtml("Table 3. KPI Scorecard", ["Metric", "Baseline", "Branch A", "Branch B", "Delta", "Readout"], kpiRows(report));
+  const rawSignalsTable = tableHtml("Table 4. Deterministic Forecast Signals", ["Signal", "Baseline", "Branch A", "Branch B", "Delta"], rawSignalRows(report));
+  const timelineTable = tableHtml("Table 5. Forecast Timeline", ["Year", "Metric", "Baseline", "Branch A", "Branch B"], timelineRows(report));
+  const concreteTable = tableHtml("Table 6. Concrete Impact Details", ["Branch", "Domain", "Measure", "Value", "Method / Basis"], concreteImpactRows(report));
+  const interventionTable = tableHtml("Table 7. Intervention Inventory", ["Branch", "Year", "Type", "Label", "Deterministic Details"], interventionRows(report));
+  const scorecardBody = [kpiTable, rawSignalsTable].filter(Boolean).join("\n");
   return `<!doctype html>
 <html>
 <head>
@@ -1057,7 +1069,7 @@ h2 { font-size: 15px; margin: 18px 0 8px; padding-top: 6px; border-top: 1px soli
 h3 { font-size: 11px; margin: 12px 0 5px; color: #253145; }
 h4 { font-size: 10px; margin: 0 0 4px; color: #4b5b70; text-transform: uppercase; letter-spacing: 0.04em; }
 p { margin: 0 0 8px; }
-.meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
 .meta div { border: 1px solid #d8dee8; background: #f8fafc; padding: 7px; border-radius: 6px; }
 .meta span { display: block; color: #64748b; font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.05em; }
 .meta strong { display: block; margin-top: 2px; font-size: 11px; }
@@ -1085,33 +1097,25 @@ li { margin-bottom: 3px; }
     <div class="meta">
       <div><span>Target year</span><strong>${htmlEscape(report.targetYear)}</strong></div>
       <div><span>Export mode</span><strong>${htmlEscape(report.exportMode === "two_branch" ? "Two branches" : "One branch")}</strong></div>
-      <div><span>Gemini</span><strong>${htmlEscape(explanation.geminiUsed ? explanation.model : "Fallback narrative")}</strong></div>
     </div>
   </section>
 
-  <h2>Section 1. Export Scope</h2>
-  ${tableHtml("Table 1. Export Scope and Data Sources", ["Field", "Value"], scopeRows(report, explanation))}
+  ${reportSectionHtml("Section 1. Export Scope", scopeTable)}
 
   <h2>Section 2. Executive Explanation</h2>
   <div class="summary">${htmlEscape(explanation.executiveSummary)}</div>
 
-  <h2>Section 3. Branch Summary</h2>
-  ${tableHtml("Table 2. Branch Summary", ["Field", "Branch A", "Branch B"], branchSummaryRows(report))}
+  ${reportSectionHtml("Section 3. Branch Summary", branchSummaryTable)}
 
-  <h2>Section 4. KPI Scorecard</h2>
-  ${tableHtml("Table 3. KPI Scorecard", ["Metric", "Baseline", "Branch A", "Branch B", "Delta", "Readout"], kpiRows(report))}
-  ${tableHtml("Table 4. Deterministic Forecast Signals", ["Signal", "Baseline", "Branch A", "Branch B", "Delta"], rawSignalRows(report))}
+  ${reportSectionHtml("Section 4. KPI Scorecard", scorecardBody)}
 
-  <h2 class="page-break">Section 5. Forecast Timeline</h2>
-  ${tableHtml("Table 5. Forecast Timeline", ["Year", "Metric", "Baseline", "Branch A", "Branch B"], timelineRows(report))}
+  ${reportSectionHtml("Section 5. Forecast Timeline", timelineTable, "page-break")}
 
-  <h2>Section 6. Concrete Impact Details</h2>
-  ${tableHtml("Table 6. Concrete Impact Details", ["Branch", "Domain", "Measure", "Value", "Method / Basis"], concreteImpactRows(report))}
+  ${reportSectionHtml("Section 6. Concrete Impact Details", concreteTable)}
 
-  <h2>Section 7. Intervention Inventory</h2>
-  ${tableHtml("Table 7. Intervention Inventory", ["Branch", "Year", "Type", "Label", "Deterministic Details"], interventionRows(report))}
+  ${reportSectionHtml("Section 7. Intervention Inventory", interventionTable)}
 
-  <h2>Section 8. Gemini Planning Notes</h2>
+  <h2>Section 8. Planning Notes</h2>
   ${narrativeHtml(report, explanation)}
 
   <h2>Section 9. Method and Caveats</h2>
