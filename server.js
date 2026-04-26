@@ -704,11 +704,21 @@ async function handleBuildableAreas(req, res) {
           requireResolvedPostcode: false
         }, rootDir);
       }
-      const buildable = validation.status !== "invalid";
+      const props = feature.properties || {};
+      const planningCandidate =
+        Number(props.green_cover || 0) < 0.62 &&
+        Number(props.buildings || 0) < 0.72 &&
+        Number(props.traffic_pressure || 0) < 0.6 &&
+        (
+          Number(props.development_pressure || 0) > 0.12 ||
+          Number(props.planning_intensity || 0) > 0.09 ||
+          Number(props.transit_access || 0) > 0.22
+        );
+      const buildable = validation.status !== "invalid" && planningCandidate;
       return {
         ...feature,
         properties: {
-          ...(feature.properties || {}),
+          ...props,
           buildable,
           buildabilityStatus: validation.status,
           buildabilityScore: validation.buildabilityScore || 0,
