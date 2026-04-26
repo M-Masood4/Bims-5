@@ -1,0 +1,1752 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "belfast.trendBaselineBranch",
+  "modelVersion": "bims5-trend-continuation-branch-v2-belfast-boundary",
+  "generatedAt": "2026-04-26T06:35:24.691Z",
+  "baselineYear": 2025,
+  "startYear": 2026,
+  "horizonYear": 2036,
+  "geography": {
+    "name": "Belfast, Northern Ireland",
+    "boundarySource": "data/2026/_raw_osm/belfast_boundary_nominatim.json",
+    "candidateCellsInsideBoundary": 107
+  },
+  "method": "Rank only forecast cells whose centroids fall inside the Belfast NI boundary, then place representative trend-continuation additions with all point and road coordinates kept inside that polygon.",
+  "summary": {
+    "itemCount": 50,
+    "itemCountsByType": {
+      "building": 24,
+      "road": 9,
+      "infrastructure": 10,
+      "park": 7
+    },
+    "forecastDeltas2026To2036": {
+      "traffic": 0.124,
+      "population": 0.323,
+      "jobs": 0.045,
+      "economy": 0.037,
+      "housingPressure": 0.252,
+      "services": 0.03,
+      "electricity": 0.189,
+      "environmentAir": 0.128,
+      "greenScore": -0.099,
+      "fairness": -0.005,
+      "fiscalBalance": 0.021,
+      "planningViability": -0.012
+    },
+    "historicalGrowth": {
+      "traffic": {
+        "from2016": 0.231,
+        "to2025": 0.348,
+        "averageYearlyGrowth": 0.013,
+        "recentYearlyGrowth": 0.0153,
+        "blendedYearlyGrowth": 0.0143,
+        "projected2036Index": 0.5051
+      },
+      "jobs": {
+        "from2016": 0.116,
+        "to2025": 0.164,
+        "averageYearlyGrowth": 0.0053,
+        "recentYearlyGrowth": 0.005,
+        "blendedYearlyGrowth": 0.0052,
+        "projected2036Index": 0.2207
+      },
+      "electricity": {
+        "from2016": 0.271,
+        "to2025": 0.475,
+        "averageYearlyGrowth": 0.0227,
+        "recentYearlyGrowth": 0.0233,
+        "blendedYearlyGrowth": 0.023,
+        "projected2036Index": 0.7284
+      },
+      "buildings": {
+        "from2016": 0.247,
+        "to2025": 0.527,
+        "averageYearlyGrowth": 0.0311,
+        "recentYearlyGrowth": 0.0323,
+        "blendedYearlyGrowth": 0.0318,
+        "projected2036Index": 0.8766
+      },
+      "services": {
+        "from2016": 0.137,
+        "to2025": 0.172,
+        "averageYearlyGrowth": 0.0039,
+        "recentYearlyGrowth": 0.0027,
+        "blendedYearlyGrowth": 0.0032,
+        "projected2036Index": 0.2074
+      }
+    },
+    "transformerCapacity2036": {
+      "capacityKwProxy": 6453539.7,
+      "peakKwProxy": 979131.4,
+      "headroomKwProxy": 5474406,
+      "meanOverloadRisk": 0.2031
+    },
+    "evidence": [
+      "web/data/mode-a/summary.json",
+      "web/data/mode-a/baseline_2025_forecast.json",
+      "web/data/mode-a/transformer_capacity_forecast.json",
+      "data/2026/_raw_osm/belfast_boundary_nominatim.json"
+    ]
+  },
+  "branch": {
+    "id": "baseline",
+    "name": "Baseline: current trends",
+    "color": "#3b82f6",
+    "parentId": null,
+    "locked": true,
+    "trendBaseline": true,
+    "forecastObjective": "baseline_trend_continuation",
+    "description": "Projected no-extra-policy baseline inside Belfast NI: if Belfast keeps following the observed year-to-year growth pattern, these representative buildings, transformers, roads and support spaces appear through 2036.",
+    "items": [
+      {
+        "id": "trend-building-1",
+        "type": "building",
+        "year": 2026,
+        "lng": -5.965455,
+        "lat": 54.550857,
+        "location": {
+          "lng": -5.965455,
+          "lat": 54.550857
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_08",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2817,
+          "delta2036": {
+            "population": 0.438,
+            "traffic": 0.155,
+            "housingPressure": 0.346,
+            "electricity": 0.238
+          }
+        }
+      },
+      {
+        "id": "trend-building-2",
+        "type": "building",
+        "year": 2026,
+        "lng": -5.883637,
+        "lat": 54.563714,
+        "location": {
+          "lng": -5.883637,
+          "lat": 54.563714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_14",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2785,
+          "delta2036": {
+            "population": 0.406,
+            "traffic": 0.157,
+            "housingPressure": 0.364,
+            "electricity": 0.245
+          }
+        }
+      },
+      {
+        "id": "trend-building-3",
+        "type": "building",
+        "year": 2026,
+        "lng": -5.979091,
+        "lat": 54.550857,
+        "location": {
+          "lng": -5.979091,
+          "lat": 54.550857
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_07",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2766,
+          "delta2036": {
+            "population": 0.441,
+            "traffic": 0.151,
+            "housingPressure": 0.339,
+            "electricity": 0.235
+          }
+        }
+      },
+      {
+        "id": "trend-road-1",
+        "type": "road",
+        "year": 2026,
+        "start": [
+          -5.959883,
+          54.601118
+        ],
+        "end": [
+          -5.943755,
+          54.603499
+        ],
+        "path": [
+          [
+            -5.959883,
+            54.601118
+          ],
+          [
+            -5.953835,
+            54.601882
+          ],
+          [
+            -5.949803,
+            54.602735
+          ],
+          [
+            -5.943755,
+            54.603499
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_09",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.5044,
+          "trafficDelta2036": 0.307
+        }
+      },
+      {
+        "id": "trend-transformer-1",
+        "type": "infrastructure",
+        "year": 2026,
+        "lng": -6.021242,
+        "lat": 54.627371,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_08_04",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0.3716,
+          "headroomKwProxy2036": 706,
+          "peakKwProxy2036": 2824.4
+        }
+      },
+      {
+        "id": "trend-building-4",
+        "type": "building",
+        "year": 2027,
+        "lng": -5.842728,
+        "lat": 54.602286,
+        "location": {
+          "lng": -5.842728,
+          "lat": 54.602286
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_17",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2718,
+          "delta2036": {
+            "population": 0.428,
+            "traffic": 0.151,
+            "housingPressure": 0.364,
+            "electricity": 0.249
+          }
+        }
+      },
+      {
+        "id": "trend-building-5",
+        "type": "building",
+        "year": 2027,
+        "lng": -5.992728,
+        "lat": 54.563714,
+        "location": {
+          "lng": -5.992728,
+          "lat": 54.563714
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_06",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2712,
+          "delta2036": {
+            "population": 0.439,
+            "traffic": 0.151,
+            "housingPressure": 0.339,
+            "electricity": 0.235
+          }
+        }
+      },
+      {
+        "id": "trend-road-2",
+        "type": "road",
+        "year": 2027,
+        "start": [
+          -5.944693,
+          54.590597
+        ],
+        "end": [
+          -5.931671,
+          54.588216
+        ],
+        "path": [
+          [
+            -5.944693,
+            54.590597
+          ],
+          [
+            -5.93981,
+            54.589833
+          ],
+          [
+            -5.936554,
+            54.58898
+          ],
+          [
+            -5.931671,
+            54.588216
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_10",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4989,
+          "trafficDelta2036": 0.288
+        }
+      },
+      {
+        "id": "trend-transformer-2",
+        "type": "infrastructure",
+        "year": 2027,
+        "lng": -6.032396,
+        "lat": 54.602286,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_03",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0.3428,
+          "headroomKwProxy2036": 864.8,
+          "peakKwProxy2036": 2694.7
+        }
+      },
+      {
+        "id": "trend-building-6",
+        "type": "building",
+        "year": 2028,
+        "lng": -5.951819,
+        "lat": 54.538,
+        "location": {
+          "lng": -5.951819,
+          "lat": 54.538
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_01_09",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2689,
+          "delta2036": {
+            "population": 0.435,
+            "traffic": 0.142,
+            "housingPressure": 0.334,
+            "electricity": 0.23
+          }
+        }
+      },
+      {
+        "id": "trend-building-7",
+        "type": "building",
+        "year": 2028,
+        "lng": -6.033637,
+        "lat": 54.576572,
+        "location": {
+          "lng": -6.033637,
+          "lat": 54.576572
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_04_03",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.267,
+          "delta2036": {
+            "population": 0.434,
+            "traffic": 0.142,
+            "housingPressure": 0.334,
+            "electricity": 0.231
+          }
+        }
+      },
+      {
+        "id": "trend-park-1",
+        "type": "park",
+        "year": 2028,
+        "lng": -5.963906,
+        "lat": 54.550183,
+        "color": "#22c55e",
+        "label": "Trend green buffer",
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_08",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.3266,
+          "greenLossPressure": 0.2068
+        }
+      },
+      {
+        "id": "trend-road-3",
+        "type": "road",
+        "year": 2028,
+        "start": [
+          -5.95833,
+          54.588261
+        ],
+        "end": [
+          -5.945308,
+          54.590642
+        ],
+        "path": [
+          [
+            -5.95833,
+            54.588261
+          ],
+          [
+            -5.953447,
+            54.589025
+          ],
+          [
+            -5.950191,
+            54.589878
+          ],
+          [
+            -5.945308,
+            54.590642
+          ]
+        ],
+        "color": "#22c55e",
+        "label": "Trend transit priority corridor",
+        "plannerMode": "transit_priority",
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_09",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4862,
+          "trafficDelta2036": 0.296
+        }
+      },
+      {
+        "id": "trend-transformer-3",
+        "type": "infrastructure",
+        "year": 2028,
+        "lng": -5.953058,
+        "lat": 54.538629,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_01_09",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0.2047,
+          "headroomKwProxy2036": 1624.1,
+          "peakKwProxy2036": 2822.9
+        }
+      },
+      {
+        "id": "trend-building-8",
+        "type": "building",
+        "year": 2029,
+        "lng": -5.992728,
+        "lat": 54.615143,
+        "location": {
+          "lng": -5.992728,
+          "lat": 54.615143
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_07_06",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2666,
+          "delta2036": {
+            "population": 0.437,
+            "traffic": 0.139,
+            "housingPressure": 0.335,
+            "electricity": 0.233
+          }
+        }
+      },
+      {
+        "id": "trend-building-9",
+        "type": "building",
+        "year": 2029,
+        "lng": -5.924546,
+        "lat": 54.640857,
+        "location": {
+          "lng": -5.924546,
+          "lat": 54.640857
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_09_11",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2661,
+          "delta2036": {
+            "population": 0.406,
+            "traffic": 0.15,
+            "housingPressure": 0.363,
+            "electricity": 0.247
+          }
+        }
+      },
+      {
+        "id": "trend-park-2",
+        "type": "park",
+        "year": 2029,
+        "lng": -5.885186,
+        "lat": 54.563714,
+        "color": "#22c55e",
+        "label": "Trend service space",
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_14",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.3175,
+          "greenLossPressure": 0.2158
+        }
+      },
+      {
+        "id": "trend-road-4",
+        "type": "road",
+        "year": 2029,
+        "start": [
+          -5.944695,
+          54.603454
+        ],
+        "end": [
+          -5.931669,
+          54.601073
+        ],
+        "path": [
+          [
+            -5.944695,
+            54.603454
+          ],
+          [
+            -5.93981,
+            54.60269
+          ],
+          [
+            -5.936554,
+            54.601837
+          ],
+          [
+            -5.931669,
+            54.601073
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_10",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4848,
+          "trafficDelta2036": 0.273
+        }
+      },
+      {
+        "id": "trend-transformer-4",
+        "type": "infrastructure",
+        "year": 2029,
+        "lng": -6.005123,
+        "lat": 54.627371,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_08_05",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0.1338,
+          "headroomKwProxy2036": 2013.8,
+          "peakKwProxy2036": 2830.6
+        }
+      },
+      {
+        "id": "trend-building-10",
+        "type": "building",
+        "year": 2030,
+        "lng": -6.006364,
+        "lat": 54.563714,
+        "location": {
+          "lng": -6.006364,
+          "lat": 54.563714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_05",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2644,
+          "delta2036": {
+            "population": 0.438,
+            "traffic": 0.146,
+            "housingPressure": 0.336,
+            "electricity": 0.235
+          }
+        }
+      },
+      {
+        "id": "trend-building-11",
+        "type": "building",
+        "year": 2030,
+        "lng": -5.979091,
+        "lat": 54.615143,
+        "location": {
+          "lng": -5.979091,
+          "lat": 54.615143
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_07_07",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2636,
+          "delta2036": {
+            "population": 0.353,
+            "traffic": 0.16,
+            "housingPressure": 0.362,
+            "electricity": 0.247
+          }
+        }
+      },
+      {
+        "id": "trend-park-3",
+        "type": "park",
+        "year": 2030,
+        "lng": -5.963907,
+        "lat": 54.538674,
+        "color": "#22c55e",
+        "label": "Trend green buffer",
+        "trendBaseline": {
+          "sourceCellId": "belfast_01_08",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.3077,
+          "greenLossPressure": 0.1945
+        }
+      },
+      {
+        "id": "trend-transformer-5",
+        "type": "infrastructure",
+        "year": 2030,
+        "lng": -6.021242,
+        "lat": 54.615143,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_07_04",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0.1402,
+          "headroomKwProxy2036": 1978.6,
+          "peakKwProxy2036": 2712.6
+        }
+      },
+      {
+        "id": "trend-building-12",
+        "type": "building",
+        "year": 2031,
+        "lng": -5.979091,
+        "lat": 54.563714,
+        "location": {
+          "lng": -5.979091,
+          "lat": 54.563714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_07",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2633,
+          "delta2036": {
+            "population": 0.383,
+            "traffic": 0.163,
+            "housingPressure": 0.334,
+            "electricity": 0.231
+          }
+        }
+      },
+      {
+        "id": "trend-building-13",
+        "type": "building",
+        "year": 2031,
+        "lng": -5.951819,
+        "lat": 54.550857,
+        "location": {
+          "lng": -5.951819,
+          "lat": 54.550857
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_09",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2631,
+          "delta2036": {
+            "population": 0.417,
+            "traffic": 0.14,
+            "housingPressure": 0.322,
+            "electricity": 0.225
+          }
+        }
+      },
+      {
+        "id": "trend-building-14",
+        "type": "building",
+        "year": 2031,
+        "lng": -5.965455,
+        "lat": 54.538,
+        "location": {
+          "lng": -5.965455,
+          "lat": 54.538
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_01_08",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2631,
+          "delta2036": {
+            "population": 0.42,
+            "traffic": 0.139,
+            "housingPressure": 0.318,
+            "electricity": 0.223
+          }
+        }
+      },
+      {
+        "id": "trend-road-5",
+        "type": "road",
+        "year": 2031,
+        "start": [
+          -5.931057,
+          54.588261
+        ],
+        "end": [
+          -5.918035,
+          54.590642
+        ],
+        "path": [
+          [
+            -5.931057,
+            54.588261
+          ],
+          [
+            -5.926174,
+            54.589025
+          ],
+          [
+            -5.922918,
+            54.589878
+          ],
+          [
+            -5.918035,
+            54.590642
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_11",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4813,
+          "trafficDelta2036": 0.271
+        }
+      },
+      {
+        "id": "trend-transformer-6",
+        "type": "infrastructure",
+        "year": 2031,
+        "lng": -5.896033,
+        "lat": 54.577201,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_04_13",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0,
+          "headroomKwProxy2036": 69892.5,
+          "peakKwProxy2036": 5054.6
+        }
+      },
+      {
+        "id": "trend-building-15",
+        "type": "building",
+        "year": 2032,
+        "lng": -5.897273,
+        "lat": 54.563714,
+        "location": {
+          "lng": -5.897273,
+          "lat": 54.563714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_13",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.262,
+          "delta2036": {
+            "population": 0.36,
+            "traffic": 0.16,
+            "housingPressure": 0.353,
+            "electricity": 0.247
+          }
+        }
+      },
+      {
+        "id": "trend-building-16",
+        "type": "building",
+        "year": 2032,
+        "lng": -5.938182,
+        "lat": 54.640857,
+        "location": {
+          "lng": -5.938182,
+          "lat": 54.640857
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_09_10",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2583,
+          "delta2036": {
+            "population": 0.424,
+            "traffic": 0.134,
+            "housingPressure": 0.323,
+            "electricity": 0.229
+          }
+        }
+      },
+      {
+        "id": "trend-park-4",
+        "type": "park",
+        "year": 2032,
+        "lng": -5.98064,
+        "lat": 54.550183,
+        "color": "#22c55e",
+        "label": "Trend service space",
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_07",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.3251,
+          "greenLossPressure": 0.169
+        }
+      },
+      {
+        "id": "trend-road-6",
+        "type": "road",
+        "year": 2032,
+        "start": [
+          -5.931059,
+          54.603454
+        ],
+        "end": [
+          -5.918033,
+          54.601073
+        ],
+        "path": [
+          [
+            -5.931059,
+            54.603454
+          ],
+          [
+            -5.926174,
+            54.60269
+          ],
+          [
+            -5.922918,
+            54.601837
+          ],
+          [
+            -5.918033,
+            54.601073
+          ]
+        ],
+        "color": "#22c55e",
+        "label": "Trend transit priority corridor",
+        "plannerMode": "transit_priority",
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_11",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4786,
+          "trafficDelta2036": 0.265
+        }
+      },
+      {
+        "id": "trend-transformer-7",
+        "type": "infrastructure",
+        "year": 2032,
+        "lng": -5.966695,
+        "lat": 54.5888,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_08",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0,
+          "headroomKwProxy2036": 68500.6,
+          "peakKwProxy2036": 5306.7
+        }
+      },
+      {
+        "id": "trend-building-17",
+        "type": "building",
+        "year": 2033,
+        "lng": -6.020001,
+        "lat": 54.628,
+        "location": {
+          "lng": -6.020001,
+          "lat": 54.628
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_08_04",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2573,
+          "delta2036": {
+            "population": 0.431,
+            "traffic": 0.132,
+            "housingPressure": 0.33,
+            "electricity": 0.229
+          }
+        }
+      },
+      {
+        "id": "trend-building-18",
+        "type": "building",
+        "year": 2033,
+        "lng": -6.020001,
+        "lat": 54.576572,
+        "location": {
+          "lng": -6.020001,
+          "lat": 54.576572
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_04_04",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2569,
+          "delta2036": {
+            "population": 0.425,
+            "traffic": 0.14,
+            "housingPressure": 0.324,
+            "electricity": 0.228
+          }
+        }
+      },
+      {
+        "id": "trend-park-5",
+        "type": "park",
+        "year": 2033,
+        "lng": -5.950271,
+        "lat": 54.538,
+        "color": "#22c55e",
+        "label": "Trend green buffer",
+        "trendBaseline": {
+          "sourceCellId": "belfast_01_09",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.32,
+          "greenLossPressure": 0.159
+        }
+      },
+      {
+        "id": "trend-road-7",
+        "type": "road",
+        "year": 2033,
+        "start": [
+          -5.917421,
+          54.588261
+        ],
+        "end": [
+          -5.904399,
+          54.590642
+        ],
+        "path": [
+          [
+            -5.917421,
+            54.588261
+          ],
+          [
+            -5.912538,
+            54.589025
+          ],
+          [
+            -5.909282,
+            54.589878
+          ],
+          [
+            -5.904399,
+            54.590642
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_12",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.466,
+          "trafficDelta2036": 0.262
+        }
+      },
+      {
+        "id": "trend-building-19",
+        "type": "building",
+        "year": 2034,
+        "lng": -5.897273,
+        "lat": 54.640857,
+        "location": {
+          "lng": -5.897273,
+          "lat": 54.640857
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_09_13",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.256,
+          "delta2036": {
+            "population": 0.394,
+            "traffic": 0.137,
+            "housingPressure": 0.329,
+            "electricity": 0.227
+          }
+        }
+      },
+      {
+        "id": "trend-building-20",
+        "type": "building",
+        "year": 2034,
+        "lng": -5.938182,
+        "lat": 54.653714,
+        "location": {
+          "lng": -5.938182,
+          "lat": 54.653714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_10_10",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2559,
+          "delta2036": {
+            "population": 0.423,
+            "traffic": 0.133,
+            "housingPressure": 0.322,
+            "electricity": 0.227
+          }
+        }
+      },
+      {
+        "id": "trend-park-6",
+        "type": "park",
+        "year": 2034,
+        "lng": -5.980642,
+        "lat": 54.615817,
+        "color": "#22c55e",
+        "label": "Trend service space",
+        "trendBaseline": {
+          "sourceCellId": "belfast_07_07",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.2934,
+          "greenLossPressure": 0.185
+        }
+      },
+      {
+        "id": "trend-road-8",
+        "type": "road",
+        "year": 2034,
+        "start": [
+          -5.917423,
+          54.603454
+        ],
+        "end": [
+          -5.904397,
+          54.601073
+        ],
+        "path": [
+          [
+            -5.917423,
+            54.603454
+          ],
+          [
+            -5.912538,
+            54.60269
+          ],
+          [
+            -5.909282,
+            54.601837
+          ],
+          [
+            -5.904397,
+            54.601073
+          ]
+        ],
+        "color": "#f59e0b",
+        "label": "Trend road capacity corridor",
+        "plannerMode": "road_capacity",
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_12",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4647,
+          "trafficDelta2036": 0.258
+        }
+      },
+      {
+        "id": "trend-transformer-8",
+        "type": "infrastructure",
+        "year": 2034,
+        "lng": -5.86876,
+        "lat": 54.615143,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_07_15",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0,
+          "headroomKwProxy2036": 48529.4,
+          "peakKwProxy2036": 4699.3
+        }
+      },
+      {
+        "id": "trend-building-21",
+        "type": "building",
+        "year": 2035,
+        "lng": -5.91091,
+        "lat": 54.640857,
+        "location": {
+          "lng": -5.91091,
+          "lat": 54.640857
+        },
+        "preset": "commercial",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "office",
+          "affordabilityMix": "market",
+          "floors": 12,
+          "footprintSqm": 2300,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": false,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#06b6d4",
+        "label": "Trend jobs hub",
+        "height": 66,
+        "trendBaseline": {
+          "sourceCellId": "belfast_09_12",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2556,
+          "delta2036": {
+            "population": 0.372,
+            "traffic": 0.145,
+            "housingPressure": 0.359,
+            "electricity": 0.242
+          }
+        }
+      },
+      {
+        "id": "trend-building-22",
+        "type": "building",
+        "year": 2035,
+        "lng": -6.020001,
+        "lat": 54.563714,
+        "location": {
+          "lng": -6.020001,
+          "lat": 54.563714
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_04",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2548,
+          "delta2036": {
+            "population": 0.42,
+            "traffic": 0.142,
+            "housingPressure": 0.319,
+            "electricity": 0.228
+          }
+        }
+      },
+      {
+        "id": "trend-transformer-9",
+        "type": "infrastructure",
+        "year": 2035,
+        "lng": -5.898514,
+        "lat": 54.628629,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_08_13",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0,
+          "headroomKwProxy2036": 53408,
+          "peakKwProxy2036": 4701.7
+        }
+      },
+      {
+        "id": "trend-building-23",
+        "type": "building",
+        "year": 2036,
+        "lng": -5.992728,
+        "lat": 54.550857,
+        "location": {
+          "lng": -5.992728,
+          "lat": 54.550857
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_02_06",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2546,
+          "delta2036": {
+            "population": 0.419,
+            "traffic": 0.134,
+            "housingPressure": 0.317,
+            "electricity": 0.225
+          }
+        }
+      },
+      {
+        "id": "trend-building-24",
+        "type": "building",
+        "year": 2036,
+        "lng": -5.829091,
+        "lat": 54.589429,
+        "location": {
+          "lng": -5.829091,
+          "lat": 54.589429
+        },
+        "preset": "mixed_use",
+        "buildingConfig": {
+          "size": "medium",
+          "buildingType": "mixed_use",
+          "affordabilityMix": "affordable",
+          "floors": 11,
+          "footprintSqm": 2100,
+          "energyStandard": "net_zero_ready",
+          "parkingTransitAssumption": "transit_first",
+          "mitigation": {
+            "green": true,
+            "mobility": true,
+            "energy": true
+          }
+        },
+        "color": "#22c55e",
+        "label": "Trend mixed-use block",
+        "height": 48,
+        "trendBaseline": {
+          "sourceCellId": "belfast_05_18",
+          "reason": "High Belfast growth pressure if the current year-to-year trend continues.",
+          "growthPressure": 0.2546,
+          "delta2036": {
+            "population": 0.422,
+            "traffic": 0.139,
+            "housingPressure": 0.321,
+            "electricity": 0.228
+          }
+        }
+      },
+      {
+        "id": "trend-park-7",
+        "type": "park",
+        "year": 2036,
+        "lng": -5.963906,
+        "lat": 54.56304,
+        "color": "#22c55e",
+        "label": "Trend green buffer",
+        "trendBaseline": {
+          "sourceCellId": "belfast_03_08",
+          "reason": "Green and service support is added inside Belfast where growth raises service pressure.",
+          "servicePressure": 0.2717,
+          "greenLossPressure": 0.204
+        }
+      },
+      {
+        "id": "trend-road-9",
+        "type": "road",
+        "year": 2036,
+        "start": [
+          -5.903786,
+          54.601118
+        ],
+        "end": [
+          -5.89076,
+          54.603499
+        ],
+        "path": [
+          [
+            -5.903786,
+            54.601118
+          ],
+          [
+            -5.898901,
+            54.601882
+          ],
+          [
+            -5.895645,
+            54.602735
+          ],
+          [
+            -5.89076,
+            54.603499
+          ]
+        ],
+        "color": "#22c55e",
+        "label": "Trend transit priority corridor",
+        "plannerMode": "transit_priority",
+        "trendBaseline": {
+          "sourceCellId": "belfast_06_13",
+          "reason": "Traffic pressure keeps rising in this Belfast corridor under the 2016-2025 growth pattern.",
+          "trafficPressure": 0.4593,
+          "trafficDelta2036": 0.258
+        }
+      },
+      {
+        "id": "trend-transformer-10",
+        "type": "infrastructure",
+        "year": 2036,
+        "lng": -5.950579,
+        "lat": 54.575943,
+        "color": "#f59e0b",
+        "label": "Trend transformer node",
+        "assetClass": "secondary",
+        "capacityKva": 500,
+        "voltageKv": 11,
+        "serviceRadiusM": 700,
+        "radiusM": 700,
+        "trendBaseline": {
+          "sourceCellId": "belfast_04_09",
+          "reason": "Transformer pressure rises inside Belfast as peak demand outpaces local headroom.",
+          "overloadRisk2036": 0,
+          "headroomKwProxy2036": 66226.9,
+          "peakKwProxy2036": 5394.9
+        }
+      }
+    ],
+    "activityLog": [
+      {
+        "id": "trend-baseline-method",
+        "type": "simulation",
+        "title": "Trend baseline generated",
+        "detail": "Representative additions are constrained to the Belfast NI boundary and derived from year-to-year forecast pressure.",
+        "year": 2026,
+        "createdAt": "2026-04-26T06:35:24.691Z",
+        "data": {
+          "source": "trend_baseline_branch.json"
+        }
+      }
+    ]
+  }
+}

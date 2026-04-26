@@ -22,9 +22,10 @@
   const STORAGE_KEY = 'belfast-dashboard-v1';
   const TRANSFORMER_ICON_SVG =
     '<svg class="transformer-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="M5 5h14"/><path d="M8 5v3"/><path d="M16 5v3"/>' +
-    '<rect x="8" y="8" width="8" height="7" rx="1.5"/>' +
-    '<path d="M10 11h4M10 13h4M12 15v6M7 21h10"/>' +
+    '<path d="M4 6h16"/><path d="M7 6v4"/><path d="M17 6v4"/>' +
+    '<rect x="7" y="10" width="10" height="7" rx="1.8"/>' +
+    '<path d="M10 13h4"/><path d="M12 3v3"/><path d="M12 17v4"/>' +
+    '<path d="M8 21h8"/><path d="M15 11l-4 5h4l-3 4"/>' +
     '</svg>';
 
   const TOOL_LABELS = {
@@ -130,6 +131,7 @@
     historicalMetrics: null, // { 2016: { traffic, jobs, electricity, buildings, services/public transit }, ... }
     summaryData: null,
     baselineForecast: null,
+    trendBaselineData: null,
     manifest: null,
     map: null,
     mapLoaded: false,
@@ -518,6 +520,37 @@
     } catch (e) {
       console.warn('forecast fetch failed', e);
     }
+    try {
+      const res = await fetch('/data/mode-a/trend_baseline_branch.json');
+      if (!res.ok) throw new Error('trend baseline fetch ' + res.status);
+      applyTrendBaselineBranch(await res.json());
+    } catch (e) {
+      console.warn('trend baseline fetch failed', e);
+    }
+  }
+
+  function applyTrendBaselineBranch(payload) {
+    if (!payload || payload.kind !== 'belfast.trendBaselineBranch' || !payload.branch) return false;
+    const branch = clone(payload.branch);
+    branch.id = 'baseline';
+    branch.locked = true;
+    branch.parentId = null;
+    branch.trendBaseline = true;
+    branch.items = Array.isArray(branch.items) ? branch.items : [];
+    branch.activityLog = Array.isArray(branch.activityLog) ? branch.activityLog : [];
+    branch.scenarioResult = null;
+    branch._scenarioPending = null;
+    state.trendBaselineData = payload;
+    const existingIndex = state.branches.findIndex(b => b.id === 'baseline');
+    if (existingIndex >= 0) {
+      state.branches[existingIndex] = Object.assign({}, state.branches[existingIndex], branch);
+    } else {
+      state.branches.unshift(branch);
+    }
+    if (!state.branches.find(b => b.id === state.activeBranchId)) {
+      state.activeBranchId = 'baseline';
+    }
+    return true;
   }
 
   async function loadManifest() {
@@ -655,20 +688,24 @@
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(24, 7);
+    ctx.moveTo(24, 5);
     ctx.lineTo(24, 43);
-    ctx.moveTo(10, 9);
-    ctx.lineTo(38, 9);
+    ctx.moveTo(8, 9);
+    ctx.lineTo(40, 9);
+    ctx.moveTo(16, 9);
+    ctx.lineTo(16, 14);
+    ctx.moveTo(32, 9);
+    ctx.lineTo(32, 14);
     ctx.stroke();
 
     ctx.fillStyle = '#fed7aa';
-    [13, 35].forEach(x => {
+    [11, 37].forEach(x => {
       ctx.beginPath();
       ctx.arc(x, 9, 3.2, 0, Math.PI * 2);
       ctx.fill();
     });
 
-    roundedCanvasRect(ctx, 14, 14, 20, 18, 4);
+    roundedCanvasRect(ctx, 12, 15, 24, 19, 5);
     ctx.fillStyle = '#f59e0b';
     ctx.fill();
     ctx.lineWidth = 2.4;
@@ -676,22 +713,21 @@
     ctx.stroke();
 
     ctx.strokeStyle = '#fff7ed';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.1;
     ctx.beginPath();
-    ctx.moveTo(18, 20);
-    ctx.lineTo(30, 20);
-    ctx.moveTo(18, 24);
-    ctx.lineTo(30, 24);
-    ctx.moveTo(18, 28);
-    ctx.lineTo(30, 28);
+    ctx.moveTo(19, 19);
+    ctx.lineTo(14, 27);
+    ctx.lineTo(21, 27);
+    ctx.lineTo(17, 35);
     ctx.stroke();
 
-    ctx.lineWidth = 2.4;
+    ctx.strokeStyle = '#7c2d12';
+    ctx.lineWidth = 2.2;
     ctx.beginPath();
-    ctx.moveTo(18, 32);
-    ctx.lineTo(12, 40);
-    ctx.moveTo(30, 32);
-    ctx.lineTo(36, 40);
+    ctx.moveTo(17, 34);
+    ctx.lineTo(12, 42);
+    ctx.moveTo(31, 34);
+    ctx.lineTo(36, 42);
     ctx.stroke();
     ctx.restore();
 
@@ -1890,7 +1926,7 @@
       icon: '🌳',
       tint: '#edfaf0',
       title: 'Branch: ' + (branch.name || 'Untitled'),
-      sub: branch.locked ? 'Baseline (read-only)' : 'Active scenario',
+      sub: branch.trendBaseline ? 'Locked Belfast trend projection' : (branch.locked ? 'Baseline (read-only)' : 'Active scenario'),
       date: 'now',
     });
     logs.forEach(log => {
@@ -1918,6 +1954,7 @@
         icon = '⚡'; tint = '#fff5eb';
         title = 'Added Transformer';
       }
+      if (it.trendBaseline && it.label) title = 'Projected ' + it.label;
       if (it.type === 'infrastructure') icon = TRANSFORMER_ICON_SVG;
       entries.push({
         icon: icon, tint: tint,
@@ -2393,7 +2430,7 @@
     if (!els.branchSelect) return;
     els.branchSelect.innerHTML = state.branches.map(b => {
       const count = (b.items || []).length;
-      const label = (b.name || 'Branch') + (b.locked ? ' (baseline)' : ' - ' + count + ' item' + (count === 1 ? '' : 's'));
+      const label = (b.name || 'Branch') + (b.locked ? ' (' + (b.trendBaseline ? count + ' Belfast projected' : 'baseline') + ')' : ' - ' + count + ' item' + (count === 1 ? '' : 's'));
       return '<option value="' + escapeHtml(b.id) + '">' + escapeHtml(label) + '</option>';
     }).join('');
     els.branchSelect.value = state.activeBranchId;
@@ -2459,10 +2496,21 @@
 
   function branchAdditionsHTML(branch) {
     const items = (branch && branch.items) || [];
+    const introRows = branch && branch.trendBaseline ? [{
+      sortYear: FINAL_YEAR + 1,
+      sortTime: Number.MAX_SAFE_INTEGER,
+      sortRank: -1,
+      row: {
+        title: BASE_YEAR + ' Belfast trend baseline',
+        detail: 'Current trend continuation constrained to the Belfast NI boundary',
+        color: branch.color || '#3b82f6'
+      }
+    }] : [];
     if (!items.length) {
+      if (introRows.length) return branchLineHTML(introRows.map(entry => entry.row));
       return '<div class="branch-empty" style="font-size:11.5px;color:var(--text-mute);padding:8px 0;">No additions yet. Add something on the map to start this branch.</div>';
     }
-    const rows = items.map((item, index) => ({
+    const rows = introRows.concat(items.map((item, index) => ({
       sortYear: item.year || START_YEAR,
       sortTime: Date.parse(item.createdAt || '') || 0,
       sortRank: index,
@@ -2472,9 +2520,9 @@
         color: item.color || branch.color || '#3b82f6',
         item
       }
-    }))
+    })))
       .sort((a, b) => (b.sortTime - a.sortTime) || ((b.sortYear || 0) - (a.sortYear || 0)) || (b.sortRank - a.sortRank))
-      .map(entry => entry.row);
+      .map(entry => entry.row || entry);
     return branchLineHTML(rows);
   }
 
@@ -2512,6 +2560,7 @@
 
   function branchItemTitle(item) {
     if (!item) return 'Addition';
+    if (item.trendBaseline && item.label) return item.label;
     if (item.type === 'building') return 'Building - ' + (item.label || capitalise(item.preset || 'building'));
     if (item.type === 'building_removal') return 'Delete - ' + (item.existingBuildingName || item.label || 'Existing building');
     if (item.type === 'road') return item.label || 'Road segment';
@@ -2523,6 +2572,9 @@
   function branchItemDetail(item) {
     if (!item) return '';
     const year = 'Year ' + (item.year || START_YEAR);
+    if (item.trendBaseline && item.trendBaseline.reason) {
+      return year + ' - ' + item.trendBaseline.reason;
+    }
     if (item.type === 'building') {
       const place = item.postcode || (Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'map point');
       return year + ' - ' + place;
@@ -8552,6 +8604,19 @@
     await loadManifest();
     initMap();
     await Promise.all([histPromise, forecastPromise]);
+    renderBranches();
+    renderImpact();
+    renderActiveInfo();
+    renderMapSubtitle();
+    renderLeftSidebar();
+    if (state.mapLoaded) {
+      renderItemsOnMap();
+      if (state.mode === 'simulation') {
+        updateImpactRipples();
+        updateImpactLensUI();
+      }
+      syncCityBuildingHeightContext();
+    }
 
     // Expose for debugging / smoke tests
     window.BelfastDashboard = {

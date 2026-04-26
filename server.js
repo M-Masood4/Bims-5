@@ -843,7 +843,7 @@ async function buildExportExplanation(report) {
 }
 
 function tableHtml(title, headers, rows) {
-  const bodyRows = rows.length ? rows : [headers.map((_, index) => index === 0 ? "No data supplied" : "")];
+  if (!hasMeaningfulRows(rows)) return "";
   return [
     `<h3>${htmlEscape(title)}</h3>`,
     "<table>",
@@ -851,10 +851,32 @@ function tableHtml(title, headers, rows) {
     headers.map((header) => `<th>${htmlEscape(header)}</th>`).join(""),
     "</tr></thead>",
     "<tbody>",
-    bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${htmlEscape(cell)}</td>`).join("")}</tr>`).join(""),
+    rows.map((row) => `<tr>${row.map((cell) => `<td>${htmlEscape(cell)}</td>`).join("")}</tr>`).join(""),
     "</tbody>",
     "</table>"
   ].join("");
+}
+
+function reportSectionHtml(title, bodyHtml, className = "") {
+  if (!cleanText(bodyHtml)) return "";
+  return [
+    `<h2${className ? ` class="${htmlEscape(className)}"` : ""}>${htmlEscape(title)}</h2>`,
+    bodyHtml
+  ].join("\n");
+}
+
+function suppliedCell(value) {
+  const text = cleanText(value).toLowerCase();
+  return Boolean(text) &&
+    text !== "-" &&
+    text !== "n/a" &&
+    text !== "not supplied" &&
+    text !== "no data supplied" &&
+    text !== "no extra deterministic details supplied";
+}
+
+function hasMeaningfulRows(rows) {
+  return arrayOf(rows).some((row) => arrayOf(row).some(suppliedCell));
 }
 
 function listHtml(items) {
@@ -870,7 +892,6 @@ function scopeRows(report, explanation) {
     ["Baseline year", String(report.baselineYear)],
     ["Branches exported", report.branches.map((branch) => branch.name).join("; ")],
     ["Deterministic basis", report.source.deterministicBasis],
-    ["Gemini narrative", explanation.geminiUsed ? `Used ${explanation.model}` : "Not used; deterministic fallback narrative"],
     ["Generated at", report.generatedAt]
   ];
 }
@@ -888,7 +909,7 @@ function branchSummaryRows(report) {
     ["Transformer model", cell(a, (branch) => branch.scenario.transformerModelVersion || "not supplied"), cell(b, (branch) => branch.scenario.transformerModelVersion || "not supplied")],
     ["Recommended branch", cell(a, (branch) => branch.scenario.recommendedBranch || "not supplied"), cell(b, (branch) => branch.scenario.recommendedBranch || "not supplied")],
     ["Confidence", cell(a, (branch) => branch.scenario.confidenceLabel || "not supplied"), cell(b, (branch) => branch.scenario.confidenceLabel || "not supplied")]
-  ];
+  ].filter((row) => row.slice(1).some(suppliedCell));
 }
 
 function kpiRows(report) {
