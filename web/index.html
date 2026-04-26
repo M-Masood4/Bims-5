@@ -44,13 +44,6 @@
         </div>
       </div>
 
-      <nav id="topNav" class="top-nav" aria-label="Mode">
-        <button class="nav-btn" data-mode-tab="historical" type="button">Historical</button>
-        <button class="nav-btn active" data-mode-tab="simulation" type="button">Simulation</button>
-        <button class="nav-btn" data-mode-tab="compare" type="button">Compare</button>
-        <button class="nav-btn" data-mode-tab="library" type="button">Library</button>
-      </nav>
-
       <div class="tools-host">
         <div class="modify-list" id="modifyList" role="toolbar" aria-label="Edit tools">
           <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true">
@@ -88,18 +81,6 @@
         <button class="icon-btn" id="exportBtn" type="button" title="Export">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span>Export</span>
-        </button>
-        <button class="icon-btn icon-only" id="settingsBtn" type="button" title="Settings">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.86 1.18 1.43 2.11 1.43H21a2 2 0 1 1 0 4h-.09c-.93 0-1.75.57-2.11 1.43z"/></svg>
-        </button>
-        <button class="icon-btn icon-only" id="helpBtn" type="button" title="Help">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </button>
-        <button class="icon-btn icon-only" id="themeBtn" type="button" title="Toggle theme">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="icon-btn icon-only" id="aboutBtn" type="button" title="About">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         </button>
       </div>
     </header>
@@ -140,15 +121,6 @@
         <span id="cursorHintText">Click on the map to place</span>
       </div>
 
-      <div class="impact-lens" id="impactLens" hidden>
-        <div class="impact-lens-head">
-          <span class="impact-lens-title">Predicted Impact</span>
-          <span class="impact-lens-year" id="impactLensYear">+0 yrs</span>
-        </div>
-        <div class="impact-lens-tabs" id="impactLensTabs"></div>
-        <div class="impact-lens-legend" id="impactLensLegend"></div>
-      </div>
-
       <div class="similar-events" id="similarEvents" hidden>
         <div class="similar-events-head">
           <span>Similar Past Events</span>
@@ -169,6 +141,30 @@
           <svg id="collapseIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>
+
+      <div class="workspace-split" id="workspaceSplit" hidden>
+        <div class="workspace-split-head">
+          <div>
+            <h3 id="splitTitle">Scenario diff</h3>
+            <div class="workspace-split-meta" id="splitMeta"></div>
+          </div>
+          <button class="workspace-split-close" id="splitCloseBtn" type="button" title="Close split view">&times;</button>
+        </div>
+        <div class="workspace-split-body">
+          <section class="split-pane">
+            <div class="split-pane-head"><span id="splitYearBefore">No-build 2036</span><strong>Before</strong></div>
+            <div id="splitMapBefore" class="split-map"></div>
+          </section>
+          <section class="split-pane">
+            <div class="split-pane-head"><span id="splitYearAfter">With build 2036</span><strong>After</strong></div>
+            <div id="splitMapAfter" class="split-map"></div>
+          </section>
+        </div>
+        <div class="workspace-split-footer">
+          <div class="diff-stats split-stats" id="splitStats"></div>
+          <div class="diff-evidence split-evidence" id="splitEvidence"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Timeline (dot-based) -->
@@ -183,9 +179,9 @@
         <div class="timeline-marks" id="tlMarks" hidden></div>
       </div>
       <div class="timeline-labels">
-        <span class="hist-label">◀ Historical Data (2016 – 2026)</span>
+        <span class="hist-label">Historical Data (2016-2025)</span>
         <span class="now-label" id="tlYearNow">2026</span>
-        <span class="future-label">Simulation (2026 – 2036) ▶</span>
+        <span class="future-label">Simulation (2026-2036)</span>
       </div>
       <div class="timeline-controls">
         <button class="tl-btn" id="tlPrev" type="button" title="Previous year">
@@ -213,20 +209,19 @@
         <span>Branching</span>
         <span class="info-icon" title="Compare what-if scenarios" id="showAllBtn">i</span>
       </div>
-      <div class="viewing-label">Viewing branch <strong id="activeBranchName">Baseline</strong> · <span id="activeYearLabel">2026</span></div>
-
-      <div id="branchList" class="branch-cards"></div>
-      <button class="new-branch-btn" id="newBranchBtn" type="button">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New Branch
-      </button>
+      <div class="branch-picker">
+        <select id="branchSelect" class="branch-select" aria-label="Branch"></select>
+        <button class="new-branch-btn compact" id="newBranchBtn" type="button" title="New branch">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>New</span>
+        </button>
+      </div>
+      <div class="viewing-label">Viewing branch <strong id="activeBranchName">Baseline</strong> - <span id="activeYearLabel">2026</span></div>
 
       <div class="section-title scenario-tree-title">
-        <span id="tlBranchName">Scenario tree</span>
+        <span id="tlBranchName">Additions</span>
       </div>
-      <div class="scenario-tree" id="branchTimelineWrap">
-        <svg class="tree-svg" id="branchTimelineSvg" viewBox="0 0 258 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
-      </div>
+      <div id="branchList" class="branch-addition-list"></div>
 
       <div class="info-box">
         <span class="info-box-icon" aria-hidden="true">
@@ -276,10 +271,6 @@
       <button class="view-diff-btn" id="compareBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
-      </button>
-      <button class="view-diff-btn road-compare-btn" id="roadCompareBtn" type="button" title="Plan a new road and see its impact">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v14"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
-        Plan New Road
       </button>
       <button class="run-sim-btn" id="runBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5V3z"/></svg>

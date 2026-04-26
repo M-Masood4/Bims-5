@@ -114,7 +114,7 @@
 
   const state = {
     year: BASE_YEAR,
-    mode: 'simulation', // historical | simulation | compare | library
+    mode: 'historical',
     view: '2D',
     activeBranchId: 'baseline',
     branches: clone(DEFAULT_BRANCHES),
@@ -218,6 +218,40 @@
   function isSimYear(y) { return y >= START_YEAR; }
 
   function activeBranch() { return state.branches.find(b => b.id === state.activeBranchId) || state.branches[0]; }
+
+  function activityColor(type) {
+    if (type === 'simulation') return '#22c55e';
+    if (type === 'diff') return '#3b82f6';
+    if (type === 'road') return '#22d3ee';
+    return '#64748b';
+  }
+
+  function activityIcon(type) {
+    if (type === 'simulation') return 'S';
+    if (type === 'diff') return 'D';
+    if (type === 'road') return 'R';
+    return 'A';
+  }
+
+  function recordBranchActivity(branch, type, title, detail, year, data) {
+    if (!branch || branch.locked) return null;
+    if (!Array.isArray(branch.activityLog)) branch.activityLog = [];
+    const entry = {
+      id: uid('act'),
+      type: type || 'activity',
+      title: title || 'Activity',
+      detail: detail || '',
+      year: clamp(Number(year) || state.year || START_YEAR, START_YEAR, FINAL_YEAR),
+      createdAt: new Date().toISOString(),
+      data: data || {}
+    };
+    branch.activityLog.push(entry);
+    if (branch.activityLog.length > 80) branch.activityLog = branch.activityLog.slice(-80);
+    renderLeftSidebar();
+    renderBranches();
+    saveState();
+    return entry;
+  }
 
   // ---------- IMPACT MODEL ----------
 
@@ -335,7 +369,6 @@
         activeBuildingPreset: state.activeBuildingPreset,
         nextItemId: state.nextItemId,
         bottomCollapsed: state.bottomCollapsed,
-        mode: state.mode,
         lens: state.lens,
         selectedPostcode: state.selectedPostcode
       };
@@ -358,7 +391,6 @@
       if (data.activeBuildingPreset) state.activeBuildingPreset = data.activeBuildingPreset;
       if (Number.isFinite(data.nextItemId)) state.nextItemId = data.nextItemId;
       if (typeof data.bottomCollapsed === 'boolean') state.bottomCollapsed = data.bottomCollapsed;
-      if (data.mode === 'historical' || data.mode === 'simulation') state.mode = data.mode;
       if (data.lens && LENSES.find(l => l.id === data.lens)) state.lens = data.lens;
       if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
@@ -380,7 +412,7 @@
       'activeBranchTag', 'tagDot', 'tagName', 'tagYear',
       'tlPrev', 'tlPlay', 'tlPlayIcon', 'tlNext', 'tlYearNow', 'tlTrack', 'tlProgress', 'tlThumb', 'tlMarks',
       'impactTitle', 'impactStack', 'showAllBtn',
-      'newBranchBtn', 'branchList',
+      'newBranchBtn', 'branchSelect', 'branchList',
       'tlBranchName', 'branchTimelineSvg',
       'runBtn', 'runBtnLabel', 'compareBtn', 'activeBranchName', 'activeYearLabel', 'exportBtn',
       'compareModal', 'compareYear', 'compareBody',
@@ -389,9 +421,11 @@
       'lensTabs', 'collapseBtn',
       'mapSearch', 'postcodeForm', 'postcodeInput', 'mapSearchStatus', 'mapSearchSuggest', 'scenarioDiffBtn',
       'branchMenu', 'nodeMenu',
-      'toast', 'topNav', 'viewToggle', 'aboutBtn', 'helpBtn', 'settingsBtn',
+      'toast', 'topNav', 'viewToggle',
       'impactLens', 'impactLensTabs', 'impactLensYear', 'impactLensLegend',
       'similarEvents', 'similarEventsList', 'similarEventsConf',
+      'workspaceSplit', 'splitCloseBtn', 'splitTitle', 'splitMeta',
+      'splitYearBefore', 'splitYearAfter', 'splitStats', 'splitEvidence',
       'trafficSimSection', 'trafficSimToggle', 'trafficSimToggleLabel',
       'trafficSimDensity', 'trafficSimDensityVal', 'trafficSimSpeed', 'trafficSimSpeedVal',
       'trafficSimStats', 'trafficSimVehicles', 'trafficSimSpeedStat', 'trafficSimCongested',
@@ -1425,6 +1459,11 @@
     const branch = activeBranch();
     if (!branch) { els.leftSidebarList.innerHTML = ''; return; }
     const items = (branch.items || []).slice().sort((a, b) => (b.year || 0) - (a.year || 0));
+    const logs = (branch.activityLog || []).slice().sort((a, b) => {
+      const yearDiff = (b.year || 0) - (a.year || 0);
+      if (yearDiff) return yearDiff;
+      return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+    });
     const entries = [];
     entries.push({
       icon: '🌳',
@@ -1432,6 +1471,15 @@
       title: 'Branch: ' + (branch.name || 'Untitled'),
       sub: branch.locked ? 'Baseline (read-only)' : 'Active scenario',
       date: 'now',
+    });
+    logs.forEach(log => {
+      entries.push({
+        icon: activityIcon(log.type),
+        tint: log.type === 'simulation' ? '#edfaf0' : log.type === 'diff' ? '#eaf4ff' : '#f8f9fc',
+        title: log.title || 'Activity',
+        sub: log.detail || '',
+        date: 'Year ' + (log.year || state.year),
+      });
     });
     items.forEach(it => {
       let icon = '➕', tint = '#fff5eb', title = 'Item';
@@ -1561,6 +1609,7 @@
     renderMapSubtitle();
     renderLeftSidebar();
     if (isHistoricalMode()) {
+      closeWorkspaceSplit();
       renderHistoricalBranchesPanel();
       renderCompareSection();
       renderHistoricalMapLayers();
@@ -1568,7 +1617,7 @@
       // Always call renderCompareSection so the simulation panel HTML is
       // restored when transitioning from historical → simulation. Otherwise
       // the panel keeps the "Event Detail" content from the previous mode
-      // and our Plan New Road / Run buttons disappear.
+      // and our footer action buttons disappear.
       renderCompareSection();
       updateImpactRipples();
       updateImpactLensUI();
@@ -1649,6 +1698,7 @@
       els.mapCanvas.classList.toggle('placing', !!state.activeTool && state.activeTool !== 'remove');
       els.mapCanvas.classList.toggle('removing', state.activeTool === 'remove');
     }
+    updateRunButtonLabel();
     renderPresets();
   }
 
@@ -1683,10 +1733,10 @@
         // Roads now flow through the postcode → junction picker. If the
         // planner isn't armed yet, push the user to the search box rather
         // than letting them free-click points that won't sit on real roads.
-        if (t === 'road' && !roadPlanner.armed) {
+        if (t === 'road' && state.activeTool !== 'road' && !roadPlanner.armed) {
           toast('Search a postcode — junctions you can connect will appear on the map.', 'warn');
+          showPlanRoadHint('Search a postcode, then click two junctions to plan a road');
           if (els.postcodeInput) els.postcodeInput.focus();
-          return;
         }
         state.activeTool = state.activeTool === t ? null : t;
         state.pendingRoadStart = null;
@@ -1813,7 +1863,7 @@
 
   // ---------- RENDER: BRANCHES PANEL ----------
 
-  function renderBranches() {
+  function renderLegacyBranchCards() {
     if (!els.branchList) return;
     if (isHistoricalMode()) {
       // In the new layout the branches panel doesn't get hijacked into an
@@ -1868,6 +1918,144 @@
       '</div>';
   }
 
+  function renderBranchSelect() {
+    if (!els.branchSelect) return;
+    els.branchSelect.innerHTML = state.branches.map(b => {
+      const count = (b.items || []).length;
+      const label = (b.name || 'Branch') + (b.locked ? ' (baseline)' : ' - ' + count + ' item' + (count === 1 ? '' : 's'));
+      return '<option value="' + escapeHtml(b.id) + '">' + escapeHtml(label) + '</option>';
+    }).join('');
+    els.branchSelect.value = state.activeBranchId;
+  }
+
+  function renderBranches() {
+    if (!els.branchList) return;
+    renderBranchSelect();
+    if (isHistoricalMode()) {
+      els.branchList.className = 'branch-addition-list';
+      els.branchList.innerHTML = branchLineHTML([{
+        title: state.year + ' historical record',
+        detail: 'Source-backed replay. Scenario additions begin in 2026.',
+        color: '#3b82f6'
+      }]);
+      if (els.newBranchBtn) els.newBranchBtn.style.display = 'none';
+      if (els.branchSelect) els.branchSelect.disabled = true;
+      if (els.tlBranchName) {
+        els.tlBranchName.textContent = 'Replay';
+        els.tlBranchName.style.color = '';
+      }
+      renderActiveInfo();
+      renderTagDot();
+      return;
+    }
+
+    const branch = activeBranch();
+    if (els.branchSelect) els.branchSelect.disabled = false;
+    if (els.newBranchBtn) els.newBranchBtn.style.display = '';
+    if (els.tlBranchName) {
+      els.tlBranchName.textContent = 'Additions';
+      els.tlBranchName.style.color = branch.color || '';
+    }
+    els.branchList.className = 'branch-addition-list';
+    els.branchList.innerHTML = branchAdditionsHTML(branch);
+    els.branchList.querySelectorAll('[data-item-id]').forEach(el => {
+      const itemId = el.getAttribute('data-item-id');
+      el.addEventListener('click', () => {
+        const item = activeBranch().items.find(i => i.id === itemId);
+        if (item) openInspectModal(item);
+      });
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        nodeMenuTarget = { branchId: branch.id, itemId: itemId };
+        if (els.nodeMenu) {
+          els.nodeMenu.style.left = e.clientX + 'px';
+          els.nodeMenu.style.top = e.clientY + 'px';
+          els.nodeMenu.hidden = false;
+        }
+      });
+    });
+    renderActiveInfo();
+    renderTagDot();
+  }
+
+  function branchAdditionsHTML(branch) {
+    const rows = [{
+      title: BASE_YEAR + ' baseline',
+      detail: branch.locked ? 'No planned changes' : 'Branched from ' + parentBranchName(branch),
+      color: branch.color || '#3b82f6'
+    }];
+    (branch.items || [])
+      .slice()
+      .sort((a, b) => (a.year || START_YEAR) - (b.year || START_YEAR))
+      .forEach(item => rows.push({
+        title: branchItemTitle(item),
+        detail: branchItemDetail(item),
+        color: item.color || branch.color || '#3b82f6',
+        item
+      }));
+    (branch.activityLog || [])
+      .slice()
+      .sort((a, b) => (a.year || START_YEAR) - (b.year || START_YEAR) || String(a.createdAt || '').localeCompare(String(b.createdAt || '')))
+      .forEach(log => rows.push({
+        title: log.title || 'Activity',
+        detail: (log.year ? ('Year ' + log.year + (log.detail ? ' - ' : '')) : '') + (log.detail || ''),
+        color: activityColor(log.type)
+      }));
+    if (branch.scenarioResult && !(branch.activityLog || []).some(log => log.type === 'simulation')) {
+      rows.push({
+        title: 'Simulation run',
+        detail: branch.scenarioResult.recommendedBranch || 'Forecast ready',
+        color: '#22c55e'
+      });
+    }
+    return branchLineHTML(rows);
+  }
+
+  function branchLineHTML(rows) {
+    return '<div class="branch-line">' + rows.map(row => {
+      const clickable = row.item ? ' is-clickable' : '';
+      const itemAttr = row.item ? ' data-item-id="' + escapeHtml(row.item.id) + '" role="button" tabindex="0"' : '';
+      return '<div class="branch-line-item' + clickable + '"' + itemAttr + '>' +
+        '<span class="branch-line-dot" style="--branch-line-color:' + escapeHtml(row.color || '#3b82f6') + '"></span>' +
+        '<div class="branch-line-card">' +
+          '<div class="branch-line-title">' + escapeHtml(row.title) + '</div>' +
+          '<div class="branch-line-detail">' + escapeHtml(row.detail || '') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  function parentBranchName(branch) {
+    const parent = branch && state.branches.find(b => b.id === branch.parentId);
+    return parent ? parent.name : 'baseline';
+  }
+
+  function branchItemTitle(item) {
+    if (!item) return 'Addition';
+    if (item.type === 'building') return 'Building - ' + (item.label || capitalise(item.preset || 'building'));
+    if (item.type === 'road') return item.label || 'Road segment';
+    if (item.type === 'park') return 'Park';
+    if (item.type === 'infrastructure') return 'Electricity infrastructure';
+    return capitalise(item.type || 'addition');
+  }
+
+  function branchItemDetail(item) {
+    if (!item) return '';
+    const year = 'Year ' + (item.year || START_YEAR);
+    if (item.type === 'building') {
+      const place = item.postcode || (Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'map point');
+      return year + ' - ' + place;
+    }
+    if (item.type === 'road') {
+      const segments = Array.isArray(item.path) ? Math.max(1, item.path.length - 1) : 1;
+      return year + ' - ' + segments + ' street segment' + (segments === 1 ? '' : 's');
+    }
+    if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      return year + ' - ' + locationLabel(item.lng, item.lat);
+    }
+    return year;
+  }
+
   function renderTagDot() {
     const b = activeBranch();
     if (els.tagDot) {
@@ -1885,15 +2073,44 @@
 
   function setActiveBranch(id) {
     if (!state.branches.find(x => x.id === id)) return;
+    closeWorkspaceSplit();
     state.activeBranchId = id;
     renderBranches();
     renderImpact();
     renderItemsOnMap();
+    renderMapSubtitle();
+    renderLeftSidebar();
     updateScenarioDiffButton();
     saveState();
   }
 
+  function attachBranchPickerEvents() {
+    if (!els.branchSelect) return;
+    els.branchSelect.addEventListener('change', () => {
+      setActiveBranch(els.branchSelect.value);
+    });
+  }
+
   // ---------- BRANCH CRUD ----------
+
+  function openModalCustom(title, renderBody) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    const close = () => modal.remove();
+    modal.innerHTML =
+      '<div class="modal-backdrop" data-close></div>' +
+      '<div class="modal-card">' +
+        '<div class="modal-head">' +
+          '<h3>' + escapeHtml(title) + '</h3>' +
+          '<button class="modal-close" data-close type="button">&times;</button>' +
+        '</div>' +
+        '<div class="modal-body"></div>' +
+      '</div>';
+    modal.querySelectorAll('[data-close]').forEach(node => node.addEventListener('click', close));
+    document.body.appendChild(modal);
+    const body = modal.querySelector('.modal-body');
+    if (body && typeof renderBody === 'function') renderBody(body, close);
+  }
 
   function openNewBranchModal() {
     const usedColors = new Set(state.branches.map(b => b.color));
@@ -2432,9 +2649,63 @@
 
   // ---------- RUN SIMULATION ----------
 
+  function defaultRunButtonLabel() {
+    return state.activeTool === 'road' ? 'Run Road Simulation' : 'Run Simulation';
+  }
+
+  function updateRunButtonLabel() {
+    if (!state.isRunningSim && els.runBtnLabel) els.runBtnLabel.textContent = defaultRunButtonLabel();
+  }
+
+  function completeSimulationWorkspace(branch, scenario, building, metrics) {
+    if (!branch || !scenario) return;
+    state.lens = 'traffic';
+    state.impactMetric = 'traffic';
+    state.activeTool = null;
+    setYear(FINAL_YEAR);
+    setView('3D');
+    renderLensTabs();
+    renderModify();
+    renderImpact();
+    updateImpactRipples();
+    updateImpactLensUI();
+    if (window.TrafficSim) {
+      if (window.TrafficSim.isRunning()) window.TrafficSim.refreshSegments();
+      else startTrafficSim({ auto: true });
+      state._trafficAutoStarted = false;
+    }
+    const populationMetric = METRICS.find(m => m.id === 'population');
+    const popDelta = metrics.population - (populationMetric ? populationMetric.baseline : 0);
+    branch.lastSimulationWorkspace = {
+      completedAt: new Date().toISOString(),
+      year: FINAL_YEAR,
+      lens: 'traffic',
+      buildingId: building && building.id,
+      postcode: building && building.postcode,
+      metrics: metrics,
+      modelVersion: scenario.modelVersion || 'forecast'
+    };
+    recordBranchActivity(
+      branch,
+      'simulation',
+      'Simulation complete',
+      'Traffic map generated for ' + FINAL_YEAR + ' (' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population)',
+      FINAL_YEAR,
+      {
+        postcode: building && building.postcode,
+        modelVersion: scenario.modelVersion || 'forecast',
+        metrics: metrics
+      }
+    );
+  }
+
   async function runSimulation() {
     if (state.isRunningSim) return;
     const branch = activeBranch();
+    if (state.activeTool === 'road') {
+      runRoadComparison();
+      return;
+    }
     const building = selectedScenarioBuilding(branch);
     if (!building) {
       toast('Add a building on a valid Belfast map point before running the forecast.', 'warn');
@@ -2447,7 +2718,7 @@
     if (!scenario) {
       state.isRunningSim = false;
       if (els.runBtn) els.runBtn.classList.remove('running');
-      if (els.runBtnLabel) els.runBtnLabel.textContent = 'Run Simulation';
+      updateRunButtonLabel();
       updateScenarioDiffButton();
       return;
     }
@@ -2470,16 +2741,16 @@
         clearInterval(tick);
         state.isRunningSim = false;
         if (els.runBtn) els.runBtn.classList.remove('running');
-        if (els.runBtnLabel) els.runBtnLabel.textContent = 'Run Simulation';
+        updateRunButtonLabel();
         // Stop on 2036, show outcome
         const m = metricsForBranchYear(branch, FINAL_YEAR);
         const popDelta = m.population - METRICS[0].baseline;
         updateScenarioDiffButton();
+        completeSimulationWorkspace(branch, scenario, building, m);
         toast('Simulation complete — projected ' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population by 2036');
-        // If we auto-started the traffic sim, gracefully stop it after a beat
+        // Traffic stays visible as the generated 2036 map after completion.
         if (window.TrafficSim && state._trafficAutoStarted) {
           state._trafficAutoStarted = false;
-          setTimeout(() => { if (window.TrafficSim.isRunning()) stopTrafficSim(); }, 1200);
         }
         return;
       }
@@ -2565,8 +2836,8 @@
   //      and render them as glowing clickable circles.
   //   3. User clicks two junctions; we drop them as a candidate road into the
   //      active branch's items list (same shape as a normal road item).
-  //   4. "Plan New Road" button (or auto-open) runs runComparison() with the
-  //      candidate vs. the same network without it, and shows the impact
+  //   4. Run Simulation, while the Road tool is selected, runs runComparison()
+  //      with the candidate vs. the same network without it, and shows the impact
   //      modal with before/after stats and a per-segment congestion diff.
 
   const roadPlanner = {
@@ -2745,8 +3016,8 @@
     // the candidate.
     const fresh = activeBranch().items[activeBranch().items.length - 1];
     if (fresh) roadPlanner.candidateRoadItemId = fresh.id;
-    showPlanRoadHint('Road planned — running impact analysis…');
-    setTimeout(() => { runRoadComparison(); }, 250);
+    showPlanRoadHint('Road planned. Click Run Road Simulation to calculate impact.');
+    toast('Road planned. Run the simulation to calculate traffic impact.');
   }
 
   function setRoadCompareProgress(label, frac) {
@@ -2762,8 +3033,8 @@
     els.roadCompareModal.hidden = false;
   }
 
-  // Called by the "Plan New Road" button. If a candidate road already exists,
-  // run the impact comparison; otherwise prompt the user to search a postcode.
+  // Called by Run Simulation when the Road tool is selected. If a candidate
+  // road already exists, run the impact comparison; otherwise prompt search.
   function runRoadComparison() {
     if (!window.TrafficSim || !window.TrafficSim.runComparison) {
       toast('Traffic engine not ready yet', 'warn');
@@ -2918,6 +3189,25 @@
         '<span class="rc-verdict rc-verdict-' + verdict.toLowerCase().replace(/[^a-z]+/g, '-') + '">' + escapeHtml(verdict) + '</span>' +
         ' — ' + escapeHtml(verdictBits.join(' · ')) + '. ' +
         escapeHtml(result.after.candidateUsage + ' simulated vehicles routed via the new road.');
+    }
+    const branch = activeBranch();
+    if (branch && !branch.locked) {
+      branch.lastRoadSimulation = {
+        completedAt: new Date().toISOString(),
+        year: state.year,
+        roadId: candItem && candItem.id,
+        before: result.before,
+        after: result.after,
+        candidateUsage: result.after.candidateUsage || 0
+      };
+      recordBranchActivity(
+        branch,
+        'road',
+        'Road simulation complete',
+        verdict + ' - ' + verdictBits.join(', '),
+        state.year,
+        branch.lastRoadSimulation
+      );
     }
   }
 
@@ -3222,6 +3512,10 @@
     const c = [feat.location.lng, feat.location.lat];
     state.map.flyTo({ center: c, zoom: feat.precision === 'outcode' ? 13.7 : 16.2, pitch: 62, bearing: -24, duration: 900 });
     if (searchMarker) { try { searchMarker.remove(); } catch (_) {} }
+    if (els.mapSearchSuggest) {
+      els.mapSearchSuggest.hidden = true;
+      els.mapSearchSuggest.innerHTML = '';
+    }
     const el = document.createElement('div');
     el.style.cssText = 'width:22px;height:22px;border-radius:50%;background:' + (feat.canPlace ? '#22c55e' : '#f59e0b') + ';box-shadow:0 0 0 7px rgba(96,165,250,0.25),0 0 22px rgba(96,165,250,0.7);border:2px solid #0a1426;';
     searchMarker = new mapboxgl.Marker({ element: el })
@@ -4076,6 +4370,8 @@
   }
 
   function renderHistoricalBranchesPanel() {
+    renderBranches();
+    return;
     if (!els.branchList) return;
     if (els.newBranchBtn) els.newBranchBtn.style.display = 'none';
     const events = eventsForCurrentYearAndLens();
@@ -4280,6 +4576,7 @@
   // ---------- DIFF MODAL ----------
 
   let diffMaps = { before: null, after: null };
+  let workspaceSplitMaps = { before: null, after: null };
 
   function setDiffSideLabels(beforeLabel, afterLabel) {
     const beforeHead = document.querySelector('#diffMapBefore')?.closest('.diff-side')?.querySelector('.diff-side-head span:last-child');
@@ -4288,8 +4585,18 @@
     if (afterHead) afterHead.textContent = afterLabel;
   }
 
+  function closeWorkspaceSplitMaps() {
+    if (workspaceSplitMaps.before) { try { workspaceSplitMaps.before.remove(); } catch (_) {} workspaceSplitMaps.before = null; }
+    if (workspaceSplitMaps.after) { try { workspaceSplitMaps.after.remove(); } catch (_) {} workspaceSplitMaps.after = null; }
+  }
+
+  function closeWorkspaceSplit() {
+    if (els.workspaceSplit) els.workspaceSplit.hidden = true;
+    closeWorkspaceSplitMaps();
+  }
+
   async function openScenarioDiffModal() {
-    if (!els.diffModal) return;
+    if (!els.workspaceSplit) return;
     const branch = activeBranch();
     const scenario = scenarioResultForBranch(branch);
     const building = selectedScenarioBuilding(branch);
@@ -4312,32 +4619,46 @@
       return;
     }
 
-    closeDiffMaps();
+    closeWorkspaceSplitMaps();
     setView('3D');
-    document.getElementById('diffYearBefore').textContent = 'No-build ' + year;
-    document.getElementById('diffYearAfter').textContent = 'With build ' + year;
-    setDiffSideLabels('baseline', 'scenario');
-    document.getElementById('diffTitle').textContent = 'Scenario diff: ' + (building.postcode || 'selected postcode');
+    if (els.diffModal) els.diffModal.hidden = true;
+    if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + year;
+    if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + year;
+    if (els.splitTitle) els.splitTitle.textContent = 'Scenario diff: ' + (building.postcode || 'selected postcode');
 
-    const meta = document.getElementById('diffMeta');
     const branchName = scenarioBranch ? (scenarioBranch.name || scenarioBranch.branchName || 'Selected branch') : branch.name;
     const confidence = scenarioBranch ? scenarioBranch.confidence : (scenario.confidence || 'medium');
-    meta.innerHTML = '<strong>' + escapeHtml(building.postcode || 'Selected postcode') + '</strong>' +
-      '<small>Before is the 2025 baseline carried forward as the no-build forecast. After is the selected branch with the staged building applied through ' + year + '.</small>' +
-      '<div style="margin-top:6px">' +
+    if (els.splitMeta) {
+      els.splitMeta.innerHTML = '<strong>' + escapeHtml(building.postcode || 'Selected postcode') + '</strong>' +
         '<span class="pill">' + escapeHtml(branch.name) + '</span>' +
         '<span class="pill">' + escapeHtml(branchName) + '</span>' +
         '<span class="pill">Confidence: ' + escapeHtml(confidence) + '</span>' +
-        '<span class="pill">Model: ' + escapeHtml(scenario.modelVersion || 'forecast') + '</span>' +
-      '</div>';
+        '<span class="pill">Model: ' + escapeHtml(scenario.modelVersion || 'forecast') + '</span>';
+    }
 
-    els.diffModal.hidden = false;
-    renderScenarioDiffStats(beforeFc, afterFc, scenarioBranch, year);
-    renderScenarioDiffEvidence(scenario, scenarioBranch, branch, year);
+    els.workspaceSplit.hidden = false;
+    if (els.splitStats) els.splitStats.innerHTML = scenarioDiffStatsHTML(beforeFc, afterFc, scenarioBranch, year);
+    if (els.splitEvidence) els.splitEvidence.innerHTML = scenarioDiffEvidenceHTML(scenario, scenarioBranch, branch, year);
+    branch.lastScenarioDiff = {
+      openedAt: new Date().toISOString(),
+      year: year,
+      postcode: building.postcode,
+      branchName: branchName,
+      confidence: confidence,
+      modelVersion: scenario.modelVersion || 'forecast'
+    };
+    recordBranchActivity(
+      branch,
+      'diff',
+      'Split diff added',
+      'Before/after workspace for ' + (building.postcode || 'selected postcode'),
+      year,
+      branch.lastScenarioDiff
+    );
 
     const maps = await Promise.all([
-      buildScenarioDiffMap('before', beforeFc, building, year, false),
-      buildScenarioDiffMap('after', afterFc, building, year, true)
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapBefore'), 'before', beforeFc, building, year, false, workspaceSplitMaps),
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapAfter'), 'after', afterFc, building, year, true, workspaceSplitMaps)
     ]);
     if (maps[0] && maps[1]) syncScenarioDiffCameras(maps[0], maps[1]);
   }
@@ -4364,6 +4685,38 @@
     if (Math.abs(diff) < 0.001) return '#64748b';
     const isGood = lens.goodDirection === 'up' ? diff > 0 : diff < 0;
     return isGood ? '#22c55e' : '#ef4444';
+  }
+
+  function scenarioDiffStatsHTML(beforeFc, afterFc, scenarioBranch, year) {
+    const beforeFeatures = beforeFc && beforeFc.features ? beforeFc.features : [];
+    const afterFeatures = afterFc && afterFc.features ? afterFc.features : [];
+    if (!beforeFeatures.length || !afterFeatures.length) {
+      return '<div class="branch-empty">No cell data for the selected scenario.</div>';
+    }
+    const concrete = scenarioBranch && scenarioBranch.timelineByYear
+      ? scenarioBranch.timelineByYear[String(year)]?.concreteImpacts
+      : null;
+    return SCENARIO_DIFF_LENSES.map(lens => {
+      const before = mean(beforeFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+      const directAfter = mean(afterFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+      let diff = mean(afterFeatures.map(f => scenarioDeltaValue(f, lens)));
+      if (!Number.isFinite(diff) || Math.abs(diff) < 0.000001) diff = directAfter - before;
+      const after = before + diff;
+      const flat = Math.abs(diff) < 0.00005;
+      const isGood = flat ? false : (lens.goodDirection === 'up' ? diff > 0 : diff < 0);
+      const cls = flat ? 'flat' : (isGood ? 'up' : 'down');
+      const sign = diff > 0 ? '+' : '';
+      const deltaPts = diff * 100;
+      return '<div class="diff-stat lens" style="--lens-color:' + lens.color + '">' +
+        '<div class="name">' + lens.label + '</div>' +
+        '<div class="vals">' +
+          '<span class="before">' + fmtScenarioIndex(before, deltaPts) + '</span>' +
+          '<span class="arrow">&rarr;</span>' +
+          '<span class="after">' + fmtScenarioIndex(after, deltaPts) + '</span>' +
+        '</div>' +
+        '<div class="delta-line ' + cls + '">' + (flat ? 'no change' : sign + deltaPts.toFixed(Math.abs(deltaPts) < 1 ? 2 : 1) + ' pts') + '</div>' +
+        '</div>';
+    }).join('') + scenarioDiffConcreteHTML(concrete);
   }
 
   function renderScenarioDiffStats(beforeFc, afterFc, scenarioBranch, year) {
@@ -4418,6 +4771,23 @@
     return pct.toFixed(decimals).replace(/\.0+$/, '');
   }
 
+  function scenarioDiffEvidenceHTML(scenario, scenarioBranch, branch, year) {
+    const evidence = []
+      .concat(scenarioBranch && Array.isArray(scenarioBranch.evidence) ? scenarioBranch.evidence : [])
+      .concat(Array.isArray(scenario.evidence) ? scenario.evidence : []);
+    const warnings = Array.isArray(scenario.warnings) ? scenario.warnings : [];
+    let html = '<strong>Scenario evidence</strong>';
+    html += '<div>Forecast artifacts and deterministic planners are driving the numeric impacts.</div>';
+    html += '<div style="margin-top:6px">Year: ' + year + ' &middot; Branch: ' + escapeHtml(branch.name) + '</div>';
+    if (evidence.length) {
+      html += '<ul>' + evidence.slice(0, 3).map(line => '<li>' + escapeHtml(line) + '</li>').join('') + '</ul>';
+    }
+    if (warnings.length) {
+      html += '<div style="margin-top:6px;color:var(--amber)">Warning: ' + escapeHtml(warnings[0]) + '</div>';
+    }
+    return html;
+  }
+
   function renderScenarioDiffEvidence(scenario, scenarioBranch, branch, year) {
     const evNode = document.getElementById('diffEvidence');
     if (!evNode) return;
@@ -4439,6 +4809,119 @@
       html += '<div style="margin-top:6px">Agents: ' + trace.slice(0, 5).map(t => escapeHtml(t.agent + ' - ' + t.summary)).join('<br>') + '</div>';
     }
     evNode.innerHTML = html;
+  }
+
+  async function buildScenarioDiffMapInContainer(container, side, grid, building, year, showBuilding, mapStore) {
+    if (!container) return null;
+    container.innerHTML = '';
+    const mp = state.manifest && state.manifest.mapbox;
+    if (!mp || !mp.token || !window.mapboxgl) return null;
+
+    mapboxgl.accessToken = mp.token;
+    const center = [Number(building.lng), Number(building.lat)];
+    const map = new mapboxgl.Map({
+      container: container,
+      style: mp.style || 'mapbox://styles/mapbox/dark-v11',
+      center: center,
+      zoom: 15.9,
+      pitch: 64,
+      bearing: -24,
+      antialias: true,
+      attributionControl: false,
+      interactive: true
+    });
+    if (mapStore) mapStore[side] = map;
+
+    return new Promise(resolve => {
+      map.on('load', () => {
+        const trafficLens = SCENARIO_DIFF_LENSES[0];
+        const features = (grid && grid.features) ? grid.features.map(f => {
+          const props = f.properties || {};
+          const value = Number(props.traffic) || 0;
+          const diff = scenarioDeltaValue(f, trafficLens);
+          const neutralAffected = Math.abs(diff) < 0.00005;
+          const color = side === 'before'
+            ? ramp_RedGreen(1 - clamp(value, 0, 1))
+            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, trafficLens));
+          const opacity = side === 'before'
+            ? clamp(0.12 + value * 0.7, 0.14, 0.82)
+            : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
+          return Object.assign({}, f, {
+            properties: Object.assign({}, props, {
+              __color: color,
+              __opacity: opacity
+            })
+          });
+        }) : [];
+        const refLayerId = (() => {
+          const ls = map.getStyle().layers || [];
+          for (const l of ls) if (l.type === 'symbol') return l.id;
+          return undefined;
+        })();
+        map.addSource('cells', { type: 'geojson', data: { type: 'FeatureCollection', features: features } });
+        map.addLayer({
+          id: 'cells-fill',
+          type: 'fill',
+          source: 'cells',
+          paint: { 'fill-color': ['get', '__color'], 'fill-opacity': ['get', '__opacity'] }
+        }, refLayerId);
+        map.addLayer({
+          id: 'cells-line',
+          type: 'line',
+          source: 'cells',
+          paint: { 'line-color': 'rgba(226,232,240,0.16)', 'line-width': 0.45 }
+        }, refLayerId);
+
+        const markerFeature = { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: center } };
+        map.addSource('site', { type: 'geojson', data: { type: 'FeatureCollection', features: [markerFeature] } });
+        map.addLayer({
+          id: 'site-glow',
+          type: 'circle',
+          source: 'site',
+          paint: { 'circle-radius': showBuilding ? 30 : 24, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-opacity': 0.2, 'circle-blur': 1.2 }
+        });
+        map.addLayer({
+          id: 'site-circle',
+          type: 'circle',
+          source: 'site',
+          paint: { 'circle-radius': 8, 'circle-color': showBuilding ? '#22d3ee' : '#60a5fa', 'circle-stroke-color': '#0a1426', 'circle-stroke-width': 2 }
+        });
+
+        if (showBuilding) {
+          const ring = squareRing(center[0], center[1], Math.max(28, Math.sqrt((building.buildingConfig && building.buildingConfig.footprintSqm) || 900)));
+          map.addSource('scenario-building', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [{
+                type: 'Feature',
+                properties: {
+                  color: building.color || '#a855f7',
+                  height: building.height || ((building.buildingConfig && building.buildingConfig.floors || 8) * 3.8)
+                },
+                geometry: { type: 'Polygon', coordinates: [ring] }
+              }]
+            }
+          });
+          map.addLayer({
+            id: 'scenario-building-extrusion',
+            type: 'fill-extrusion',
+            source: 'scenario-building',
+            paint: {
+              'fill-extrusion-color': ['get', 'color'],
+              'fill-extrusion-height': ['get', 'height'],
+              'fill-extrusion-base': 0,
+              'fill-extrusion-opacity': 0.9
+            }
+          }, refLayerId);
+        }
+        requestAnimationFrame(() => {
+          try { map.resize(); } catch (_) {}
+          resolve(map);
+        });
+      });
+      map.on('error', () => resolve(map));
+    });
   }
 
   async function buildScenarioDiffMap(side, grid, building, year, showBuilding) {
@@ -5119,6 +5602,7 @@
     renderImpact();
     renderActiveInfo();
     renderMapSubtitle();
+    attachBranchPickerEvents();
     attachBranchMenuEvents();
     attachNodeMenuEvents();
     attachTopNav();
@@ -5129,18 +5613,7 @@
     if (els.compareBtn) els.compareBtn.addEventListener('click', openCompareModal);
     if (els.exportBtn) els.exportBtn.addEventListener('click', exportResults);
     if (els.scenarioDiffBtn) els.scenarioDiffBtn.addEventListener('click', openScenarioDiffModal);
-    if (els.aboutBtn) els.aboutBtn.addEventListener('click', () => {
-      toast('Belfast 2016-2036 Simulation Studio — built with Mapbox + open source data', 'warn');
-    });
-    if (els.helpBtn) els.helpBtn.addEventListener('click', () => {
-      toast('Pick a year, pick a tool, click on the map. Branches let you compare alternate futures.', 'warn');
-    });
-    if (els.settingsBtn) els.settingsBtn.addEventListener('click', () => {
-      if (confirm('Reset the dashboard? This will clear all branches you created.')) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      }
-    });
+    if (els.splitCloseBtn) els.splitCloseBtn.addEventListener('click', closeWorkspaceSplit);
     if (els.showAllBtn) els.showAllBtn.addEventListener('click', () => {
       openCompareModal();
     });
