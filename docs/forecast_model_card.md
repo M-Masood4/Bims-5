@@ -23,6 +23,17 @@
 
 Every metric is normalized to a 0-1 proxy index. Scenario deltas are computed at runtime by deterministic planners and then clamped to the same bounds.
 
+## Concrete Scenario Outputs
+
+Runtime simulations also return `concreteImpacts` for every branch and every forecast year. These convert the normalized forecast deltas into auditable planning estimates for:
+
+- Traffic: daily trip-equivalent change, road relief, induced demand, peak-hour vehicle change, and congestion-index delta.
+- Jobs: direct building jobs, access-supported jobs, and trained jobs-index delta.
+- Electricity: annual MWh demand, peak kW change, transformer relief, local headroom change, and load-index delta.
+- Services: resident/worker demand, capacity-equivalent support, net people-equivalent service demand, and services-index delta.
+
+These numbers are generated from the trained 2016-2025 forecast artifact plus deterministic formulas in `lib/scenario-studio.js`. They are intended to make branch comparisons concrete and repeatable; they are still planning estimates, not engineering-grade traffic assignment, grid-capacity approval, or statutory services modelling.
+
 ## 2036 No-Build Summary
 
 - `traffic`: 0.483
