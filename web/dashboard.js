@@ -445,6 +445,7 @@
       'newBranchBtn', 'branchSelect', 'branchList',
       'tlBranchName', 'branchTimelineSvg',
       'runBtn', 'runBtnLabel', 'compareBtn', 'activeBranchName', 'activeYearLabel', 'exportBtn',
+      'exportModal', 'exportForm', 'exportBranchA', 'exportBranchB', 'exportBranchBWrap', 'exportStatus', 'exportGenerateBtn',
       'compareModal', 'compareYear', 'compareBody',
       'inspectModal', 'inspectTitle', 'inspectBody',
       'diffModal', 'diffTitle', 'diffBody', 'diffMeta', 'diffYearBefore', 'diffYearAfter',
@@ -2496,7 +2497,7 @@
   }
 
   function branchItemDiffButtonHTML(item) {
-    const label = item && item.type === 'road' ? 'View Traffic Diff' : 'View Diff';
+    const label = 'View Diff';
     return '<button class="branch-line-diff" type="button" data-diff-item-id="' + escapeHtml(item.id) + '" title="' + escapeHtml(label + ' for ' + branchItemTitle(item)) + '">' +
       '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/><path d="M7 6h2M7 10h2" stroke-linecap="round"/></svg>' +
       '<span>' + escapeHtml(label) + '</span>' +
@@ -2584,7 +2585,7 @@
     if (!item || !state.map) return;
     state.lastPlacedItemId = item.id;
     const targetYear = clamp(Number(item.year) || START_YEAR, START_YEAR, FINAL_YEAR);
-    if (state.year !== targetYear) setYear(targetYear);
+    if (state.year < START_YEAR || (isSimYear(state.year) && state.year < targetYear)) setYear(targetYear);
     const bounds = branchItemBounds(item);
     if (bounds) {
       const samePoint = Math.abs(bounds[0] - bounds[2]) < 0.00001 && Math.abs(bounds[1] - bounds[3]) < 0.00001;
@@ -4128,30 +4129,233 @@
 
   // ---------- EXPORT ----------
 
+  function baselineBranch() {
+    return state.branches.find(b => b.id === 'baseline') || state.branches[0];
+  }
+
+  function setExportStatus(message, kind) {
+    if (!els.exportStatus) return;
+    els.exportStatus.textContent = message;
+    els.exportStatus.className = 'export-note' + (kind ? ' ' + kind : '');
+  }
+
+  function exportMode() {
+    const checked = document.querySelector('input[name="exportMode"]:checked');
+    return checked ? checked.value : 'single';
+  }
+
+  function syncExportModeControls() {
+    const compare = exportMode() === 'compare';
+    syncExportBranchPair();
+    if (els.exportBranchBWrap) els.exportBranchBWrap.hidden = !compare;
+    if (els.exportBranchB) els.exportBranchB.disabled = !compare || state.branches.length < 2;
+    if (compare && state.branches.length < 2) {
+      setExportStatus('Create a second branch before exporting a two-branch PDF.', 'warn');
+    } else {
+      setExportStatus('The PDF keeps the same headings and table titles every time.');
+    }
+  }
+
+  function populateExportSelect(select, selectedId) {
+    if (!select) return;
+    select.innerHTML = state.branches.map(branch =>
+      '<option value="' + escapeHtml(branch.id) + '">' + escapeHtml(branch.name) + '</option>'
+    ).join('');
+    if (selectedId && state.branches.find(branch => branch.id === selectedId)) select.value = selectedId;
+  }
+
+  function syncExportBranchPair() {
+    if (!els.exportBranchA || !els.exportBranchB || exportMode() !== 'compare') return;
+    if (els.exportBranchA.value !== els.exportBranchB.value) return;
+    const fallback = state.branches.find(branch => branch.id !== els.exportBranchA.value);
+    if (fallback) els.exportBranchB.value = fallback.id;
+  }
+
+  function openExportModal() {
+    if (!els.exportModal) return;
+    const active = activeBranch();
+    populateExportSelect(els.exportBranchA, active && active.id);
+    const second = state.branches.find(branch => branch.id !== (active && active.id));
+    populateExportSelect(els.exportBranchB, second ? second.id : (active && active.id));
+    const single = document.querySelector('input[name="exportMode"][value="single"]');
+    if (single) single.checked = true;
+    syncExportModeControls();
+    els.exportModal.hidden = false;
+  }
+
   function exportResults() {
-    const branch = activeBranch();
-    const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
-    const data = {
-      generatedAt: new Date().toISOString(),
-      branch: { id: branch.id, name: branch.name, color: branch.color },
-      year: target,
-      items: branch.items,
-      metrics: metricsForBranchYear(branch, target),
-      baselineYear: BASE_YEAR,
-      forecastYears: SIM_YEARS,
-      baseline: METRICS.reduce((acc, m) => { acc[m.id] = m.baseline; return acc; }, {}),
-      scenarioResult: branch.scenarioResult || null
+    openExportModal();
+  }
+
+  function selectedExportBranches() {
+    const mode = exportMode();
+    const first = state.branches.find(branch => branch.id === (els.exportBranchA && els.exportBranchA.value)) || activeBranch();
+    if (mode !== 'compare') return [first];
+    let second = state.branches.find(branch => branch.id === (els.exportBranchB && els.exportBranchB.value));
+    if (!second || second.id === first.id) {
+      second = state.branches.find(branch => branch.id !== first.id);
+    }
+    return second ? [first, second] : [first];
+  }
+
+  function rawForecastMetricsForYear(year) {
+    const summary = state.baselineForecast && state.baselineForecast.summaryByYear;
+    return summary && summary[String(year)] ? summary[String(year)] : null;
+  }
+
+  function scenarioRawMetricsForBranchYear(branch, year) {
+    const scenario = scenarioResultForBranch(branch);
+    const forecastBranch = selectedForecastScenarioBranch(scenario, branch);
+    const row = forecastBranch && forecastBranch.timelineByYear
+      ? forecastBranch.timelineByYear[String(year)]
+      : null;
+    return (row && row.metrics) || (forecastBranch && forecastBranch.metrics) || rawForecastMetricsForYear(year) || {};
+  }
+
+  function scenarioDiffForBranchYear(branch, year) {
+    const scenario = scenarioResultForBranch(branch);
+    const forecastBranch = selectedForecastScenarioBranch(scenario, branch);
+    const row = forecastBranch && forecastBranch.timelineByYear
+      ? forecastBranch.timelineByYear[String(year)]
+      : null;
+    return (row && row.diffFromBaseline) || (forecastBranch && forecastBranch.diffFromBaseline) || {};
+  }
+
+  function compactExportItem(item) {
+    const config = item.buildingConfig || item.config || {};
+    return {
+      id: item.id,
+      type: item.type,
+      label: item.label || branchItemTitle(item),
+      year: item.year,
+      preset: item.preset,
+      plannerEngine: item.plannerEngine,
+      buildingConfig: config,
+      capacityKva: item.capacityKva,
+      serviceRadiusM: item.serviceRadiusM || item.radiusM,
+      path: Array.isArray(item.path) ? item.path : undefined,
+      start: item.start,
+      end: item.end,
+      lengthM: item.type === 'road' ? roadLengthMeters(item) : undefined
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    const slug = branch.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    a.href = url;
-    a.download = 'belfast-' + slug + '-' + target + '.json';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
-    toast('Exported scenario JSON');
+  }
+
+  function branchScenarioMeta(branch) {
+    const scenario = scenarioResultForBranch(branch);
+    const forecastBranch = selectedForecastScenarioBranch(scenario, branch);
+    const critic = scenario && scenario.critic ? scenario.critic : {};
+    const report = scenario && scenario.report ? scenario.report : {};
+    return {
+      modelVersion: scenario && scenario.modelVersion,
+      transformerModelVersion: scenario && scenario.transformerModelVersion,
+      recommendedBranch: scenario && scenario.recommendedBranch,
+      selectedForecastBranch: forecastBranch && forecastBranch.name,
+      confidenceLabel: critic.confidenceLabel || critic.confidence_label,
+      reportHeadline: report.headline,
+      reportSummary: report.summary
+    };
+  }
+
+  function branchExportSnapshot(branch, target) {
+    return {
+      id: branch.id,
+      name: branch.name,
+      color: branch.color,
+      locked: branch.locked,
+      forecastObjective: branch.forecastObjective || objectiveForBranch(branch),
+      metrics: metricsForBranchYear(branch, target),
+      baselineMetrics: metricsForBranchYear(baselineBranch(), target),
+      rawForecastMetrics: scenarioRawMetricsForBranchYear(branch, target),
+      diffFromBaseline: scenarioDiffForBranchYear(branch, target),
+      concreteImpacts: concreteImpactsForBranchYear(branch, target),
+      timeline: SIM_YEARS.map(year => ({
+        year: year,
+        metrics: metricsForBranchYear(branch, year),
+        rawForecastMetrics: scenarioRawMetricsForBranchYear(branch, year)
+      })),
+      items: (branch.items || []).map(compactExportItem),
+      activityLog: (branch.activityLog || []).slice(-12),
+      scenario: branchScenarioMeta(branch)
+    };
+  }
+
+  async function ensureBranchReportData(branch) {
+    if (!branch || branch.locked || scenarioResultForBranch(branch)) return;
+    const building = selectedScenarioBuilding(branch);
+    if (!building) return;
+    setExportStatus('Running deterministic forecast for ' + branch.name + ' before exporting...');
+    await runScenarioForBranch(branch, building);
+  }
+
+  function filenameFromDisposition(header, fallback) {
+    const match = String(header || '').match(/filename="?([^";]+)"?/i);
+    return match ? match[1] : fallback;
+  }
+
+  async function submitExportPdf(event) {
+    event.preventDefault();
+    const selected = selectedExportBranches();
+    if (exportMode() === 'compare' && selected.length < 2) {
+      setExportStatus('Choose two different branches for a comparison PDF.', 'warn');
+      return;
+    }
+    const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
+    const button = els.exportGenerateBtn;
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Creating PDF...';
+    }
+    try {
+      for (const branch of selected) {
+        await ensureBranchReportData(branch);
+      }
+      const payload = {
+        generatedAt: new Date().toISOString(),
+        targetYear: target,
+        baselineYear: BASE_YEAR,
+        forecastYears: SIM_YEARS,
+        baselineMetrics: metricsForBranchYear(baselineBranch(), target),
+        rawBaselineMetrics: rawForecastMetricsForYear(target) || {},
+        source: {
+          app: 'Replay Belfast Scenario Studio',
+          deterministicBasis: 'Local 2025 baseline forecast, deterministic scenario branch metrics, concrete impact outputs, and branch intervention state.',
+          generatedBy: 'Dashboard export button'
+        },
+        branches: selected.map(branch => branchExportSnapshot(branch, target))
+      };
+      setExportStatus('Building standardized PDF with deterministic tables and Gemini explanation...');
+      const response = await fetch('/api/export/branch-report', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        let detail = 'PDF export failed.';
+        try {
+          const error = await response.json();
+          detail = error.detail || error.error || detail;
+        } catch (_) {}
+        throw new Error(detail);
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filenameFromDisposition(response.headers.get('content-disposition'), 'belfast-scenario-report-' + target + '.pdf');
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
+      if (els.exportModal) els.exportModal.hidden = true;
+      toast('Exported scenario PDF');
+    } catch (error) {
+      setExportStatus(error.message || 'Could not create the PDF export.', 'error');
+      toast('PDF export failed', 'error');
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = 'Create PDF';
+      }
+    }
   }
 
   // ---------- VIEW TOGGLE ----------
@@ -4176,6 +4380,7 @@
         state.map.setLayoutProperty('items-buildings-3d', 'visibility', v === '3D' ? 'visible' : 'none');
       }
       if (isHistoricalMode()) renderHistoricalMapLayers();
+      updateBuildabilityOverlay();
       syncCityBuildingHeightContext();
     }
     updateScenarioDiffButton();
@@ -4323,6 +4528,12 @@
       .setPopup(new mapboxgl.Popup({ offset: 14 }).setHTML('<strong>' + escapeHtml(feat.postcode || feat.normalizedPostcode || '') + '</strong><br><small>' + escapeHtml(feat.canPlace ? 'Buildability gate passed' : ((feat.warnings || [])[0] || 'Full postcode required')) + '</small>'))
       .addTo(state.map);
     searchMarker.togglePopup();
+    state.buildabilityFocus = feat;
+    state.buildabilityLoaded = false;
+    state.buildabilityPostcodeKey = null;
+    if (state.year < START_YEAR) setYear(START_YEAR);
+    if (state.mode !== 'simulation') setMode('simulation');
+    setView('3D');
     if (feat.canPlace) {
       state.selectedPostcode = feat;
       showSearchStatus((feat.postcode || feat.normalizedPostcode) + ' selected · Add Building enabled');
@@ -4330,9 +4541,13 @@
       setView('3D');
     } else {
       state.selectedPostcode = null;
-      showSearchStatus(((feat.warnings || [])[0] || 'Full Belfast postcode required'), 'error');
+      showSearchStatus('Showing possible build areas near ' + (feat.postcode || feat.normalizedPostcode || feat.input || 'postcode'));
+    }
+    if (feat.canPlace) {
+      showSearchStatus((feat.postcode || feat.normalizedPostcode) + ' selected - loading possible build areas');
     }
     renderModify();
+    updateBuildabilityOverlay();
     saveState();
     // Arm the road planner with junction nodes around the searched location.
     armRoadPlanner(c);
@@ -4561,9 +4776,7 @@
     try {
       const config = buildingConfigForPreset(state.activeBuildingPreset);
       const location = focus && focus.location ? focus.location : null;
-      const radiusKm = focus
-        ? (focus.precision === 'outcode' ? 2.6 : 1.15)
-        : null;
+      const radiusKm = focus ? 2.6 : null;
       const res = await fetch('/api/building/buildable-areas?preset=' + encodeURIComponent(state.activeBuildingPreset), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -4582,8 +4795,8 @@
       state.buildabilityLoaded = true;
       state.buildabilityPostcodeKey = key;
       const postcodeLabel = focus && (focus.postcode || focus.normalizedPostcode || focus.input);
-      if (postcodeLabel && json.buildableCount > 0) {
-        showSearchStatus(postcodeLabel + ' selected · ' + json.buildableCount + ' possible build areas highlighted');
+      if (postcodeLabel) {
+        showSearchStatus(postcodeLabel + ' selected - ' + (json.buildableCount || 0) + ' possible build areas highlighted');
       }
     } catch (error) {
       console.warn('buildability overlay failed', error);
@@ -8230,6 +8443,10 @@
     if (els.runBtn) els.runBtn.addEventListener('click', runSimulation);
     if (els.compareBtn) els.compareBtn.addEventListener('click', openCompareModal);
     if (els.exportBtn) els.exportBtn.addEventListener('click', exportResults);
+    if (els.exportForm) els.exportForm.addEventListener('submit', submitExportPdf);
+    document.querySelectorAll('input[name="exportMode"]').forEach(input => input.addEventListener('change', syncExportModeControls));
+    if (els.exportBranchA) els.exportBranchA.addEventListener('change', syncExportModeControls);
+    if (els.exportBranchB) els.exportBranchB.addEventListener('change', syncExportModeControls);
     if (els.scenarioDiffBtn) els.scenarioDiffBtn.addEventListener('click', openScenarioDiffModal);
     if (els.splitCloseBtn) els.splitCloseBtn.addEventListener('click', closeWorkspaceSplit);
     if (els.collapseBtn) els.collapseBtn.addEventListener('click', toggleBottomCollapse);

@@ -620,6 +620,7 @@ function arrayOf(value) {
 }
 
 function numberOrNull(value) {
+  if (value === undefined || value === null || value === "") return null;
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
 }
@@ -1287,14 +1288,42 @@ function featureCenter(feature) {
   return { lng: sum[0] / coords.length, lat: sum[1] / coords.length };
 }
 
+function distanceKm(a, b) {
+  if (!a || !b) return Infinity;
+  const lat1 = Number(a.lat);
+  const lat2 = Number(b.lat);
+  const lng1 = Number(a.lng);
+  const lng2 = Number(b.lng);
+  if (![lat1, lat2, lng1, lng2].every(Number.isFinite)) return Infinity;
+  const toRad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * toRad;
+  const dLng = (lng2 - lng1) * toRad;
+  const rLat1 = lat1 * toRad;
+  const rLat2 = lat2 * toRad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
 async function handleBuildableAreas(req, res) {
   try {
     const payload = req.method === "POST" ? await readJsonRequest(req) : {};
     const gridPath = path.join(webDir, "data", "mode-a", "grid_2026.geojson");
     const grid = JSON.parse(fs.readFileSync(gridPath, "utf8"));
     const config = scenarioStudio.deriveBuildingStats(payload.config || payload.building_config || {});
+    const rawLocation = payload.location || {};
+    const focus = Number.isFinite(Number(rawLocation.lng)) && Number.isFinite(Number(rawLocation.lat))
+      ? { lng: Number(rawLocation.lng), lat: Number(rawLocation.lat) }
+      : null;
+    const requestedRadiusKm = Number(payload.radiusKm ?? payload.radius_km ?? 1.15);
+    const radiusKm = focus
+      ? Math.max(0.25, Math.min(4, Number.isFinite(requestedRadiusKm) ? requestedRadiusKm : 1.15))
+      : null;
     const features = (grid.features || []).map((feature) => {
       const center = featureCenter(feature);
+      const distanceFromFocusKm = focus && center ? distanceKm(focus, center) : null;
+      if (radiusKm && (!Number.isFinite(distanceFromFocusKm) || distanceFromFocusKm > radiusKm)) {
+        return null;
+      }
       let validation = { status: "invalid", warnings: ["Could not resolve grid-cell centre"], buildabilityScore: 0 };
       if (center) {
         validation = scenarioStudio.validatePlacement({
@@ -1314,6 +1343,7 @@ async function handleBuildableAreas(req, res) {
           Number(props.transit_access || 0) > 0.22
         );
       const buildable = validation.status !== "invalid" && planningCandidate;
+      const score = Number(validation.buildabilityScore || 0.55);
       return {
         ...feature,
         properties: {
@@ -1322,13 +1352,18 @@ async function handleBuildableAreas(req, res) {
           buildabilityStatus: validation.status,
           buildabilityScore: validation.buildabilityScore || 0,
           buildabilityWarnings: validation.warnings || [],
-          __buildableOpacity: buildable ? Math.max(0.18, Math.min(0.48, 0.18 + Number(validation.buildabilityScore || 0.55) * 0.26)) : 0
+          distanceFromFocusKm,
+          __buildableOpacity: buildable ? Math.max(0.18, Math.min(0.48, 0.18 + score * 0.26)) : 0,
+          __buildableOpacity3d: buildable ? Math.max(0.18, Math.min(0.36, 0.16 + score * 0.18)) : 0,
+          __buildableHeight: buildable ? Math.round(10 + score * 34) : 0
         }
       };
-    });
+    }).filter(Boolean);
     sendJson(res, 200, {
       ok: true,
       preset: payload.preset || null,
+      postcode: payload.postcode || null,
+      radiusKm,
       count: features.length,
       buildableCount: features.filter((feature) => feature.properties.buildable).length,
       areas: { type: "FeatureCollection", features }
