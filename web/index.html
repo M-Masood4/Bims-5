@@ -46,27 +46,27 @@
 
       <div class="tools-host">
         <div class="modify-list" id="modifyList" role="toolbar" aria-label="Edit tools">
-          <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true">
+          <button class="tool-btn active" data-tool="select" type="button" aria-pressed="true" title="Select" aria-label="Select">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l4 10 2-5 5-2z" stroke-linejoin="round"/></svg>
             <span>Select</span>
           </button>
-          <button class="tool-btn" data-tool="building" type="button" aria-pressed="false">
+          <button class="tool-btn" data-tool="building" type="button" aria-pressed="false" title="Buildings" aria-label="Buildings">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/></svg>
             <span>Buildings</span>
           </button>
-          <button class="tool-btn" data-tool="road" type="button" aria-pressed="false">
+          <button class="tool-btn" data-tool="road" type="button" aria-pressed="false" title="Roads" aria-label="Roads">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h12M2 5h4m4 0h4M2 11h4m4 0h4" stroke-linecap="round"/></svg>
             <span>Roads</span>
           </button>
-          <button class="tool-btn" data-tool="park" type="button" aria-pressed="false">
+          <button class="tool-btn" data-tool="park" type="button" aria-pressed="false" title="Park" aria-label="Park">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12c0-3.87 3.13-7 7-7s7 3.13 7 7"/></svg>
             <span>Park</span>
           </button>
-          <button class="tool-btn" data-tool="infrastructure" type="button" aria-pressed="false">
+          <button class="tool-btn" data-tool="infrastructure" type="button" aria-pressed="false" title="Electricity" aria-label="Electricity">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2L5 9h4l-2 5 6-7H9l2-5z" stroke-linejoin="round"/></svg>
             <span>Electricity</span>
           </button>
-          <button class="tool-btn danger" data-tool="remove" type="button" aria-pressed="false">
+          <button class="tool-btn danger" data-tool="remove" type="button" aria-pressed="false" title="Remove" aria-label="Remove">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
             <span>Remove</span>
           </button>
@@ -145,8 +145,7 @@
       <div class="workspace-split" id="workspaceSplit" hidden>
         <div class="workspace-split-head">
           <div>
-            <h3 id="splitTitle">Scenario diff</h3>
-            <div class="workspace-split-meta" id="splitMeta"></div>
+            <h3 id="splitTitle">Before / After</h3>
           </div>
           <button class="workspace-split-close" id="splitCloseBtn" type="button" title="Close split view">&times;</button>
         </div>
@@ -160,10 +159,7 @@
             <div id="splitMapAfter" class="split-map"></div>
           </section>
         </div>
-        <div class="workspace-split-footer">
-          <div class="diff-stats split-stats" id="splitStats"></div>
-          <div class="diff-evidence split-evidence" id="splitEvidence"></div>
-        </div>
+        <div class="workspace-split-summary" id="splitSummary"></div>
       </div>
     </div>
 
@@ -271,6 +267,10 @@
       <button class="view-diff-btn" id="compareBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
+      </button>
+      <button class="view-diff-btn road-compare-btn" id="roadCompareBtn" type="button" title="Plan a new road and see its impact">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19l4-14"/><path d="M16 5l4 14"/><path d="M12 5v14"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+        Plan New Road
       </button>
       <button class="run-sim-btn" id="runBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5V3z"/></svg>
@@ -383,6 +383,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
 <script src="/impact-predictor.js"></script>
 <script src="/traffic-sim.js"></script>
+<script src="/map-ux.js"></script>
 <script src="/dashboard.js"></script>
 </body>
 </html>

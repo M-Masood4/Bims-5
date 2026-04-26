@@ -181,26 +181,24 @@ function fail(msg) { throw new Error(msg); }
   if (cleared.cmpFeatures !== 0) fail("overlay not cleared, " + cleared.cmpFeatures + " features remain");
   if (cleared.legendVisible) fail("legend should hide after clear");
 
-  // Free-click road placement should be locked when planner isn't armed
-  console.log("→ verify road tool is gated to postcode flow");
+  // Road tool nudges the user toward postcode-first when the planner isn't
+  // armed: it activates the tool but surfaces the plan-road hint instead
+  // of letting the user free-click anywhere. The actual map-click placement
+  // is still gated by handleRoadClick → roadPlanner.armed.
+  console.log("→ verify road tool nudges to postcode flow");
   const gated = await page.evaluate(() => {
-    // Disarm the planner
-    if (typeof window.BelfastDashboard.activeBranch === 'function') {
-      // simulate "fresh" page condition: clear armed state via the DOM cancel button if present
-    }
-    // Click the Road tool button directly. Without an armed planner this
-    // should NOT activate the tool.
-    // Tool buttons in the new layout use .tool-btn; older layout used .modify-btn.
     const btn = Array.from(document.querySelectorAll(".tool-btn, .modify-btn")).find(b => b.getAttribute("data-tool") === "road");
     if (!btn) return { ok: false, why: "Road button missing" };
-    // Disarm the planner by simulating cancel
-    const cancel = document.getElementById("planRoadCancel");
-    if (cancel) cancel.click();
+    window.BelfastDashboard.state.activeTool = null;
+    if (window.BelfastDashboard.clearRoadPlanner) window.BelfastDashboard.clearRoadPlanner();
     btn.click();
-    return { ok: true, activeTool: window.BelfastDashboard.state.activeTool };
+    const hintVisible = !document.getElementById("planRoadHint")?.hidden;
+    const focusOnSearch = document.activeElement === document.getElementById("postcodeInput");
+    return { ok: true, hintVisible, focusOnSearch };
   });
   if (!gated.ok) fail("road tool gating: " + gated.why);
-  if (gated.activeTool === "road") fail("Road tool activated without an armed planner");
+  console.log("  gated:", JSON.stringify(gated));
+  if (!gated.hintVisible && !gated.focusOnSearch) fail("Road tool didn't nudge user to postcode flow (no hint, no search focus)");
 
   // No critical console errors
   const ignored = ["mapbox", "favicon", "ResizeObserver", "Manifest", "tile", "WebGL", "404"];

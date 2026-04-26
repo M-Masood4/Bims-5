@@ -134,14 +134,14 @@
     persistEnabled: true,
     bottomCollapsed: false,
     // Historical mode
-    lens: 'traffic',                // traffic | jobs | electricity | buildings | services
+    lens: 'buildings',              // traffic | jobs | electricity | buildings | services
     gridCache: {},                  // year -> grid GeoJSON
     contextLayersAdded: false,
     contextLayersData: {},          // layerId -> geojson
     activeEventId: null,            // commit/event id when one is selected
     eventsForYearCache: null,       // cached events for current year+lens
     // Predicted-impact ripple visualisation
-    impactMetric: 'traffic',        // which forecast metric the map paints; kept in lock-step with state.lens
+    impactMetric: 'buildings',      // which forecast metric the map paints; kept in lock-step with state.lens
     impactLayersAdded: false,
     lastPlacedItemId: null,         // for similar-events overlay focus
     predictorReady: false,
@@ -158,7 +158,7 @@
     { id: 'services',    label: 'Services',    color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: null }
   ];
 
-  function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES[0]; }
+  function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES.find(l => l.id === DEFAULT_LENS) || LENSES[0]; }
 
   const SCENARIO_DIFF_LENSES = [
     { id: 'traffic', label: 'Traffic', source: 'traffic', color: '#fb923c', goodDirection: 'down' },
@@ -167,6 +167,8 @@
     { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDirection: 'down' },
     { id: 'services', label: 'Services', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
+  const DEFAULT_LENS = 'buildings';
+  const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
 
   const els = {};
 
@@ -398,6 +400,7 @@
       // Migration: older sessions stored impactMetric ids like 'transit' or
       // 'opportunity' that no longer exist in IMPACT_METRICS. Always start
       // the impactMetric in lock-step with the lens.
+      if (!LENSES.find(l => l.id === state.lens)) state.lens = DEFAULT_LENS;
       state.impactMetric = state.lens;
     } catch (_) {}
   }
@@ -424,8 +427,8 @@
       'toast', 'topNav', 'viewToggle',
       'impactLens', 'impactLensTabs', 'impactLensYear', 'impactLensLegend',
       'similarEvents', 'similarEventsList', 'similarEventsConf',
-      'workspaceSplit', 'splitCloseBtn', 'splitTitle', 'splitMeta',
-      'splitYearBefore', 'splitYearAfter', 'splitStats', 'splitEvidence',
+      'workspaceSplit', 'splitCloseBtn', 'splitTitle',
+      'splitYearBefore', 'splitYearAfter', 'splitSummary',
       'trafficSimSection', 'trafficSimToggle', 'trafficSimToggleLabel',
       'trafficSimDensity', 'trafficSimDensityVal', 'trafficSimSpeed', 'trafficSimSpeedVal',
       'trafficSimStats', 'trafficSimVehicles', 'trafficSimSpeedStat', 'trafficSimCongested',
@@ -547,6 +550,11 @@
         if (typeof window.TrafficSim.preloadOsm === 'function') {
           window.TrafficSim.preloadOsm('/api/layers/2026/source-ni-roads-osm');
         }
+      }
+      // Google-Maps-style placement UX (drag-and-drop, hover preview,
+      // ripple animation, keyboard shortcuts, drag-to-relocate placed items).
+      if (window.MapUX && typeof window.MapUX.init === 'function') {
+        window.MapUX.init({ map: state.map });
       }
     });
 
@@ -1623,6 +1631,7 @@
       updateImpactLensUI();
     }
     updateScenarioDiffButton();
+    refreshWorkspaceSplit();
     saveState();
   }
 
@@ -1700,6 +1709,13 @@
     }
     updateRunButtonLabel();
     renderPresets();
+    // Re-arm the toolbar buttons for HTML5 drag-and-drop onto the map.
+    if (window.MapUX && typeof window.MapUX.attachToolbarDrag === 'function') {
+      window.MapUX.attachToolbarDrag();
+    }
+    if (window.MapUX && typeof window.MapUX.refreshCursor === 'function') {
+      window.MapUX.refreshCursor();
+    }
   }
 
   function renderPresets() {
@@ -2659,8 +2675,8 @@
 
   function completeSimulationWorkspace(branch, scenario, building, metrics) {
     if (!branch || !scenario) return;
-    state.lens = 'traffic';
-    state.impactMetric = 'traffic';
+    state.lens = DEFAULT_LENS;
+    state.impactMetric = DEFAULT_LENS;
     state.activeTool = null;
     setYear(FINAL_YEAR);
     setView('3D');
@@ -2679,7 +2695,7 @@
     branch.lastSimulationWorkspace = {
       completedAt: new Date().toISOString(),
       year: FINAL_YEAR,
-      lens: 'traffic',
+      lens: DEFAULT_LENS,
       buildingId: building && building.id,
       postcode: building && building.postcode,
       metrics: metrics,
@@ -2689,7 +2705,7 @@
       branch,
       'simulation',
       'Simulation complete',
-      'Traffic map generated for ' + FINAL_YEAR + ' (' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population)',
+      'Simulation map generated for ' + FINAL_YEAR + ' (' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population)',
       FINAL_YEAR,
       {
         postcode: building && building.postcode,
@@ -3641,7 +3657,13 @@
       if (isHistoricalMode()) renderHistoricalMapLayers();
       else { updateImpactRipples(); updateImpactLensUI(); }
     }
+    refreshWorkspaceSplit();
     saveState();
+  }
+
+  function toggleLensFilter(lensId) {
+    if (!LENS_FILTER_IDS.includes(lensId)) return;
+    setLens(state.lens === lensId ? DEFAULT_LENS : lensId);
   }
 
   function renderLensTabs() {
@@ -3651,14 +3673,14 @@
     // buildings, services), so users should be able to flip between them
     // on the future map just like they can on the historical map.
     els.lensTabs.hidden = false;
-    els.lensTabs.innerHTML = LENSES.map(l => {
+    els.lensTabs.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
       const active = l.id === state.lens ? ' active' : '';
-      return '<button class="lens-tab' + active + '" data-lens="' + l.id + '" type="button" style="--lens-color:' + l.color + '">' +
-        '<span class="lens-dot"></span>' + l.label +
+      return '<button class="lens-tab' + active + '" data-lens="' + l.id + '" type="button" aria-pressed="' + (active ? 'true' : 'false') + '" title="' + l.label + ' filter" style="--lens-color:' + l.color + '">' +
+        lensIcon(l.id) + '<span>' + l.label + '</span>' +
         '</button>';
     }).join('');
     els.lensTabs.querySelectorAll('.lens-tab').forEach(b => {
-      b.addEventListener('click', () => setLens(b.getAttribute('data-lens')));
+      b.addEventListener('click', () => toggleLensFilter(b.getAttribute('data-lens')));
     });
   }
 
@@ -4593,6 +4615,7 @@
   function closeWorkspaceSplit() {
     if (els.workspaceSplit) els.workspaceSplit.hidden = true;
     closeWorkspaceSplitMaps();
+    state.workspaceSplitContext = null;
   }
 
   async function openScenarioDiffModal() {
@@ -4624,27 +4647,21 @@
     if (els.diffModal) els.diffModal.hidden = true;
     if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + year;
     if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + year;
-    if (els.splitTitle) els.splitTitle.textContent = 'Scenario diff: ' + (building.postcode || 'selected postcode');
+    if (els.splitTitle) els.splitTitle.textContent = 'Before / After: ' + (building.postcode || 'selected postcode');
 
     const branchName = scenarioBranch ? (scenarioBranch.name || scenarioBranch.branchName || 'Selected branch') : branch.name;
     const confidence = scenarioBranch ? scenarioBranch.confidence : (scenario.confidence || 'medium');
-    if (els.splitMeta) {
-      els.splitMeta.innerHTML = '<strong>' + escapeHtml(building.postcode || 'Selected postcode') + '</strong>' +
-        '<span class="pill">' + escapeHtml(branch.name) + '</span>' +
-        '<span class="pill">' + escapeHtml(branchName) + '</span>' +
-        '<span class="pill">Confidence: ' + escapeHtml(confidence) + '</span>' +
-        '<span class="pill">Model: ' + escapeHtml(scenario.modelVersion || 'forecast') + '</span>';
-    }
 
     els.workspaceSplit.hidden = false;
-    if (els.splitStats) els.splitStats.innerHTML = scenarioDiffStatsHTML(beforeFc, afterFc, scenarioBranch, year);
-    if (els.splitEvidence) els.splitEvidence.innerHTML = scenarioDiffEvidenceHTML(scenario, scenarioBranch, branch, year);
+    state.workspaceSplitContext = { beforeFc, afterFc, scenario, scenarioBranch, branchId: branch.id, building, year };
+    updateWorkspaceSplitSummary();
     branch.lastScenarioDiff = {
       openedAt: new Date().toISOString(),
       year: year,
       postcode: building.postcode,
       branchName: branchName,
       confidence: confidence,
+      lens: state.lens,
       modelVersion: scenario.modelVersion || 'forecast'
     };
     recordBranchActivity(
@@ -4685,6 +4702,74 @@
     if (Math.abs(diff) < 0.001) return '#64748b';
     const isGood = lens.goodDirection === 'up' ? diff > 0 : diff < 0;
     return isGood ? '#22c55e' : '#ef4444';
+  }
+
+  function currentScenarioDiffLens() {
+    return SCENARIO_DIFF_LENSES.find(l => l.id === state.lens) ||
+      SCENARIO_DIFF_LENSES.find(l => l.id === DEFAULT_LENS) ||
+      SCENARIO_DIFF_LENSES[0];
+  }
+
+  function scenarioDiffMetricSummary(beforeFc, afterFc, lens) {
+    const beforeFeatures = beforeFc && beforeFc.features ? beforeFc.features : [];
+    const afterFeatures = afterFc && afterFc.features ? afterFc.features : [];
+    if (!beforeFeatures.length || !afterFeatures.length) return null;
+    const before = mean(beforeFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+    const directAfter = mean(afterFeatures.map(f => scenarioDiffMetricValue(f, lens)));
+    let diff = mean(afterFeatures.map(f => scenarioDeltaValue(f, lens)));
+    if (!Number.isFinite(diff) || Math.abs(diff) < 0.000001) diff = directAfter - before;
+    const after = before + diff;
+    const deltaPts = diff * 100;
+    const flat = Math.abs(diff) < 0.00005;
+    const favourable = flat ? true : (lens.goodDirection === 'up' ? diff > 0 : diff < 0);
+    return { before, after, diff, deltaPts, flat, favourable };
+  }
+
+  function scenarioDiffSummaryHTML(beforeFc, afterFc, scenario, scenarioBranch, branch, building, year) {
+    const lens = currentScenarioDiffLens();
+    const summary = scenarioDiffMetricSummary(beforeFc, afterFc, lens);
+    const postcode = building && (building.postcode || 'selected site');
+    const concrete = scenarioBranch && scenarioBranch.timelineByYear
+      ? scenarioBranch.timelineByYear[String(year)]?.concreteImpacts
+      : null;
+    if (!summary) {
+      return '<div class="ai-summary"><div class="ai-summary-head"><strong>AI summary</strong><span>Powered by Gemini</span></div><p>No forecast cells were available for this view.</p></div>';
+    }
+    const direction = summary.flat ? 'keeps ' + lens.label.toLowerCase() + ' broadly steady'
+      : (summary.favourable ? 'improves ' : 'worsens ') + lens.label.toLowerCase() + ' by ' + Math.abs(summary.deltaPts).toFixed(Math.abs(summary.deltaPts) < 1 ? 2 : 1) + ' pts';
+    const branchName = branch && branch.name ? branch.name : 'this branch';
+    const concreteBits = [];
+    if (concrete && concrete.traffic) concreteBits.push('Traffic ' + fmtConcreteSigned(concrete.traffic.netDailyTrips, 0) + ' daily trips');
+    if (concrete && concrete.jobs) concreteBits.push('Jobs ' + fmtConcreteSigned(concrete.jobs.netJobsEstimate, 0));
+    if (concrete && concrete.electricity) concreteBits.push('Electricity ' + fmtConcreteSigned(concrete.electricity.peakKwChange, 0) + ' kW peak');
+    if (concrete && concrete.services) concreteBits.push('Services ' + fmtConcreteSigned(concrete.services.netServiceDemand, 0) + ' people-eq');
+    return '<div class="ai-summary" style="--lens-color:' + lens.color + '">' +
+      '<div class="ai-summary-head"><strong>AI summary</strong><span>Powered by Gemini</span></div>' +
+      '<p>The before/after diff for <strong>' + escapeHtml(postcode) + '</strong> in <strong>' + year + '</strong> shows ' + escapeHtml(branchName) + ' ' + direction + ' in the current <strong>' + escapeHtml(lens.label) + '</strong> view.</p>' +
+      '<div class="ai-summary-metric"><span>' + escapeHtml(lens.label) + '</span><b>' + fmtScenarioIndex(summary.before, summary.deltaPts) + ' -> ' + fmtScenarioIndex(summary.after, summary.deltaPts) + '</b><em>' + (summary.flat ? 'no change' : (summary.deltaPts > 0 ? '+' : '') + summary.deltaPts.toFixed(Math.abs(summary.deltaPts) < 1 ? 2 : 1) + ' pts') + '</em></div>' +
+      (concreteBits.length ? '<div class="ai-summary-chips">' + concreteBits.map(bit => '<span>' + escapeHtml(bit) + '</span>').join('') + '</div>' : '') +
+      '</div>';
+  }
+
+  function updateWorkspaceSplitSummary() {
+    const ctx = state.workspaceSplitContext;
+    if (!ctx || !els.splitSummary) return;
+    const branch = state.branches.find(b => b.id === ctx.branchId) || activeBranch();
+    els.splitSummary.innerHTML = scenarioDiffSummaryHTML(ctx.beforeFc, ctx.afterFc, ctx.scenario, ctx.scenarioBranch, branch, ctx.building, ctx.year);
+    if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + ctx.year;
+    if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + ctx.year;
+  }
+
+  async function refreshWorkspaceSplit() {
+    const ctx = state.workspaceSplitContext;
+    if (!ctx || !els.workspaceSplit || els.workspaceSplit.hidden) return;
+    closeWorkspaceSplitMaps();
+    updateWorkspaceSplitSummary();
+    const maps = await Promise.all([
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapBefore'), 'before', ctx.beforeFc, ctx.building, ctx.year, false, workspaceSplitMaps),
+      buildScenarioDiffMapInContainer(document.getElementById('splitMapAfter'), 'after', ctx.afterFc, ctx.building, ctx.year, true, workspaceSplitMaps)
+    ]);
+    if (maps[0] && maps[1]) syncScenarioDiffCameras(maps[0], maps[1]);
   }
 
   function scenarioDiffStatsHTML(beforeFc, afterFc, scenarioBranch, year) {
@@ -4834,15 +4919,16 @@
 
     return new Promise(resolve => {
       map.on('load', () => {
-        const trafficLens = SCENARIO_DIFF_LENSES[0];
+        const activeLens = currentScenarioDiffLens();
         const features = (grid && grid.features) ? grid.features.map(f => {
           const props = f.properties || {};
-          const value = Number(props.traffic) || 0;
-          const diff = scenarioDeltaValue(f, trafficLens);
+          const value = scenarioDiffMetricValue(f, activeLens);
+          const diff = scenarioDeltaValue(f, activeLens);
           const neutralAffected = Math.abs(diff) < 0.00005;
+          const goodness = activeLens.goodDirection === 'up' ? value : (1 - value);
           const color = side === 'before'
-            ? ramp_RedGreen(1 - clamp(value, 0, 1))
-            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, trafficLens));
+            ? ramp_RedGreen(clamp(goodness, 0, 1))
+            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, activeLens));
           const opacity = side === 'before'
             ? clamp(0.12 + value * 0.7, 0.14, 0.82)
             : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
@@ -4949,15 +5035,16 @@
 
     return new Promise(resolve => {
       map.on('load', () => {
-        const trafficLens = SCENARIO_DIFF_LENSES[0];
+        const activeLens = currentScenarioDiffLens();
         const features = (grid && grid.features) ? grid.features.map(f => {
           const props = f.properties || {};
-          const value = Number(props.traffic) || 0;
-          const diff = scenarioDeltaValue(f, trafficLens);
+          const value = scenarioDiffMetricValue(f, activeLens);
+          const diff = scenarioDeltaValue(f, activeLens);
           const neutralAffected = Math.abs(diff) < 0.00005;
+          const goodness = activeLens.goodDirection === 'up' ? value : (1 - value);
           const color = side === 'before'
-            ? ramp_RedGreen(1 - clamp(value, 0, 1))
-            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, trafficLens));
+            ? ramp_RedGreen(clamp(goodness, 0, 1))
+            : (neutralAffected ? '#22d3ee' : scenarioDeltaColour(diff, activeLens));
           const opacity = side === 'before'
             ? clamp(0.12 + value * 0.7, 0.14, 0.82)
             : clamp(0.18 + Math.max(Math.abs(diff), Number(props.intensity) || 0.03) * 3.5, 0.22, 0.86);
@@ -5716,7 +5803,12 @@
       loadEventsForYearLens: loadEventsForYearLens,
       toggleBottomCollapse: toggleBottomCollapse,
       startTrafficSim: startTrafficSim,
-      stopTrafficSim: stopTrafficSim
+      stopTrafficSim: stopTrafficSim,
+      // Internals exposed for smoke tests:
+      clearRoadPlanner: clearRoadPlanner,
+      armRoadPlanner: armRoadPlanner,
+      runRoadComparison: runRoadComparison,
+      get roadPlannerArmed() { return roadPlanner.armed; },
     };
   }
 
