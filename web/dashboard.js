@@ -232,7 +232,7 @@
     return fmtPct((after - before) / Math.max(0.0001, before), true) + ' vs 2025';
   }
 
-  function isSimYear(y) { return y >= START_YEAR; }
+  function isSimYear(y) { return y >= START_YEAR && y <= FINAL_YEAR; }
 
   function activeBranch() { return state.branches.find(b => b.id === state.activeBranchId) || state.branches[0]; }
 
@@ -1843,6 +1843,7 @@
       updateImpactLensUI();
     }
     updateScenarioDiffButton();
+    updateRunButtonLabel();
     refreshTransitLayer();
     refreshWorkspaceSplit();
     saveState();
@@ -3135,6 +3136,7 @@
   }
 
   function updateRunButtonLabel() {
+    if (els.runBtn) els.runBtn.hidden = !isSimYear(state.year);
     if (!state.isRunningSim && els.runBtnLabel) els.runBtnLabel.textContent = defaultRunButtonLabel();
   }
 
@@ -3150,11 +3152,7 @@
     renderImpact();
     updateImpactRipples();
     updateImpactLensUI();
-    if (window.TrafficSim) {
-      if (window.TrafficSim.isRunning()) window.TrafficSim.refreshSegments();
-      else startTrafficSim({ auto: true });
-      state._trafficAutoStarted = false;
-    }
+    clearImpactVisualization({ clearTraffic: true, clearTransit: true });
     const populationMetric = METRICS.find(m => m.id === 'population');
     const popDelta = metrics.population - (populationMetric ? populationMetric.baseline : 0);
     branch.lastSimulationWorkspace = {
@@ -3182,6 +3180,11 @@
 
   async function runSimulation() {
     if (state.isRunningSim) return;
+    if (!isSimYear(state.year)) {
+      toast('Switch to a 2026-2036 simulation year before running a forecast.', 'warn');
+      updateRunButtonLabel();
+      return;
+    }
     const branch = activeBranch();
     if (state.activeTool === 'road') {
       runRoadComparison();
@@ -3195,6 +3198,7 @@
     state.isRunningSim = true;
     if (els.runBtn) els.runBtn.classList.add('running');
     if (els.runBtnLabel) els.runBtnLabel.textContent = 'Simulating...';
+    clearImpactVisualization({ clearTraffic: true, clearTransit: true });
     const scenario = await runScenarioForBranch(branch, building);
     if (!scenario) {
       state.isRunningSim = false;
@@ -3205,15 +3209,6 @@
     }
     setView('3D');
     updateScenarioDiffButton();
-    // Kick off the in-page traffic flow visualisation alongside the year
-    // animation. Auto-stops when the sim ends (toggle still works manually).
-    const trafficWasRunning = window.TrafficSim && window.TrafficSim.isRunning();
-    if (window.TrafficSim && !trafficWasRunning) {
-      startTrafficSim({ auto: true });
-    } else if (window.TrafficSim) {
-      window.TrafficSim.refreshSegments();
-      if (typeof window.TrafficSim.previewVehicles === 'function') window.TrafficSim.previewVehicles(4000);
-    }
     // Animate playback through sim years
     let i = 0;
     setYear(START_YEAR);
@@ -3230,18 +3225,9 @@
         updateScenarioDiffButton();
         completeSimulationWorkspace(branch, scenario, building, m);
         toast('Simulation complete — projected ' + (popDelta >= 0 ? '+' : '') + fmtNumber(popDelta) + ' population by 2036');
-        // Traffic stays visible as the generated 2036 map after completion.
-        if (window.TrafficSim && state._trafficAutoStarted) {
-          state._trafficAutoStarted = false;
-        }
         return;
       }
       setYear(SIM_YEARS[i]);
-      // Refresh the traffic graph each year so user roads added in later years
-      // light up as they appear.
-      if (window.TrafficSim && window.TrafficSim.isRunning()) {
-        window.TrafficSim.refreshSegments();
-      }
     }, 220);
   }
 
@@ -4104,6 +4090,7 @@
       }
     }
     updateScenarioDiffButton();
+    updateRunButtonLabel();
     syncTopNavForMode();
   }
 
@@ -5267,6 +5254,7 @@
         // restored HTML has fresh DOM nodes that lost their handlers.
         attachTrafficSim();
         attachRoadCompare();
+        updateRunButtonLabel();
       }
       return;
     }
@@ -5397,6 +5385,11 @@
     // compatibility, but the UI exposes it as Public Transit.
     const isTransit = state.lens === 'transit' || state.lens === 'services';
     if (!isTransit) {
+      engine.clear();
+      updateTransitImpactCard(null);
+      return;
+    }
+    if (state.mode === 'simulation' && (state.isRunningSim || scenarioResultForBranch(activeBranch()))) {
       engine.clear();
       updateTransitImpactCard(null);
       return;
@@ -6384,6 +6377,30 @@
     });
     const pressure = scenarioDiffPressurePointFeatures(grid, lens, side, building, { year, limit: side === 'after' ? 85 : 60 })
       .concat(scenarioDiffContextPressurePoints(assetPoints, lens, side, 'electric-anchor-pressure', grid, side === 'after' ? 55 : 35));
+    const connectorColor = side === 'after' ? '#ef4444' : '#06b6d4';
+    const connectorFeatures = assetPoints
+      .slice()
+      .sort((a, b) => coordDistKm(center, a.geometry && a.geometry.coordinates) - coordDistKm(center, b.geometry && b.geometry.coordinates))
+      .slice(0, 4)
+      .map((feature, i) => {
+        const coord = feature.geometry && feature.geometry.coordinates;
+        if (!Array.isArray(coord)) return null;
+        return {
+          type: 'Feature',
+          properties: {
+            id: 'electric-site-connector-' + side + '-' + i,
+            color: connectorColor,
+            magnitude: side === 'after' ? 0.82 : 0.48
+          },
+          geometry: { type: 'LineString', coordinates: [center, coord] }
+        };
+      }).filter(Boolean);
+    const siteLoad = pointFeatureFromCoord(center, {
+      id: 'electric-site-load-' + side,
+      color: connectorColor,
+      magnitude: side === 'after' ? 0.95 : 0.52,
+      active: 1
+    });
     const loadColor = [
       'interpolate', ['linear'],
       ['coalesce', ['to-number', ['get', 'grid_load_pct']], 58],
@@ -6397,6 +6414,8 @@
     map.addSource('electric-diff-lines', { type: 'geojson', data: diffFeatureCollection(lineFeatures) });
     map.addSource('electric-diff-assets', { type: 'geojson', data: diffFeatureCollection(assetPoints) });
     map.addSource('electric-diff-pressure', { type: 'geojson', data: diffFeatureCollection(pressure) });
+    map.addSource('electric-diff-connectors', { type: 'geojson', data: diffFeatureCollection(connectorFeatures) });
+    map.addSource('electric-diff-site-load', { type: 'geojson', data: diffFeatureCollection(siteLoad ? [siteLoad] : []) });
     map.addLayer({
       id: 'electric-diff-line-glow',
       type: 'line',
@@ -6441,6 +6460,53 @@
         'circle-stroke-color': '#0f172a',
         'circle-stroke-width': 1,
         'circle-opacity': 0.9
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-connector-glow',
+      type: 'line',
+      source: 'electric-diff-connectors',
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 6, 1, 18],
+        'line-opacity': side === 'after' ? 0.3 : 0.18,
+        'line-blur': 4
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-connector-core',
+      type: 'line',
+      source: 'electric-diff-connectors',
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 1.8, 1, 5.4],
+        'line-opacity': 0.86,
+        'line-dasharray': side === 'after' ? [1.2, 0.8] : [1, 0.001]
+      },
+      layout: { 'line-cap': 'round', 'line-join': 'round' }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-site-load-halo',
+      type: 'circle',
+      source: 'electric-diff-site-load',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 18, 1, 58],
+        'circle-color': ['get', 'color'],
+        'circle-opacity': side === 'after' ? 0.26 : 0.18,
+        'circle-blur': 0.72
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'electric-diff-site-load-core',
+      type: 'circle',
+      source: 'electric-diff-site-load',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 4, 1, 9],
+        'circle-color': ['get', 'color'],
+        'circle-stroke-color': '#0f172a',
+        'circle-stroke-width': 1.2,
+        'circle-opacity': 0.95
       }
     }, refLayerId);
     addScenarioDiffPressureLayers(map, 'electric-diff-pressure', 'electric-diff-pressure', side, refLayerId);
@@ -7270,15 +7336,36 @@
     }).filter(Boolean);
   }
 
+  function clearImpactVisualization(opts) {
+    opts = opts || {};
+    if (state.map) {
+      if (state.map.getSource('impact-ripples')) state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-epicentres')) state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
+    }
+    if (opts.clearTraffic && window.TrafficSim) {
+      if (typeof window.TrafficSim.isRunning === 'function' && window.TrafficSim.isRunning()) stopTrafficSim();
+      if (typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') window.TrafficSim.clearAgentSwarmOverlay();
+      if (congestionLegendEl) congestionLegendEl.style.display = 'none';
+    }
+    if (opts.clearTransit) {
+      const engine = window.PublicTransportEngine || window.TransitEngine;
+      if (engine && typeof engine.clear === 'function') engine.clear();
+      updateTransitImpactCard(null);
+    }
+  }
+
   function updateImpactRipples() {
     if (!state.mapLoaded) return;
     ensureImpactLayers();
     const branch = activeBranch();
     if (!branch) return;
     if (state.mode !== 'simulation') {
-      if (state.map.getSource('impact-ripples')) state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
-      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
-      if (state.map.getSource('impact-epicentres')) state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
+      clearImpactVisualization({ clearTraffic: true, clearTransit: true });
+      return;
+    }
+    if (state.isRunningSim || branch._scenarioPending || scenarioResultForBranch(branch)) {
+      clearImpactVisualization({ clearTraffic: true, clearTransit: true });
       return;
     }
     const metric = state.impactMetric;
