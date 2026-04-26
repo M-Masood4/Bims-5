@@ -4136,7 +4136,9 @@
 
   function setExportStatus(message, kind) {
     if (!els.exportStatus) return;
-    els.exportStatus.textContent = message;
+    const text = String(message || '').trim();
+    els.exportStatus.hidden = !text;
+    els.exportStatus.textContent = text;
     els.exportStatus.className = 'export-note' + (kind ? ' ' + kind : '');
   }
 
@@ -4150,11 +4152,8 @@
     syncExportBranchPair();
     if (els.exportBranchBWrap) els.exportBranchBWrap.hidden = !compare;
     if (els.exportBranchB) els.exportBranchB.disabled = !compare || state.branches.length < 2;
-    if (compare && state.branches.length < 2) {
-      setExportStatus('Create a second branch before exporting a two-branch PDF.', 'warn');
-    } else {
-      setExportStatus('The PDF keeps the same headings and table titles every time.');
-    }
+    if (els.exportGenerateBtn) els.exportGenerateBtn.disabled = compare && state.branches.length < 2;
+    setExportStatus('');
   }
 
   function populateExportSelect(select, selectedId) {
@@ -4180,6 +4179,7 @@
     populateExportSelect(els.exportBranchB, second ? second.id : (active && active.id));
     const single = document.querySelector('input[name="exportMode"][value="single"]');
     if (single) single.checked = true;
+    setExportStatus('');
     syncExportModeControls();
     els.exportModal.hidden = false;
   }
@@ -4284,7 +4284,6 @@
     if (!branch || branch.locked || scenarioResultForBranch(branch)) return;
     const building = selectedScenarioBuilding(branch);
     if (!building) return;
-    setExportStatus('Running deterministic forecast for ' + branch.name + ' before exporting...');
     await runScenarioForBranch(branch, building);
   }
 
@@ -4297,14 +4296,12 @@
     event.preventDefault();
     const selected = selectedExportBranches();
     if (exportMode() === 'compare' && selected.length < 2) {
-      setExportStatus('Choose two different branches for a comparison PDF.', 'warn');
       return;
     }
     const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
     const button = els.exportGenerateBtn;
     if (button) {
       button.disabled = true;
-      button.textContent = 'Creating PDF...';
     }
     try {
       for (const branch of selected) {
@@ -4324,7 +4321,6 @@
         },
         branches: selected.map(branch => branchExportSnapshot(branch, target))
       };
-      setExportStatus('Building standardized PDF with deterministic tables and Gemini explanation...');
       const response = await fetch('/api/export/branch-report', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -4356,8 +4352,7 @@
       toast('PDF export failed', 'error');
     } finally {
       if (button) {
-        button.disabled = false;
-        button.textContent = 'Create PDF';
+        button.disabled = exportMode() === 'compare' && state.branches.length < 2;
       }
     }
   }
