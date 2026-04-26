@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-26T04:44:39.171930+00:00",
+  "generatedAt": "2026-04-26T05:42:44.132923+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -214,7 +214,7 @@
         "sourceStatus": "derived-from-local-source"
       },
       "byteSize": 26589724,
-      "modifiedAt": "2026-04-26T04:44:38.251011+00:00"
+      "modifiedAt": "2026-04-26T05:42:41.395492+00:00"
     },
     {
       "id": "source-ni-cycleways-osm",
@@ -1555,7 +1555,7 @@
       "year": 2021,
       "label": "Belfast-Population-Total-Population-By-Year-2026-04-25-14-06",
       "type": "csv",
-      "path": "Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv",
+      "path": "data/raw/population/Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv",
       "status": "source-available",
       "provenance": {
         "sourceName": "Local repository source",
@@ -1570,7 +1570,7 @@
       "year": 2021,
       "label": "Belfast Air Quality",
       "type": "csv",
-      "path": "belfast_air_quality.csv",
+      "path": "data/raw/air_quality/belfast_air_quality.csv",
       "status": "source-available",
       "provenance": {
         "sourceName": "Local repository source",

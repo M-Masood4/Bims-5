@@ -435,7 +435,10 @@ def build_manifest(root: Path) -> dict[str, Any]:
     for path in sorted((root / "data/2021").glob("*")) if (root / "data/2021").exists() else []:
         if path.is_file():
             source_artifacts.append(source_artifact(root, path, 2021, path.stem.replace("_", " ").title()))
-    for path in [root / "Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv", root / "belfast_air_quality.csv"]:
+    for path in [
+        root / "data/raw/population/Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv",
+        root / "data/raw/air_quality/belfast_air_quality.csv",
+    ]:
         if path.exists():
             source_artifacts.append(source_artifact(root, path, 2021, path.stem.replace("_", " ").title()))
 

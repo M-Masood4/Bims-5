@@ -1,6 +1,331 @@
 {
   "entries": [
     {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": 2016,
+      "layer": "bccaqmonitoring",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/2016/BCCAQMonitoring.csv",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "872e4702da5c94932fdacf9e837ff4859a8c911efdeb8412603e65ff0d6f38af",
+      "size_bytes": 4138,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": null,
+      "folder_year": 2016,
+      "layer": "bikesdata",
+      "media_type": "structured",
+      "metadata": {
+        "type": "str"
+      },
+      "path": "data/2016/BelfastBikesData.json",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "73014889ec0285860f60d11a79104c1ff6fb046dac68ae2515e1bfaf4dbbec81",
+      "size_bytes": 1161,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2022,
+      "folder_year": 2016,
+      "layer": "bikes_april",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_April_2022.json",
+      "primary_year": 2022,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "5656fcca5641d9b00b031b02928653fb92c1d8edacde68a9d7ce9ba3f37355e9",
+      "size_bytes": 6315992,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2022
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2021,
+      "folder_year": 2016,
+      "layer": "bikes_february",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_February_2021.json",
+      "primary_year": 2021,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "2a457e9f8750f9bc4ff68f90f83256c4d9284887da1f8ab385b689e7080453dd",
+      "size_bytes": 5847565,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2021
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2025,
+      "folder_year": 2016,
+      "layer": "bikes_january",
+      "media_type": "structured",
+      "metadata": {
+        "type": "list"
+      },
+      "path": "data/2016/BelfastBikes_January_2025.json",
+      "primary_year": 2025,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "760edfa050d1f57992b5dd9a05cc0d7173cb1b2b2759ced6886a2e69227a2fed",
+      "size_bytes": 3989731,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2025
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2023,
+      "folder_year": 2016,
+      "layer": "bikes_july",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_July_2023.json",
+      "primary_year": 2023,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "6df56e6422b3727722c0fabda5ed182a6dcd1f65cd75caa9d63eea2ac79354ea",
+      "size_bytes": 6804200,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2023
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2024,
+      "folder_year": 2016,
+      "layer": "bikes_march",
+      "media_type": "structured",
+      "metadata": {
+        "type": "list"
+      },
+      "path": "data/2016/BelfastBikes_March_2024.json",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "baed3ff63a8ea18606c28b58ec3731341d2829b0b64c8264eb19b31023fca3c5",
+      "size_bytes": 3802145,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2024
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2021,
+      "folder_year": 2016,
+      "layer": "bikes_november",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_November_2021.json",
+      "primary_year": 2021,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "98e48c6fd7656dedcacac3c5ad332f7bc6a749f1fe0b89d1564e29e6c621895f",
+      "size_bytes": 8973769,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2021
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2022,
+      "folder_year": 2016,
+      "layer": "bikes_october",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_October_2022.json",
+      "primary_year": 2022,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "1da317a964de102fb7f976a6eeef1e36b8ecdc2490948e640ff4dd5af7902d09",
+      "size_bytes": 8796794,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2022
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2019,
+      "folder_year": 2016,
+      "layer": "bikes_september",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2016/BelfastBikes_September_2019.json",
+      "primary_year": 2019,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch",
+        "metadata_skipped"
+      ],
+      "sha256": "622208ac4e9ffc4d4fc6053d38b8acf75a597dd35979eaa9fa44e35f036bd3dc",
+      "size_bytes": 7628850,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2019
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2025,
+      "folder_year": 2016,
+      "layer": "bikes_september",
+      "media_type": "structured",
+      "metadata": {
+        "type": "list"
+      },
+      "path": "data/2016/BelfastBikes_September_2025.json",
+      "primary_year": 2025,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "size_bytes": 2,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2025
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": 2016,
+      "layer": "trees_open_data",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/2016/Trees-Open-Data.csv",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "dfc9862e3039796186dae5808a9ff0378a7b4e4f9a32b958d122d8961c26f210",
+      "size_bytes": 6535363,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2021,
+      "folder_year": 2016,
+      "layer": "bike_stations_updated_25_june",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/2016/belfast-bike-stations-updated-25-june-2021.csv",
+      "primary_year": 2021,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "aa6f69e3f0eb6e91703f7d6d304b280e33d73cc0f7f30f70b420e0a5dd4057be",
+      "size_bytes": 3920,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2021
+      ]
+    },
+    {
       "file_extension": "tif",
       "filename_year": 2016,
       "folder_year": 2016,
@@ -19,6 +344,78 @@
       "source_id": "repo_existing_2016_rasters",
       "years_observed": [
         2016
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2018,
+      "folder_year": 2016,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndbi_2018.tif",
+      "primary_year": 2018,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "1da11191c544a321531b782617f887984ee2582f732d0a4bfbba0560e1d4f44f",
+      "size_bytes": 48606199,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2018
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2020,
+      "folder_year": 2016,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndbi_2020.tif",
+      "primary_year": 2020,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "badcffd47ab7d35fc95e2201c3bacbc6f407eeea264fd5d9a09d4d55279d69d6",
+      "size_bytes": 48344629,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2020
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2022,
+      "folder_year": 2016,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndbi_2022.tif",
+      "primary_year": 2022,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "094e4071d24524275e29935479036ac3d3c674e95ba38ba0e7748214d6429e9d",
+      "size_bytes": 48342168,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2022
       ]
     },
     {
@@ -64,6 +461,54 @@
       "years_observed": [
         2016,
         2018
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2020,
+      "folder_year": 2016,
+      "layer": "ndvi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndvi_2020.tif",
+      "primary_year": 2020,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "01fad0c034309da3b39c898a67e4d7d0d7442f9263e37800efa1c8f60ef4dd8e",
+      "size_bytes": 47530316,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2020
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2022,
+      "folder_year": 2016,
+      "layer": "ndvi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_ndvi_2022.tif",
+      "primary_year": 2022,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "88fb16648cd3aaa747de2eb68122943c564dd2778d0a79614ad485c0dad4513e",
+      "size_bytes": 47217608,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2022
       ]
     },
     {
@@ -136,6 +581,72 @@
       ]
     },
     {
+      "file_extension": "tif",
+      "filename_year": 2022,
+      "folder_year": 2016,
+      "layer": "rgb",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2016/belfast_rgb_2022.tif",
+      "primary_year": 2022,
+      "quality_flags": [
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "4d67550261f59533e9399ee271f9ff1b6d7d6819c441f35a60304fb8d96c71da",
+      "size_bytes": 73839100,
+      "source_detection_confidence": 0.8,
+      "source_detection_evidence": [
+        "local_raster_baseline"
+      ],
+      "source_id": "repo_existing_2016_rasters",
+      "years_observed": [
+        2016,
+        2022
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": 2016,
+      "layer": "pitchesplayingfieldsdata",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/2016/pitchesplayingfieldsdata.csv",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "a967fa7c3220fc08578eb07c85b2c109594cd245991c3d820b715cd0b82c6eae",
+      "size_bytes": 3721,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": 2016,
+      "layer": "toiletsdata",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/2016/toiletsdata.csv",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "e2af39b41d9ba25196db1b1d57a629884df30e8c48f0165f94ccd6c0e039f342",
+      "size_bytes": 947,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
       "file_extension": "csv",
       "filename_year": 2021,
       "folder_year": 2021,
@@ -154,6 +665,464 @@
       "source_id": "unknown",
       "years_observed": [
         2021
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": null,
+      "folder_year": 2026,
+      "layer": "boundary_nominatim",
+      "media_type": "structured",
+      "metadata": {
+        "type": "list"
+      },
+      "path": "data/2026/_raw_osm/belfast_boundary_nominatim.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "24fe3efd4b5c1ed8fe61b1441bbeb997c1ae08885bddd1557a34ced247806459",
+      "size_bytes": 4556,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "bridges_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfast_bridges_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "66b3dd634d0d8994aba68d5f76e7903ec6b8e87437e02d8329d2678685b37aee",
+      "size_bytes": 306633,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "buildings_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfast_buildings_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "712d01d299e0f7d5f4cd6a6391b1569799eb0bb7a3d6293d14417b4f3a3c371f",
+      "size_bytes": 101153760,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "cycleways_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfast_cycleways_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "9a48a4eeb35c28a1a4f5745b172aee3ab4e21b70d61e107e301277f9c49d2db8",
+      "size_bytes": 6215371,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "green_spaces_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfast_green_spaces_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "6827914b6262b7c3a11a1f44f36d165202c249bece8a6c9d167b3f99963a4696",
+      "size_bytes": 6883622,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "major_roads_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfast_major_roads_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "5dddbd4055756d558357ee47e92b7fe73cd5deb2b3b41c04acbfbd6454f2ba4d",
+      "size_bytes": 3614396,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "roads_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfast_roads_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "c09684ece176af42e3f126fcbfb74ea9ecaab5861feb2a665b54c89c8254a652",
+      "size_bytes": 19231464,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "transportstops_json_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfast_transportstops2026.json.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "086b590f02e3ce30e73c7c4d4b5dbb0e6e94c57f2ca5c067fbf78981a36059d2",
+      "size_bytes": 476064,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "water_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfast_water_2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "05a07da185ce6faa1f82607dbf99b798cea022bda9bc65c1b5c79c7614227cbc",
+      "size_bytes": 553070,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "boudnary_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfastboudnary2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "2b37282a16975b8202c6037ae4c2a42d011b8657e327e249f761f67072c9d26f",
+      "size_bytes": 300,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "commercial_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfastcommercial2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "8fcd3f72fa9eaa79760308f54f62d78a8513b02e92e1968b4a00e5e780b8d9be",
+      "size_bytes": 1793795,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "developmentland_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfastdevelopmentland2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "cca4e7362d370dd544b682d51ca19d53df499e632d6fdbfd8b49f82bde5f6a66",
+      "size_bytes": 279665,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "education_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfasteducation2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "b2e745dd3a9184ac3333e4e0ade7fc8d7ac01de16cdc275d002c13d3b060f125",
+      "size_bytes": 1536785,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "healthcare_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfasthealthcare2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "719f5f06fc4ae889fe097b9c0f210722856c6765aed429c3e059b780d72b6249",
+      "size_bytes": 400174,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "landmarks_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfastlandmarks2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "cefd10b2685ab82388188b00ec2119b9296516ea8725354704fb414f9b452228",
+      "size_bytes": 18665047,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "landuse_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfastlanduse2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "4bbe79519439b0d9063fc161c28e4a3b6dcb9bb533e7be9b8ca296418488bf14",
+      "size_bytes": 7152663,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "places_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfastplaces2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "2ec687041a7a1ada048e5e931cacac2243834b10c996b7519bc4393ae2c4ecd6",
+      "size_bytes": 45763,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "publicservices_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/2026/_raw_osm/belfastpublicservices2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "48bd426425a4aa60414dca26a954dd2f3d3a66650ac52b81db83cf1c0dbccd5d",
+      "size_bytes": 756187,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "transitroutes_geojson_osm",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/2026/_raw_osm/belfasttransitroutes2026.geojson.osm.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "e28895537721ff95c4818cbc4c0ca75e700f3cebb9ec43d2751550587c15ff60",
+      "size_bytes": 5851172,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
       ]
     },
     {
@@ -345,6 +1314,98 @@
       ],
       "source_id": "osm_overpass",
       "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2018,
+      "folder_year": 2026,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2026/belfast_ndbi_2018.tif",
+      "primary_year": 2018,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "1da11191c544a321531b782617f887984ee2582f732d0a4bfbba0560e1d4f44f",
+      "size_bytes": 48606199,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2018,
+        2026
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2024,
+      "folder_year": 2026,
+      "layer": "ndbi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2026/belfast_ndbi_2024.tif",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "1a9aa7f1af51055d9142c9708e24a0fb85f46686c736dc85fc99e7f1bb98f292",
+      "size_bytes": 48386895,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2024,
+        2026
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2024,
+      "folder_year": 2026,
+      "layer": "ndvi",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2026/belfast_ndvi_2024.tif",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "886626004e1b321b3a5f8b471a61b30a2fd58a11dec2f938eab338b68cad7115",
+      "size_bytes": 47366850,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2024,
+        2026
+      ]
+    },
+    {
+      "file_extension": "tif",
+      "filename_year": 2024,
+      "folder_year": 2026,
+      "layer": "rgb",
+      "media_type": "raster",
+      "metadata": {},
+      "path": "data/2026/belfast_rgb_2024.tif",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "folder_filename_year_mismatch"
+      ],
+      "sha256": "8ba2773ba3265d299789ae2a51b0b7bda1088c637cf7d59bf119be656a397d65",
+      "size_bytes": 73942002,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2024,
         2026
       ]
     },
@@ -881,6 +1942,58 @@
       ]
     },
     {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "source_manifest",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_error": "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
+      },
+      "path": "data/2026/source_manifest_2026.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_error"
+      ],
+      "sha256": "b35e578ad96f901f6621c8c5489016cc84ab7a9d6c6739130848dacdd4fd4d47",
+      "size_bytes": 9103,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "infrastructure_events",
+      "media_type": "structured",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/derived/2026/belfast_infrastructure_events_2016_2026.json",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "8e15f015ca9b14ca4257a72e03a106814c8fb8dafd8b2bd366f55dde9644ca4f",
+      "size_bytes": 33834529,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2016,
+        2026
+      ]
+    },
+    {
       "file_extension": "geojson",
       "filename_year": null,
       "folder_year": 2026,
@@ -896,8 +2009,871 @@
         "source_not_in_inventory",
         "metadata_skipped"
       ],
-      "sha256": "7494c52a33b1e1d7f628b1945448b4ca4e28b6ff207164b81757f5bd7b67270f",
-      "size_bytes": 20564986,
+      "sha256": "3601a60484e6c7149c739fc703313fe120f83ceafec46c607dada5c6f1fc5011",
+      "size_bytes": 26589724,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_cycleways_osm",
+      "media_type": "vector",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/derived/2026/belfast_ni_cycleways_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "169fbac3d6cd4bd76e71b3ccad6c54904879ac0171a673c010dcd877f1c53259",
+      "size_bytes": 6474490,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_green_spaces_osm",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.088015,
+          54.514813,
+          -5.772514,
+          54.702427
+        ],
+        "feature_count": 5174,
+        "geometry_types": [
+          "Polygon"
+        ],
+        "name": "belfast_ni_green_spaces_osm_2026",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_green_spaces_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "08335e5c87107481b52c774ed223a43b6fa05897515405f6983b70d25746c683",
+      "size_bytes": 2986300,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_power_grid_osm",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.120844,
+          54.389643,
+          -5.672096,
+          54.746275
+        ],
+        "feature_count": 4441,
+        "geometry_types": [
+          "LineString",
+          "Point",
+          "Polygon"
+        ],
+        "name": "belfast_ni_power_grid_osm_2026",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_power_grid_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "01a79d8c79963c94e0874241a6d45c7bf767843a2d463d90b0e60033e6da79f8",
+      "size_bytes": 1596208,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_roads_osm",
+      "media_type": "vector",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/derived/2026/belfast_ni_roads_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "metadata_skipped"
+      ],
+      "sha256": "379f55764ba011fa8105f7356350c36c91e480c4a5325748ec749ac340b2b22b",
+      "size_bytes": 7751482,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_services_osm",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.070718,
+          54.525714,
+          -5.782087,
+          54.696068
+        ],
+        "feature_count": 1315,
+        "geometry_types": [
+          "Point"
+        ],
+        "name": "belfast_ni_services_osm_2026",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_services_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "6dc642648a6c29c752152bb9f94f565f8637cc29c35e18b51524a2fb0932152a",
+      "size_bytes": 391305,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": null,
+      "folder_year": 2026,
+      "layer": "ni_transformers_official",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.072464,
+          54.521462,
+          -5.784434,
+          54.696577
+        ],
+        "feature_count": 312,
+        "geometry_types": [
+          "Point"
+        ],
+        "name": "belfast_ni_transformers_official",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_transformers_official.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "be039d96702fac8b186f6b6539902cadb3f33ed0416b5acbd6966cbc7f86adb2",
+      "size_bytes": 233577,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_transport_stops_osm",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.078428,
+          54.520141,
+          -5.781776,
+          54.696818
+        ],
+        "feature_count": 1092,
+        "geometry_types": [
+          "Point"
+        ],
+        "name": "belfast_ni_transport_stops_osm_2026",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_transport_stops_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "9612fe280187060c5d7f5e9882c2c23ae89f33ddad5689e342ec8567819a8339",
+      "size_bytes": 323419,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "ni_water_osm",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.089938,
+          54.498519,
+          -5.770623,
+          54.703514
+        ],
+        "feature_count": 1027,
+        "geometry_types": [
+          "LineString",
+          "Polygon"
+        ],
+        "name": "belfast_ni_water_osm_2026",
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/belfast_ni_water_osm_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "adda6bea622af5d0766266107a157902d5dd920772f95803c7bf7cfac7fe5a60",
+      "size_bytes": 664402,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": 2026,
+      "layer": "transformer_grid_features",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/derived/2026/belfast_transformer_grid_features.csv",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "26e3c08c73dd53bc685504f06aa99e3f91a55ae979833486ffac06caa99a4eb1",
+      "size_bytes": 60172,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "translink_bus_stops",
+      "media_type": "vector",
+      "metadata": {
+        "bbox_wgs84": [
+          -6.089199,
+          54.500322,
+          -5.770507,
+          54.709089
+        ],
+        "feature_count": 1973,
+        "geometry_types": [
+          "Point"
+        ],
+        "type": "FeatureCollection"
+      },
+      "path": "data/derived/2026/translink_belfast_bus_stops_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "3ebc1a858b7daf268a963d8b2a0ecddc28b1055ae7900920fc5ac88019d09bc2",
+      "size_bytes": 955007,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "geojson",
+      "filename_year": 2026,
+      "folder_year": 2026,
+      "layer": "translink_route_segments",
+      "media_type": "vector",
+      "metadata": {
+        "metadata_skip_reason": "file exceeds --max-geojson-bytes (5000000)",
+        "metadata_skipped": true
+      },
+      "path": "data/derived/2026/translink_belfast_route_segments_2026.geojson",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory",
+        "metadata_skipped"
+      ],
+      "sha256": "b20a899dd4910855124b4e76c2814715d24335b0578620832029375f47f5b741",
+      "size_bytes": 8933109,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": null,
+      "folder_year": null,
+      "layer": "air_quality",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/air_quality/belfast_air_quality.csv",
+      "primary_year": null,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "d1ad2e8ce5d0803434a45fa1625fb91e889bbbc63e3f1e5aa2079c58e68dafb8",
+      "size_bytes": 42533297,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": []
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2023,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System Data Qtr Hourly 2022 2023.xlsx",
+      "primary_year": 2023,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "da4804afde886d3bf70facb56795819fdcf69cf3fc2ff4c0acf0db94ec1de9d0",
+      "size_bytes": 23097109,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2022,
+        2023
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2024,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System Data Qtr Hourly 2024.xlsx",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "e14f051ee66bc16b25f804187331a984dd067aa8b12f9d3c10d2115dc0b605da",
+      "size_bytes": 12104719,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2024
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2025,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly_0",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System Data Qtr Hourly 2025_0.xlsx",
+      "primary_year": 2025,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "11eec44649426878e850f23949e3cbef9388252313062ab98a719dc405ceb6cc",
+      "size_bytes": 12444006,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2025
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly_1",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System Data Qtr Hourly 2026 (1).xlsx",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "a95f83f9db362e7a255b78839f41eda78feca99aa60bccdd457b7b7a4929d340",
+      "size_bytes": 2011467,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": null,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly_2014_2015_0",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System-Data-Qtr-Hourly-2014-2015_0.xlsx",
+      "primary_year": null,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "283732a09a94fb32f6bca0442b12e96d5f1da1e6d86ea467915d532b4b00dc54",
+      "size_bytes": 6770931,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": []
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2017,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System-Data-Qtr-Hourly-2016-2017.xlsx",
+      "primary_year": 2017,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "eb7ab1003a51cac6d6d0f5f94188b78928c76610592436e0856f68642f974706",
+      "size_bytes": 7378898,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016,
+        2017
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2019,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly_0",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System-Data-Qtr-Hourly-2018-2019_0.xlsx",
+      "primary_year": 2019,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "b8900754479cf2e82a9a49bffb171b1a10ebf7d3b2de469f96f396f1b1398ed3",
+      "size_bytes": 8694963,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2018,
+        2019
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": 2021,
+      "folder_year": null,
+      "layer": "system_data_qtr_hourly_4",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/electricity/System-Data-Qtr-Hourly-2020-2021 (4).xlsx",
+      "primary_year": 2021,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "69b17a5f90f7b9704dd81034470c17cbf9c0cdc88efdc1d3be6eb4583c280f90",
+      "size_bytes": 8686300,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2020,
+        2021
+      ]
+    },
+    {
+      "file_extension": "json",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "power_assets_overpass_meta",
+      "media_type": "structured",
+      "metadata": {
+        "generator": "Overpass API 0.7.62.11 87bfad18"
+      },
+      "path": "data/raw/overpass/belfast_power_assets_overpass_meta_2026.json",
+      "primary_year": 2026,
+      "quality_flags": [],
+      "sha256": "33541659741557168fcdd6d475957e4e95ce01ccd2cbbd76f1793e1f42252c50",
+      "size_bytes": 772464,
+      "source_detection_confidence": 0.95,
+      "source_detection_evidence": [
+        "embedded_osm_metadata"
+      ],
+      "source_id": "osm_overpass",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2016,
+      "folder_year": null,
+      "layer": "planning_statistics_17_dataset_1",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2016-17-dataset_1.csv",
+      "primary_year": 2016,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "c3ec41fce02a1164b694bd99c2b7efc1c75364edd19eaeeb46fb015a3fba0d93",
+      "size_bytes": 7144172,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2016
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2017,
+      "folder_year": null,
+      "layer": "planning_statistics_18_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2017-18-dataset.csv",
+      "primary_year": 2017,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "cc6a5c4ee1cbdccebdc72bf0f1dae4888ae101bf53541f168cd1934c79c21c17",
+      "size_bytes": 6969235,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2017
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2018,
+      "folder_year": null,
+      "layer": "planning_statistics_19_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2018-19-dataset.csv",
+      "primary_year": 2018,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "c62ce8ff8dc9cfe8574efe20f5c8a006ce5bc4d137c07f8519559f9395bae75c",
+      "size_bytes": 6918646,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2018
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2020,
+      "folder_year": null,
+      "layer": "planning_statistics_21_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2020-21-dataset.csv",
+      "primary_year": 2020,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "da75cdca65cee196135549f1bf2402e64cf86efa9e125537ee24cae2153bf9d3",
+      "size_bytes": 7685642,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2020
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2021,
+      "folder_year": null,
+      "layer": "planning_statistics_22_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2021-22-dataset.csv",
+      "primary_year": 2021,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "8b80b95dd6155b0edd76ef1c8ec16e563c3d790e517df0c637ab51b93ab3ab01",
+      "size_bytes": 8715657,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2021
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2022,
+      "folder_year": null,
+      "layer": "planning_statistics_23_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2022-23-dataset.csv",
+      "primary_year": 2022,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "6413875017d78c2868e3693cd3e353717e2264c46728535e9f6e5f1d12339be8",
+      "size_bytes": 7897331,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2022
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2023,
+      "folder_year": null,
+      "layer": "planning_statistics_24_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2023-24-dataset.csv",
+      "primary_year": 2023,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "3e996e8c5089d28b1308a63b208518ad1f79c0f4ade271862ab5d8d02f2ba09a",
+      "size_bytes": 7446903,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2023
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2024,
+      "folder_year": null,
+      "layer": "planning_statistics_25_dataset",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/planning_statistics/planning-statistics-2024-25-dataset.csv",
+      "primary_year": 2024,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "d0d91d1a3485183fd5bc047785d71044c71283dcd3460f43604bfe172fbcbf20",
+      "size_bytes": 7190086,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2024
+      ]
+    },
+    {
+      "file_extension": "csv",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "population_total_population_by_year_04_25_14_06",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/population/Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "f4bccd647a2a4b20799d5f423a1e1329b21cbf07ed57ab2e92e8edd7ba066c11",
+      "size_bytes": 1156,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "zip",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "bus_stop_list_04_16",
+      "media_type": "archive",
+      "metadata": {},
+      "path": "data/raw/translink/bus-stop-list-2026-04-16.zip",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "66e17f085aeb0a8bfd822322096320d64bd94c079b4bc972ad8cab499be9edef",
+      "size_bytes": 1111526,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "zip",
+      "filename_year": 2025,
+      "folder_year": null,
+      "layer": "metro_glider_routes_09_23",
+      "media_type": "archive",
+      "metadata": {},
+      "path": "data/raw/translink/metro-glider-routes-2025-09-23.zip",
+      "primary_year": 2025,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "9f8fa6a8a82d451f0a61e0a642b0bfbe023d425464c7fefc72460e4b97cfc4b0",
+      "size_bytes": 2691616,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2025
+      ]
+    },
+    {
+      "file_extension": "zip",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "metro_glider_timetables_04_16",
+      "media_type": "archive",
+      "metadata": {},
+      "path": "data/raw/translink/metro-glider-timetables-2026-04-16.zip",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "b25efe0c7827422f7f21df49a57794debd6b7476c95da2e23a1b03f9ab9742a4",
+      "size_bytes": 1356656,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2026
+      ]
+    },
+    {
+      "file_extension": "xlsx",
+      "filename_year": null,
+      "folder_year": null,
+      "layer": "bus_stop_export_030426",
+      "media_type": "tabular",
+      "metadata": {},
+      "path": "data/raw/translink/stops/Bus Stop List/Bus Stop Export 030426.xlsx",
+      "primary_year": null,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "356ad73186d60183651ea0e4b2380bac627cd0090c8fd3d4d012caa3e5516fbf",
+      "size_bytes": 1138963,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": []
+    },
+    {
+      "file_extension": "zip",
+      "filename_year": 2025,
+      "folder_year": null,
+      "layer": "ulsterbus_goldliner_routes_09_23",
+      "media_type": "archive",
+      "metadata": {},
+      "path": "data/raw/translink/ulsterbus-goldliner-routes-2025-09-23.zip",
+      "primary_year": 2025,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "41026d94078aa53d599260d1c09e1074a356ebf275a1cb63682040e096664741",
+      "size_bytes": 22498135,
+      "source_detection_confidence": 0.0,
+      "source_detection_evidence": [],
+      "source_id": "unknown",
+      "years_observed": [
+        2025
+      ]
+    },
+    {
+      "file_extension": "zip",
+      "filename_year": 2026,
+      "folder_year": null,
+      "layer": "ulsterbus_goldliner_timetables_04_16",
+      "media_type": "archive",
+      "metadata": {},
+      "path": "data/raw/translink/ulsterbus-goldliner-timetables-2026-04-16.zip",
+      "primary_year": 2026,
+      "quality_flags": [
+        "source_not_in_inventory"
+      ],
+      "sha256": "9915e3ac8aaafb8ae1759ec29c4e4cc84ced882267cfcc2415108fe30fe337d4",
+      "size_bytes": 2635671,
       "source_detection_confidence": 0.0,
       "source_detection_evidence": [],
       "source_id": "unknown",
@@ -913,19 +2889,20 @@
   ],
   "schema_version": "1.0",
   "summary": {
-    "file_count": 27,
+    "file_count": 109,
     "quality_flag_counts": {
-      "folder_filename_year_mismatch": 3,
-      "metadata_skipped": 2,
+      "folder_filename_year_mismatch": 23,
+      "metadata_error": 1,
+      "metadata_skipped": 19,
       "outside_target_belfast_ni_bbox": 18,
-      "source_not_in_inventory": 2
+      "source_not_in_inventory": 49
     },
     "source_counts": {
-      "osm_overpass": 19,
-      "repo_existing_2016_rasters": 6,
-      "unknown": 2
+      "osm_overpass": 48,
+      "repo_existing_2016_rasters": 12,
+      "unknown": 49
     },
-    "total_size_bytes": 488609821
+    "total_size_bytes": 1540553962
   },
   "target_area": {
     "approx_bbox_wgs84": [

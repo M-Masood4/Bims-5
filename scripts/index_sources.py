@@ -252,6 +252,9 @@ def geojson_metadata(path: Path, size_bytes: int, max_geojson_bytes: int) -> dic
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         return {"metadata_error": str(exc)}
 
+    if not isinstance(data, dict):
+        return {"type": type(data).__name__}
+
     meta: dict[str, Any] = {}
     for key in ("type", "generator", "copyright", "timestamp", "name"):
         if key in data:

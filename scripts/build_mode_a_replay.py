@@ -136,7 +136,7 @@ def grid_cells(cols: int = 22, rows: int = 14) -> list[dict[str, Any]]:
 
 
 def load_population(root: Path) -> dict[int, int]:
-    path = root / "Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv"
+    path = root / "data/raw/population/Belfast-Population-Total-Population-By-Year-2026-04-25-14-06.csv"
     values: dict[int, int] = {}
     if not path.exists():
         return values
@@ -163,7 +163,7 @@ def load_census_total(root: Path) -> int | None:
 
 
 def load_air_quality(root: Path) -> dict[int, float]:
-    path = root / "belfast_air_quality.csv"
+    path = root / "data/raw/air_quality/belfast_air_quality.csv"
     if not path.exists():
         return {}
     yearly: dict[int, list[float]] = {}
