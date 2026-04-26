@@ -851,20 +851,6 @@ button { font-family: inherit; }
 }
 .section-title.scenario-tree-title,
 .section-title.impact-title { margin-top: 16px; }
-.info-icon {
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid #bbb;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: #999;
-  font-style: italic;
-  font-weight: 600;
-  cursor: pointer;
-  background: transparent;
-}
 .viewing-label { font-size: 11px; color: var(--text-faint); margin-bottom: 10px; }
 .viewing-label strong { color: var(--text); font-weight: 600; }
 
@@ -1010,18 +996,6 @@ button { font-family: inherit; }
 
 .scenario-tree { position: relative; width: 100%; margin-bottom: 14px; }
 .tree-svg { width: 100%; height: auto; overflow: visible; }
-
-.info-box {
-  background: #f8f9fc;
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-.info-box-icon { flex-shrink: 0; margin-top: 1px; display: inline-flex; }
-.info-box p { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; }
 
 .impact-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 .metric-card {

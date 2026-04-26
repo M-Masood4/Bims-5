@@ -155,7 +155,7 @@
     { id: 'jobs',        label: 'Jobs',        color: '#a855f7', goodDirection: 'up',   valueProp: 'jobs',        deltaProp: 'jobs_delta_previous',        contextLayer: null },
     { id: 'buildings',   label: 'Buildings',   color: '#3b82f6', goodDirection: 'up',   valueProp: 'buildings',   deltaProp: 'buildings_delta_previous',   contextLayer: 'belfast-ni-buildings-3d' },
     { id: 'electricity', label: 'Electricity', color: '#06b6d4', goodDirection: 'down', valueProp: 'electricity', deltaProp: 'electricity_delta_previous', contextLayer: 'source-ni-power-grid-osm' },
-    { id: 'services',    label: 'Services',    color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: null }
+    { id: 'transit',     label: 'Transit',     color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: 'transit-stops-circle' }
   ];
 
   function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES.find(l => l.id === DEFAULT_LENS) || LENSES[0]; }
@@ -414,7 +414,7 @@
       'mapSubtitle', 'mapOverlay', 'cursorHint', 'cursorHintText',
       'activeBranchTag', 'tagDot', 'tagName', 'tagYear',
       'tlPrev', 'tlPlay', 'tlPlayIcon', 'tlNext', 'tlYearNow', 'tlTrack', 'tlProgress', 'tlThumb', 'tlMarks',
-      'impactTitle', 'impactStack', 'showAllBtn',
+      'impactTitle', 'impactStack',
       'newBranchBtn', 'branchSelect', 'branchList',
       'tlBranchName', 'branchTimelineSvg',
       'runBtn', 'runBtnLabel', 'compareBtn', 'activeBranchName', 'activeYearLabel', 'exportBtn',
@@ -5696,9 +5696,6 @@
     if (els.exportBtn) els.exportBtn.addEventListener('click', exportResults);
     if (els.scenarioDiffBtn) els.scenarioDiffBtn.addEventListener('click', openScenarioDiffModal);
     if (els.splitCloseBtn) els.splitCloseBtn.addEventListener('click', closeWorkspaceSplit);
-    if (els.showAllBtn) els.showAllBtn.addEventListener('click', () => {
-      openCompareModal();
-    });
     if (els.collapseBtn) els.collapseBtn.addEventListener('click', toggleBottomCollapse);
     attachPostcodeSearch();
     attachTrafficSim();
