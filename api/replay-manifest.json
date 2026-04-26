@@ -3,7 +3,7 @@
   "kind": "belfast.replay.manifest",
   "name": "Belfast Historical Replay",
   "description": "Mapbox 3D replay manifest for Belfast, Northern Ireland, with current local sources and provenance for 2016-2026.",
-  "generatedAt": "2026-04-25T19:07:36.150620+00:00",
+  "generatedAt": "2026-04-26T04:44:39.171930+00:00",
   "mapbox": {
     "token": "pk.eyJ1IjoiYXl1c2hndXB0YTA1IiwiYSI6ImNtb2VjdW5oYTBmb3oycXNnMzY0NW82bW4ifQ.vLx2CXXlKLhzMLvGa_g2Bw",
     "style": "mapbox://styles/mapbox/dark-v11",
@@ -214,7 +214,7 @@
         "sourceStatus": "derived-from-local-source"
       },
       "byteSize": 26589724,
-      "modifiedAt": "2026-04-25T19:07:34.796830+00:00"
+      "modifiedAt": "2026-04-26T04:44:38.251011+00:00"
     },
     {
       "id": "source-ni-cycleways-osm",
@@ -250,7 +250,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 6474490,
-      "modifiedAt": "2026-04-25T18:44:26.606838+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.800152+00:00"
     },
     {
       "id": "source-ni-green-spaces-osm",
@@ -286,7 +286,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 2986300,
-      "modifiedAt": "2026-04-25T18:44:26.625555+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.806778+00:00"
     },
     {
       "id": "source-ni-power-grid-osm",
@@ -324,7 +324,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1596208,
-      "modifiedAt": "2026-04-25T18:44:26.637999+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.814566+00:00"
     },
     {
       "id": "source-ni-roads-osm",
@@ -360,7 +360,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 7751482,
-      "modifiedAt": "2026-04-25T18:44:26.676980+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.836553+00:00"
     },
     {
       "id": "source-ni-services-osm",
@@ -396,7 +396,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 391305,
-      "modifiedAt": "2026-04-25T18:44:26.688923+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.840357+00:00"
     },
     {
       "id": "source-ni-transport-stops-osm",
@@ -432,7 +432,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 323419,
-      "modifiedAt": "2026-04-25T18:44:26.696082+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.843056+00:00"
     },
     {
       "id": "source-ni-water-osm",
@@ -469,7 +469,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 664402,
-      "modifiedAt": "2026-04-25T18:44:26.706083+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.846628+00:00"
     }
   ],
   "sourceArtifacts": [
@@ -507,7 +507,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 19321,
-      "modifiedAt": "2026-04-25T18:44:25.299763+00:00",
+      "modifiedAt": "2026-04-25T21:01:44.191189+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -544,7 +544,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1609421,
-      "modifiedAt": "2026-04-25T18:44:25.325028+00:00",
+      "modifiedAt": "2026-04-25T21:01:44.209804+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -582,7 +582,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1631884,
-      "modifiedAt": "2026-04-25T18:44:25.332981+00:00",
+      "modifiedAt": "2026-04-25T21:01:44.221017+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -620,7 +620,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 690453,
-      "modifiedAt": "2026-04-25T18:44:25.332981+00:00",
+      "modifiedAt": "2026-04-25T21:01:44.230798+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -657,7 +657,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 226755,
-      "modifiedAt": "2026-04-25T18:44:25.348879+00:00",
+      "modifiedAt": "2026-04-25T21:01:44.233823+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -694,7 +694,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1397533,
-      "modifiedAt": "2026-04-25T18:44:26.296123+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.152778+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -733,7 +733,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 445544,
-      "modifiedAt": "2026-04-25T18:44:26.309548+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.163066+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -771,7 +771,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 49166,
-      "modifiedAt": "2026-04-25T18:44:26.314639+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.163066+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -809,7 +809,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 110390,
-      "modifiedAt": "2026-04-25T18:44:26.320042+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.163066+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -846,7 +846,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1008,
-      "modifiedAt": "2026-04-25T18:44:26.323466+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.163066+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -884,7 +884,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 11080,
-      "modifiedAt": "2026-04-25T18:44:26.325465+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.163066+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -922,7 +922,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 11201,
-      "modifiedAt": "2026-04-25T18:44:26.328465+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.173002+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -960,7 +960,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 23659,
-      "modifiedAt": "2026-04-25T18:44:26.332472+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.173002+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -997,7 +997,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 39605,
-      "modifiedAt": "2026-04-25T18:44:26.335527+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.173002+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -1036,7 +1036,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 3987312,
-      "modifiedAt": "2026-04-25T18:44:26.363591+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.187988+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -1074,7 +1074,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 25714,
-      "modifiedAt": "2026-04-25T18:44:26.366146+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.191341+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -1112,7 +1112,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 42313,
-      "modifiedAt": "2026-04-25T18:44:26.368145+00:00",
+      "modifiedAt": "2026-04-25T21:01:46.193859+00:00",
       "notes": "Parsed source is outside the primary Belfast, Northern Ireland map extent."
     },
     {
@@ -1128,7 +1128,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 110224684,
-      "modifiedAt": "2026-04-25T12:16:33.778944+00:00"
+      "modifiedAt": "2026-04-25T21:01:46.568215+00:00"
     },
     {
       "id": "bccaqmonitoring",
@@ -1143,7 +1143,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 4138,
-      "modifiedAt": "2026-04-25T14:17:58.760962+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.185102+00:00"
     },
     {
       "id": "bike-stations-updated-25-june-2021",
@@ -1158,7 +1158,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 3920,
-      "modifiedAt": "2026-04-25T14:15:02.959475+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.365469+00:00"
     },
     {
       "id": "ndbi-2016",
@@ -1173,7 +1173,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 41994015,
-      "modifiedAt": "2026-04-25T13:15:09.880263+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.773030+00:00"
     },
     {
       "id": "ndbi-2018",
@@ -1188,7 +1188,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 48606199,
-      "modifiedAt": "2026-04-25T13:26:34.210442+00:00"
+      "modifiedAt": "2026-04-25T21:01:37.305948+00:00"
     },
     {
       "id": "ndbi-2020",
@@ -1203,7 +1203,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 48344629,
-      "modifiedAt": "2026-04-25T14:02:56.306605+00:00"
+      "modifiedAt": "2026-04-25T21:01:37.868833+00:00"
     },
     {
       "id": "ndbi-2022",
@@ -1218,7 +1218,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 48342168,
-      "modifiedAt": "2026-04-25T18:44:24.749062+00:00"
+      "modifiedAt": "2026-04-25T21:01:38.661465+00:00"
     },
     {
       "id": "ndvi-2016",
@@ -1233,7 +1233,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 41061924,
-      "modifiedAt": "2026-04-25T13:15:10.242682+00:00"
+      "modifiedAt": "2026-04-25T21:01:39.346425+00:00"
     },
     {
       "id": "ndvi-2018",
@@ -1248,7 +1248,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 47378843,
-      "modifiedAt": "2026-04-25T13:15:10.712620+00:00"
+      "modifiedAt": "2026-04-25T21:01:40.211128+00:00"
     },
     {
       "id": "ndvi-2020",
@@ -1263,7 +1263,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 47530316,
-      "modifiedAt": "2026-04-25T14:02:58.671487+00:00"
+      "modifiedAt": "2026-04-25T21:01:41.028125+00:00"
     },
     {
       "id": "ndvi-2022",
@@ -1278,7 +1278,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 47217608,
-      "modifiedAt": "2026-04-25T18:44:24.946079+00:00"
+      "modifiedAt": "2026-04-25T21:01:41.145791+00:00"
     },
     {
       "id": "rgb-2016",
@@ -1293,7 +1293,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 67838658,
-      "modifiedAt": "2026-04-25T13:15:11.262724+00:00"
+      "modifiedAt": "2026-04-25T21:01:41.384047+00:00"
     },
     {
       "id": "rgb-2018",
@@ -1308,7 +1308,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 74901629,
-      "modifiedAt": "2026-04-25T18:44:25.249170+00:00"
+      "modifiedAt": "2026-04-25T21:01:41.658695+00:00"
     },
     {
       "id": "rgb-2020",
@@ -1323,7 +1323,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 74314279,
-      "modifiedAt": "2026-04-25T13:15:11.419612+00:00"
+      "modifiedAt": "2026-04-25T21:01:42.027177+00:00"
     },
     {
       "id": "rgb-2022",
@@ -1338,7 +1338,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 73839100,
-      "modifiedAt": "2026-04-25T17:03:58.877982+00:00"
+      "modifiedAt": "2026-04-25T21:01:42.387871+00:00"
     },
     {
       "id": "bikes-april-2022",
@@ -1353,7 +1353,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 6315992,
-      "modifiedAt": "2026-04-25T14:15:47.071135+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.202005+00:00"
     },
     {
       "id": "bikes-february-2021",
@@ -1368,7 +1368,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 5847565,
-      "modifiedAt": "2026-04-25T14:16:11.315508+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.217567+00:00"
     },
     {
       "id": "bikes-january-2025",
@@ -1383,7 +1383,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 3989731,
-      "modifiedAt": "2026-04-25T14:15:29.041880+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.228715+00:00"
     },
     {
       "id": "bikes-july-2023",
@@ -1398,7 +1398,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 6804200,
-      "modifiedAt": "2026-04-25T14:15:39.842344+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.242885+00:00"
     },
     {
       "id": "bikes-march-2024",
@@ -1413,7 +1413,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 3802145,
-      "modifiedAt": "2026-04-25T14:15:34.793071+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.258561+00:00"
     },
     {
       "id": "bikes-november-2021",
@@ -1428,7 +1428,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 8973769,
-      "modifiedAt": "2026-04-25T14:16:10.062043+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.286926+00:00"
     },
     {
       "id": "bikes-october-2022",
@@ -1443,7 +1443,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 8796794,
-      "modifiedAt": "2026-04-25T14:15:45.201223+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.313881+00:00"
     },
     {
       "id": "bikes-september-2019",
@@ -1458,7 +1458,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 7628850,
-      "modifiedAt": "2026-04-25T14:16:16.584867+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.336355+00:00"
     },
     {
       "id": "bikes-september-2025",
@@ -1473,7 +1473,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 2,
-      "modifiedAt": "2026-04-25T14:15:22.865035+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.338356+00:00"
     },
     {
       "id": "bikesdata",
@@ -1488,7 +1488,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1161,
-      "modifiedAt": "2026-04-25T14:15:06.543726+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.185102+00:00"
     },
     {
       "id": "pitchesplayingfieldsdata",
@@ -1503,7 +1503,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 3721,
-      "modifiedAt": "2026-04-25T14:17:18.853440+00:00"
+      "modifiedAt": "2026-04-25T21:01:42.402948+00:00"
     },
     {
       "id": "toiletsdata",
@@ -1518,7 +1518,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 947,
-      "modifiedAt": "2026-04-25T14:17:16.176954+00:00"
+      "modifiedAt": "2026-04-25T21:01:42.402948+00:00"
     },
     {
       "id": "trees-open-data",
@@ -1533,7 +1533,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 6535363,
-      "modifiedAt": "2026-04-25T14:17:22.442196+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.362964+00:00"
     },
     {
       "id": "census-2021-dataset",
@@ -1548,7 +1548,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 2055,
-      "modifiedAt": "2026-04-25T13:15:11.419612+00:00"
+      "modifiedAt": "2026-04-25T21:01:42.410749+00:00"
     },
     {
       "id": "population-total-population-by-year-2026-04-25-14-06",
@@ -1563,7 +1563,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 1156,
-      "modifiedAt": "2026-04-25T13:15:09.381001+00:00"
+      "modifiedAt": "2026-04-25T21:01:35.549212+00:00"
     },
     {
       "id": "air-quality",
@@ -1578,7 +1578,7 @@
         "sourceStatus": "source-file-present"
       },
       "byteSize": 42533297,
-      "modifiedAt": "2026-04-25T13:15:09.484699+00:00"
+      "modifiedAt": "2026-04-25T21:01:36.177984+00:00"
     }
   ],
   "externalResearch": {

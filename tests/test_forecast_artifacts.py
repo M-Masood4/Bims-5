@@ -105,7 +105,7 @@ console.log(JSON.stringify({
         self.assertLess(data["diff2036"]["electricity"], 0)
         self.assertNotEqual(data["diff2036"]["services"], 0)
         concrete = data["concrete2036"]
-        self.assertEqual(concrete["modelBasis"], "2016-2025 trained forecast artifact plus deterministic planners")
+        self.assertEqual(concrete["modelBasis"], "2016-2026 transformer impact artifact plus trained forecast planners")
         for metric in ("traffic", "jobs", "electricity", "services"):
             self.assertIn("method", concrete[metric])
         self.assertIsInstance(concrete["traffic"]["netDailyTrips"], (int, float))
@@ -114,6 +114,14 @@ console.log(JSON.stringify({
         self.assertIsInstance(concrete["services"]["netServiceDemand"], (int, float))
         self.assertLess(concrete["traffic"]["netDailyTrips"], concrete["traffic"]["dailyTripsAdded"])
         self.assertGreater(concrete["electricity"]["transformerReliefKw"], 0)
+        self.assertIn("overloadRiskDelta", concrete["electricity"])
+        self.assertIn("loadIndexDelta", concrete["electricity"])
+        self.assertIn("p10", concrete["electricity"])
+        self.assertIn("p50", concrete["electricity"])
+        self.assertIn("p90", concrete["electricity"])
+        self.assertIn("temporaryConstructionJobs", concrete["jobs"])
+        self.assertIn("operationsJobs", concrete["jobs"])
+        self.assertIn("capacityEnabledJobs", concrete["jobs"])
 
 
 if __name__ == "__main__":

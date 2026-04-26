@@ -9,7 +9,7 @@
     "build:forecast": "python scripts/train_forecast_model.py",
     "build:transformer-model": "python scripts/build_transformer_model.py",
     "start": "node server.js",
-    "verify": "node scripts/verify-manifest.js && node scripts/verify-forecast.js",
+    "verify": "node scripts/verify-manifest.js && node scripts/verify-forecast.js && node scripts/verify-transformer-model.js",
     "verify:browser": "node scripts/browser_smoke.js",
     "test": "npm run build:manifest && npm run build:forecast && npm run verify"
   },

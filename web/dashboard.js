@@ -168,7 +168,7 @@
     { id: 'services', label: 'Public Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
   const DEFAULT_LENS = 'buildings';
-  const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
+  const LENS_FILTER_IDS = [DEFAULT_LENS, 'traffic', 'jobs', 'electricity', 'services'];
   const BELFAST_CENTER = [-5.9301, 54.5973];
   const PLANNING_ENGINES = [
     { id: 'traffic', label: 'Traffic', color: '#fb923c', objective: 'traffic_mitigation' },
@@ -411,18 +411,13 @@
       if (data.activeBuildingPreset) state.activeBuildingPreset = data.activeBuildingPreset;
       if (Number.isFinite(data.nextItemId)) state.nextItemId = data.nextItemId;
       if (typeof data.bottomCollapsed === 'boolean') state.bottomCollapsed = data.bottomCollapsed;
-      // Migration: old saves may have used 'transit'; the trained forecast
-      // still stores the public transport/access signal as 'services'.
-      const lens = data.lens === 'transit' ? 'services' : data.lens;
-      if (lens && LENSES.find(l => l.id === lens)) state.lens = lens;
       if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
 
-      // Migration: older sessions stored impactMetric ids like 'transit' or
-      // 'opportunity' that no longer exist in IMPACT_METRICS. Always start
-      // the impactMetric in lock-step with the lens.
-      if (!LENSES.find(l => l.id === state.lens)) state.lens = DEFAULT_LENS;
-      state.impactMetric = state.lens;
+      // Filters are session-local: every load starts from the Buildings view,
+      // and active filter buttons can temporarily override it.
+      state.lens = DEFAULT_LENS;
+      state.impactMetric = DEFAULT_LENS;
     } catch (_) {}
   }
 
@@ -2070,6 +2065,17 @@
     const jobs = impact.jobs;
     const electricity = impact.electricity;
     const services = impact.services;
+    const confidence = electricity.confidence || jobs.confidence || impact.confidence || 'medium';
+    const reliefKw = Number(electricity.transformerReliefKw) || 0;
+    const headroomKw = Number(electricity.localCapacityHeadroomKwChange) || 0;
+    const overloadRisk = Number(electricity.overloadRiskDelta) || 0;
+    const loadIndex = Number(electricity.loadIndexDelta ?? electricity.localLoadIndexDelta) || 0;
+    const peakBand = electricity.p10 && electricity.p90
+      ? 'p10 ' + fmtConcreteSigned(electricity.p10.peakKwChange, 0) + ' / p90 ' + fmtConcreteSigned(electricity.p90.peakKwChange, 0) + ' kW'
+      : '';
+    const reliefBand = electricity.p10 && electricity.p90
+      ? 'p10 ' + fmtConcreteSigned(electricity.p10.transformerReliefKw, 0) + ' / p90 ' + fmtConcreteSigned(electricity.p90.transformerReliefKw, 0) + ' kW'
+      : '';
     return '' +
       '<div class="concrete-impact-card" data-testid="concrete-impact-data">' +
         '<div class="concrete-impact-head">' +
@@ -2084,19 +2090,24 @@
         '<div class="concrete-impact-row">' +
           '<span>Jobs</span>' +
           '<strong>' + fmtConcreteSigned(jobs.netJobsEstimate, 0) + ' jobs</strong>' +
-          '<small>' + fmtConcreteSigned(jobs.accessibilitySupportedJobs, 0) + ' access-supported</small>' +
+          '<small>' + fmtConcreteSigned(jobs.temporaryConstructionJobs, 1) + ' construction, ' + fmtConcreteSigned(jobs.operationsJobs, 1) + ' operations, ' + fmtConcreteSigned(jobs.capacityEnabledJobs, 0) + ' capacity-enabled</small>' +
         '</div>' +
         '<div class="concrete-impact-row">' +
-          '<span>Electricity</span>' +
+          '<span>Demand</span>' +
           '<strong>' + fmtConcreteSigned(electricity.peakKwChange, 0) + ' kW peak</strong>' +
-          '<small>' + fmtConcreteSigned(electricity.annualMwhChange, 1) + ' MWh/yr, ' + fmtConcreteSigned(electricity.transformerReliefKw, 0) + ' kW relief</small>' +
+          '<small>' + fmtConcreteSigned(electricity.annualMwhChange, 1) + ' MWh/yr' + (peakBand ? ', ' + peakBand : '') + '</small>' +
+        '</div>' +
+        '<div class="concrete-impact-row">' +
+          '<span>Transformer</span>' +
+          '<strong>' + fmtConcreteSigned(reliefKw, 0) + ' kW relief</strong>' +
+          '<small>' + fmtConcreteSigned(headroomKw, 0) + ' kW headroom, risk ' + fmtConcreteSigned(overloadRisk, 3) + ', load ' + fmtConcreteSigned(loadIndex, 3) + (reliefBand ? ', ' + reliefBand : '') + '</small>' +
         '</div>' +
         '<div class="concrete-impact-row">' +
           '<span>Public Transit</span>' +
           '<strong>' + fmtConcreteSigned(services.netServiceDemand, 0) + ' people-eq</strong>' +
           '<small>' + fmtConcreteSigned(services.serviceCapacityEquivalent, 0) + ' capacity-eq</small>' +
         '</div>' +
-        '<div class="concrete-impact-foot">Forecast artifact plus deterministic planners. Estimates, not engineering guarantees.</div>' +
+        '<div class="concrete-impact-foot">Confidence ' + escapeHtml(confidence) + '. Planning-grade screening only, not NIE engineering approval.</div>' +
       '</div>';
   }
 
@@ -4131,14 +4142,15 @@
 
   function toggleLensFilter(lensId) {
     if (!LENS_FILTER_IDS.includes(lensId)) return;
-    setLens(state.lens === lensId ? DEFAULT_LENS : lensId);
+    if (lensId === DEFAULT_LENS || state.lens === lensId) setLens(DEFAULT_LENS);
+    else setLens(lensId);
   }
 
   function renderLensTabs() {
     const host = ensureToolbarLensHost();
     if (!host) return;
-    // Lens filters live in both modes. Buildings is the implicit default;
-    // clicking an active filter again returns the view to Buildings.
+    // Lens filters live in both modes. Buildings is the default base view;
+    // clicking an active non-building filter again returns to Buildings.
     host.hidden = false;
     host.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
       const active = l.id === state.lens ? ' active' : '';
@@ -5792,7 +5804,9 @@
     } else if (lens.id === 'jobs' && concrete && concrete.jobs) {
       direction = (Number(concrete.jobs.netJobsEstimate) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.jobs.netJobsEstimate) || 0), 0).replace(/^[+]/, '') + ' jobs and shows nearby service-access pressure';
     } else if (lens.id === 'electricity' && concrete && concrete.electricity) {
-      direction = (Number(concrete.electricity.peakKwChange) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.electricity.peakKwChange) || 0), 0).replace(/^[+]/, '') + ' kW peak load across local grid assets';
+      const reliefKw = Number(concrete.electricity.transformerReliefKw) || 0;
+      const headroomKw = Number(concrete.electricity.localCapacityHeadroomKwChange) || 0;
+      direction = (Number(concrete.electricity.peakKwChange) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.electricity.peakKwChange) || 0), 0).replace(/^[+]/, '') + ' kW peak demand with ' + fmtConcreteSigned(reliefKw, 0) + ' kW transformer relief and ' + fmtConcreteSigned(headroomKw, 0) + ' kW headroom change';
     } else if (lens.id === 'services' && concrete && concrete.services) {
       direction = (Number(concrete.services.netServiceDemand) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.services.netServiceDemand) || 0), 0).replace(/^[+]/, '') + ' people-equivalent transit demand on nearby stops and routes';
     } else if (lens.id === 'buildings') {
@@ -5802,7 +5816,7 @@
     const concreteBits = [];
     if (concrete && concrete.traffic) concreteBits.push('Traffic ' + fmtConcreteSigned(concrete.traffic.netDailyTrips, 0) + ' daily trips');
     if (concrete && concrete.jobs) concreteBits.push('Jobs ' + fmtConcreteSigned(concrete.jobs.netJobsEstimate, 0));
-    if (concrete && concrete.electricity) concreteBits.push('Electricity ' + fmtConcreteSigned(concrete.electricity.peakKwChange, 0) + ' kW peak');
+    if (concrete && concrete.electricity) concreteBits.push('Electricity ' + fmtConcreteSigned(concrete.electricity.peakKwChange, 0) + ' kW peak / ' + fmtConcreteSigned(concrete.electricity.transformerReliefKw, 0) + ' kW relief');
     if (concrete && concrete.services) concreteBits.push('Public Transit ' + fmtConcreteSigned(concrete.services.netServiceDemand, 0) + ' people-eq');
     return '<div class="ai-summary" style="--lens-color:' + lens.color + '">' +
       '<div class="ai-summary-head"><strong>AI summary</strong><span>Powered by Gemini</span></div>' +
@@ -5905,8 +5919,9 @@
     return '<div class="diff-concrete-data">' +
       '<strong>Concrete simulation data</strong>' +
       '<span>Traffic ' + fmtConcreteSigned(impact.traffic.netDailyTrips, 0) + ' daily trips</span>' +
-      '<span>Jobs ' + fmtConcreteSigned(impact.jobs.netJobsEstimate, 0) + '</span>' +
-      '<span>Electricity ' + fmtConcreteSigned(impact.electricity.peakKwChange, 0) + ' kW peak</span>' +
+      '<span>Jobs ' + fmtConcreteSigned(impact.jobs.netJobsEstimate, 0) + ' (' + fmtConcreteSigned(impact.jobs.capacityEnabledJobs, 0) + ' capacity-enabled)</span>' +
+      '<span>Electricity ' + fmtConcreteSigned(impact.electricity.peakKwChange, 0) + ' kW peak / ' + fmtConcreteSigned(impact.electricity.transformerReliefKw, 0) + ' kW relief</span>' +
+      '<span>Headroom ' + fmtConcreteSigned(impact.electricity.localCapacityHeadroomKwChange, 0) + ' kW, risk ' + fmtConcreteSigned(impact.electricity.overloadRiskDelta, 3) + '</span>' +
       '<span>Public Transit ' + fmtConcreteSigned(impact.services.netServiceDemand, 0) + ' people-eq</span>' +
       '</div>';
   }
