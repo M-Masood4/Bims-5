@@ -1,0 +1,688 @@
+ATCO-CIF0500Translink                       OMNITIMES       20250919090729
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1001  20250922999999991111100 X341 14M02 MB              O
+QO7000000154700610   T1  
+QT7000000038840618   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1003  20250922999999991111100 X341 14M04 MB              O
+QO7000000154700630   T1  
+QT7000000038840638   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1005  20250922999999991111100 X341 14M02 MB              O
+QO7000000154700650   T1  
+QT7000000038840658   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1007  20250922999999991111100 X341 14M04 MB              O
+QO7000000154700715   T1  
+QT7000000038840723   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1009  20250922999999991111100 X341 14M02 MB              O
+QO7000000154700735   T1  
+QT7000000038840743   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1011  20250922999999991111100 X341 14M01 MB              O
+QO7000000154700745   T1  
+QT7000000038840753   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1013  20250922999999991111100 X341 14L02 MB              O
+QO7000000154700840   T1  
+QT7000000038840848   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1015  20250922999999991111100 X341 14L07 LF              O
+QO7000000154700850   T1  
+QT7000000038840858   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1017  20250922999999991111100 X341 69D01 LF              O
+QO7000000154700935   T1  
+QT7000000038840943   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1019  20250922999999991111100 X341 14L11 LF              O
+QO7000000154700950   T1  
+QT7000000038840958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1021  20250922999999991111100 X341 69D01 DD              O
+QO7000000154701035   T1  
+QT7000000038841043   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1023  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701050   T1  
+QT7000000038841058   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1025  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701135   T1  
+QT7000000038841143   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1027  20250922999999991111100 X341 14L01 LF              O
+QO7000000154701150   T1  
+QT7000000038841158   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1029  20250922999999991111100 X341 14L01 LF              O
+QO7000000154701235   T1  
+QT7000000038841243   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1031  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701250   T1  
+QT7000000038841258   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1033  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701335   T1  
+QT7000000038841343   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1035  20250922999999991111100 X341 14L01 LF              O
+QO7000000154701350   T1  
+QT7000000038841358   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1037  20250922999999991111100 X341 14L01 LF              O
+QO7000000154701435   T1  
+QT7000000038841443   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1039  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701450   T1  
+QT7000000038841458   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1041  20250922999999991111100 X341 14L11 SD              O
+QO7000000154701535   T1  
+QT7000000038841543   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1043  20250922999999991111100 X341 14G09 DD              O
+QO7000000154701545   T1  
+QT7000000038841553   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1045  20250922999999991111100 X341 14G07 GL              O
+QO7000000154701625   T1  
+QT7000000038841633   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1047  20250922999999991111100 X341 14D03 DD              O
+QO7000000154701635   T1  
+QT7000000038841643   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1049  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701650   T1  
+QT7000000038841658   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1051  20250922999999991111100 X341 14L11 LF              O
+QO7000000154701735   T1  
+QT7000000038841743   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1053  20250922999999991111100 X341 14D03 DD              O
+QO7000000154701750   T1  
+QT7000000038841758   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1055  20250922999999991111100 X341 14M01 MB              O
+QO7000000154701810   T1  
+QT7000000038841818   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1057  20250922999999991111100 X341 14D03 DD              O
+QO7000000154701835   T1  
+QT7000000038841843   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1059  20250922999999991111100 X341 14M01 MB              O
+QO7000000154701850   T1  
+QT7000000038841858   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1061  20250922999999991111100 X341 14M01 MB              O
+QO7000000154701935   T1  
+QT7000000038841943   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1063  20250922999999991111100 X341 14G01 GL              O
+QO7000000154701950   T1  
+QT7000000038841958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1065  20250922999999991111100 X341 14G04 GL              O
+QE20251224202512240
+QO7000000154702135   T1  
+QT7000000038842143   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 1067  20250922999999991111100 X341 14G09 GL              O
+QE20251224202512240
+QO7000000154702335   T1  
+QT7000000038842343   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1002  20250922999999991111100 X341 14M02 MB              I
+QO7000000038840630   T1  
+QT7000000154700638   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1004  20250922999999991111100 X341 14M04 MB              I
+QO7000000038840657   T1  
+QT7000000154700705   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1006  20250922999999991111100 X341 14M02 MB              I
+QO7000000038840718   T1  
+QT7000000154700726   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1008  20250922999999991111100 X341 14M04 MB              I
+QO7000000038840732   T1  
+QT7000000154700740   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1010  20250922999999991111100 X341 14M01 MB              I
+QO7000000038840812   T1  
+QT7000000154700820   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1012  20250922999999991111100 X341 14L07 LF              I
+QO7000000038840903   T1  
+QT7000000154700911   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1014  20250922999999991111100 X341 14L06 LF              I
+QO7000000038840918   T1  
+QT7000000154700926   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1016  20250922999999991111100 X341 69D01 LF              I
+QO7000000038841003   T1  
+QT7000000154701011   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1018  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841018   T1  
+QT7000000154701026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1020  20250922999999991111100 X341 69D01 DD              I
+QO7000000038841103   T1  
+QT7000000154701111   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1022  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841118   T1  
+QT7000000154701126   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1024  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841203   T1  
+QT7000000154701211   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1026  20250922999999991111100 X341 14L01 LF              I
+QO7000000038841218   T1  
+QT7000000154701226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1028  20250922999999991111100 X341 14L01 LF              I
+QO7000000038841303   T1  
+QT7000000154701311   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1030  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841318   T1  
+QT7000000154701326   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1032  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841403   T1  
+QT7000000154701411   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1034  20250922999999991111100 X341 14L01 LF              I
+QO7000000038841418   T1  
+QT7000000154701426   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1036  20250922999999991111100 X341 14L01 LF              I
+QO7000000038841503   T1  
+QT7000000154701511   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1038  20250922999999991111100 X341 14L11 SD              I
+QO7000000038841518   T1  
+QT7000000154701526   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1040  20250922999999991111100 X341 14L11 SD              I
+QO7000000038841603   T1  
+QT7000000154701611   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1042  20250922999999991111100 X341 14L05 LF              I
+QO7000000038841618   T1  
+QT7000000154701626   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1044  20250922999999991111100 X341 14G07 GL              I
+QO7000000038841640   T1  
+QT7000000154701648   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1046  20250922999999991111100 X341 14D03 DD              I
+QO7000000038841703   T1  
+QT7000000154701711   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1048  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841718   T1  
+QT7000000154701726   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1050  20250922999999991111100 X341 14L11 LF              I
+QO7000000038841803   T1  
+QT7000000154701811   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1052  20250922999999991111100 X341 14D03 DD              I
+QO7000000038841818   T1  
+QT7000000154701826   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1054  20250922999999991111100 X341 14M01 MB              I
+QO7000000038841834   T1  
+QT7000000154701842   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1056  20250922999999991111100 X341 14M01 MB              I
+QO7000000038841918   T1  
+QT7000000154701926   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1058  20250922999999991111100 X341 14M01 MB              I
+QO7000000038842003   T1  
+QT7000000154702011   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1060  20250922999999991111100 X341 14G01 GL              I
+QO7000000038842018   T1  
+QT7000000154702026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1062  20250922999999991111100 X341 14G04 GL              I
+QE20251224202512240
+QO7000000038842218   T1  
+QT7000000154702226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1064  20250922999999991111000 X341 14G09 GL              I
+QNMT   Only Operates Monday to Thursday                        
+QE20251224202512240
+QO7000000038842400   T1  
+QT7000000154702408   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 1064  20250922999999990000100 X341 14G09 GL              I
+QNF    Fridays Only                                                            
+QO7000000038842410   T1  
+QT7000000154702418   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2001  20250922999999990000010 X341 14M02 MB              O
+QO7000000154700635   T1  
+QT7000000038840643   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2003  20250922999999990000010 X341 14M05 MB              O
+QO7000000154700650   T1  
+QT7000000038840658   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2005  20250922999999990000010 X341 14M02 MB              O
+QO7000000154700715   T1  
+QT7000000038840723   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2007  20250922999999990000010 X341 14M05 MB              O
+QO7000000154700735   T1  
+QT7000000038840743   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2009  20250922999999990000010 X341 14M02 MB              O
+QO7000000154700750   T1  
+QT7000000038840758   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2011  20250922999999990000010 X341 14M02 MB              O
+QO7000000154700835   T1  
+QT7000000038840843   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2013  20250922999999990000010 X341 14M04 MB              O
+QO7000000154700850   T1  
+QT7000000038840858   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2015  20250922999999990000010 X341 14M04 MB              O
+QO7000000154700935   T1  
+QT7000000038840943   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2017  20250922999999990000010 X341 14M03 MB              O
+QO7000000154700950   T1  
+QT7000000038840958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2019  20250922999999990000010 X341 14M03 MB              O
+QO7000000154701035   T1  
+QT7000000038841043   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2021  20250922999999990000010 X341 69D01 DD              O
+QO7000000154701050   T1  
+QT7000000038841058   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2023  20250922999999990000010 X341 69D01 DD              O
+QO7000000154701135   T1  
+QT7000000038841143   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2025  20250922999999990000010 X341 14M03 MB              O
+QO7000000154701150   T1  
+QT7000000038841158   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2027  20250922999999990000010 X341 69D01 DD              O
+QO7000000154701235   T1  
+QT7000000038841243   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2029  20250922999999990000010 X341 14G02 GL              O
+QO7000000154701250   T1  
+QT7000000038841258   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2031  20250922999999990000010 X341 14G03 GL              O
+QO7000000154701335   T1  
+QT7000000038841343   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2033  20250922999999990000010 X341 14G10 GL              O
+QO7000000154701350   T1  
+QT7000000038841358   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2035  20250922999999990000010 X341 14M01 MB              O
+QO7000000154701435   T1  
+QT7000000038841443   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2037  20250922999999990000010 X341 14G06 GL              O
+QO7000000154701450   T1  
+QT7000000038841458   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2039  20250922999999990000010 X341 14M01 MB              O
+QO7000000154701535   T1  
+QT7000000038841543   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2041  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701550   T1  
+QT7000000038841558   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2043  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701635   T1  
+QT7000000038841643   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2045  20250922999999990000010 X341 14G07 GL              O
+QO7000000154701650   T1  
+QT7000000038841658   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2047  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701715   T1  
+QT7000000038841723   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2049  20250922999999990000010 X341 14M01 MB              O
+QO7000000154701735   T1  
+QT7000000038841743   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2051  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701750   T1  
+QT7000000038841758   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2053  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701820   T1  
+QT7000000038841828   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2055  20250922999999990000010 X341 14G09 GL              O
+QO7000000154701835   T1  
+QT7000000038841843   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2057  20250922999999990000010 X341 14M05 MB              O
+QO7000000154701850   T1  
+QT7000000038841858   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2059  20250922999999990000010 X341 14G05 GL              O
+QO7000000154701935   T1  
+QT7000000038841943   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2061  20250922999999990000010 X341 14G01 GL              O
+QO7000000154701950   T1  
+QT7000000038841958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2063  20250922999999990000010 X341 14G08 GL              O
+QO7000000154702135   T1  
+QT7000000038842143   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 2065  20250922999999990000010 X341 52L01 LF              O
+QO7000000154702335   T1  
+QT7000000038842343   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2002  20250922999999990000010 X341 14M02 MB              I
+QO7000000038840703   T1  
+QT7000000154700711   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2004  20250922999999990000010 X341 14M05 MB              I
+QO7000000038840718   T1  
+QT7000000154700726   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2006  20250922999999990000010 X341 14M02 MB              I
+QO7000000038840732   T1  
+QT7000000154700740   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2008  20250922999999990000010 X341 14M05 MB              I
+QO7000000038840803   T1  
+QT7000000154700811   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2010  20250922999999990000010 X341 14M02 MB              I
+QO7000000038840818   T1  
+QT7000000154700826   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2012  20250922999999990000010 X341 65S01 SD              I
+QO7000000038840903   T1  
+QT7000000154700911   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2014  20250922999999990000010 X341 14M04 MB              I
+QO7000000038840918   T1  
+QT7000000154700926   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2016  20250922999999990000010 X341 14M04 MB              I
+QO7000000038841003   T1  
+QT7000000154701011   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2018  20250922999999990000010 X341 14M03 MB              I
+QO7000000038841018   T1  
+QT7000000154701026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2020  20250922999999990000010 X341 14M03 MB              I
+QO7000000038841103   T1  
+QT7000000154701111   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2022  20250922999999990000010 X341 69D01 DD              I
+QO7000000038841118   T1  
+QT7000000154701126   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2024  20250922999999990000010 X341 69D01 DD              I
+QO7000000038841203   T1  
+QT7000000154701211   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2026  20250922999999990000010 X341 14M03 MB              I
+QO7000000038841218   T1  
+QT7000000154701226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2028  20250922999999990000010 X341 14G02 GL              I
+QO7000000038841303   T1  
+QT7000000154701311   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2030  20250922999999990000010 X341 14M04 MB              I
+QO7000000038841318   T1  
+QT7000000154701326   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2032  20250922999999990000010 X341 14G03 GL              I
+QO7000000038841403   T1  
+QT7000000154701411   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2034  20250922999999990000010 X341 14G10 GL              I
+QO7000000038841418   T1  
+QT7000000154701426   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2036  20250922999999990000010 X341 14M01 MB              I
+QO7000000038841503   T1  
+QT7000000154701511   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2038  20250922999999990000010 X341 14G06 GL              I
+QO7000000038841518   T1  
+QT7000000154701526   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2040  20250922999999990000010 X341 14M01 MB              I
+QO7000000038841603   T1  
+QT7000000154701611   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2042  20250922999999990000010 X341 14M05 MB              I
+QO7000000038841618   T1  
+QT7000000154701626   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2044  20250922999999990000010 X341 14M05 MB              I
+QO7000000038841703   T1  
+QT7000000154701711   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2046  20250922999999990000010 X341 14M01 MB              I
+QO7000000038841718   T1  
+QT7000000154701726   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2048  20250922999999990000010 X341 14M05 MB              I
+QO7000000038841734   T1  
+QT7000000154701742   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2050  20250922999999990000010 X341 14M01 MB              I
+QO7000000038841803   T1  
+QT7000000154701811   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2052  20250922999999990000010 X341 14G09 GL              I
+QO7000000038841818   T1  
+QT7000000154701826   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2054  20250922999999990000010 X341 14M05 MB              I
+QO7000000038841834   T1  
+QT7000000154701842   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2056  20250922999999990000010 X341 14M05 MB              I
+QO7000000038841918   T1  
+QT7000000154701926   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2058  20250922999999990000010 X341 14G05 GL              I
+QO7000000038842003   T1  
+QT7000000154702011   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2060  20250922999999990000010 X341 14G01 GL              I
+QO7000000038842018   T1  
+QT7000000154702026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2062  20250922999999990000010 X341 14G08 GL              I
+QO7000000038842218   T1  
+QT7000000154702226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 2064  20250922999999990000010 X341 14G01 GL              I
+QO7000000038842410   T1  
+QT7000000154702418   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3001  20250922999999990000001 X341 14M01 MB              O
+QO7000000154700850   T1  
+QT7000000038840858   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3003  20250922999999990000001 X341 69D01 DD              O
+QO7000000154700950   T1  
+QT7000000038840958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3005  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701040   T1  
+QT7000000038841048   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3007  20250922999999990000001 X341 14G04 GL              O
+QO7000000154701150   T1  
+QT7000000038841158   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3009  20250922999999990000001 X341 14G04 GL              O
+QO7000000154701240   T1  
+QT7000000038841248   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3011  20250922999999990000001 X341 69D01 GL              O
+QO7000000154701350   T1  
+QT7000000038841358   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3013  20250922999999990000001 X341 14G05 GL              O
+QO7000000154701440   T1  
+QT7000000038841448   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3015  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701450   T1  
+QT7000000038841458   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3017  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701550   T1  
+QT7000000038841558   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3019  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701640   T1  
+QT7000000038841648   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3021  20250922999999990000001 X341 14G04 GL              O
+QO7000000154701740   T1  
+QT7000000038841748   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3023  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701750   T1  
+QT7000000038841758   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3027  20250922999999990000001 X341 14G06 GL              O
+QO7000000154701840   T1  
+QT7000000038841848   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3029  20250922999999990000001 X341 14M01 MB              O
+QO7000000154701950   T1  
+QT7000000038841958   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3025  20250922999999990000001 X341 14M01 MB              O
+QO7000000154702040   T1  
+QT7000000038842048   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3031  20250922999999990000001 X341 14M01 MB              O
+QO7000000154702150   T1  
+QT7000000038842158   T1  
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station                              
+QSNUTS 3033  20250922999999990000001 X341 14M01 MB              O
+QO7000000154702250   T1  
+QT7000000038842258   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3002  20250922999999990000001 X341 14M01 MB              I
+QO7000000038840915   T1  
+QT7000000154700923   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3004  20250922999999990000001 X341 69D01 DD              I
+QO7000000038841018   T1  
+QT7000000154701026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3006  20250922999999990000001 X341 14M01 MB              I
+QO7000000038841107   T1  
+QT7000000154701115   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3008  20250922999999990000001 X341 14G04 GL              I
+QO7000000038841218   T1  
+QT7000000154701226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3010  20250922999999990000001 X341 69D01 GL              I
+QO7000000038841315   T1  
+QT7000000154701323   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3012  20250922999999990000001 X341 69D01 GL              I
+QO7000000038841418   T1  
+QT7000000154701426   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3014  20250922999999990000001 X341 14G05 GL              I
+QO7000000038841507   T1  
+QT7000000154701515   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3016  20250922999999990000001 X341 14M01 MB              I
+QO7000000038841518   T1  
+QT7000000154701526   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3018  20250922999999990000001 X341 14M01 MB              I
+QO7000000038841618   T1  
+QT7000000154701626   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3020  20250922999999990000001 X341 14M01 MB              I
+QO7000000038841707   T1  
+QT7000000154701715   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3022  20250922999999990000001 X341 14M01 MB              I
+QO7000000038841807   T1  
+QT7000000154701815   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3024  20250922999999990000001 X341 14G06 GL              I
+QO7000000038841825   T1  
+QT7000000154701833   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3028  20250922999999990000001 X341 14G06 GL              I
+QO7000000038841907   T1  
+QT7000000154701915   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3030  20250922999999990000001 X341 14M01 MB              I
+QO7000000038842018   T1  
+QT7000000154702026   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3026  20250922999999990000001 X341 14M01 MB              I
+QO7000000038842107   T1  
+QT7000000154702115   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3032  20250922999999990000001 X341 14M01 MB              I
+QO7000000038842218   T1  
+QT7000000154702226   T1  
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre                              
+QSNUTS 3034  20250922999999990000001 X341 14M01 MB              I
+QO7000000038842310   T1  
+QT7000000154702318   T1  
+QLN700000015470Newry Bus Station                                 A0000001
+QBN700000015470308468  326431  Northern Ireland
+QLN700000003889Daisy Hill Hospital                               A0000001
+QBN700000003889307727  326791  Northern Ireland
+QLN700000003884Newry Train Station [bus stop]                    A0000001
+QBN700000003884306951  327848  Northern Ireland
+QLN700000003898Daisy Hill Hospital                               A0000001
+QBN700000003898307614  326991  Northern Ireland
+QPNUTS Ulsterbus Town Services Ulsterbus Town Services
+QQ
+QVNMB      Minibus
+QVNLF      Low Floor
+QVNDD      Double Decker
+QVNSD      Single Decker
+QVNGL      Goldliner
+QDNUTS 341 ONewry, Buscentre - Newry, Rail Station
+QDNUTS 341 INewry, Rail Station - Newry, Buscentre

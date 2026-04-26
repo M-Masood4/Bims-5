@@ -1,0 +1,82 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260205115026
+QDNGLE 209bOBelfast, Grand Central Station - Cookstown, Union Road              
+QSNGLE 9001  20260406202605041100000 B209b56G01 GL              O
+QNBH   Bank holidays                                                           
+QO700000017116131014 T1  
+QI70000000678413401340B   T1  
+QI70000001591513551355B   T1  
+QI70000000915214051405B   T1  
+QI70000000925114151415B   T1  
+QI70000001441214201420B   T0  
+QI70000001441414231423B   T1  
+QI70000001412014291429B   T0  
+QT7000000140251435   T1  
+QDNGLE 209bOBelfast, Grand Central Station - Cookstown, Union Road              
+QSNGLE 9003  20260406202605041100000 B209b56G01 GL              O
+QNBH   Bank holidays                                                           
+QO700000017116181014 T1  
+QI70000000678418401840B   T1  
+QI70000001591518551855B   T1  
+QI70000000915219051905B   T1  
+QI70000000925119151915B   T1  
+QI70000001441219201920B   T0  
+QI70000001441419231923B   T1  
+QI70000001412019291929B   T0  
+QT7000000140251935   T1  
+QDNGLE 209bICookstown, Union Road - Belfast, Grand Central Station              
+QSNGLE 9000  20260406202605041100000 B209b56G01 GL              I
+QNBH   Bank holidays                                                           
+QO7000000140271130   T1  
+QI70000001411611321132B   T0  
+QI70000001440411381138B   T0  
+QI70000000925211471147B   T1  
+QI70000000921911551155B   T1  
+QI70000001591512051205B   T1  
+QI70000000678412201220B   T1  
+QT700000017116125514 T1  
+QDNGLE 209bICookstown, Union Road - Belfast, Grand Central Station              
+QSNGLE 9002  20260406202605041100000 B209b56G01 GL              I
+QNBH   Bank holidays                                                           
+QO7000000140271630   T1  
+QI70000001411616321632B   T0  
+QI70000001440416381638B   T0  
+QI70000000925216471647B   T1  
+QI70000000921916551655B   T1  
+QI70000001591517051705B   T1  
+QI70000000678417201720B   T1  
+QT700000017116175514 T1  
+QLN700000017116Stand 14                                          A0000001
+QBN700000017116333233  373728  Northern Ireland
+QLN700000006784Texaco                                            A0000001
+QBN700000006784306703  360560  Northern Ireland
+QLN700000015915Tamnamore Park & Ride                             A0000001
+QBN700000015915287403  361742  Northern Ireland
+QLN700000009152Coalisland Lineside                               A0000001
+QBN700000009152284152  366522  Northern Ireland
+QLN700000009251Stewartstown                                      A0000001
+QBN700000009251285639  370667  Northern Ireland
+QLN700000014412Tullyhogue                                        A0000001
+QBN700000014412282535  373843  Northern Ireland
+QLN700000014414Tullywiggan Cottages                              A0000001
+QBN700000014414281770  375277  Northern Ireland
+QLN700000014120Asda                                              A0000001
+QBN700000014120281212  376789  Northern Ireland
+QLN700000014025Cookstown                                         A0000001
+QBN700000014025281267  378303  Northern Ireland
+QLN700000014027Cookstown Dublin Exp Stop                         A0000001
+QBN700000014027281277  378313  Northern Ireland
+QLN700000014116Asda                                              A0000001
+QBN700000014116281220  376845  Northern Ireland
+QLN700000014404Tullyhogue                                        A0000001
+QBN700000014404282549  373850  Northern Ireland
+QLN700000009252Stewartstown                                      A0000001
+QBN700000009252285646  370633  Northern Ireland
+QLN700000009219Coalisland Lineside                               A0000001
+QBN700000009219284091  366503  Northern Ireland
+QLN700000001009Queen's University                                A0000001
+QBN700000001009333460  372694  Northern Ireland
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNGL
+QDNGLE 209bOBelfast, Grand Central Station - Cookstown, Union Road
+QDNGLE 209bICookstown, Union Road - Belfast, Grand Central Station

@@ -1,0 +1,626 @@
+ATCO-CIF0500Translink                       OMNITIMES       20250922113337
+QDNULB 107 OBelfast, Europa Buscentre - Diamond, Post Office                    
+QSNULB 1001  20250929999999991111100HX107 33004 LF              O
+QNNSch School Holidays                                                         
+QO7000000014290830   T1  
+QI70000001596108310831B   T0  
+QI70000000091808320832B   T0  
+QI70000000092008330833B   T0  
+QI70000000092208330833B   T0  
+QI70000000092408340834B   T0  
+QI70000000092608340834B   T0  
+QI70000000092808350835B   T0  
+QI70000000093008350835B   T0  
+QI70000000093208350835B   T0  
+QI70000000093408370837B   T0  
+QI70000000087808370837B   T0  
+QI70000000088008370837B   T0  
+QI70000000088208370837B   T0  
+QI70000000088408380838B   T0  
+QI70000000088608380838B   T0  
+QI70000000088808380838B   T0  
+QI70000000089008380838B   T0  
+QI70000000089208390839B   T0  
+QI70000000089408390839B   T0  
+QI70000000095408390839B   T0  
+QI70000000602908540854B   T1  
+QI70000000603008560856B   T0  
+QI70000001542909040904B   T1  
+QI70000001553009100910B   T1  
+QI70000000604809150915B   T0  
+QI70000000604709170917B   T0  
+QI70000000604609190919B   T0  
+QT7000000155290920   T1  
+QDNULB 107 OBelfast, Europa Buscentre - Diamond, Post Office                    
+QSNULB 1003  20250929999999991111100SX107 33D03 DD              O
+QNSch  Schooldays only                                                         
+QO7000000014290845   T1  
+QI70000001596108460846B   T0  
+QI70000000091808470847B   T0  
+QI70000000092008480848B   T0  
+QI70000000092208480848B   T0  
+QI70000000092408490849B   T0  
+QI70000000092608490849B   T0  
+QI70000000092808500850B   T0  
+QI70000000093008500850B   T0  
+QI70000000093208500850B   T0  
+QI70000000093408520852B   T0  
+QI70000000087808520852B   T0  
+QI70000000088008520852B   T0  
+QI70000000088208520852B   T0  
+QI70000000088408530853B   T0  
+QI70000000088608530853B   T0  
+QI70000000088808530853B   T0  
+QI70000000089008530853B   T0  
+QI70000000089208540854B   T0  
+QI70000000089408540854B   T0  
+QI70000000095408540854B   T0  
+QI70000000602909090909B   T1  
+QI70000000603009110911B   T0  
+QI70000001542909190919B   T1  
+QI70000001553009250925B   T1  
+QI70000000604809300930B   T0  
+QI70000000604709320932B   T0  
+QI70000000604609340934B   T0  
+QT7000000155290935   T1  
+QDNULB 107 OBelfast, Europa Buscentre - Diamond, Post Office                    
+QSNULB 1005  20250929999999991111100 X107 33L03 LF              O
+QO7000000014291800   T1  
+QI70000001596118011801B   T0  
+QI70000000091818021802P   T0  
+QI70000000092018031803P   T0  
+QI70000000092218031803P   T0  
+QI70000000092418041804P   T0  
+QI70000000092618041804P   T0  
+QI70000000092818051805P   T0  
+QI70000000093018051805P   T0  
+QI70000000093218051805P   T0  
+QI70000000093418071807P   T0  
+QI70000000087818071807P   T0  
+QI70000000088018071807P   T0  
+QI70000000088218071807P   T0  
+QI70000000088418081808P   T0  
+QI70000000088618081808P   T0  
+QI70000000088818081808P   T0  
+QI70000000089018081808P   T0  
+QI70000000089218091809P   T0  
+QI70000000089418091809P   T0  
+QI70000000095418091809P   T0  
+QI70000000602918241824B   T1  
+QI70000000603018261826B   T0  
+QI70000001542918341834B   T1  
+QI70000001553018401840B   T1  
+QI70000000604818451845B   T0  
+QI70000000604718471847B   T0  
+QI70000000604618491849B   T0  
+QT7000000155291850   T1  
+QDNULB 107 IDiamond, Post Office - Belfast, Europa Buscentre                    
+QSNULB 1000  20250929999999991111100SX107 33D01 DD              I
+QNSch  Schooldays only                                                         
+QO7000000034920730   T1  
+QI70000000604407300730B   T0  
+QI70000001555007300730B   T0  
+QI70000000604307320732B   T0  
+QI70000000604207340734B   T0  
+QI70000001514407400740B   T1  
+QI70000001542907470747B   T1  
+QI70000000281707570757B   T0  
+QI70000000280808020802B   T0  
+QI70000000280908070807B   T0  
+QI70000000281108100810B   T0  
+QI70000000281208110811B   T0  
+QI70000000027208180818B   T0  
+QI70000000027408190819B   T0  
+QI70000000039208190819S   T0  
+QI70000000039408200820S   T0  
+QI70000000050408200820S   T0  
+QI70000000050608210821S   T0  
+QI70000000051608220822S   T0  
+QI70000000052008230823S   T0  
+QI70000000052208240824S   T0  
+QI70000000052608250825S   T0  
+QI70000000052808250825S   T0  
+QI70000000053208260826S   T0  
+QT7000000005340827   T1  
+QDNULB 107 IDiamond, Post Office - Belfast, Europa Buscentre                    
+QSNULB 1002  20250929999999991111100HX107 33003 LF              I
+QNNSch School Holidays                                                         
+QO7000000034920730   T1  
+QI70000000604407300730B   T0  
+QI70000001555007300730B   T0  
+QI70000000604307320732B   T0  
+QI70000000604207340734B   T0  
+QI70000001514407400740B   T1  
+QI70000001542907470747B   T1  
+QI70000000602808030803B   T0  
+QI70000000602908090809B   T1  
+QI70000000095808210821S   T0  
+QI70000000099408210821S   T0  
+QI70000000099608220822S   T0  
+QI70000000100208220822S   T0  
+QI70000000100608230823S   T0  
+QI70000000103608230823S   T0  
+QI70000000103808240824S   T0  
+QI70000000104208240824S   T0  
+QI70000000104608250825S   T0  
+QI70000000142408280828S   T0  
+QT7000000014290829   T1  
+QDNULB 107 IDiamond, Post Office - Belfast, Europa Buscentre                    
+QSNULB 1004  20250929999999991111100 X107 33L03 LF              I
+QO7000000034921700   T1  
+QI70000000604417001700B   T0  
+QI70000001555017001700B   T0  
+QI70000000604317021702B   T0  
+QI70000000604217041704B   T0  
+QI70000001514417101710B   T1  
+QI70000001542917171717B   T1  
+QI70000000602817331733B   T0  
+QI70000000602917391739B   T1  
+QI70000000095817511751S   T0  
+QI70000000099417511751S   T0  
+QI70000000099617521752S   T0  
+QI70000000100217521752S   T0  
+QI70000000100617531753S   T0  
+QI70000000103617531753S   T0  
+QI70000000103817541754S   T0  
+QI70000000104217541754S   T0  
+QI70000000104617551755S   T0  
+QI70000000142417581758S   T0  
+QT7000000014291759   T1  
+QLN700000015368Queen Street 2                                    A0000001
+QBN700000015368333611  374109  Northern Ireland
+QLN700000001630Dublin Road                                       A0000001
+QBN700000001630333683  373426  Northern Ireland
+QLN700000001187Fountainville Avenue                              A0000001
+QBN700000001187333426  373019  Northern Ireland
+QLN700000001188Lisburn Road (City Hospital)                      A0000001
+QBN700000001188333236  372847  Northern Ireland
+QLN700000001190Ulsterville Avenue                                A0000001
+QBN700000001190333037  372590  Northern Ireland
+QLN700000001192Melrose Street                                    A0000001
+QBN700000001192332784  372343  Northern Ireland
+QLN700000001194Windsor Avenue                                    A0000001
+QBN700000001194332668  372189  Northern Ireland
+QLN700000001196Windsor Road                                      A0000001
+QBN700000001196332585  372062  Northern Ireland
+QLN700000001198Ethel Street                                      A0000001
+QBN700000001198332516  371965  Northern Ireland
+QLN700000001200Brookland Street                                  A0000001
+QBN700000001200332429  371829  Northern Ireland
+QLN700000001202Lisburn Road (Marlborough Park)                   A0000001
+QBN700000001202332254  371584  Northern Ireland
+QLN700000001204Cranmore Avenue                                   A0000001
+QBN700000001204332141  371446  Northern Ireland
+QLN700000001206Lancefield Road                                   A0000001
+QBN700000001206332034  371321  Northern Ireland
+QLN700000001208Maryville Park                                    A0000001
+QBN700000001208331896  371171  Northern Ireland
+QLN700000001210Malone Park                                       A0000001
+QBN700000001210331705  370977  Northern Ireland
+QLN700000001212Lisburn Road (Kings Hall)                         A0000001
+QBN700000001212331411  370714  Northern Ireland
+QLN700000001214Kingscourt                                        A0000001
+QBN700000001214331165  370545  Northern Ireland
+QLN700000001216Balmoral Park                                     A0000001
+QBN700000001216330979  370425  Northern Ireland
+QLN700000001230Lisburn Road (Sicily Park)                        A0000001
+QBN700000001230330743  370266  Northern Ireland
+QLN700000001232Grangeville Drive                                 A0000001
+QBN700000001232330546  370097  Northern Ireland
+QLN700000001234Lisburn Road (Finaghy)                            A0000001
+QBN700000001234330331  369908  Northern Ireland
+QLN700000001236Upton Park                                        A0000001
+QBN700000001236330135  369688  Northern Ireland
+QLN700000001240Black's Road                                      A0000001
+QBN700000001240329940  369358  Northern Ireland
+QLN700000001242Dunmurry Lane                                     A0000001
+QBN700000001242329450  368985  Northern Ireland
+QLN700000001244Dunmurry Village                                  A0000001
+QBN700000001244329180  368787  Northern Ireland
+QLN700000001246Grange Hill                                       A0000001
+QBN700000001246328853  368513  Northern Ireland
+QLN700000001248Lisburn Road (Seymour Hill)                       A0000001
+QBN700000001248328601  368036  Northern Ireland
+QLN700000001883Derriaghy                                         A0000001
+QBN700000001883328251  367731  Northern Ireland
+QLN700000001884Killeaton                                         A0000001
+QBN700000001884328049  367490  Northern Ireland
+QLN700000001885Mosside                                           A0000001
+QBN700000001885327884  367269  Northern Ireland
+QLN700000001886Bells Lane                                        A0000001
+QBN700000001886327625  366660  Northern Ireland
+QLN700000001887Lambeg                                            A0000001
+QBN700000001887327564  366057  Northern Ireland
+QLN700000001888Hilden                                            A0000001
+QBN700000001888327631  365510  Northern Ireland
+QLN700000001889Racquets Club                                     A0000001
+QBN700000001889327303  365049  Northern Ireland
+QLN700000001890Park Gates                                        A0000001
+QBN700000001890327233  364808  Northern Ireland
+QLN700000001891Wallace Avenue                                    A0000001
+QBN700000001891326790  364487  Northern Ireland
+QLN700000001892Market Square                                     A0000001
+QBN700000001892326728  364267  Northern Ireland
+QLN700000015435Lisburn Stand 7                                   A0000001
+QBN700000015435326501  364058  Northern Ireland
+QLN700000002277Thornleigh Drive                                  A0000001
+QBN700000002277325991  364991  Northern Ireland
+QLN700000002278Lisnagarvey Drive                                 A0000001
+QBN700000002278325945  365070  Northern Ireland
+QLN700000002279Beechdene Drive                                   A0000001
+QBN700000002279325743  365342  Northern Ireland
+QLN700000002300Killowen Hospital                                 A0000001
+QBN700000002300325292  365502  Northern Ireland
+QLN700000002301Orangehall Lane                                   A0000001
+QBN700000002301325047  365608  Northern Ireland
+QLN700000015903Ballymacash Crossroads                            A0000001
+QBN700000015903324691  365794  Northern Ireland
+QLN700000002308Ballymacash Shops                                 A0000001
+QBN700000002308324445  365843  Northern Ireland
+QLN700000015821Killowen Grange Entrance                          A0000001
+QBN700000015821324269  365867  Northern Ireland
+QLN700000003521Killaugth                                         A0000001
+QBN700000003521320389  368341  Northern Ireland
+QLN700000003522Filterbeds                                        A0000001
+QBN700000003522320354  368476  Northern Ireland
+QLN700000003523Water Works                                       A0000001
+QBN700000003523320034  369230  Northern Ireland
+QLN700000003524Johnston Park                                     A0000001
+QBN700000003524315797  372797  Northern Ireland
+QLN700000003508Glenavy                                           A0000001
+QBN700000003508315491  373005  Northern Ireland
+QLN700000015575Lyngrove Hill                                     A0000001
+QBN700000015575315325  373518  Northern Ireland
+QLN700000003509The Beeches                                       A0000001
+QBN700000003509314917  375529  Northern Ireland
+QLN700000003490Canning Grove                                     A0000001
+QBN700000003490314984  376129  Northern Ireland
+QLN700000003494Main Street                                       A0000001
+QBN700000003494315226  376185  Northern Ireland
+QLN700000003492Main Street                                       A0000001
+QBN700000003492315374  376154  Northern Ireland
+QLN700000003499Canning Grove                                     A0000001
+QBN700000003499314919  376088  Northern Ireland
+QLN700000003510Crumlin High School                               A0000001
+QBN700000003510314901  375875  Northern Ireland
+QLN700000003511Landgrave Manor                                   A0000001
+QBN700000003511314924  375685  Northern Ireland
+QLN700000003512The Beeches                                       A0000001
+QBN700000003512314933  375548  Northern Ireland
+QLN700000015574Lyngrove Hill                                     A0000001
+QBN700000015574315353  373519  Northern Ireland
+QLN700000003513Glenavy Service Station                           A0000001
+QBN700000003513315426  373374  Northern Ireland
+QLN700000003514Glenavy                                           A0000001
+QBN700000003514315508  372989  Northern Ireland
+QLN700000003525Johnston Park                                     A0000001
+QBN700000003525315717  372871  Northern Ireland
+QLN700000003526Water Works                                       A0000001
+QBN700000003526320085  369179  Northern Ireland
+QLN700000003527Filterbeds                                        A0000001
+QBN700000003527320357  368513  Northern Ireland
+QLN700000003528Knocknadona                                       A0000001
+QBN700000003528323397  366335  Northern Ireland
+QLN700000015819Killowen Grange Entrance                          A0000001
+QBN700000015819324262  365879  Northern Ireland
+QLN700000002309Ballymacash Shops                                 A0000001
+QBN700000002309324467  365846  Northern Ireland
+QLN700000002302Orangehall Lane                                   A0000001
+QBN700000002302325036  365630  Northern Ireland
+QLN700000002299Killowen Hospital                                 A0000001
+QBN700000002299325317  365502  Northern Ireland
+QLN700000002288Beechdene Drive                                   A0000001
+QBN700000002288325765  365339  Northern Ireland
+QLN700000002289Duncans Road                                      A0000001
+QBN700000002289325930  365121  Northern Ireland
+QLN700000002290Belleuve Drive                                    A0000001
+QBN700000002290326063  364903  Northern Ireland
+QLN700000001917Lisburn Railway Station                           A0000001
+QBN700000001917326670  364549  Northern Ireland
+QLN700000001874Castle Gardens                                    A0000001
+QBN700000001874326980  364445  Northern Ireland
+QLN700000002852Seymour Street                                    A0000001
+QBN700000002852327139  364612  Northern Ireland
+QLN700000001875Park Gates                                        A0000001
+QBN700000001875327217  364863  Northern Ireland
+QLN700000001876Savilles                                          A0000001
+QBN700000001876327443  365224  Northern Ireland
+QLN700000001877Hilden                                            A0000001
+QBN700000001877327604  365605  Northern Ireland
+QLN700000001878C                                                 A0000001
+QBN700000001878327543  366211  Northern Ireland
+QLN700000001879Robbie Cahoons                                    A0000001
+QBN700000001879327610  366559  Northern Ireland
+QLN700000001880Mosside                                           A0000001
+QBN700000001880327876  367291  Northern Ireland
+QLN700000001881Killeaton                                         A0000001
+QBN700000001881328064  367529  Northern Ireland
+QLN700000001882Derriaghy                                         A0000001
+QBN700000001882328295  367799  Northern Ireland
+QLN700000001256Lisburn Road (Seymour Hill)                       A0000001
+QBN700000001256328633  368105  Northern Ireland
+QLN700000001258Grange Hill                                       A0000001
+QBN700000001258328863  368545  Northern Ireland
+QLN700000001260Dunmurry Halt                                     A0000001
+QBN700000001260329052  368722  Northern Ireland
+QLN700000001262Dunmurry Village                                  A0000001
+QBN700000001262329236  368821  Northern Ireland
+QLN700000001264Beechlawn Park                                    A0000001
+QBN700000001264329501  369074  Northern Ireland
+QLN700000001266Black's Road                                      A0000001
+QBN700000001266329957  369408  Northern Ireland
+QLN700000001268Upton Park                                        A0000001
+QBN700000001268330098  369657  Northern Ireland
+QLN700000001270Lowe Memorial Church                              A0000001
+QBN700000001270330235  369818  Northern Ireland
+QLN700000001272Lisburn Road (Finaghy)                            A0000001
+QBN700000001272330457  370040  Northern Ireland
+QLN700000001274Donegall Park                                     A0000001
+QBN700000001274330645  370200  Northern Ireland
+QLN700000001276Beechmount Park                                   A0000001
+QBN700000001276330922  370405  Northern Ireland
+QLN700000001278Kingscourt                                        A0000001
+QBN700000001278331101  370525  Northern Ireland
+QLN700000014720Park Royal                                        A0000001
+QBN700000014720331350  370690  Northern Ireland
+QLN700000001280Lisburn Road (Kings Hall)                         A0000001
+QBN700000001280331438  370781  Northern Ireland
+QLN700000001282Malone Park                                       A0000001
+QBN700000001282331676  370964  Northern Ireland
+QLN700000001284Lislea Park                                       A0000001
+QBN700000001284331762  371049  Northern Ireland
+QLN700000001286Osbourne Park                                     A0000001
+QBN700000001286331920  371213  Northern Ireland
+QLN700000001288Capstone Street                                   A0000001
+QBN700000001288332052  371356  Northern Ireland
+QLN700000001290Lisburn Road (Marlborough Park)                   A0000001
+QBN700000001290332246  371591  Northern Ireland
+QLN700000001292Brookland Street                                  A0000001
+QBN700000001292332431  371846  Northern Ireland
+QLN700000001294Windsor Road                                      A0000001
+QBN700000001294332586  372095  Northern Ireland
+QLN700000001296Windsor Avenue                                    A0000001
+QBN700000001296332703  372259  Northern Ireland
+QLN700000001298Melrose Street                                    A0000001
+QBN700000001298332779  372361  Northern Ireland
+QLN700000001300Ashley Avenue                                     A0000001
+QBN700000001300332945  372529  Northern Ireland
+QLN700000001302Ulsterville Avenue                                A0000001
+QBN700000001302333026  372603  Northern Ireland
+QLN700000001304Lisburn Road (City Hospital)                      A0000001
+QBN700000001304333233  372856  Northern Ireland
+QLN700000001306Fountainville Avenue                              A0000001
+QBN700000001306333346  372970  Northern Ireland
+QLN700000001013Bradbury Place                                    A0000001
+QBN700000001013333533  373116  Northern Ireland
+QLN700000001631Albion Street                                     A0000001
+QBN700000001631333577  373381  Northern Ireland
+QLN700000001429Queen Street                                      A0000001
+QBN700000001429333623  374241  Northern Ireland
+QLN700000000396Millfield                                         A0000001
+QBN700000000396333345  374323  Northern Ireland
+QLN700000000398Divis Tower                                       A0000001
+QBN700000000398333003  374391  Northern Ireland
+QLN700000000496Twin Spires                                       A0000001
+QBN700000000496332698  374275  Northern Ireland
+QLN700000000502Dunville Park                                     A0000001
+QBN700000000502332283  373988  Northern Ireland
+QLN700000001790Bostock House                                     A0000001
+QBN700000001790332133  373713  Northern Ireland
+QLN700000001791Childrens Hospital                                A0000001
+QBN700000001791331994  373571  Northern Ireland
+QLN700000001793Beechmount                                        A0000001
+QBN700000001793331809  373453  Northern Ireland
+QLN700000001794Beechview Park                                    A0000001
+QBN700000001794331450  373281  Northern Ireland
+QLN700000001797St Louise's                                       A0000001
+QBN700000001797331186  372829  Northern Ireland
+QLN700000001799Falls Park                                        A0000001
+QBN700000001799330825  372582  Northern Ireland
+QLN700000000466Kennedy Centre                                    A0000001
+QBN700000000466330684  372265  Northern Ireland
+QLN700000000282Os Kennedy Way Council Depot                      A0000001
+QBN700000000282330379  371972  Northern Ireland
+QLN700000000286Monagh By-Pass (Glen Road)                        A0000001
+QBN700000000286330007  372294  Northern Ireland
+QLN700000002813Hannahstown                                       A0000001
+QBN700000002813327295  372481  Northern Ireland
+QLN700000002814Glenmeen Close                                    A0000001
+QBN700000002814327005  372912  Northern Ireland
+QLN700000002810Wheelers Road                                     A0000001
+QBN700000002810325699  373447  Northern Ireland
+QLN700000002815Hairpin Bend                                      A0000001
+QBN700000002815325421  373197  Northern Ireland
+QLN700000002816Rusheyhill X Roads                                A0000001
+QBN700000002816323597  372067  Northern Ireland
+QLN700000002817Leathemstown X Roads                              A0000001
+QBN700000002817322070  372517  Northern Ireland
+QLN700000002819Wyebridge                                         A0000001
+QBN700000002819320359  372148  Northern Ireland
+QLN700000002798Tommys Cnr                                        A0000001
+QBN700000002798323409  369482  Northern Ireland
+QLN700000002799Stoney Bridge Court                               A0000001
+QBN700000002799321586  370358  Northern Ireland
+QLN700000002800Stoneyford X Roads                                A0000001
+QBN700000002800321357  370565  Northern Ireland
+QLN700000002806Wyebridge                                         A0000001
+QBN700000002806320294  372181  Northern Ireland
+QLN700000002803Glenavy War Memorial                              A0000001
+QBN700000002803315529  373144  Northern Ireland
+QLN700000002804Glenavy War Memorial                              A0000001
+QBN700000002804315509  373150  Northern Ireland
+QLN700000002805Fourscore X Roads                                 A0000001
+QBN700000002805319076  372803  Northern Ireland
+QLN700000002821Stonyford X Roads                                 A0000001
+QBN700000002821321345  370587  Northern Ireland
+QLN700000002822The Beeches Manor                                 A0000001
+QBN700000002822321598  370361  Northern Ireland
+QLN700000002823Tommys Cnr                                        A0000001
+QBN700000002823323533  369441  Northern Ireland
+QLN700000002808Rusheyhill X Roads                                A0000001
+QBN700000002808323632  372059  Northern Ireland
+QLN700000002809Hairpin Bend                                      A0000001
+QBN700000002809325604  373416  Northern Ireland
+QLN700000002811Glenmeen Close                                    A0000001
+QBN700000002811327006  372922  Northern Ireland
+QLN700000002812Hannahstown                                       A0000001
+QBN700000002812327299  372485  Northern Ireland
+QLN700000000274Monagh By-Pass (Glen Road)                        A0000001
+QBN700000000274330047  372293  Northern Ireland
+QLN700000000280Stop After Council Depot                          A0000001
+QBN700000000280330408  371959  Northern Ireland
+QLN700000000458Westwood Centre                                   A0000001
+QBN700000000458330674  371962  Northern Ireland
+QLN700000000460Kennedy Centre                                    A0000001
+QBN700000000460330637  372114  Northern Ireland
+QLN700000000504Falls Park                                        A0000001
+QBN700000000504330784  372574  Northern Ireland
+QLN700000000506Rossa House                                       A0000001
+QBN700000000506331180  372868  Northern Ireland
+QLN700000000512Beechview Park                                    A0000001
+QBN700000000512331423  373274  Northern Ireland
+QLN700000000516Beechmount                                        A0000001
+QBN700000000516331797  373471  Northern Ireland
+QLN700000000520Childrens Hospital                                A0000001
+QBN700000000520332032  373630  Northern Ireland
+QLN700000000526Falls Library                                     A0000001
+QBN700000000526332396  374156  Northern Ireland
+QLN700000000528Twin Spires                                       A0000001
+QBN700000000528332659  374268  Northern Ireland
+QLN700000000532Divis Tower                                       A0000001
+QBN700000000532332992  374404  Northern Ireland
+QLN700000000534Barrack Street                                    A0000001
+QBN700000000534333371  374345  Northern Ireland
+QLN700000001424King Street                                       A0000001
+QBN700000001424333524  374190  Northern Ireland
+QLN700000002802Fourscore X Roads                                 A0000001
+QBN700000002802319057  372805  Northern Ireland
+QLN700000002807Leatemstown X Roads                               A0000001
+QBN700000002807321940  372544  Northern Ireland
+QLN700000015961Smithfield Square                                 A0000001
+QBN700000015961333584  374561  Northern Ireland
+QLN700000000918Clifton Street                                    A0000001
+QBN700000000918333592  375024  Northern Ireland
+QLN700000000920Carlisle Circus (Clifton Street)                  A0000001
+QBN700000000920333419  375168  Northern Ireland
+QLN700000000922Crumlin Road (Mater Hospital)                     A0000001
+QBN700000000922333146  375285  Northern Ireland
+QLN700000000924Crumlin Road (Agnes Street)                       A0000001
+QBN700000000924332877  375367  Northern Ireland
+QLN700000000926Jaffa Street                                      A0000001
+QBN700000000926332553  375468  Northern Ireland
+QLN700000000928St Mary's                                         A0000001
+QBN700000000928332444  375500  Northern Ireland
+QLN700000000930Tennent Street                                    A0000001
+QBN700000000930332241  375562  Northern Ireland
+QLN700000000932Flax Street                                       A0000001
+QBN700000000932332052  375621  Northern Ireland
+QLN700000000934Ardoyne                                           A0000001
+QBN700000000934331650  375783  Northern Ireland
+QLN700000000878Ardoyne Shops                                     A0000001
+QBN700000000878331442  375937  Northern Ireland
+QLN700000000880Mountainview Place                                A0000001
+QBN700000000880331403  375980  Northern Ireland
+QLN700000000882Everton Complex                                   A0000001
+QBN700000000882331292  376096  Northern Ireland
+QLN700000000884Somerdale Park                                    A0000001
+QBN700000000884331226  376166  Northern Ireland
+QLN700000000886Mercy Primary School                              A0000001
+QBN700000000886331137  376265  Northern Ireland
+QLN700000000888Abbeydale Park                                    A0000001
+QBN700000000888331064  376341  Northern Ireland
+QLN700000000890Wheatfield Gardens                                A0000001
+QBN700000000890330973  376435  Northern Ireland
+QLN700000000892Glenside Park                                     A0000001
+QBN700000000892330820  376592  Northern Ireland
+QLN700000000894Crumlin Road (Glenbank Corner)                    A0000001
+QBN700000000894330724  376754  Northern Ireland
+QLN700000000954Leggagh Court                                     A0000001
+QBN700000000954330797  376980  Northern Ireland
+QLN700000006029Clady Cnr                                         A0000001
+QBN700000006029325597  378731  Northern Ireland
+QLN700000006030Carnaniss Road                                    A0000001
+QBN700000006030324044  378566  Northern Ireland
+QLN700000015429Dundrod  Chruch                                   A0000001
+QBN700000015429321502  375690  Northern Ireland
+QLN700000015530Nutts Corner                                      A0000001
+QBN700000015530319474  377899  Northern Ireland
+QLN700000006048Dunderset Bridge                                  A0000001
+QBN700000006048316793  377470  Northern Ireland
+QLN700000006047Cosshill Rd                                       A0000001
+QBN700000006047316222  377045  Northern Ireland
+QLN700000006046Crumlin Ps                                        A0000001
+QBN700000006046315389  376347  Northern Ireland
+QLN700000015529Snooker Hall                                      A0000001
+QBN700000015529315353  376180  Northern Ireland
+QLN700000006044Crumlin Ps                                        A0000001
+QBN700000006044315385  376362  Northern Ireland
+QLN700000015550McManus's Stop  Crumlin                           A0000001
+QBN700000015550315442  376428  Northern Ireland
+QLN700000006043Crosshill Road                                    A0000001
+QBN700000006043316244  377078  Northern Ireland
+QLN700000006042Dundersert Bridge                                 A0000001
+QBN700000006042316775  377488  Northern Ireland
+QLN700000015144Nutts Corner                                      A0000001
+QBN700000015144319425  377919  Northern Ireland
+QLN700000006028Carnaghliss Rd                                    A0000001
+QBN700000006028324023  378590  Northern Ireland
+QLN700000006057Ballymather Road                                  A0000001
+QBN700000006057324485  379569  Northern Ireland
+QLN700000006058Long Rig Road                                     A0000001
+QBN700000006058323159  380550  Northern Ireland
+QLN700000006059Beechers                                          A0000001
+QBN700000006059322150  381296  Northern Ireland
+QLN700000006060Ballysculty Rd                                    A0000001
+QBN700000006060320629  382500  Northern Ireland
+QLN700000006061Gregorys Cnr                                      A0000001
+QBN700000006061319943  383022  Northern Ireland
+QLN700000006053Ballysculty Rd                                    A0000001
+QBN700000006053320646  382494  Northern Ireland
+QLN700000006054Loanends/Beechers                                 A0000001
+QBN700000006054322194  381287  Northern Ireland
+QLN700000006055Printshop Rd                                      A0000001
+QBN700000006055323048  380645  Northern Ireland
+QLN700000006056Umgall Rd                                         A0000001
+QBN700000006056324479  379584  Northern Ireland
+QLN700000000958Silverstream Terrace                              A0000001
+QBN700000000958330846  377089  Northern Ireland
+QLN700000000994Glenside Park                                     A0000001
+QBN700000000994330819  376608  Northern Ireland
+QLN700000000996Abbeydale Park                                    A0000001
+QBN700000000996331062  376356  Northern Ireland
+QLN700000001002Everton Complex                                   A0000001
+QBN700000001002331325  376075  Northern Ireland
+QLN700000001006Ardoyne Shops                                     A0000001
+QBN700000001006331484  375909  Northern Ireland
+QLN700000001036Ardoyne                                           A0000001
+QBN700000001036331686  375783  Northern Ireland
+QLN700000001038Cambrai Street                                    A0000001
+QBN700000001038332106  375615  Northern Ireland
+QLN700000001042Century Street                                    A0000001
+QBN700000001042332619  375457  Northern Ireland
+QLN700000001046Crumlin Road (Mater Hospital)                     A0000001
+QBN700000001046333195  375284  Northern Ireland
+QLN700000000272Aitnamona Crescent                                A0000001
+QBN700000000272329913  372483  Northern Ireland
+QLN700000000392Gransha Shops                                     A0000001
+QBN700000000392330304  372395  Northern Ireland
+QLN700000000394Glen Parade                                       A0000001
+QBN700000000394330582  372492  Northern Ireland
+QLN700000000522Falls Road (Royal Hospitals)                      A0000001
+QBN700000000522332196  373795  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      LOWFLOOR
+QVNDD      DOUBLE DECKER
+QVNSH      DEDICATED SCHOOL BUS
+QDNULB 103 OBelfast - Crumlin, Main Street
+QDNULB 103 ICrumlin, Main Street - Lisburn, Buscentre
+QDNULB 103 OBelfast, Europa Buscentre - Crumlin, Main Street
+QDNULB 106 OBelfast - Crumlin, Main Street
+QDNULB 106aOQueen Street - Belfast - Main Street - Crumlin
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre
+QDNULB 106aICrumlin, Main Street - Belfast, Queen Street
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre
+QDNULB 107 OBelfast, Europa Buscentre - Diamond, Post Office
+QDNULB 107 IDiamond, Post Office - Belfast, Europa Buscentre

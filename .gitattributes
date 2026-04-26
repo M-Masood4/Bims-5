@@ -1,4 +1,13 @@
 data/2026/exportbuildings.geojson filter=lfs diff=lfs merge=lfs -text
 data/2016/belfast_rgb_2016.tif filter=lfs diff=lfs merge=lfs -text
+data/2016/belfast_rgb_2018.tif filter=lfs diff=lfs merge=lfs -text
 data/2016/belfast_rgb_2020.tif filter=lfs diff=lfs merge=lfs -text
 data/2016/belfast_rgb_2022.tif filter=lfs diff=lfs merge=lfs -text
+data/2016/belfast_ndbi_2022.tif filter=lfs diff=lfs merge=lfs -text
+data/2016/belfast_ndvi_2022.tif filter=lfs diff=lfs merge=lfs -text
+data/2026/belfast_ndvi_2024.tif filter=lfs diff=lfs merge=lfs -text
+data/2026/belfast_rgb_2024.tif filter=lfs diff=lfs merge=lfs -text
+data/derived/2026/belfast_ni_buildings_3d_core.geojson filter=lfs diff=lfs merge=lfs -text
+data/derived/2026/belfast_ni_*_osm_2026.geojson filter=lfs diff=lfs merge=lfs -text
+data/derived/2026/belfast_infrastructure_events_2016_2026.json filter=lfs diff=lfs merge=lfs -text
+data/raw/planning_statistics/*.csv filter=lfs diff=lfs merge=lfs -text

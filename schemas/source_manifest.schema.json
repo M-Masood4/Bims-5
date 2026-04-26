@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bims.local/schemas/source_manifest.schema.json",
+  "title": "Belfast Replay Source Manifest",
+  "description": "Contract for future data-source branch handoff into the spatial replay ETL/model branch.",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "source_batch_id",
+    "study_area",
+    "created_at",
+    "sources"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "manifest_version": {
+      "type": "string"
+    },
+    "source_batch_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_area": {
+      "type": "string",
+      "const": "Belfast"
+    },
+    "source_branch": {
+      "type": "string"
+    },
+    "source_commit": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "license_summary": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "source_path",
+        "layer_kind",
+        "temporal_coverage",
+        "media_type"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "layer_kind": {
+          "type": "string",
+          "description": "Examples: zone_boundary, building_footprint, pt_stop, planning_application, air_observation, bike_trip."
+        },
+        "media_type": {
+          "type": "string",
+          "description": "Examples: application/geo+json, application/json, image/tiff, text/csv."
+        },
+        "temporal_coverage": {
+          "type": "object",
+          "required": [
+            "start_year",
+            "end_year"
+          ],
+          "properties": {
+            "start_year": {
+              "type": "integer",
+              "minimum": 2016,
+              "maximum": 2026
+            },
+            "end_year": {
+              "type": "integer",
+              "minimum": 2016,
+              "maximum": 2026
+            },
+            "observed_dates": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        },
+        "spatial_coverage": {
+          "type": "object",
+          "properties": {
+            "crs": {
+              "type": "string",
+              "default": "EPSG:4326"
+            },
+            "bbox": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "checksum": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "sha256"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "license": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "object"
+        },
+        "expected_target_tables": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

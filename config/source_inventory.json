@@ -1,0 +1,409 @@
+{
+  "schema_version": "1.0",
+  "project": "belfast-historical-replay-2016-2026",
+  "target_area": {
+    "name": "Belfast, Northern Ireland",
+    "approx_bbox_wgs84": [-6.12, 54.45, -5.74, 54.75],
+    "notes": "Approximate validation envelope only; not a legal or analytical boundary."
+  },
+  "inventory_reviewed_on": "2026-04-25",
+  "sources": [
+    {
+      "id": "repo_existing_2016_rasters",
+      "name": "Current repository 2016 raster baselines",
+      "category": "remote_sensing_derived",
+      "coverage_years": [2016, 2018],
+      "coverage_note": "Local GeoTIFFs currently include RGB, NDBI, and NDVI-style layers; the NDVI filename indicates 2018 even though it sits under data/2016.",
+      "access_pattern": "local_repo",
+      "automation": "automated_indexing_only",
+      "ingestion_status": "available_local",
+      "local_paths": ["data/2016/"],
+      "expected_formats": ["GeoTIFF"],
+      "license": {
+        "status": "unknown_from_files",
+        "name": "Needs upstream confirmation",
+        "url": null,
+        "attribution": "Record original provider, processing author, processing date, and source scene IDs before publication."
+      },
+      "provenance": {
+        "primary_url": null,
+        "refresh_method": "Do not overwrite. Add corrected rasters as new versioned files and refresh manifest.",
+        "notes": "Treat as derived products until original satellite/aerial scene metadata is supplied."
+      }
+    },
+    {
+      "id": "repo_existing_2026_geojson",
+      "name": "Current repository 2026 GeoJSON and JSON layers",
+      "category": "vector",
+      "coverage_years": [2026],
+      "coverage_note": "Local 2026 files appear to be OpenStreetMap/OpenData-style exports. The indexer records embedded generator/copyright metadata and bbox validation flags.",
+      "access_pattern": "local_repo",
+      "automation": "automated_indexing_only",
+      "ingestion_status": "available_local",
+      "local_paths": ["data/2026/"],
+      "expected_formats": ["GeoJSON", "JSON"],
+      "license": {
+        "status": "mixed_or_embedded",
+        "name": "Read per-file metadata",
+        "url": null,
+        "attribution": "Preserve embedded copyright and generator fields in manifests."
+      },
+      "provenance": {
+        "primary_url": null,
+        "refresh_method": "Refresh from the original source query/export and keep the raw export immutable.",
+        "notes": "Some files contain Overpass/OpenStreetMap metadata; classify at file level during indexing."
+      }
+    },
+    {
+      "id": "manual_google_earth",
+      "name": "Google Earth and manual source drops",
+      "category": "manual_observation",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Manual imagery interpretation, placemarks, KML/KMZ exports, screenshots, notes, and derived annotations for change events not available through open feeds.",
+      "access_pattern": "manual_drop",
+      "automation": "manual",
+      "ingestion_status": "drop_zone_ready",
+      "local_paths": ["data/manual_drops/"],
+      "expected_formats": ["KML", "KMZ", "GeoJSON", "CSV", "JSON", "PNG", "JPG", "PDF", "TXT", "MD"],
+      "license": {
+        "status": "restricted_or_context_dependent",
+        "name": "Provider terms and manual note required",
+        "url": "https://www.google.com/permissions/geoguidelines/",
+        "attribution": "Record provider, capture date, interpreter, and whether geometry is hand-digitized or directly exported."
+      },
+      "provenance": {
+        "primary_url": "https://earth.google.com/",
+        "refresh_method": "Add new dated files under data/manual_drops/<source>/<YYYY>/ and refresh the manifest.",
+        "notes": "Do not assume Google imagery or screenshots are redistributable. Keep raw drops separate from open-data derivatives."
+      }
+    },
+    {
+      "id": "osm_overpass",
+      "name": "OpenStreetMap via Overpass API or Overpass Turbo",
+      "category": "openstreetmap",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Current-state extracts are available through Overpass. Historical replay requires saved snapshots, ohsome, or dated replication history rather than live queries alone.",
+      "access_pattern": "api_query",
+      "automation": "automatable_small_queries",
+      "ingestion_status": "partially_available_local",
+      "local_paths": ["data/2026/"],
+      "expected_formats": ["GeoJSON", "JSON", "OSM XML"],
+      "license": {
+        "status": "open_with_share_alike",
+        "name": "Open Data Commons Open Database License (ODbL)",
+        "url": "https://www.openstreetmap.org/copyright",
+        "attribution": "Copyright OpenStreetMap contributors; keep ODbL attribution with derived databases."
+      },
+      "provenance": {
+        "primary_url": "https://overpass-turbo.eu/",
+        "refresh_method": "Store the Overpass QL query, bbox, timestamp, endpoint URL, and response file alongside each export.",
+        "notes": "Use small targeted layer queries for roads, buildings, water, green space, transit stops, amenities, and land use."
+      }
+    },
+    {
+      "id": "osm_geofabrik",
+      "name": "OpenStreetMap regional extracts via Geofabrik",
+      "category": "openstreetmap",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Useful for reproducible regional baseline extracts; historical coverage depends on dated extracts retained by the project or external archives.",
+      "access_pattern": "download_extract",
+      "automation": "automatable_but_not_enabled_by_default",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/osm_geofabrik/"],
+      "expected_formats": ["PBF", "SHP", "GeoPackage"],
+      "license": {
+        "status": "open_with_share_alike",
+        "name": "Open Data Commons Open Database License (ODbL)",
+        "url": "https://download.geofabrik.de/",
+        "attribution": "Copyright OpenStreetMap contributors and Geofabrik extract metadata."
+      },
+      "provenance": {
+        "primary_url": "https://download.geofabrik.de/europe/united-kingdom.html",
+        "refresh_method": "Record extract date, region, checksum, and clipping steps. Do not commit large PBF downloads unless explicitly approved.",
+        "notes": "Best used as an offline source for reproducible clipping and layer derivation."
+      }
+    },
+    {
+      "id": "osm_ohsome",
+      "name": "OpenStreetMap history analytics via ohsome API",
+      "category": "openstreetmap_history",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Supports historical snapshots and time series from OSM full-history data for replay change metrics.",
+      "access_pattern": "api_query",
+      "automation": "automatable_small_queries",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/ohsome/"],
+      "expected_formats": ["GeoJSON", "JSON", "CSV"],
+      "license": {
+        "status": "open_with_share_alike",
+        "name": "Open Data Commons Open Database License (ODbL)",
+        "url": "https://docs.ohsome.org/ohsome-api/stable/",
+        "attribution": "Attribute OpenStreetMap contributors and retain ohsome query metadata."
+      },
+      "provenance": {
+        "primary_url": "https://api.ohsome.org/",
+        "refresh_method": "Store endpoint, request body, temporal filter, keys, values, bbox/polygon, and response checksum.",
+        "notes": "Prefer for 2016-2026 historical OSM layer counts and dated geometries."
+      }
+    },
+    {
+      "id": "belfast_city_open_data",
+      "name": "Belfast City Council open data",
+      "category": "local_authority_open_data",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Potential layers include assets, parks, public services, planning-related lists, neighbourhood services, and civic infrastructure where published.",
+      "access_pattern": "portal_download_or_api",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/belfast_city_open_data/"],
+      "expected_formats": ["CSV", "GeoJSON", "SHP", "JSON"],
+      "license": {
+        "status": "verify_per_dataset",
+        "name": "Usually UK Open Government Licence where published through official open data channels",
+        "url": "https://www.belfastcity.gov.uk/",
+        "attribution": "Attribute Belfast City Council and retain dataset page URL/license text."
+      },
+      "provenance": {
+        "primary_url": "https://www.belfastcity.gov.uk/",
+        "refresh_method": "Record dataset landing page, modified date, download URL, and licence for each file.",
+        "notes": "Do not merge with OSM-derived layers until source licence compatibility is checked."
+      }
+    },
+    {
+      "id": "opendatani",
+      "name": "OpenDataNI and Spatial NI open data",
+      "category": "regional_open_data",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Candidate source for administrative boundaries, public assets, environmental layers, roads/open mapping, and official Northern Ireland datasets.",
+      "access_pattern": "portal_download_or_ckan_api",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/opendatani/"],
+      "expected_formats": ["CSV", "GeoJSON", "SHP", "WMS", "WFS", "JSON"],
+      "license": {
+        "status": "open_for_many_datasets_verify_each",
+        "name": "Open Government Licence v3.0 for many public-sector datasets",
+        "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0, plus dataset-specific copyright."
+      },
+      "provenance": {
+        "primary_url": "https://www.opendatani.gov.uk/",
+        "refresh_method": "Use CKAN/package metadata where available; save package ID, resource ID, modified date, licence, URL, and checksum.",
+        "notes": "Some Spatial NI/LPS layers carry extra attribution or commercial restrictions; keep licence text per resource."
+      }
+    },
+    {
+      "id": "belfast_bikes_gbfs",
+      "name": "Belfast Bikes / GBFS-style bike share data",
+      "category": "mobility",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Station locations and availability are useful for mobility replay. Historical availability requires archived polling; station metadata can be refreshed periodically.",
+      "access_pattern": "gbfs_or_provider_api",
+      "automation": "automatable_if_feed_available",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/belfast_bikes/"],
+      "expected_formats": ["GBFS JSON", "CSV"],
+      "license": {
+        "status": "verify_feed_system_information",
+        "name": "GBFS feed licence should be read from system_information.json when available",
+        "url": "https://gbfs.org/specification/",
+        "attribution": "Attribute Belfast Bikes/operator and preserve feed licence_id or licence_url."
+      },
+      "provenance": {
+        "primary_url": "https://www.belfastcity.gov.uk/BelfastBikes",
+        "refresh_method": "Poll only lightweight metadata feeds by default; record feed URL, ttl, last_updated, licence fields, and retrieval timestamp.",
+        "notes": "Do not store personal trip data. Keep availability snapshots aggregated unless explicitly approved."
+      }
+    },
+    {
+      "id": "ni_planning_portal",
+      "name": "Northern Ireland Planning Portal",
+      "category": "planning",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Planning applications, statuses, decision dates, proposal descriptions, and locations can support development timeline reconstruction.",
+      "access_pattern": "manual_export_or_polite_scrape",
+      "automation": "manual_or_limited_automation",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/ni_planning_portal/"],
+      "expected_formats": ["CSV", "HTML", "PDF", "JSON", "GeoJSON"],
+      "license": {
+        "status": "terms_review_required",
+        "name": "Planning Portal terms and public register rights require review before redistribution",
+        "url": "https://planningregister.planningsystemni.gov.uk/",
+        "attribution": "Record portal URL, query parameters, application reference, council, and retrieval date."
+      },
+      "provenance": {
+        "primary_url": "https://planningregister.planningsystemni.gov.uk/",
+        "refresh_method": "Prefer official export endpoints if available; otherwise use rate-limited collection of metadata only and retain source URLs.",
+        "notes": "Documents may contain third-party copyright or personal data; keep raw documents out of automated public outputs unless cleared."
+      }
+    },
+    {
+      "id": "translink_open_data",
+      "name": "Translink Northern Ireland public transport data",
+      "category": "mobility",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Routes, stops, timetables, service patterns, and live feeds can support transport replay if archived by year.",
+      "access_pattern": "open_data_portal_or_feed",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/translink/"],
+      "expected_formats": ["GTFS", "TransXChange", "CSV", "JSON"],
+      "license": {
+        "status": "verify_per_feed",
+        "name": "Open Government Licence or Translink Access to Information Licence depending on release",
+        "url": "https://www.translink.co.uk/foi-open-data",
+        "attribution": "Attribute Translink/NITHC and preserve feed licence or access terms."
+      },
+      "provenance": {
+        "primary_url": "https://www.translink.co.uk/foi-open-data",
+        "refresh_method": "Record feed URL, version/date, route area filter, licence, and checksum; avoid committing large schedules by default.",
+        "notes": "Historical service replay requires dated GTFS/TransXChange snapshots or archival sources."
+      }
+    },
+    {
+      "id": "ni_air",
+      "name": "Northern Ireland Air quality data",
+      "category": "environment",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Monitoring station observations for pollutants such as NO2, PM10, PM2.5, ozone, sulphur dioxide, and carbon monoxide.",
+      "access_pattern": "portal_download_or_sos_api",
+      "automation": "automatable_small_queries",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/ni_air/"],
+      "expected_formats": ["CSV", "JSON", "SOS XML"],
+      "license": {
+        "status": "verify_per_dataset",
+        "name": "Northern Ireland Air / DAERA terms; UK-AIR mapping products may have separate restrictions",
+        "url": "https://www.airqualityni.co.uk/download-data",
+        "attribution": "Attribute Northern Ireland Air, DAERA/local council monitoring network, station, pollutant, and retrieval date."
+      },
+      "provenance": {
+        "primary_url": "https://www.airqualityni.co.uk/download-data",
+        "refresh_method": "Store station list, pollutant, interval, start/end dates, endpoint, and checksum.",
+        "notes": "Use observations for time-series context; do not conflate measured station data with modelled maps without source labels."
+      }
+    },
+    {
+      "id": "nisra_population",
+      "name": "NISRA population and census statistics",
+      "category": "demographics",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Census 2021, mid-year population estimates, and small-area statistics can contextualize replay demand and neighbourhood change.",
+      "access_pattern": "portal_download",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/nisra/population/"],
+      "expected_formats": ["CSV", "XLSX", "JSON"],
+      "license": {
+        "status": "verify_per_dataset",
+        "name": "Open Government Licence for many official statistics releases",
+        "url": "https://www.nisra.gov.uk/",
+        "attribution": "Attribute Northern Ireland Statistics and Research Agency and dataset/table title."
+      },
+      "provenance": {
+        "primary_url": "https://www.nisra.gov.uk/statistics/population",
+        "refresh_method": "Record publication, table ID, geography, release date, and checksum.",
+        "notes": "Keep original statistical geography identifiers to avoid ambiguous joins."
+      }
+    },
+    {
+      "id": "nisra_deprivation",
+      "name": "NISRA deprivation measures",
+      "category": "demographics",
+      "coverage_years": [2017],
+      "coverage_note": "Northern Ireland Multiple Deprivation Measure 2017 is the main deprivation baseline in the replay period unless newer releases are added.",
+      "access_pattern": "portal_download",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/nisra/deprivation/"],
+      "expected_formats": ["CSV", "XLSX", "GeoJSON", "SHP"],
+      "license": {
+        "status": "verify_per_dataset",
+        "name": "Open Government Licence for many official statistics releases",
+        "url": "https://www.nisra.gov.uk/statistics/deprivation",
+        "attribution": "Attribute NISRA and the deprivation measure release."
+      },
+      "provenance": {
+        "primary_url": "https://www.nisra.gov.uk/statistics/deprivation",
+        "refresh_method": "Record release name, indicator/domain, geography, publication date, and checksum.",
+        "notes": "Join by official SOA/DZ codes, not display names."
+      }
+    },
+    {
+      "id": "nisra_boundaries_soa_dz",
+      "name": "NISRA SOA and Data Zone boundaries",
+      "category": "boundaries",
+      "coverage_years": [2011, 2021, 2024, 2025, 2026],
+      "coverage_note": "SOA boundaries support older small-area statistics. Census 2021 Data Zones and Super Data Zones support newer statistics.",
+      "access_pattern": "portal_download",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/nisra/boundaries/"],
+      "expected_formats": ["GeoJSON", "SHP", "GPKG", "CSV"],
+      "license": {
+        "status": "verify_per_boundary_product",
+        "name": "Open Government Licence for many NISRA/OpenDataNI boundary products",
+        "url": "https://www.nisra.gov.uk/research-support/geography",
+        "attribution": "Attribute NISRA, OpenDataNI/Spatial NI, and boundary product version."
+      },
+      "provenance": {
+        "primary_url": "https://www.nisra.gov.uk/research-support/geography",
+        "refresh_method": "Record geography version, boundary generalisation level, coordinate reference system, publication date, and checksum.",
+        "notes": "Use these as official join geographies for population and deprivation layers."
+      }
+    },
+    {
+      "id": "sentinel_landsat_copernicus",
+      "name": "Sentinel, Landsat, and Copernicus Earth observation products",
+      "category": "remote_sensing",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Supports yearly imagery, NDVI, NDBI, impervious surface, land cover, and change detection products.",
+      "access_pattern": "catalog_api_or_manual_scene_selection",
+      "automation": "automatable_metadata_first",
+      "ingestion_status": "planned",
+      "local_paths": ["data/external/earth_observation/"],
+      "expected_formats": ["GeoTIFF", "COG", "STAC JSON", "SAFE", "NetCDF"],
+      "license": {
+        "status": "open_for_core_programmes_verify_product",
+        "name": "Copernicus free, full and open data policy; Landsat data generally public domain/open",
+        "url": "https://www.copernicus.eu/en/terms-use/how-access-data",
+        "attribution": "Record mission, product, processing level, scene ID, acquisition date, cloud cover, provider, and derived processing steps."
+      },
+      "provenance": {
+        "primary_url": "https://dataspace.copernicus.eu/",
+        "refresh_method": "Store STAC/catalog metadata first; download scenes only when explicitly needed and keep checksums outside git if large.",
+        "notes": "Prefer cloud-optimized metadata workflows and derived small rasters for committed fixtures."
+      }
+    },
+    {
+      "id": "huggingface_optional_geospatial",
+      "name": "Hugging Face optional geospatial datasets and models",
+      "category": "external_research",
+      "coverage_years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "coverage_note": "Use only when a HF-hosted dataset/model has clear Belfast relevance, licence, and source provenance.",
+      "access_pattern": "huggingface_hub_search_then_dataset_download",
+      "automation": "manual_review_required",
+      "ingestion_status": "searched_no_direct_belfast_dataset",
+      "local_paths": ["data/manual_drops/hugging_face/"],
+      "expected_formats": ["CSV", "GeoJSON", "Parquet", "JSON", "model output"],
+      "license": {
+        "status": "verify_per_repo",
+        "name": "Hugging Face repo-specific licence",
+        "url": "https://huggingface.co/datasets",
+        "attribution": "Record dataset repo ID, revision, card metadata, licence, and any upstream data attribution."
+      },
+      "provenance": {
+        "primary_url": "https://huggingface.co/datasets",
+        "refresh_method": "Search, inspect repo card, verify licence and geography, then download only the Belfast subset or small metadata fixture.",
+        "notes": "Initial plugin search did not find a direct Belfast geospatial dataset; see docs/huggingface_sources.md."
+      }
+    }
+  ],
+  "status_values": {
+    "available_local": "Source files already exist in this repository.",
+    "partially_available_local": "Some local files exist but source queries or historical coverage need expansion.",
+    "drop_zone_ready": "Directory and manifest workflow exist, but source files arrive manually.",
+    "planned": "Inventory entry exists; acquisition not yet implemented in this branch."
+  }
+}

@@ -1,0 +1,150 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251001162638
+QDNULB 153aOBelfast Laganside - Ballyclare                                      TUAO153A
+QSNULB 1001  20251002999999991111100 X153a23D05 DD      TUAO153AO
+QO7000000016490710   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174607100710P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000091407120712P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000115507130713P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000116107150715P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000128907160716P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000117107160716P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000117707180718P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000118207200720P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000118407210721P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000118907210721P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000119307220722P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000119707240724P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000120507270727P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000120907280728P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000121107280728P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000121307290729P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000152007300730B   T1  
+QI70000000152207300730B   T0  
+QI70000000152307300730B   T0  
+QI70000000152407310731B   T0  
+QI70000000152507320732B   T0  
+QI70000000148507320732B   T0  
+QI70000000471407330733B   T0  
+QI70000000471507340734B   T0  
+QI70000000471607360736B   T0  
+QI70000000471707360736B   T0  
+QI70000000471807370737B   T0  
+QI70000000471907380738B   T0  
+QI70000000472007390739B   T0  
+QI70000000472107400740B   T0  
+QI70000000472207410741B   T1  
+QI70000000472307410741B   T0  
+QI70000000472407410741B   T0  
+QI70000000472507420742B   T0  
+QI70000000472607430743B   T0  
+QI70000000472707440744B   T0  
+QI70000000472807440744B   T0  
+QI70000000472907460746B   T0  
+QI70000000473007470747B   T0  
+QI70000000461607480748B   T1  
+QT7000000046180749   T1  
+QLN700000001649Laganside Bus Station                             A0000001
+QBN700000001649334261  374463  Northern Ireland
+QLN700000001746Bridge Street                                     A0000001
+QBN700000001746333959  374397  Northern Ireland
+QLN700000000914Donegall Street                                   A0000001
+QBN700000000914333740  374862  Northern Ireland
+QLN700000001155Lincoln Avenue                                    A0000001
+QBN700000001155333384  375382  Northern Ireland
+QLN700000001161Cliftonville Road                                 A0000001
+QBN700000001161333336  375975  Northern Ireland
+QLN700000001289Richmond Lane                                     A0000001
+QBN700000001289333222  376544  Northern Ireland
+QLN700000001171Willowbank Gardens                                A0000001
+QBN700000001171333226  376813  Northern Ireland
+QLN700000001177Firmount                                          A0000001
+QBN700000001177333158  377526  Northern Ireland
+QLN700000001182Belfast Castle                                    A0000001
+QBN700000001182333266  378327  Northern Ireland
+QLN700000001184Donegall Park Avenue [Antrim Road]                A0000001
+QBN700000001184333277  378736  Northern Ireland
+QLN700000001189Downview Lodge                                    A0000001
+QBN700000001189333300  379150  Northern Ireland
+QLN700000001193Serpentine Road                                   A0000001
+QBN700000001193333359  379650  Northern Ireland
+QLN700000001197Kincraig Park                                     A0000001
+QBN700000001197333224  380392  Northern Ireland
+QLN700000001205Belfast Zoo                                       A0000001
+QBN700000001205332509  381383  Northern Ireland
+QLN700000001209Elmfield                                          A0000001
+QBN700000001209332263  381778  Northern Ireland
+QLN700000001211Church Road                                       A0000001
+QBN700000001211332061  381972  Northern Ireland
+QLN700000001213Glengormley Centre                                A0000001
+QBN700000001213331824  382149  Northern Ireland
+QLN700000001520Glengormley Park                                  A0000001
+QBN700000001520331684  382422  Northern Ireland
+QLN700000001522Hillview Park                                     A0000001
+QBN700000001522331598  382724  Northern Ireland
+QLN700000001523Queens Park                                       A0000001
+QBN700000001523331547  382908  Northern Ireland
+QLN700000001524Glenvarna Walk                                    A0000001
+QBN700000001524331431  383349  Northern Ireland
+QLN700000001525Carwood Avenue                                    A0000001
+QBN700000001525331377  383551  Northern Ireland
+QLN700000001485Ballycraigy Road                                  A0000001
+QBN700000001485331312  383889  Northern Ireland
+QLN700000004714New Mossley                                       A0000001
+QBN700000004714331114  384312  Northern Ireland
+QLN700000004715Corrs Corner                                      A0000001
+QBN700000004715330795  384702  Northern Ireland
+QLN700000004716Abbeycrete                                        A0000001
+QBN700000004716330213  385206  Northern Ireland
+QLN700000004717Sallybush                                         A0000001
+QBN700000004717329865  385496  Northern Ireland
+QLN700000004718Whitleys                                          A0000001
+QBN700000004718329440  385779  Northern Ireland
+QLN700000004719420-426 Ballyclare Road                           A0000001
+QBN700000004719329251  386116  Northern Ireland
+QLN700000004720Kingsmoss Road                                    A0000001
+QBN700000004720329100  386398  Northern Ireland
+QLN700000004721Liester Park                                      A0000001
+QBN700000004721328861  386934  Northern Ireland
+QLN700000004722Thompson Primary School                           A0000001
+QBN700000004722328713  387253  Northern Ireland
+QLN700000004723Rippling Brook                                    A0000001
+QBN700000004723328614  387649  Northern Ireland
+QLN700000004724A Ballyrobert Road                                A0000001
+QBN700000004724328499  388012  Northern Ireland
+QLN700000004725Lisagore                                          A0000001
+QBN700000004725328251  388567  Northern Ireland
+QLN700000004726Sizehill                                          A0000001
+QBN700000004726327964  389172  Northern Ireland
+QLN700000004727Walkers Lane                                      A0000001
+QBN700000004727328205  389994  Northern Ireland
+QLN700000004728Paper Mill                                        A0000001
+QBN700000004728328596  390438  Northern Ireland
+QLN700000004729Mill Road                                         A0000001
+QBN700000004729328829  390641  Northern Ireland
+QLN700000004730River of Life Church                              A0000001
+QBN700000004730328948  390871  Northern Ireland
+QLN700000004616Ballyclare Buscentre                              A0000001
+QBN700000004616329001  390828  Northern Ireland
+QLN700000004618The Square                                        A0000001
+QBN700000004618328689  391223  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNDD      Double Decker
+QDNULB 153aOBelfast Laganside - Ballyclare                                      TUAO153A

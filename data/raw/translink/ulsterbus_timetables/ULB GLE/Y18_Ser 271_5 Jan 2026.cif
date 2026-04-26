@@ -1,0 +1,150 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251205121318
+QDNGLE 271 OBelfast, Grand Central Station - Cavan, Bus Station                 
+QSNGLE 1001  20260105999999991111110 X271 11G01 GL              O
+QO700000017119090517 T1  
+QI70000000678409300930B   T1  
+QI70000001493709450945B   T1  
+QI70000000705509570957B   T1  
+QI70000000829910041004B   T1  
+QI70000000830010051005S   T0  
+QNs    Set down only                                                           
+QI70000000830110061006S   T0  
+QNs    Set down only                                                           
+QI70000001498010071007S   T0  
+QNs    Set down only                                                           
+QI70000000823510101015B   T1  
+QI70000001596210301030B   T1  
+QI70000000821510331033B   T0  
+QI70000001584910451050B   T1  
+QI70000001584811021102B   T1  
+QI70000001584711151115B   T1  
+QT7000000158461145   T1  
+QDNGLE 271 IMonaghan, Bus Station - Belfast, Grand Central Station              
+QSNGLE 1002  20260105999999991111110 X271 11G01 GL              I
+QO7000000158491755   T1  
+QI70000000821618041804B   T0  
+QI70000000821718071807B   T1  
+QI70000000823018201820B   T1  
+QI70000000823518301835B   T1  
+QI70000000826718351835P   T0  
+QNp    Pick up only                                                            
+QI70000000826818361836P   T0  
+QNp    Pick up only                                                            
+QI70000000826918371837P   T0  
+QNp    Pick up only                                                            
+QI70000000827018381838B   T1  
+QI70000000705618451845B   T1  
+QI70000000032718571857B   T1  
+QI70000000678419101910B   T1  
+QI70000000180119321932S   T0  
+QNs    Set down only                                                           
+QT700000017119193517 T1  
+QLN700000017119Grand Central Station Stand 17                    A0000001
+QBN700000017119333217  373713  Northern Ireland
+QLN700000006784Loughview Park & Ride                             A0000001
+QBN700000006784306719  360553  Northern Ireland
+QLN700000014937Portadown Train Station [bus stop]                A0000001
+QBN700000014937300837  353871  Northern Ireland
+QLN700000007055Richill Village                                   A0000001
+QBN700000007055294178  347972  Northern Ireland
+QLN700000008299Elim Church                                       A0000001
+QBN700000008299289298  346380  Northern Ireland
+QLN700000008300Dillon Heights                                    A0000001
+QBN700000008300289015  346141  Northern Ireland
+QLN700000008301Dean's Bridge                                     A0000001
+QBN700000008301288601  345846  Northern Ireland
+QLN700000014980Tower Hill                                        A0000001
+QBN700000014980288189  345692  Northern Ireland
+QLN700000008235Armagh Bus Station                                A0000001
+QBN700000008235287550  345507  Northern Ireland
+QLN700000015962Main Street                                       A0000001
+QBN700000015962275316  338820  Northern Ireland
+QLN700000008215Foyduff                                           A0000001
+QBN700000008215273926  336898  Northern Ireland
+QLN700000015849Monaghan Bus Station                              A0000001
+QBN700000015849267172  334179  Northern Ireland
+QLN700000015848Smithborough Village                              A0000001
+QBN700000015848259038  330752  Northern Ireland
+QLN700000015847Jubilee Road                                      A0000001
+QBN700000015847250186  326107  Northern Ireland
+QLN700000015846Cavan Bus Station                                 A0000001
+QBN700000015846241813  304745  Northern Ireland
+QLN8290B1049501Granard                                           A0000001
+QBN8290B1049501233284  280992  Northern Ireland
+QLN8290B1044201Edgeworthstown                                    A0000001
+QBN8290B1044201225760  271950  Northern Ireland
+QLN8290B1357701Longford, Rail Station                            A0000001
+QBN8290B1357701213531  274984  Northern Ireland
+QLN8290B152151 Ballymahon                                        A0000001
+QBN8290B152151 215570  257245  Northern Ireland
+QLN8330B5551001Athlone, Bus station                              A0000001
+QBN8330B5551001204290  241860  Northern Ireland
+QLN8330B5551101Athlone AIT                                       A0000001
+QBN8330B5551101206648  240775  Northern Ireland
+QLN8320B358421 Ferbane (Opp School Main St)                      A0000001
+QBN8320B358421 211528  224274  Northern Ireland
+QLN8320B152181 Birr (Post Office Emmet Square)                   A0000001
+QBN8320B152181 206047  205037  Northern Ireland
+QLN8420B450271 Borrsiokane (Church of Ireland)                   A0000001
+QBN8420B450271 191484  193674  Northern Ireland
+QLN8420B4553001Nenagh (Banba Square)                             A0000001
+QBN8420B4553001186639  179244  Northern Ireland
+QLN8400B350301 Limerick, Bus Station                             A0000001
+QBN8400B350301 157797  156525  Northern Ireland
+QLN8380B3353201Charleville                                       A0000001
+QBN8380B3353201153547  122696  Northern Ireland
+QLN8380B6310601Mallow (Town Park)                                A0000001
+QBN8380B6310601155912  98319   Northern Ireland
+QLN8370B2550201Cork (Parnell Place Bus Station)                  A0000001
+QBN8370B2550201167960  71958   Northern Ireland
+QLN8380B609661 Charleville (Moloney Jewellers)                   A0000001
+QBN8380B609661 153541  122668  Northern Ireland
+QLN8420B155481 Nenagh (Banba Square)                             A0000001
+QBN8420B155481 186647  179252  Northern Ireland
+QLN8420B4502101Borrisokane                                       A0000001
+QBN8420B4502101191465  193675  Northern Ireland
+QLN8320B1521001Birr Square                                       A0000001
+QBN8320B1521001206028  205080  Northern Ireland
+QLN8320B3584401Ferbane                                           A0000001
+QBN8320B3584401211517  224316  Northern Ireland
+QLN8330B551501 Athlone IT (Willow View)                          A0000001
+QBN8330B551501 206418  240637  Northern Ireland
+QLN8290B1520801Ballymahon                                        A0000001
+QBN8290B1520801215554  257232  Northern Ireland
+QLN8290B1311401Edgesworthtown                                    A0000001
+QBN8290B1311401225752  271940  Northern Ireland
+QLN8290B1359001Granard (Harper's Lodge)                          A0000001
+QBN8290B1359001233273  281004  Northern Ireland
+QLN700000008216Foyduff                                           A0000001
+QBN700000008216273944  336926  Northern Ireland
+QLN700000008217Main Street                                       A0000001
+QBN700000008217275269  338817  Northern Ireland
+QLN700000008230Hill Street                                       A0000001
+QBN700000008230285646  343560  Northern Ireland
+QLN700000008267Tower Hill                                        A0000001
+QBN700000008267288129  345694  Northern Ireland
+QLN700000008268Dean's Bridge                                     A0000001
+QBN700000008268288635  345880  Northern Ireland
+QLN700000008269Dillon Heights                                    A0000001
+QBN700000008269289012  346159  Northern Ireland
+QLN700000008270Elim Church                                       A0000001
+QBN700000008270289358  346483  Northern Ireland
+QLN700000007056Richill Village                                   A0000001
+QBN700000007056294187  347992  Northern Ireland
+QLN700000000327Portadown Train Station [bus stop]                A0000001
+QBN700000000327300894  353965  Northern Ireland
+QLN700000001801Belfast Grand Central Busway                      A0000001
+QBN700000001801332700  373424  Northern Ireland
+QPNGLE Goldline Express        Goldline Express
+QQ
+QPNBE  Bus Eireann             Bus Eireann
+QQ
+QVNGL      Goldline
+QDNGLE 271 OBelfast, Grand Central Station - Cavan, Bus Station
+QDNBE  BE65OCavan, Bus Station - Athlone, Bus Station
+QDNBE  BE72OAthlone, Bus Station - Limerick, Bus station
+QDNBE  BE51OLimerick, Bus Station - Cork (Parnell Place Bus Station)
+QDNBE  BE51ICork (Parnell Place Bus Station) - Limerick, Bus Station
+QDNBE  BE72ILimerick, Bus station - Athlone, Bus station
+QDNBE  BE65IAthlone, Bus station - Monaghan, Bus Station
+QDNGLE 271 IMonaghan, Bus Station - Belfast, Grand Central Station

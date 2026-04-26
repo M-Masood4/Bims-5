@@ -1,0 +1,1208 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260319070140
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1001  20260316999999991111100 X237 13G03 GL              O
+QO700000017123091024 T1  
+QI70000000163709180918P   T1  
+QNp    pick up only                                                            
+QI70000000768809520952B   T0  
+QI70000000769009530953B   T1  
+QI70000000769710011001B   T1  
+QI70000000770510071007B   T1  
+QI70000000770810081008B   T1  
+QI70000000771410111011B   T1  
+QI70000000772610181018S   T1  
+QNs    Set down only                                                           
+QI70000001506110201020S   T0  
+QNs    Set down only                                                           
+QI70000000735810221022S   T0  
+QNs    Set down only                                                           
+QT7000000062351025   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1003  20260316999999991111100 X237 13G01 GL              O
+QO700000017126101024 T1  
+QI70000000163710181018P   T1  
+QNp    pick up only                                                            
+QI70000000768810521052B   T0  
+QI70000000769010531053B   T1  
+QI70000000769711011101B   T1  
+QI70000000770511071107B   T1  
+QI70000000770811081108B   T1  
+QI70000000771411111111B   T1  
+QI70000000772611181118S   T1  
+QNs    Set down only                                                           
+QI70000001506111201120S   T0  
+QNs    Set down only                                                           
+QI70000000735811221122S   T0  
+QNs    Set down only                                                           
+QT7000000062351125   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1005  20260316999999991111100 X237 13G03 GL              O
+QO700000017126121024 T1  
+QI70000000163712181218P   T1  
+QNp    pick up only                                                            
+QI70000000768812521252B   T0  
+QI70000000769012531253B   T1  
+QI70000000769713011301B   T1  
+QI70000000770513071307B   T1  
+QI70000000770813081308B   T1  
+QI70000000771413111311B   T1  
+QI70000000772613181318S   T1  
+QNs    Set down only                                                           
+QI70000001506113201320S   T0  
+QNs    Set down only                                                           
+QI70000000735813221322S   T0  
+QNs    Set down only                                                           
+QT7000000062351325   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1007  20260316999999991111100 X237 13G02 GL              O
+QO700000017126141024 T1  
+QI70000000163714181418P   T1  
+QNp    pick up only                                                            
+QI70000000768814521452B   T0  
+QI70000000769014531453B   T1  
+QI70000000769715011501B   T1  
+QI70000000770515071507B   T1  
+QI70000000770815081508B   T1  
+QI70000000771415111511B   T1  
+QI70000000772615181518S   T1  
+QNs    Set down only                                                           
+QI70000001506115201520S   T0  
+QNs    Set down only                                                           
+QI70000000735815221522S   T0  
+QNs    Set down only                                                           
+QT7000000062351525   T1  
+QDNGLE 237aOBelfast, Grand Central Station - Newcastle, Bus Station             
+QSNGLE 1009  20260316999999991111100 X237a13D06 DD              O
+QO700000017126163524 T1  
+QNM    Operates Via M1 Motorway                                                
+QI70000000765017091709B   T0  
+QI70000000769017101710B   T1  
+QI70000000769717181718B   T1  
+QI70000000770517241724B   T1  
+QI70000000770817251725B   T1  
+QI70000000771417281728B   T1  
+QI70000000772617351735S   T1  
+QNs    Set down only                                                           
+QI70000001506117381738S   T0  
+QNs    Set down only                                                           
+QI70000000735817431743S   T0  
+QNs    Set down only                                                           
+QT7000000062351750   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237aOBelfast, Grand Central Station - Newcastle, Bus Station             
+QSNGLE 1011  20260316999999991111100 X237a13G03 GL              O
+QO700000017126170524 T1  
+QNM    Operates Via M1 Motorway                                                
+QI70000000765017391739B   T0  
+QI70000000769017401740B   T1  
+QI70000000769717481748B   T1  
+QI70000000770517541754B   T1  
+QI70000000770817551755B   T1  
+QI70000000771417581758B   T1  
+QI70000000772618051805S   T1  
+QNs    Set down only                                                           
+QI70000001506118081808S   T0  
+QNs    Set down only                                                           
+QI70000000735818131813S   T0  
+QNs    Set down only                                                           
+QT7000000062351820   T1  
+QDNGLE 237aOBelfast, Grand Central Station - Newcastle, Bus Station             
+QSNGLE 1013  20260316999999991111100 X237a13G01 GL              O
+QO700000017126173024 T1  
+QNM    Operates Via M1 Motorway                                                
+QI70000000765018041804B   T0  
+QI70000000769018051805B   T1  
+QI70000000769718131813B   T1  
+QI70000000770518191819B   T1  
+QI70000000770818201820B   T1  
+QI70000000771418231823B   T1  
+QI70000000772618301830S   T1  
+QNs    Set down only                                                           
+QI70000001506118331833S   T0  
+QNs    Set down only                                                           
+QI70000000735818381838S   T0  
+QNs    Set down only                                                           
+QT7000000062351845   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1015  20260316999999991111100 X237 13D03 DD              O
+QO700000017126183524 T1  
+QI70000000163718431843P   T1  
+QNp    pick up only                                                            
+QI70000000768819171917B   T0  
+QI70000000769019181918B   T1  
+QI70000000769719261926B   T1  
+QI70000000770519321932B   T1  
+QI70000000770819331933B   T1  
+QI70000000771419361936B   T1  
+QI70000000772619431943S   T1  
+QNs    Set down only                                                           
+QI70000001506119451945S   T0  
+QNs    Set down only                                                           
+QI70000000735819471947S   T0  
+QNs    Set down only                                                           
+QT7000000062351950   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 1017  20260316999999991111100HX237 13G02 GL              O
+QNNSch School Holidays                                                         
+QO700000017126210524 T1  
+QI70000000163721132113P   T1  
+QNp    pick up only                                                            
+QI70000000768821472147B   T0  
+QI70000000769021482148B   T1  
+QI70000000769721562156B   T1  
+QI70000000770522022202B   T1  
+QI70000000770822032203B   T1  
+QI70000000771422062206B   T1  
+QI70000000772622132213S   T1  
+QNs    Set down only                                                           
+QI70000001506122152215S   T0  
+QNs    Set down only                                                           
+QI70000000735822172217S   T0  
+QNs    Set down only                                                           
+QT7000000062352220   T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1000  20260316999999991111100 X237 13D05 DD              I
+QO70000000623506201  T1  
+QI70000001506006200620P   T0  
+QNp    pick up only                                                            
+QI70000000733006210621P   T1  
+QNp    pick up only                                                            
+QI70000000762306290629B   T1  
+QI70000000762906320632B   T1  
+QI70000000763206340634B   T1  
+QI70000000764106400640B   T1  
+QI70000000764806490649B   T0  
+QI70000000765006500650B   T1  
+QI70000000765106500650B   T0  
+QI70000000041907270727S   T0  
+QNs    Set down only                                                           
+QI70000000042307280728S   T0  
+QNs    Set down only                                                           
+QI70000000042507290729S   T0  
+QNs    Set down only                                                           
+QI70000000042707290729S   T0  
+QNs    Set down only                                                           
+QI70000000042907290729S   T0  
+QNs    Set down only                                                           
+QI70000000043107300730S   T0  
+QNs    Set down only                                                           
+QI70000001542107320732S   T0  
+QNs    Set down only                                                           
+QT700000017126073524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1002  20260316999999991111100 X237 13G02 GL              I
+QO70000000623507001  T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506007000700P   T0  
+QNp    pick up only                                                            
+QI70000000733007010701P   T1  
+QNp    pick up only                                                            
+QI70000000762307090709B   T1  
+QI70000000762907120712B   T1  
+QI70000000763207140714B   T1  
+QI70000000764107200720B   T1  
+QI70000000764807290729B   T0  
+QI70000000765007300730B   T1  
+QI70000000765107300730B   T0  
+QI70000000041908110811S   T0  
+QNs    Set down only                                                           
+QI70000000042308120812S   T0  
+QNs    Set down only                                                           
+QI70000000042508130813S   T0  
+QNs    Set down only                                                           
+QI70000000042708130813S   T0  
+QNs    Set down only                                                           
+QI70000000042908140814S   T0  
+QNs    Set down only                                                           
+QI70000000043108140814S   T0  
+QNs    Set down only                                                           
+QI70000001542108160816S   T0  
+QNs    Set down only                                                           
+QT700000017126082024 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1004  20260316999999991111100 X237 13G03 GL              I
+QO70000000623507301  T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506007300730P   T0  
+QNp    pick up only                                                            
+QI70000000733007310731P   T1  
+QNp    pick up only                                                            
+QI70000000762307390739B   T1  
+QI70000000762907420742B   T1  
+QI70000000763207440744B   T1  
+QI70000000764107500750B   T1  
+QI70000000764807590759B   T0  
+QI70000000765008000800B   T1  
+QI70000000765108000800B   T0  
+QI70000000041908450845S   T0  
+QNs    Set down only                                                           
+QI70000000042308460846S   T0  
+QNs    Set down only                                                           
+QI70000000042508470847S   T0  
+QNs    Set down only                                                           
+QI70000000042708480848S   T0  
+QNs    Set down only                                                           
+QI70000000042908480848S   T0  
+QNs    Set down only                                                           
+QI70000000043108490849S   T0  
+QNs    Set down only                                                           
+QI70000001542108510851S   T0  
+QNs    Set down only                                                           
+QT700000017123085524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1006  20260316999999991111100 X237 13G01 GL              I
+QO70000000623508401  T1  
+QI70000001506008400840P   T0  
+QNp    pick up only                                                            
+QI70000000733008410841P   T1  
+QNp    pick up only                                                            
+QI70000000762308490849B   T1  
+QI70000000762908520852B   T1  
+QI70000000763208540854B   T1  
+QI70000000764109000900B   T1  
+QI70000000764809090909B   T0  
+QI70000000765009100910B   T1  
+QI70000000765109100910B   T0  
+QI70000000041909470947S   T0  
+QNs    Set down only                                                           
+QI70000000042309480948S   T0  
+QNs    Set down only                                                           
+QI70000000042509490949S   T0  
+QNs    Set down only                                                           
+QI70000000042709490949S   T0  
+QNs    Set down only                                                           
+QI70000000042909490949S   T0  
+QNs    Set down only                                                           
+QI70000000043109500950S   T0  
+QNs    Set down only                                                           
+QI70000001542109520952S   T0  
+QNs    Set down only                                                           
+QT700000017126095524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1008  20260316999999991111100 X237 13G03 GL              I
+QO70000000623510401  T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506010401040P   T0  
+QNp    pick up only                                                            
+QI70000000733010411041P   T1  
+QNp    pick up only                                                            
+QI70000000762310491049B   T1  
+QI70000000762910521052B   T1  
+QI70000000763210541054B   T1  
+QI70000000764111001100B   T1  
+QI70000000764811091109B   T0  
+QI70000000765011101110B   T1  
+QI70000000765111101110B   T0  
+QI70000000041911471147S   T0  
+QNs    Set down only                                                           
+QI70000000042311481148S   T0  
+QNs    Set down only                                                           
+QI70000000042511491149S   T0  
+QNs    Set down only                                                           
+QI70000000042711491149S   T0  
+QNs    Set down only                                                           
+QI70000000042911491149S   T0  
+QNs    Set down only                                                           
+QI70000000043111501150S   T0  
+QNs    Set down only                                                           
+QI70000001542111521152S   T0  
+QNs    Set down only                                                           
+QT700000017126115524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1010  20260316999999991111100 X237 13G02 GL              I
+QO70000000623512401  T1  
+QI70000001506012401240P   T0  
+QNp    pick up only                                                            
+QI70000000733012411241P   T1  
+QNp    pick up only                                                            
+QI70000000762312491249B   T1  
+QI70000000762912521252B   T1  
+QNC    CONNECTION IN CLOUGH FROM CASTLEWELLAN TO BELFAST                       
+QI70000000763212541254B   T1  
+QI70000000764113001300B   T1  
+QI70000000764813091309B   T0  
+QI70000000765013101310B   T1  
+QI70000000765113101310B   T0  
+QI70000000041913471347S   T0  
+QNs    Set down only                                                           
+QI70000000042313481348S   T0  
+QNs    Set down only                                                           
+QI70000000042513491349S   T0  
+QNs    Set down only                                                           
+QI70000000042713491349S   T0  
+QNs    Set down only                                                           
+QI70000000042913491349S   T0  
+QNs    Set down only                                                           
+QI70000000043113501350S   T0  
+QNs    Set down only                                                           
+QI70000001542113521352S   T0  
+QNs    Set down only                                                           
+QT700000017126135524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1012  20260316999999991111100SX237 13G01 GL              I
+QNSch  Schooldays Only                                                         
+QO70000000623513301  T1  
+QI70000001506013301330P   T0  
+QNp    pick up only                                                            
+QI70000000733013311331P   T1  
+QNp    pick up only                                                            
+QI70000000762313391339B   T1  
+QI70000000762913421342B   T1  
+QI70000000763213441344B   T1  
+QI70000000764113501350B   T1  
+QI70000000764813591359B   T0  
+QI70000000765014001400B   T1  
+QI70000000765114001400B   T0  
+QI70000000041914371437S   T0  
+QNs    Set down only                                                           
+QI70000000042314381438S   T0  
+QNs    Set down only                                                           
+QI70000000042514391439S   T0  
+QNs    Set down only                                                           
+QI70000000042714391439S   T0  
+QNs    Set down only                                                           
+QI70000000042914391439S   T0  
+QNs    Set down only                                                           
+QI70000000043114401440S   T0  
+QNs    Set down only                                                           
+QI70000001542114421442S   T0  
+QNs    Set down only                                                           
+QT700000017126144524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1014  20260316999999991111100HX237 13G01 GL              I
+QNNSch School Holidays                                                         
+QO70000000623515001  T1  
+QI70000001506015001500P   T0  
+QNp    pick up only                                                            
+QI70000000733015011501P   T1  
+QNp    pick up only                                                            
+QI70000000762315091509B   T1  
+QI70000000762915121512B   T1  
+QI70000000763215141514B   T1  
+QI70000000764115201520B   T1  
+QI70000000764815291529B   T0  
+QI70000000765015301530B   T1  
+QI70000000765115301530B   T0  
+QI70000000041916071607S   T0  
+QNs    Set down only                                                           
+QI70000000042316081608S   T0  
+QNs    Set down only                                                           
+QI70000000042516091609S   T0  
+QNs    Set down only                                                           
+QI70000000042716091609S   T0  
+QNs    Set down only                                                           
+QI70000000042916091609S   T0  
+QNs    Set down only                                                           
+QI70000000043116101610S   T0  
+QNs    Set down only                                                           
+QI70000001542116121612S   T0  
+QNs    Set down only                                                           
+QT700000017126161524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1016  20260316999999991111100HX237 13G03 GL              I
+QNNSch School Holidays                                                         
+QO70000000623515301  T1  
+QI70000001506015301530P   T0  
+QNp    pick up only                                                            
+QI70000000733015311531P   T1  
+QNp    pick up only                                                            
+QI70000000762315391539B   T1  
+QI70000000762915421542B   T1  
+QI70000000763215441544B   T1  
+QI70000000764115501550B   T1  
+QI70000000764815591559B   T0  
+QI70000000765016001600B   T1  
+QI70000000765116001600B   T0  
+QI70000000041916371637S   T0  
+QNs    Set down only                                                           
+QI70000000042316381638S   T0  
+QNs    Set down only                                                           
+QI70000000042516391639S   T0  
+QNs    Set down only                                                           
+QI70000000042716391639S   T0  
+QNs    Set down only                                                           
+QI70000000042916391639S   T0  
+QNs    Set down only                                                           
+QI70000000043116401640S   T0  
+QNs    Set down only                                                           
+QI70000001542116421642S   T0  
+QNs    Set down only                                                           
+QT700000017126164524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1018  20260316999999991111100HX237 13G02 GL              I
+QNNSch School Holidays                                                         
+QO70000000623516001  T1  
+QI70000001506016001600P   T0  
+QNp    pick up only                                                            
+QI70000000733016011601P   T1  
+QNp    pick up only                                                            
+QI70000000762316091609B   T1  
+QI70000000762916121612B   T1  
+QI70000000763216141614B   T1  
+QI70000000764116201620B   T1  
+QI70000000764816291629B   T0  
+QI70000000765016301630B   T1  
+QI70000000765116301630B   T0  
+QI70000000041917071707S   T0  
+QNs    Set down only                                                           
+QI70000000042317081708S   T0  
+QNs    Set down only                                                           
+QI70000000042517091709S   T0  
+QNs    Set down only                                                           
+QI70000000042717091709S   T0  
+QNs    Set down only                                                           
+QI70000000042917091709S   T0  
+QNs    Set down only                                                           
+QI70000000043117101710S   T0  
+QNs    Set down only                                                           
+QI70000001542117121712S   T0  
+QNs    Set down only                                                           
+QT700000017126171524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1020  20260316999999991111100 X237 13D03 DD              I
+QO70000000623517001  T1  
+QI70000001506017001700P   T0  
+QNp    pick up only                                                            
+QI70000000733017011701P   T1  
+QNp    pick up only                                                            
+QI70000000762317091709B   T1  
+QI70000000762917121712B   T1  
+QI70000000763217141714B   T1  
+QI70000000764117201720B   T1  
+QI70000000764817291729B   T0  
+QI70000000765017301730B   T1  
+QI70000000765117301730B   T0  
+QI70000000041918071807S   T0  
+QNs    Set down only                                                           
+QI70000000042318081808S   T0  
+QNs    Set down only                                                           
+QI70000000042518091809S   T0  
+QNs    Set down only                                                           
+QI70000000042718091809S   T0  
+QNs    Set down only                                                           
+QI70000000042918091809S   T0  
+QNs    Set down only                                                           
+QI70000000043118101810S   T0  
+QNs    Set down only                                                           
+QI70000001542118121812S   T0  
+QNs    Set down only                                                           
+QT700000017126181524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 1022  20260316999999991111100HX237 13G02 GL              I
+QNNSch School Holidays                                                         
+QO7000000077281945   T1  
+QI70000001506019451945P   T0  
+QNp    pick up only                                                            
+QI70000000733019461946P   T1  
+QNp    pick up only                                                            
+QI70000000762319541954B   T1  
+QI70000000762919571957B   T1  
+QI70000000763219591959B   T1  
+QI70000000764120052005B   T1  
+QI70000000764820142014B   T0  
+QI70000000765020152015B   T1  
+QI70000000765120152015B   T0  
+QI70000000041920522052S   T0  
+QNs    Set down only                                                           
+QI70000000042320532053S   T0  
+QNs    Set down only                                                           
+QI70000000042520542054S   T0  
+QNs    Set down only                                                           
+QI70000000042720542054S   T0  
+QNs    Set down only                                                           
+QI70000000042920542054S   T0  
+QNs    Set down only                                                           
+QI70000000043120552055S   T0  
+QNs    Set down only                                                           
+QI70000001542120572057S   T0  
+QNs    Set down only                                                           
+QT700000017126210024 T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2001  20260316999999990000010 X237 13G01 GL              O
+QO700000017126111024 T1  
+QI70000000163711181118P   T1  
+QNp    pick up only                                                            
+QI70000000768811521152B   T0  
+QI70000000769011531153B   T1  
+QI70000000769712011201B   T1  
+QI70000000770512071207B   T1  
+QI70000000770812081208B   T1  
+QI70000000771412111211B   T1  
+QI70000000772612181218S   T1  
+QNs    Set down only                                                           
+QI70000001506112201220S   T0  
+QNs    Set down only                                                           
+QI70000000735812221222S   T0  
+QNs    Set down only                                                           
+QT7000000062351225   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2002  20260316999999990000010 X237 13G02 GL              O
+QO700000017126121024 T1  
+QI70000000163712181218P   T1  
+QNp    pick up only                                                            
+QI70000000768812521252B   T0  
+QI70000000769012531253B   T1  
+QI70000000769713011301B   T1  
+QI70000000770513071307B   T1  
+QI70000000770813081308B   T1  
+QI70000000771413111311B   T1  
+QI70000000772613181318S   T1  
+QNs    Set down only                                                           
+QI70000001506113201320S   T0  
+QNs    Set down only                                                           
+QI70000000735813221322S   T0  
+QNs    Set down only                                                           
+QT7000000062351325   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2003  20260316999999990000010 X237 13G01 GL              O
+QO700000017126141024 T1  
+QI70000000163714181418P   T1  
+QNp    pick up only                                                            
+QI70000000768814521452B   T0  
+QI70000000769014531453B   T1  
+QI70000000769715011501B   T1  
+QI70000000770515071507B   T1  
+QI70000000770815081508B   T1  
+QI70000000771415111511B   T1  
+QI70000000772615181518S   T1  
+QNs    Set down only                                                           
+QI70000001506115201520S   T0  
+QNs    Set down only                                                           
+QI70000000735815221522S   T0  
+QNs    Set down only                                                           
+QT7000000062351525   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2004  20260316999999990000010 X237 13G02 GL              O
+QO700000017126161024 T1  
+QI70000000163716181618P   T1  
+QNp    pick up only                                                            
+QI70000000768816521652B   T0  
+QI70000000769016531653B   T1  
+QI70000000769717011701B   T1  
+QI70000000770517071707B   T1  
+QI70000000770817081708B   T1  
+QI70000000771417111711B   T1  
+QI70000000772617181718S   T1  
+QNs    Set down only                                                           
+QI70000001506117201720S   T0  
+QNs    Set down only                                                           
+QI70000000735817221722S   T0  
+QNs    Set down only                                                           
+QT7000000062351725   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2005  20260316999999990000010 X237 13G03 GL              O
+QO700000017126170524 T1  
+QI70000000163717131713P   T1  
+QNp    pick up only                                                            
+QI70000000768817471747B   T0  
+QI70000000769017481748B   T1  
+QI70000000769717561756B   T1  
+QI70000000770518021802B   T1  
+QI70000000770818031803B   T1  
+QI70000000771418061806B   T1  
+QI70000000772618131813S   T1  
+QNs    Set down only                                                           
+QI70000001506118151815S   T0  
+QNs    Set down only                                                           
+QI70000000735818171817S   T0  
+QNs    Set down only                                                           
+QT7000000062351820   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2006  20260316999999990000010 X237 13G01 GL              O
+QO700000017126183024 T1  
+QI70000000163718381838P   T1  
+QNp    pick up only                                                            
+QI70000000768819121912B   T0  
+QI70000000769019131913B   T1  
+QI70000000769719211921B   T1  
+QI70000000770519271927B   T1  
+QI70000000770819281928B   T1  
+QI70000000771419311931B   T1  
+QI70000000772619381938S   T1  
+QNs    Set down only                                                           
+QI70000001506119401940S   T0  
+QNs    Set down only                                                           
+QI70000000735819421942S   T0  
+QNs    Set down only                                                           
+QT7000000062351945   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 2007  20260316999999990000010 X237 13G02 GL              O
+QO700000017126210524 T1  
+QI70000000163721132113P   T1  
+QNp    pick up only                                                            
+QI70000000768821472147B   T0  
+QI70000000769021482148B   T1  
+QI70000000769721562156B   T1  
+QI70000000770522022202B   T1  
+QI70000000770822032203B   T1  
+QI70000000771422062206B   T1  
+QI70000000772622132213S   T1  
+QNs    Set down only                                                           
+QI70000001506122152215S   T0  
+QNs    Set down only                                                           
+QI70000000735822172217S   T0  
+QNs    Set down only                                                           
+QT7000000062352220   T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2000  20260316999999990000010 X237 13G01 GL              I
+QO70000000623509401  T1  
+QI70000001506009400940P   T0  
+QNp    pick up only                                                            
+QI70000000733009410941P   T1  
+QNp    pick up only                                                            
+QI70000000762309490949B   T1  
+QI70000000762909520952B   T1  
+QI70000000763209540954B   T1  
+QI70000000764110001000B   T1  
+QI70000000764810091009B   T0  
+QI70000000765010101010B   T1  
+QI70000000765110101010B   T0  
+QI70000000041910471047S   T0  
+QNs    Set down only                                                           
+QI70000000042310481048S   T0  
+QNs    Set down only                                                           
+QI70000000042510491049S   T0  
+QNs    Set down only                                                           
+QI70000000042710491049S   T0  
+QNs    Set down only                                                           
+QI70000000042910491049S   T0  
+QNs    Set down only                                                           
+QI70000000043110501050S   T0  
+QNs    Set down only                                                           
+QI70000001542110521052S   T0  
+QNs    Set down only                                                           
+QT700000017126105524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2002  20260316999999990000010 X237 13G02 GL              I
+QO70000000623510451  T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506010451045P   T0  
+QNp    pick up only                                                            
+QI70000000733010461046P   T1  
+QNp    pick up only                                                            
+QI70000000762310541054B   T1  
+QI70000000762910571057B   T1  
+QI70000000763210591059B   T1  
+QI70000000764111051105B   T1  
+QI70000000764811141114B   T0  
+QI70000000765011151115B   T1  
+QI70000000765111151115B   T0  
+QI70000000041911521152S   T0  
+QNs    Set down only                                                           
+QI70000000042311531153S   T0  
+QNs    Set down only                                                           
+QI70000000042511541154S   T0  
+QNs    Set down only                                                           
+QI70000000042711541154S   T0  
+QNs    Set down only                                                           
+QI70000000042911541154S   T0  
+QNs    Set down only                                                           
+QI70000000043111551155S   T0  
+QNs    Set down only                                                           
+QI70000001542111571157S   T0  
+QNs    Set down only                                                           
+QT700000017126120024 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2004  20260316999999990000010 X237 13G01 GL              I
+QO70000000623512401  T1  
+QI70000001506012401240P   T0  
+QNp    pick up only                                                            
+QI70000000733012411241P   T1  
+QNp    pick up only                                                            
+QI70000000762312491249B   T1  
+QI70000000762912521252B   T1  
+QI70000000763212541254B   T1  
+QI70000000764113001300B   T1  
+QI70000000764813091309B   T0  
+QI70000000765013101310B   T1  
+QI70000000765113101310B   T0  
+QI70000000041913471347S   T0  
+QNs    Set down only                                                           
+QI70000000042313481348S   T0  
+QNs    Set down only                                                           
+QI70000000042513491349S   T0  
+QNs    Set down only                                                           
+QI70000000042713491349S   T0  
+QNs    Set down only                                                           
+QI70000000042913491349S   T0  
+QNs    Set down only                                                           
+QI70000000043113501350S   T0  
+QNs    Set down only                                                           
+QI70000001542113521352S   T0  
+QNs    Set down only                                                           
+QT700000017126135524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2006  20260316999999990000010 X237 13G02 GL              I
+QO70000000623514401  T1  
+QI70000001506014401440P   T0  
+QNp    pick up only                                                            
+QI70000000733014411441P   T1  
+QNp    pick up only                                                            
+QI70000000762314491449B   T1  
+QI70000000762914521452B   T1  
+QNC    CONNECTION IN CLOUGH FROM CASTLEWELLAN AND TO DOWNPATRICK               
+QI70000000763214541454B   T1  
+QI70000000764115001500B   T1  
+QI70000000764815091509B   T0  
+QI70000000765015101510B   T1  
+QI70000000765115101510B   T0  
+QI70000000041915471547S   T0  
+QNs    Set down only                                                           
+QI70000000042315481548S   T0  
+QNs    Set down only                                                           
+QI70000000042515491549S   T0  
+QNs    Set down only                                                           
+QI70000000042715491549S   T0  
+QNs    Set down only                                                           
+QI70000000042915491549S   T0  
+QNs    Set down only                                                           
+QI70000000043115501550S   T0  
+QNs    Set down only                                                           
+QI70000001542115521552S   T0  
+QNs    Set down only                                                           
+QT700000017126155524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2008  20260316999999990000010 X237 13G03 GL              I
+QO70000000623515401  T1  
+QI70000001506015401540P   T0  
+QNp    pick up only                                                            
+QI70000000733015411541P   T1  
+QNp    pick up only                                                            
+QI70000000762315491549B   T1  
+QI70000000762915521552B   T1  
+QI70000000763215541554B   T1  
+QI70000000764116001600B   T1  
+QI70000000764816091609B   T0  
+QI70000000765016101610B   T1  
+QI70000000765116101610B   T0  
+QI70000000041916471647S   T0  
+QNs    Set down only                                                           
+QI70000000042316481648S   T0  
+QNs    Set down only                                                           
+QI70000000042516491649S   T0  
+QNs    Set down only                                                           
+QI70000000042716491649S   T0  
+QNs    Set down only                                                           
+QI70000000042916491649S   T0  
+QNs    Set down only                                                           
+QI70000000043116501650S   T0  
+QNs    Set down only                                                           
+QI70000001542116521652S   T0  
+QNs    Set down only                                                           
+QT700000017126165524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2010  20260316999999990000010 X237 13G01 GL              I
+QO70000000623517001  T1  
+QI70000001506017001700P   T0  
+QNp    pick up only                                                            
+QI70000000733017011701P   T1  
+QNp    pick up only                                                            
+QI70000000762317091709B   T1  
+QI70000000762917121712B   T1  
+QI70000000763217141714B   T1  
+QI70000000764117201720B   T1  
+QI70000000764817291729B   T0  
+QI70000000765017301730B   T1  
+QI70000000765117301730B   T0  
+QI70000000041918071807S   T0  
+QNs    Set down only                                                           
+QI70000000042318081808S   T0  
+QNs    Set down only                                                           
+QI70000000042518091809S   T0  
+QNs    Set down only                                                           
+QI70000000042718091809S   T0  
+QNs    Set down only                                                           
+QI70000000042918091809S   T0  
+QNs    Set down only                                                           
+QI70000000043118101810S   T0  
+QNs    Set down only                                                           
+QI70000001542118121812S   T0  
+QNs    Set down only                                                           
+QT700000017126181524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS                               
+QSNGLE 2012  20260316999999990000010 X237 13G02 GL              I
+QO7000000077281945   T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506019451945P   T0  
+QNp    pick up only                                                            
+QI70000000733019461946P   T1  
+QNp    pick up only                                                            
+QI70000000762319541954B   T1  
+QI70000000762919571957B   T1  
+QI70000000763219591959B   T1  
+QI70000000764120052005B   T1  
+QI70000000764820142014B   T0  
+QI70000000765020152015B   T1  
+QI70000000765120152015B   T0  
+QI70000000041920522052S   T0  
+QNs    Set down only                                                           
+QI70000000042320532053S   T0  
+QNs    Set down only                                                           
+QI70000000042520542054S   T0  
+QNs    Set down only                                                           
+QI70000000042720542054S   T0  
+QNs    Set down only                                                           
+QI70000000042920542054S   T0  
+QNs    Set down only                                                           
+QI70000000043120552055S   T0  
+QNs    Set down only                                                           
+QI70000001542120572057S   T0  
+QNs    Set down only                                                           
+QT700000017126210024 T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3001  20260316999999990000001 X237 50U01 URBY            O
+QO700000017126100524 T1  
+QI70000000163710131013P   T1  
+QNp    pick up only                                                            
+QI70000000768810471047B   T0  
+QI70000000769010481048B   T1  
+QI70000000769710561056B   T1  
+QI70000000770511021102B   T1  
+QI70000000770811031103B   T1  
+QI70000000771411061106B   T1  
+QI70000000772611131113S   T1  
+QNs    Set down only                                                           
+QI70000001506111151115S   T0  
+QNs    Set down only                                                           
+QI70000000735811171117S   T0  
+QNs    Set down only                                                           
+QT7000000062351120   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3003  20260316999999990000001 X237 50U03 URBY            O
+QO700000017126110524 T1  
+QI70000000163711131113P   T1  
+QNp    pick up only                                                            
+QI70000000768811471147B   T0  
+QI70000000769011481148B   T1  
+QI70000000769711561156B   T1  
+QI70000000770512021202B   T1  
+QI70000000770812031203B   T1  
+QI70000000771412061206B   T1  
+QI70000000772612131213S   T1  
+QNs    Set down only                                                           
+QI70000001506112151215S   T0  
+QNs    Set down only                                                           
+QI70000000735812171217S   T0  
+QNs    Set down only                                                           
+QT7000000062351220   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3005  20260316999999990000001 X237 13G01 GL              O
+QO700000017126130524 T1  
+QI70000000163713131313P   T1  
+QNp    pick up only                                                            
+QI70000000768813471347B   T0  
+QI70000000769013481348B   T1  
+QI70000000769713561356B   T1  
+QI70000000770514021402B   T1  
+QI70000000770814031403B   T1  
+QI70000000771414061406B   T1  
+QI70000000772614131413S   T1  
+QNs    Set down only                                                           
+QI70000001506114151415S   T0  
+QNs    Set down only                                                           
+QI70000000735814171417S   T0  
+QNs    Set down only                                                           
+QT7000000062351420   T1  
+QNK    Connection for Kilkeel                                                  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3007  20260316999999990000001 X237 13G02 GL              O
+QO700000017126140524 T1  
+QI70000000163714131413P   T1  
+QNp    pick up only                                                            
+QI70000000768814471447B   T0  
+QI70000000769014481448B   T1  
+QI70000000769714561456B   T1  
+QI70000000770515021502B   T1  
+QI70000000770815031503B   T1  
+QI70000000771415061506B   T1  
+QI70000000772615131513S   T1  
+QNs    Set down only                                                           
+QI70000001506115151515S   T0  
+QNs    Set down only                                                           
+QI70000000735815171517S   T0  
+QNs    Set down only                                                           
+QT7000000062351520   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3009  20260316999999990000001 X237 13G01 GL              O
+QO700000017126183024 T1  
+QI70000000163718381838P   T1  
+QNp    pick up only                                                            
+QI70000000768819121912B   T0  
+QI70000000769019131913B   T1  
+QI70000000769719211921B   T1  
+QI70000000770519271927B   T1  
+QI70000000770819281928B   T1  
+QI70000000771419311931B   T1  
+QI70000000772619381938S   T1  
+QNs    Set down only                                                           
+QI70000001506119401940S   T0  
+QNs    Set down only                                                           
+QI70000000735819421942S   T0  
+QNs    Set down only                                                           
+QT7000000062351945   T1  
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station                               
+QSNGLE 3011  20260316999999990000001 X237 13G02 GL              O
+QO700000017126210524 T1  
+QI70000000163721132113P   T1  
+QNp    pick up only                                                            
+QI70000000768821472147B   T0  
+QI70000000769021482148B   T1  
+QI70000000769721562156B   T1  
+QI70000000770522022202B   T1  
+QI70000000770822032203B   T1  
+QI70000000771422062206B   T1  
+QI70000000772622132213S   T1  
+QNs    Set down only                                                           
+QI70000001506122152215S   T0  
+QNs    Set down only                                                           
+QI70000000735822172217S   T0  
+QNs    Set down only                                                           
+QT7000000062352220   T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3000  20260316999999990000001 X237 50U01 URBY            I
+QO70000000623508401  T1  
+QI70000001506008400840P   T0  
+QNp    pick up only                                                            
+QI70000000733008410841P   T1  
+QNp    pick up only                                                            
+QI70000000762308490849B   T1  
+QI70000000762908520852B   T1  
+QI70000000763208540854B   T1  
+QI70000000764109000900B   T1  
+QI70000000764809090909B   T0  
+QI70000000765009100910B   T1  
+QI70000000765109100910B   T0  
+QI70000000041909470947S   T0  
+QNs    Set down only                                                           
+QI70000000042309480948S   T0  
+QNs    Set down only                                                           
+QI70000000042509490949S   T0  
+QNs    Set down only                                                           
+QI70000000042709490949S   T0  
+QNs    Set down only                                                           
+QI70000000042909490949S   T0  
+QNs    Set down only                                                           
+QI70000000043109500950S   T0  
+QNs    Set down only                                                           
+QI70000001542109520952S   T0  
+QNs    Set down only                                                           
+QT700000017126095524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3002  20260316999999990000001 X237 50U03 URBY            I
+QO70000000623509401  T1  
+QI70000001506009400940P   T0  
+QNp    pick up only                                                            
+QI70000000733009410941P   T1  
+QNp    pick up only                                                            
+QI70000000762309490949B   T1  
+QI70000000762909520952B   T1  
+QI70000000763209540954B   T1  
+QI70000000764110001000B   T1  
+QI70000000764810091009B   T0  
+QI70000000765010101010B   T1  
+QI70000000765110101010B   T0  
+QI70000000041910471047S   T0  
+QNs    Set down only                                                           
+QI70000000042310481048S   T0  
+QNs    Set down only                                                           
+QI70000000042510491049S   T0  
+QNs    Set down only                                                           
+QI70000000042710491049S   T0  
+QNs    Set down only                                                           
+QI70000000042910491049S   T0  
+QNs    Set down only                                                           
+QI70000000043110501050S   T0  
+QNs    Set down only                                                           
+QI70000001542110521052S   T0  
+QNs    Set down only                                                           
+QT700000017126105524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3004  20260316999999990000001 X237 13G01 GL              I
+QO70000000623511401  T1  
+QI70000001506011401140P   T0  
+QNp    pick up only                                                            
+QI70000000733011411141P   T1  
+QNp    pick up only                                                            
+QI70000000762311491149B   T1  
+QI70000000762911521152B   T1  
+QI70000000763211541154B   T1  
+QI70000000764112001200B   T1  
+QI70000000764812091209B   T0  
+QI70000000765012101210B   T1  
+QI70000000765112101210B   T0  
+QI70000000041912471247S   T0  
+QNs    Set down only                                                           
+QI70000000042312481248S   T0  
+QNs    Set down only                                                           
+QI70000000042512491249S   T0  
+QNs    Set down only                                                           
+QI70000000042712491249S   T0  
+QNs    Set down only                                                           
+QI70000000042912491249S   T0  
+QNs    Set down only                                                           
+QI70000000043112501250S   T0  
+QNs    Set down only                                                           
+QI70000001542112521252S   T0  
+QNs    Set down only                                                           
+QT700000017126125524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3006  20260316999999990000001 X237 13G02 GL              I
+QO70000000623512401  T1  
+QI70000001506012401240P   T0  
+QNp    pick up only                                                            
+QI70000000733012411241P   T1  
+QNp    pick up only                                                            
+QI70000000762312491249B   T1  
+QI70000000762912521252B   T1  
+QI70000000763212541254B   T1  
+QI70000000764113001300B   T1  
+QI70000000764813091309B   T0  
+QI70000000765013101310B   T1  
+QI70000000765113101310B   T0  
+QI70000000041913471347S   T0  
+QNs    Set down only                                                           
+QI70000000042313481348S   T0  
+QNs    Set down only                                                           
+QI70000000042513491349S   T0  
+QNs    Set down only                                                           
+QI70000000042713491349S   T0  
+QNs    Set down only                                                           
+QI70000000042913491349S   T0  
+QNs    Set down only                                                           
+QI70000000043113501350S   T0  
+QNs    Set down only                                                           
+QI70000001542113521352S   T0  
+QNs    Set down only                                                           
+QT700000017126135524 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3008  20260316999999990000001 X237 13G01 GL              I
+QO70000000623517051  T1  
+QNo    Await connection from Kilkeel                                           
+QI70000001506017051705P   T0  
+QNp    pick up only                                                            
+QI70000000733017061706P   T1  
+QNp    pick up only                                                            
+QI70000000762317141714B   T1  
+QI70000000762917171717B   T1  
+QI70000000763217191719B   T1  
+QI70000000764117251725B   T1  
+QI70000000764817341734B   T0  
+QI70000000765017351735B   T1  
+QI70000000765117351735B   T0  
+QI70000000041918121812S   T0  
+QNs    Set down only                                                           
+QI70000000042318131813S   T0  
+QNs    Set down only                                                           
+QI70000000042518141814S   T0  
+QNs    Set down only                                                           
+QI70000000042718141814S   T0  
+QNs    Set down only                                                           
+QI70000000042918141814S   T0  
+QNs    Set down only                                                           
+QI70000000043118151815S   T0  
+QNs    Set down only                                                           
+QI70000001542118171817S   T0  
+QNs    Set down only                                                           
+QT700000017126182024 T1  
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street                  
+QSNGLE 3010  20260316999999990000001 X237 13G02 GL              I
+QO7000000077281945   T1  
+QI70000001506019451945P   T0  
+QNp    pick up only                                                            
+QI70000000733019461946P   T1  
+QNp    pick up only                                                            
+QI70000000762319541954B   T1  
+QI70000000762919571957B   T1  
+QI70000000763219591959B   T1  
+QI70000000764120052005B   T1  
+QI70000000764820142014B   T0  
+QI70000000765020152015B   T1  
+QI70000000765120152015B   T0  
+QI70000000041920522052S   T0  
+QNs    Set down only                                                           
+QI70000000042320532053S   T0  
+QNs    Set down only                                                           
+QI70000000042520542054S   T0  
+QNs    Set down only                                                           
+QI70000000042720542054S   T0  
+QNs    Set down only                                                           
+QI70000000042920542054S   T0  
+QNs    Set down only                                                           
+QI70000000043120552055S   T0  
+QNs    Set down only                                                           
+QI70000001542120572057S   T0  
+QNs    Set down only                                                           
+QT700000017126210024 T1  
+QLN700000017126Stand 24                                          A0000001
+QBN700000017126333187  373693  Northern Ireland
+QLN700000017123Stand 21
+QBN700000017123333198  373700  Northern Ireland
+QLN700000001637Adelaide St.                                      A0000001
+QBN700000001637333940  373912  Northern Ireland
+QLN700000007688Ballynahinch Library                              A0000001
+QBN700000007688336814  352631  Northern Ireland
+QLN700000007650Ballynahinch Caugheys                             A0000001
+QBN700000007650336628  352540  Northern Ireland
+QLN700000007690Windmill Street                                   A0000001
+QBN700000007690336680  352404  Northern Ireland
+QLN700000007697McAllisters                                       A0000001
+QBN700000007697339212  348745  Northern Ireland
+QLN700000007705Seaforde Tel Kiosk                                A0000001
+QBN700000007705340549  341987  Northern Ireland
+QLN700000007708Clough Post Office                                A0000001
+QBN700000007708340847  340279  Northern Ireland
+QLN700000007714Spar Shop Dundrum                                 A0000001
+QBN700000007714340539  336446  Northern Ireland
+QLN700000007726Barbican                                          A0000001
+QBN700000007726337868  332115  Northern Ireland
+QLN700000015061Merrion Avenue                                    A0000001
+QBN700000015061337830  332010  Northern Ireland
+QLN700000007358Mc Clures                                         A0000001
+QBN700000007358337752  331790  Northern Ireland
+QLN700000006235Newcastle Bus Station                             A0000001
+QBN700000006235337801  331631  Northern Ireland
+QLN700000007728Front Of Newcastle Depot                          A0000001
+QBN700000007728337799  331610  Northern Ireland
+QLN70000001506012 Dundrum Road                                   A0000001
+QBN700000015060337763  331868  Northern Ireland
+QLN700000007330Barbican                                          A0000001
+QBN700000007330337852  332119  Northern Ireland
+QLN700000007623The Spar Shop                                     A0000001
+QBN700000007623340525  336450  Northern Ireland
+QLN700000007629Clough Po                                         A0000001
+QBN700000007629340848  340256  Northern Ireland
+QLN700000007632Seaforde                                          A0000001
+QBN700000007632340531  341981  Northern Ireland
+QLN700000007641McAllisters                                       A0000001
+QBN700000007641339163  348718  Northern Ireland
+QLN700000007648Dromore Street                                    A0000001
+QBN700000007648336592  352244  Northern Ireland
+QLN700000007651Assumption                                        A0000001
+QBN700000007651336798  352641  Northern Ireland
+QLN700000000419Ulidia                                            A0000001
+QBN700000000419334677  371833  Northern Ireland
+QLN700000000423Candahar Street                                   A0000001
+QBN700000000423334473  372258  Northern Ireland
+QLN700000000425Ormeau Road (Agincourt Avenue)                    A0000001
+QBN700000000425334369  372603  Northern Ireland
+QLN700000000427Hatfield Street                                   A0000001
+QBN700000000427334317  372810  Northern Ireland
+QLN700000000429McClure Street                                    A0000001
+QBN700000000429334246  373046  Northern Ireland
+QLN700000000431Gasworks                                          A0000001
+QBN700000000431334142  373375  Northern Ireland
+QLN700000015421Belfast Bedford Street                            A0000001
+QBN700000015421333749  373890  Northern Ireland
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNGL      Goldliner
+QVNDD      Double Decker
+QVNURBY    URBY
+QDNGLE 237 OBelfast, GCS - Newcastle, Bus Station
+QDNGLE 237aOBelfast, Grand Central Station - Newcastle, Bus Station
+QDNGLE 237 INewcastle, Bus Station - Belfast, GCS
+QDNGLE 237 INewcastle, Bus Station - Belfast, Linenhall Street

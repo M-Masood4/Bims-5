@@ -1,2 +1,11 @@
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+!.env.example
+node_modules/
+build/
+output/
 .env.local
 node_modules

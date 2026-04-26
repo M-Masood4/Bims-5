@@ -1,0 +1,542 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251127135126
+QDNULB 86a ODungannon - Cappagh                                                 
+QSNULB 1001  20251208999999991111100SX86a 15L03 LF              O
+QNSch  Schooldays Only                                                         
+QO7000000092641535   T1  
+QI70000000926515361536B   T0  
+QI70000001482715451545B   T1  
+QI70000000959515501550B   T1  
+QI70000000923715531553B   T1  
+QI70000000912715551555B   T1  
+QI70000000990515561556B   T0  
+QI70000000972515561556B   T0  
+QI70000000972615571557B   T0  
+QI70000000959215571557B   T0  
+QI70000000959115591559B   T0  
+QI70000000972716001600B   T1  
+QI70000000973816001600B   T0  
+QI70000000972916021602B   T0  
+QI70000000973116041604B   T0  
+QI70000000973216051605B   T1  
+QI70000000970616051605B   T0  
+QI70000000970716051605B   T0  
+QI70000000970816061606B   T0  
+QI70000000970916071607B   T0  
+QI70000000971016071607B   T0  
+QI70000000971116071607B   T0  
+QI70000000937016081608B   T1  
+QI70000000978216081608B   T0  
+QI70000000955916091609B   T0  
+QI70000000956016091609B   T0  
+QI70000000956216111611B   T0  
+QI70000000956316111611B   T0  
+QI70000000956416121612B   T0  
+QI70000000956516131613B   T0  
+QI70000000956616131613B   T0  
+QI70000000956716141614B   T0  
+QI70000000956816141614B   T0  
+QI70000000956916151615B   T0  
+QI70000000957016161616B   T0  
+QI70000000957116211621B   T0  
+QT7000000095721623   T1  
+QDNULB 86a ICappagh - Dungannon, Bus Station                                    
+QSNULB 1002  20251208999999991111100SX86a 15l06 LF              I
+QNSch  Schooldays Only                                                         
+QO7000000095720750   T1  
+QI70000000957307500750B   T0  
+QI70000000957407510751B   T0  
+QI70000000957507510751B   T0  
+QI70000000957607510751B   T0  
+QI70000000957707520752B   T0  
+QI70000000957807520752B   T0  
+QI70000000957907520752B   T0  
+QI70000000958007560756B   T0  
+QI70000000958107570757B   T0  
+QI70000000958208030803B   T0  
+QI70000000958308030803B   T0  
+QI70000000958408040804B   T0  
+QI70000000958508040804B   T0  
+QI70000000990208040804B   T0  
+QI70000000990308040804B   T0  
+QI70000000971308050805B   T1  
+QI70000000971408060806B   T0  
+QI70000000958608070807B   T1  
+QI70000000958708070807B   T0  
+QI70000000958808090809B   T0  
+QI70000000958908090809B   T0  
+QI70000000959008100810B   T1  
+QI70000000959108100810B   T0  
+QI70000001483108120812B   T0  
+QI70000000959308130813B   T0  
+QI70000000996508130813B   T0  
+QI70000000996608140814B   T0  
+QI70000000912708150815B   T1  
+QI70000000964708180818B   T0  
+QT7000000148270825   T1  
+QDNULB 86a ICappagh - Dungannon, Bus Station                                    
+QSNULB 1003  20251208999999991111100SX86a 15L03 LF              I
+QNSch  Schooldays Only                                                         
+QO7000000095721625   T1  
+QI70000000957316251625B   T0  
+QI70000000957416251625B   T0  
+QI70000000957516261626B   T0  
+QI70000000957616261626B   T0  
+QI70000000957716261626B   T0  
+QI70000000957816271627B   T0  
+QI70000000957916271627B   T0  
+QI70000000958016301630B   T0  
+QI70000000958116311631B   T0  
+QI70000000958216361636B   T0  
+QI70000000958316361636B   T0  
+QI70000000958416371637B   T0  
+QI70000000958516371637B   T0  
+QI70000000990216371637B   T0  
+QI70000000990316371637B   T0  
+QI70000000971316381638B   T1  
+QI70000000971416391639B   T0  
+QI70000000958616401640B   T1  
+QI70000000958716401640B   T0  
+QI70000000958816421642B   T0  
+QI70000000958916421642B   T0  
+QI70000000959016431643B   T1  
+QI70000000959116431643B   T0  
+QI70000001483116461646B   T0  
+QI70000000959316471647B   T0  
+QI70000000996516481648B   T0  
+QI70000000996616491649B   T0  
+QT7000000091271650   T1  
+QLN700000009264South West College Dungannon                      A0000001
+QBN700000009264280097  362940  Northern Ireland
+QLN700000009265Leisure Centre                                    A0000001
+QBN700000009265280148  362687  Northern Ireland
+QLN700000014827St Patrick's Academy Dungannon                    A0000001
+QBN700000014827280955  362993  Northern Ireland
+QLN700000009595Royal School Dungannon                            A0000001
+QBN700000009595280044  362446  Northern Ireland
+QLN700000009237Scotch Street                                     A0000001
+QBN700000009237279703  362392  Northern Ireland
+QLN700000009127Dungannon Bus Station                             A0000001
+QBN700000009127279473  362080  Northern Ireland
+QLN700000009321FE College                                        A0000001
+QBN700000009321280092  362909  Northern Ireland
+QLN700000009648Woodlawn Drive                                    A0000001
+QBN700000009648279624  362977  Northern Ireland
+QLN700000009649Meadowvale                                        A0000001
+QBN700000009649279310  363112  Northern Ireland
+QLN700000009650Quarry Lane                                       A0000001
+QBN700000009650279117  363068  Northern Ireland
+QLN700000009651Wellbrook Avenue                                  A0000001
+QBN700000009651278961  363106  Northern Ireland
+QLN700000009652Foxborough                                        A0000001
+QBN700000009652278735  363329  Northern Ireland
+QLN700000009653Mullaghmore Road                                  A0000001
+QBN700000009653278507  363548  Northern Ireland
+QLN700000009654Rock Road                                         A0000001
+QBN700000009654277934  364569  Northern Ireland
+QLN700000009655Crilly Hous                                       A0000001
+QBN700000009655277840  364730  Northern Ireland
+QLN700000009905Ballygawley Road                                  A0000001
+QBN700000009905279296  362350  Northern Ireland
+QLN700000009725Gormleys Garage                                   A0000001
+QBN700000009725279028  362332  Northern Ireland
+QLN700000009726Cloneen                                           A0000001
+QBN700000009726278819  362364  Northern Ireland
+QLN700000009592Fireplace Centre                                  A0000001
+QBN700000009592278615  362492  Northern Ireland
+QLN700000009591Old Caulfield Road                                A0000001
+QBN700000009591278186  362840  Northern Ireland
+QLN700000009727Glebe Park                                        A0000001
+QBN700000009727278009  363028  Northern Ireland
+QLN700000009738Courtneys                                         A0000001
+QBN700000009738277698  363040  Northern Ireland
+QLN700000009729Old Caulfield Road                                A0000001
+QBN700000009729276847  362703  Northern Ireland
+QLN700000009731Old Caulfield Road                                A0000001
+QBN700000009731275651  362639  Northern Ireland
+QLN700000009732Castlecaulfield Black Hall                        A0000001
+QBN700000009732275550  362715  Northern Ireland
+QLN700000009656Aughrainey Corner                                 A0000001
+QBN700000009656277411  365062  Northern Ireland
+QLN700000009904Main Street                                       A0000001
+QBN700000009904276957  365370  Northern Ireland
+QLN700000009712Convent Gates                                     A0000001
+QBN700000009712276743  365289  Northern Ireland
+QLN700000009706Manse                                             A0000001
+QBN700000009706275598  363105  Northern Ireland
+QLN700000009707Drumreany Road                                    A0000001
+QBN700000009707275716  363297  Northern Ireland
+QLN700000009708Castlecaulfield Road                              A0000001
+QBN700000009708276201  363801  Northern Ireland
+QLN700000009709Foygh Road                                        A0000001
+QBN700000009709276156  364438  Northern Ireland
+QLN700000009710Vincents Lane                                     A0000001
+QBN700000009710276347  364722  Northern Ireland
+QLN700000009711Castlecaulfield Road                              A0000001
+QBN700000009711276563  364999  Northern Ireland
+QLN700000009370St Joseph's Convent Grammar School                A0000001
+QBN700000009370276736  365296  Northern Ireland
+QLN700000009782Torrent View                                      A0000001
+QBN700000009782276597  365688  Northern Ireland
+QLN700000009559Tullyleek Road                                    A0000001
+QBN700000009559276040  365556  Northern Ireland
+QLN700000009560Railway Bridge                                    A0000001
+QBN700000009560275580  365381  Northern Ireland
+QLN700000009562Mullaghfutherland Road                            A0000001
+QBN700000009562274496  365604  Northern Ireland
+QLN700000009563Kilnaslee Letterbox                               A0000001
+QBN700000009563273969  365399  Northern Ireland
+QLN700000009564Mc Farlands Lane                                  A0000001
+QBN700000009564273341  365612  Northern Ireland
+QLN700000009565Mc Minns Lane                                     A0000001
+QBN700000009565272862  365830  Northern Ireland
+QLN700000009566Galbally Po                                       A0000001
+QBN700000009566272176  366061  Northern Ireland
+QLN700000009567Beechline                                         A0000001
+QBN700000009567272009  366137  Northern Ireland
+QLN700000009568The Cottage                                       A0000001
+QBN700000009568271512  366354  Northern Ireland
+QLN700000009569Community Centre                                  A0000001
+QBN700000009569271017  366676  Northern Ireland
+QLN700000009570Largylea Crossroads                               A0000001
+QBN700000009570270365  367150  Northern Ireland
+QLN700000009571Lurgylea Road                                     A0000001
+QBN700000009571270076  366788  Northern Ireland
+QLN700000009572Cappagh Road                                      A0000001
+QBN700000009572269620  366507  Northern Ireland
+QLN700000009783Pomeroy Road                                      A0000001
+QBN700000009783276066  366184  Northern Ireland
+QLN700000009901Bog Road                                          A0000001
+QBN700000009901276028  366471  Northern Ireland
+QLN700000009784Dobsons                                           A0000001
+QBN700000009784275758  366710  Northern Ireland
+QLN700000009785Skea                                              A0000001
+QBN700000009785275429  366958  Northern Ireland
+QLN700000009787Hayes Coalyard                                    A0000001
+QBN700000009787274457  367671  Northern Ireland
+QLN700000009789Mc Aleers                                         A0000001
+QBN700000009789273474  368418  Northern Ireland
+QLN700000009823Gortavoy Bridge                                   A0000001
+QBN700000009823272654  368997  Northern Ireland
+QLN700000009824Shanmaghery Road                                  A0000001
+QBN700000009824272197  369242  Northern Ireland
+QLN700000009826Corrycroar Road                                   A0000001
+QBN700000009826271617  370010  Northern Ireland
+QLN700000009829Nugents                                           A0000001
+QBN700000009829270100  371640  Northern Ireland
+QLN700000009830Rowan Tree Centre                                 A0000001
+QBN700000009830269934  372005  Northern Ireland
+QLN700000009831Station Road                                      A0000001
+QBN700000009831269602  372156  Northern Ireland
+QLN700000009832Square                                            A0000001
+QBN700000009832269393  372252  Northern Ireland
+QLN700000009833Parkview                                          A0000001
+QBN700000009833268698  372407  Northern Ireland
+QLN700000009834Slatequarry                                       A0000001
+QBN700000009834268261  372484  Northern Ireland
+QLN700000009835Pomeroy Road                                      A0000001
+QBN700000009835268010  372560  Northern Ireland
+QLN700000009836Gortin Road                                       A0000001
+QBN700000009836267498  372530  Northern Ireland
+QLN700000009837Grogans Farm                                      A0000001
+QBN700000009837267033  372289  Northern Ireland
+QLN700000009838Ruddys Corner                                     A0000001
+QBN700000009838266469  371915  Northern Ireland
+QLN700000009839Tremogue Road                                     A0000001
+QBN700000009839265349  371683  Northern Ireland
+QLN700000009840Coolbrack Road                                    A0000001
+QBN700000009840265037  371622  Northern Ireland
+QLN700000009841Conlons                                           A0000001
+QBN700000009841264259  371365  Northern Ireland
+QLN700000009842Termon Road                                       A0000001
+QBN700000009842263797  371301  Northern Ireland
+QLN700000009843Dry Arch                                          A0000001
+QBN700000009843263330  371236  Northern Ireland
+QLN700000009869Church Hall Stop                                  A0000001
+QBN700000009869261994  371584  Northern Ireland
+QLN700000009845Aghagogan Park                                    A0000001
+QBN700000009845261831  372009  Northern Ireland
+QLN700000009846Termon Crescent                                   A0000001
+QBN700000009846261580  372358  Northern Ireland
+QLN700000009847Main Street                                       A0000001
+QBN700000009847261275  372522  Northern Ireland
+QLN700000011685Carrick Drive                                     A0000001
+QBN700000011685260684  372754  Northern Ireland
+QLN700000011686Drumnakilly Road                                  A0000001
+QBN700000011686260245  372780  Northern Ireland
+QLN700000011687Dohertys Bridge                                   A0000001
+QBN700000011687259821  372973  Northern Ireland
+QLN700000011688Minnadinna Road                                   A0000001
+QBN700000011688259585  373062  Northern Ireland
+QLN700000011689Wooden Fence                                      A0000001
+QBN700000011689258968  373063  Northern Ireland
+QLN700000011690Drumnakilly Road                                  A0000001
+QBN700000011690258505  373148  Northern Ireland
+QLN700000011691Keiiys Shop                                       A0000001
+QBN700000011691257544  373076  Northern Ireland
+QLN700000011692The Gap                                           A0000001
+QBN700000011692256574  373090  Northern Ireland
+QLN700000011693Mullaslin Ps                                      A0000001
+QBN700000011693256095  373492  Northern Ireland
+QLN700000011694Drumnakilly Ps                                    A0000001
+QBN700000011694253777  373128  Northern Ireland
+QLN700000011695Drumnakilly Houses                                A0000001
+QBN700000011695252976  372984  Northern Ireland
+QLN700000011696Drumnakilly Road                                  A0000001
+QBN700000011696252378  372999  Northern Ireland
+QLN700000011697Crocknacor Road                                   A0000001
+QBN700000011697251683  372980  Northern Ireland
+QLN700000011671Comber Road                                       A0000001
+QBN700000011671249910  373034  Northern Ireland
+QLN700000011699Drumnakilly Road                                  A0000001
+QBN700000011699249612  373036  Northern Ireland
+QLN700000011700Mccreadys Xrds                                    A0000001
+QBN700000011700248051  372673  Northern Ireland
+QLN700000011701Hospital Crossroads                               A0000001
+QBN700000011701247337  372140  Northern Ireland
+QLN700000011663Georgian Villas                                   A0000001
+QBN700000011663247100  372205  Northern Ireland
+QLN700000011664Orangefield Park                                  A0000001
+QBN700000011664246644  372448  Northern Ireland
+QLN700000011665Clements Villas                                   A0000001
+QBN700000011665246479  372523  Northern Ireland
+QLN700000011616Hospital Road                                     A0000001
+QBN700000011616246242  372697  Northern Ireland
+QLN700000011667Omagh County PS                                   A0000001
+QBN700000011667245833  372781  Northern Ireland
+QLN700000011668Market Street                                     A0000001
+QBN700000011668245484  372693  Northern Ireland
+QLN700000011467Omagh Bus Station                                 A0000001
+QBN700000011467245195  372812  Northern Ireland
+QLN700000011614Campsie Road                                      A0000001
+QBN700000011614245650  372746  Northern Ireland
+QLN700000011615Omagh County PS                                   A0000001
+QBN700000011615245876  372810  Northern Ireland
+QLN700000011666Hospital Road                                     A0000001
+QBN700000011666246265  372695  Northern Ireland
+QLN700000011617Clements Villas                                   A0000001
+QBN700000011617246466  372548  Northern Ireland
+QLN700000011618Mcclay Park                                       A0000001
+QBN700000011618246631  372465  Northern Ireland
+QLN700000011619Georgian Villas                                   A0000001
+QBN700000011619247074  372251  Northern Ireland
+QLN700000011669Hospital Crossroads                               A0000001
+QBN700000011669247353  372185  Northern Ireland
+QLN700000011670Mccreadys Xrds                                    A0000001
+QBN700000011670247966  372605  Northern Ireland
+QLN700000011698Comber Road                                       A0000001
+QBN700000011698249911  373045  Northern Ireland
+QLN700000011672Crocknacor Road                                   A0000001
+QBN700000011672251684  372988  Northern Ireland
+QLN700000011673Drumnakilly Road                                  A0000001
+QBN700000011673252378  373005  Northern Ireland
+QLN700000011674Drumnakilly Houses                                A0000001
+QBN700000011674252967  372995  Northern Ireland
+QLN700000011675Spring Road                                       A0000001
+QBN700000011675253761  373154  Northern Ireland
+QLN700000011676Mullaslin Ps                                      A0000001
+QBN700000011676256055  373515  Northern Ireland
+QLN700000011677The Gap                                           A0000001
+QBN700000011677256559  373110  Northern Ireland
+QLN700000011678Kellys Shop                                       A0000001
+QBN700000011678257513  373085  Northern Ireland
+QLN700000011679Drumnakilly Road                                  A0000001
+QBN700000011679258499  373157  Northern Ireland
+QLN700000011680Wooden Fence                                      A0000001
+QBN700000011680258948  373072  Northern Ireland
+QLN700000011681Minnadinna Road                                   A0000001
+QBN700000011681259589  373069  Northern Ireland
+QLN700000011682Dohertys Bridge                                   A0000001
+QBN700000011682259847  372969  Northern Ireland
+QLN700000011683Drumnakilly Road                                  A0000001
+QBN700000011683260276  372785  Northern Ireland
+QLN700000011684Carrick Drive                                     A0000001
+QBN700000011684260690  372763  Northern Ireland
+QLN700000009866Main Street                                       A0000001
+QBN700000009866261288  372532  Northern Ireland
+QLN700000009867Health Centre                                     A0000001
+QBN700000009867261585  372366  Northern Ireland
+QLN700000009868Aghagogan Park                                    A0000001
+QBN700000009868261845  372016  Northern Ireland
+QLN700000009870Bush Crossroads                                   A0000001
+QBN700000009870262569  371067  Northern Ireland
+QLN700000009871Dry Arch                                          A0000001
+QBN700000009871263328  371244  Northern Ireland
+QLN700000009872Termon Road                                       A0000001
+QBN700000009872263668  371310  Northern Ireland
+QLN700000009873Conlins Filling Station                           A0000001
+QBN700000009873264263  371377  Northern Ireland
+QLN700000009874Coolbrack Road                                    A0000001
+QBN700000009874264990  371619  Northern Ireland
+QLN700000009880Tremogue Road                                     A0000001
+QBN700000009880265349  371693  Northern Ireland
+QLN700000009875Termon Road                                       A0000001
+QBN700000009875266516  371941  Northern Ireland
+QLN700000009881Grogans Farm                                      A0000001
+QBN700000009881267016  372287  Northern Ireland
+QLN700000009876Loughmallon Road                                  A0000001
+QBN700000009876267484  372528  Northern Ireland
+QLN700000009877Harveys                                           A0000001
+QBN700000009877267794  372651  Northern Ireland
+QLN700000009878Termon Road                                       A0000001
+QBN700000009878268054  372556  Northern Ireland
+QLN700000009879Kerragh                                           A0000001
+QBN700000009879268708  372418  Northern Ireland
+QLN700000009882Church of the Assumption                          A0000001
+QBN700000009882269200  372330  Northern Ireland
+QLN700000009883Square                                            A0000001
+QBN700000009883269400  372265  Northern Ireland
+QLN700000009884Station Road                                      A0000001
+QBN700000009884269614  372160  Northern Ireland
+QLN700000009885Rowan Tree Centre                                 A0000001
+QBN700000009885269806  372067  Northern Ireland
+QLN700000009886Mc Gees Lane                                      A0000001
+QBN700000009886270152  371610  Northern Ireland
+QLN700000009887Axon                                              A0000001
+QBN700000009887270591  371264  Northern Ireland
+QLN700000009888Bawn Oh                                           A0000001
+QBN700000009888271074  370855  Northern Ireland
+QLN700000009889Cuddys Hilltop                                    A0000001
+QBN700000009889271496  370252  Northern Ireland
+QLN700000009890Corrycroar                                        A0000001
+QBN700000009890271631  370004  Northern Ireland
+QLN700000009891Lurganeden Road                                   A0000001
+QBN700000009891271806  369649  Northern Ireland
+QLN700000009892Shanmaghery Road                                  A0000001
+QBN700000009892272204  369250  Northern Ireland
+QLN700000009893Gortavoy Bridge                                   A0000001
+QBN700000009893272682  368994  Northern Ireland
+QLN700000009894Dungororan Road                                   A0000001
+QBN700000009894273249  368659  Northern Ireland
+QLN700000009895Pomeroy Road                                      A0000001
+QBN700000009895273470  368439  Northern Ireland
+QLN700000009896Killymacardle Road                                A0000001
+QBN700000009896273966  368033  Northern Ireland
+QLN700000009897Hayes Coalyard                                    A0000001
+QBN700000009897274463  367677  Northern Ireland
+QLN700000009898Mullaghfurtherland Road                           A0000001
+QBN700000009898274909  367356  Northern Ireland
+QLN700000009899Skea                                              A0000001
+QBN700000009899275370  367012  Northern Ireland
+QLN700000009900Dobsons                                           A0000001
+QBN700000009900275780  366704  Northern Ireland
+QLN700000009573Lurgylea Road                                     A0000001
+QBN700000009573270029  366671  Northern Ireland
+QLN700000009574Largylea Crossroads                               A0000001
+QBN700000009574270371  367154  Northern Ireland
+QLN700000009575Community Centre                                  A0000001
+QBN700000009575271062  366666  Northern Ireland
+QLN700000009576The Cottage                                       A0000001
+QBN700000009576271527  366355  Northern Ireland
+QLN700000009577Beechline                                         A0000001
+QBN700000009577272047  366127  Northern Ireland
+QLN700000009578Galbally Po                                       A0000001
+QBN700000009578272202  366060  Northern Ireland
+QLN700000009579Mc Minns Lane                                     A0000001
+QBN700000009579272889  365824  Northern Ireland
+QLN700000009580Mc Farlands Lane                                  A0000001
+QBN700000009580273343  365617  Northern Ireland
+QLN700000009581Kilnaslee Letterbox                               A0000001
+QBN700000009581273911  365406  Northern Ireland
+QLN700000009582Mullaghfutherland Road                            A0000001
+QBN700000009582274491  365617  Northern Ireland
+QLN700000009583Foygh Lane                                        A0000001
+QBN700000009583274963  365492  Northern Ireland
+QLN700000009584Railway Bridge                                    A0000001
+QBN700000009584275688  365429  Northern Ireland
+QLN700000009585Tullyleek Road                                    A0000001
+QBN700000009585276096  365594  Northern Ireland
+QLN700000009902Torrent View                                      A0000001
+QBN700000009902276638  365645  Northern Ireland
+QLN700000009903Lismore Drive                                     A0000001
+QBN700000009903276743  365523  Northern Ireland
+QLN700000009713Main Street                                       A0000001
+QBN700000009713276985  365373  Northern Ireland
+QLN700000009658Lynch House                                       A0000001
+QBN700000009658276576  364997  Northern Ireland
+QLN700000009659Vincents Lane                                     A0000001
+QBN700000009659276363  364734  Northern Ireland
+QLN700000009660Foygh Road                                        A0000001
+QBN700000009660276177  364445  Northern Ireland
+QLN700000009661Castlecaulfield Road                              A0000001
+QBN700000009661276210  363798  Northern Ireland
+QLN700000009662Drumreany Road                                    A0000001
+QBN700000009662275733  363299  Northern Ireland
+QLN700000009663Manse                                             A0000001
+QBN700000009663275615  363117  Northern Ireland
+QLN700000009733Castlecaulfield Black Hall                        A0000001
+QBN700000009733275554  362721  Northern Ireland
+QLN700000009714Augherainey Corner                                A0000001
+QBN700000009714277374  365087  Northern Ireland
+QLN7000000095864-12 Lodge Villas                                 A0000001
+QBN700000009586277442  364816  Northern Ireland
+QLN700000009734Lismonaghan Court                                 A0000001
+QBN700000009734275810  362645  Northern Ireland
+QLN700000009735Mc Caugheys                                       A0000001
+QBN700000009735276312  362468  Northern Ireland
+QLN700000009736Old Caulfield Road                                A0000001
+QBN700000009736276739  362718  Northern Ireland
+QLN700000009737Corrigans                                         A0000001
+QBN700000009737277233  362873  Northern Ireland
+QLN70000000958764-72 Aghareany Road                              A0000001
+QBN700000009587277435  364252  Northern Ireland
+QLN700000009588Courtneys Lane                                    A0000001
+QBN700000009588277465  364058  Northern Ireland
+QLN700000009589Raffertys House                                   A0000001
+QBN700000009589277681  363653  Northern Ireland
+QLN700000009590Glebe Park                                        A0000001
+QBN700000009590278029  363026  Northern Ireland
+QLN700000009715Beech Way                                         A0000001
+QBN700000009715277848  364734  Northern Ireland
+QLN700000009716Rock Road                                         A0000001
+QBN700000009716277979  364519  Northern Ireland
+QLN700000009717Mullaghmore Road                                  A0000001
+QBN700000009717278514  363560  Northern Ireland
+QLN700000009718Foxborough                                        A0000001
+QBN700000009718278778  363309  Northern Ireland
+QLN700000009719Wellbrook Avenue                                  A0000001
+QBN700000009719279008  363073  Northern Ireland
+QLN700000009720Quarry Lane                                       A0000001
+QBN700000009720279115  363079  Northern Ireland
+QLN700000009721Meadowvale                                        A0000001
+QBN700000009721279312  363122  Northern Ireland
+QLN700000009722Police Station                                    A0000001
+QBN700000009722279835  362979  Northern Ireland
+QLN700000014831Cloneen                                           A0000001
+QBN700000014831278814  362378  Northern Ireland
+QLN700000009593Gormleys Garage                                   A0000001
+QBN700000009593279026  362347  Northern Ireland
+QLN700000009965Ballygawley Road                                  A0000001
+QBN700000009965279298  362358  Northern Ireland
+QLN700000009966Lidl Store                                        A0000001
+QBN700000009966279471  362248  Northern Ireland
+QLN700000009129Milltown                                          A0000001
+QBN700000009129279883  362134  Northern Ireland
+QLN70000000913018-26 Wellington Road                             A0000001
+QBN700000009130279994  361991  Northern Ireland
+QLN700000009131High School Gates                                 A0000001
+QBN700000009131280187  361984  Northern Ireland
+QLN700000009132Upper Ranfurly Road                               A0000001
+QBN700000009132280126  362219  Northern Ireland
+QLN700000009133Perry Street                                      A0000001
+QBN700000009133279952  362352  Northern Ireland
+QLN700000009134Market Square                                     A0000001
+QBN700000009134279770  362494  Northern Ireland
+QLN700000009136Thomas Street                                     A0000001
+QBN700000009136279839  362864  Northern Ireland
+QLN700000009647Royal School Dungannon                            A0000001
+QBN700000009647280011  362413  Northern Ireland
+QLN700000009235Thomas Street                                     A0000001
+QBN700000009235279835  362845  Northern Ireland
+QLN700000009236Fire Station                                      A0000001
+QBN700000009236279748  362524  Northern Ireland
+QLN700000009238Lower Scotch Street                               A0000001
+QBN700000009238279548  362220  Northern Ireland
+QLN700000009723Annagole                                          A0000001
+QBN700000009723279038  362907  Northern Ireland
+QLN700000009724Springdale                                        A0000001
+QBN700000009724279059  362621  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      Lowfloor Vehicle
+QDNULB 86a ODungannon - Cappagh
+QDNULB 86a ICappagh - Dungannon, Bus Station

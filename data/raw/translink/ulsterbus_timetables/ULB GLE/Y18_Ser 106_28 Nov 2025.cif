@@ -1,0 +1,2566 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260112090751
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1001  20251128999999991111100 X106 33L02 LF              O
+QO7000000014290710   T1  
+QI70000000039607100710P   T0  
+QNp    pick up only                                                            
+QI70000000039807110711P   T0  
+QNp    pick up only                                                            
+QI70000000049607120712P   T0  
+QNp    pick up only                                                            
+QI70000000050207130713P   T0  
+QNp    pick up only                                                            
+QI70000000179007140714P   T0  
+QNp    pick up only                                                            
+QI70000000179107150715P   T0  
+QNp    pick up only                                                            
+QI70000000179307150715P   T0  
+QNp    pick up only                                                            
+QI70000000179407160716P   T0  
+QNp    pick up only                                                            
+QI70000000179707170717P   T0  
+QNp    pick up only                                                            
+QI70000000179907180718P   T0  
+QNp    pick up only                                                            
+QI70000000046607200720P   T1  
+QNp    pick up only                                                            
+QI70000000028207200720B   T0  
+QI70000000028607200720B   T0  
+QI70000000281307230723B   T0  
+QI70000000281407230723B   T0  
+QI70000000281007240724B   T0  
+QI70000000281507250725B   T1  
+QI70000000281607280728B   T0  
+QI70000000281707300730B   T1  
+QI70000000281907330733B   T0  
+QI70000000280307450745B   T1  
+QI70000001557507450745B   T0  
+QI70000000350907480748B   T0  
+QI70000000349007490749B   T0  
+QT7000000034940750   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1003  20251128999999991111100 X106 33D04 DD              O
+QO7000000014290835   T1  
+QI70000000039608350835P   T0  
+QNp    pick up only                                                            
+QI70000000039808360836P   T0  
+QNp    pick up only                                                            
+QI70000000049608370837P   T0  
+QNp    pick up only                                                            
+QI70000000050208380838P   T0  
+QNp    pick up only                                                            
+QI70000000179008390839P   T0  
+QNp    pick up only                                                            
+QI70000000179108400840P   T0  
+QNp    pick up only                                                            
+QI70000000179308400840P   T0  
+QNp    pick up only                                                            
+QI70000000179408410841P   T0  
+QNp    pick up only                                                            
+QI70000000179708420842P   T0  
+QNp    pick up only                                                            
+QI70000000179908430843P   T0  
+QNp    pick up only                                                            
+QI70000000046608450845P   T1  
+QNp    pick up only                                                            
+QI70000000028208460846B   T0  
+QI70000000028608460846B   T0  
+QI70000000281308520852B   T0  
+QI70000000281408530853B   T0  
+QI70000000281008550855B   T0  
+QI70000000281508560856B   T1  
+QI70000000281609010901B   T0  
+QI70000000281709050905B   T1  
+QI70000000281909070907B   T0  
+QI70000000280309130913B   T1  
+QI70000001557509140914B   T0  
+QI70000000350909180918B   T0  
+QI70000000349009190919B   T0  
+QT7000000034940920   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1005  20251128999999991111100 X106 33L01 LF              O
+QO7000000014290925   T1  
+QI70000000039609250925P   T0  
+QNp    pick up only                                                            
+QI70000000039809260926P   T0  
+QNp    pick up only                                                            
+QI70000000049609270927P   T0  
+QNp    pick up only                                                            
+QI70000000050209280928P   T0  
+QNp    pick up only                                                            
+QI70000000179009290929P   T0  
+QNp    pick up only                                                            
+QI70000000179109300930P   T0  
+QNp    pick up only                                                            
+QI70000000179309300930P   T0  
+QNp    pick up only                                                            
+QI70000000179409310931P   T0  
+QNp    pick up only                                                            
+QI70000000179709320932P   T0  
+QNp    pick up only                                                            
+QI70000000179909330933P   T0  
+QNp    pick up only                                                            
+QI70000000046609350935P   T1  
+QNp    pick up only                                                            
+QI70000000028209360936B   T0  
+QI70000000028609360936B   T0  
+QI70000000281309420942B   T0  
+QI70000000281409430943B   T0  
+QI70000000281009450945B   T0  
+QI70000000281509460946B   T1  
+QI70000000281609510951B   T0  
+QI70000000281709550955B   T1  
+QI70000000281909570957B   T0  
+QI70000000280310031003B   T1  
+QI70000001557510041004B   T0  
+QI70000000350910081008B   T0  
+QI70000000349010091009B   T0  
+QT7000000034941010   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1007  20251128999999991111100 X106 33D04 DD              O
+QO7000000014291025   T1  
+QI70000000039610251025P   T0  
+QNp    pick up only                                                            
+QI70000000039810261026P   T0  
+QNp    pick up only                                                            
+QI70000000049610271027P   T0  
+QNp    pick up only                                                            
+QI70000000050210281028P   T0  
+QNp    pick up only                                                            
+QI70000000179010291029P   T0  
+QNp    pick up only                                                            
+QI70000000179110301030P   T0  
+QNp    pick up only                                                            
+QI70000000179310301030P   T0  
+QNp    pick up only                                                            
+QI70000000179410311031P   T0  
+QNp    pick up only                                                            
+QI70000000179710321032P   T0  
+QNp    pick up only                                                            
+QI70000000179910331033P   T0  
+QNp    pick up only                                                            
+QI70000000046610351035P   T1  
+QNp    pick up only                                                            
+QI70000000028210361036B   T0  
+QI70000000028610361036B   T0  
+QI70000000281310421042B   T0  
+QI70000000281410431043B   T0  
+QI70000000281010451045B   T0  
+QI70000000281510461046B   T1  
+QI70000000281610511051B   T0  
+QI70000000281710551055B   T1  
+QI70000000281910571057B   T0  
+QI70000000280311031103B   T1  
+QI70000001557511041104B   T0  
+QI70000000350911081108B   T0  
+QI70000000349011091109B   T0  
+QT7000000034941110   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1009  20251128999999991111100 X106 33D03 DD              O
+QO7000000014291225   T1  
+QI70000000039612251225P   T0  
+QNp    pick up only                                                            
+QI70000000039812261226P   T0  
+QNp    pick up only                                                            
+QI70000000049612271227P   T0  
+QNp    pick up only                                                            
+QI70000000050212281228P   T0  
+QNp    pick up only                                                            
+QI70000000179012291229P   T0  
+QNp    pick up only                                                            
+QI70000000179112301230P   T0  
+QNp    pick up only                                                            
+QI70000000179312301230P   T0  
+QNp    pick up only                                                            
+QI70000000179412311231P   T0  
+QNp    pick up only                                                            
+QI70000000179712321232P   T0  
+QNp    pick up only                                                            
+QI70000000179912331233P   T0  
+QNp    pick up only                                                            
+QI70000000046612351235P   T1  
+QNp    pick up only                                                            
+QI70000000028212361236B   T0  
+QI70000000028612361236B   T0  
+QI70000000281312421242B   T0  
+QI70000000281412431243B   T0  
+QI70000000281012451245B   T0  
+QI70000000281512461246B   T1  
+QI70000000281612511251B   T0  
+QI70000000281712551255B   T1  
+QI70000000281912571257B   T0  
+QI70000000280313031303B   T1  
+QI70000001557513041304B   T0  
+QI70000000350913081308B   T0  
+QI70000000349013091309B   T0  
+QT7000000034941310   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1011  20251128999999991111100 X106 33L02 LF              O
+QO7000000014291425   T1  
+QI70000000039614251425P   T0  
+QNp    pick up only                                                            
+QI70000000039814261426P   T0  
+QNp    pick up only                                                            
+QI70000000049614271427P   T0  
+QNp    pick up only                                                            
+QI70000000050214281428P   T0  
+QNp    pick up only                                                            
+QI70000000179014291429P   T0  
+QNp    pick up only                                                            
+QI70000000179114301430P   T0  
+QNp    pick up only                                                            
+QI70000000179314301430P   T0  
+QNp    pick up only                                                            
+QI70000000179414311431P   T0  
+QNp    pick up only                                                            
+QI70000000179714321432P   T0  
+QNp    pick up only                                                            
+QI70000000179914331433P   T0  
+QNp    pick up only                                                            
+QI70000000046614351435P   T1  
+QNp    pick up only                                                            
+QI70000000028214361436B   T0  
+QI70000000028614361436B   T0  
+QI70000000281314421442B   T0  
+QI70000000281414431443B   T0  
+QI70000000281014451445B   T0  
+QI70000000281514461446B   T1  
+QI70000000281614511451B   T0  
+QI70000000281714551455B   T1  
+QI70000000281914571457B   T0  
+QI70000000280315031503B   T1  
+QI70000001557515041504B   T0  
+QI70000000350915081508B   T0  
+QI70000000349015091509B   T0  
+QT7000000034941510   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1013  20251128999999991111100 X106 33D03 DD              O
+QO7000000014291530   T1  
+QI70000000039615301530P   T0  
+QNp    pick up only                                                            
+QI70000000039815311531P   T0  
+QNp    pick up only                                                            
+QI70000000049615321532P   T0  
+QNp    pick up only                                                            
+QI70000000050215331533P   T0  
+QNp    pick up only                                                            
+QI70000000179015341534P   T0  
+QNp    pick up only                                                            
+QI70000000179115351535P   T0  
+QNp    pick up only                                                            
+QI70000000179315351535P   T0  
+QNp    pick up only                                                            
+QI70000000179415361536P   T0  
+QNp    pick up only                                                            
+QI70000000179715371537P   T0  
+QNp    pick up only                                                            
+QI70000000179915381538P   T0  
+QNp    pick up only                                                            
+QI70000000046615401540P   T1  
+QNp    pick up only                                                            
+QI70000000028215411541B   T0  
+QI70000000028615411541B   T0  
+QI70000000281315471547B   T0  
+QI70000000281415481548B   T0  
+QI70000000281015501550B   T0  
+QI70000000281515511551B   T1  
+QI70000000281615561556B   T0  
+QI70000000281716001600B   T1  
+QI70000000281916021602B   T0  
+QI70000000280316081608B   T1  
+QI70000001557516091609B   T0  
+QI70000000350916161616B   T0  
+QI70000000349016191619B   T0  
+QT7000000034941620   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1015  20251128999999991111100 X106 33D04 DD              O
+QO7000000014291625   T1  
+QI70000000039616251625P   T0  
+QNp    pick up only                                                            
+QI70000000039816261626P   T0  
+QNp    pick up only                                                            
+QI70000000049616271627P   T0  
+QNp    pick up only                                                            
+QI70000000050216281628P   T0  
+QNp    pick up only                                                            
+QI70000000179016291629P   T0  
+QNp    pick up only                                                            
+QI70000000179116301630P   T0  
+QNp    pick up only                                                            
+QI70000000179316301630P   T0  
+QNp    pick up only                                                            
+QI70000000179416311631P   T0  
+QNp    pick up only                                                            
+QI70000000179716321632P   T0  
+QNp    pick up only                                                            
+QI70000000179916331633P   T0  
+QNp    pick up only                                                            
+QI70000000046616351635P   T1  
+QNp    pick up only                                                            
+QI70000000028216361636B   T0  
+QI70000000028616361636B   T0  
+QI70000000281316421642B   T0  
+QI70000000281416431643B   T0  
+QI70000000281016451645B   T0  
+QI70000000281516461646B   T1  
+QI70000000281616511651B   T0  
+QI70000000281716551655B   T1  
+QI70000000281916571657B   T0  
+QI70000000280317031703B   T1  
+QI70000001557517041704B   T0  
+QI70000000350917081708B   T0  
+QI70000000349017091709B   T0  
+QT7000000034941710   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1017  20251128999999991111100 X106 33D01 DD              O
+QO7000000014291655   T1  
+QI70000000039616551655P   T0  
+QNp    pick up only                                                            
+QI70000000039816561656P   T0  
+QNp    pick up only                                                            
+QI70000000049616571657P   T0  
+QNp    pick up only                                                            
+QI70000000050216581658P   T0  
+QNp    pick up only                                                            
+QI70000000179016591659P   T0  
+QNp    pick up only                                                            
+QI70000000179117001700P   T0  
+QNp    pick up only                                                            
+QI70000000179317001700P   T0  
+QNp    pick up only                                                            
+QI70000000179417011701P   T0  
+QNp    pick up only                                                            
+QI70000000179717021702P   T0  
+QNp    pick up only                                                            
+QI70000000179917031703P   T0  
+QNp    pick up only                                                            
+QI70000000046617051705P   T1  
+QNp    pick up only                                                            
+QI70000000028217061706B   T0  
+QI70000000028617061706B   T0  
+QI70000000281317121712B   T0  
+QI70000000281417131713B   T0  
+QI70000000281017151715B   T0  
+QI70000000281517161716B   T1  
+QI70000000281617211721B   T0  
+QI70000000281717251725B   T1  
+QI70000000281917271727B   T0  
+QI70000000280317331733B   T1  
+QI70000001557517341734B   T0  
+QI70000000350917381738B   T0  
+QI70000000349017391739B   T0  
+QT7000000034941740   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1019  20251128999999991111100 X106 33S02 SH              O
+QO7000000014291725   T1  
+QI70000000039617251725P   T0  
+QNp    pick up only                                                            
+QI70000000039817261726P   T0  
+QNp    pick up only                                                            
+QI70000000049617271727P   T0  
+QNp    pick up only                                                            
+QI70000000050217281728P   T0  
+QNp    pick up only                                                            
+QI70000000179017291729P   T0  
+QNp    pick up only                                                            
+QI70000000179117301730P   T0  
+QNp    pick up only                                                            
+QI70000000179317301730P   T0  
+QNp    pick up only                                                            
+QI70000000179417311731P   T0  
+QNp    pick up only                                                            
+QI70000000179717321732P   T0  
+QNp    pick up only                                                            
+QI70000000179917331733P   T0  
+QNp    pick up only                                                            
+QI70000000046617351735P   T1  
+QNp    pick up only                                                            
+QI70000000028217361736B   T0  
+QI70000000028617361736B   T0  
+QI70000000281317421742B   T0  
+QI70000000281417431743B   T0  
+QI70000000281017451745B   T0  
+QI70000000281517461746B   T1  
+QI70000000281617511751B   T0  
+QI70000000281717551755B   T1  
+QI70000000281917571757B   T0  
+QI70000000280318031803B   T1  
+QI70000001557518041804B   T0  
+QI70000000350918081808B   T0  
+QI70000000349018091809B   T0  
+QT7000000034941810   T1  
+QDNULB 106aOQueen Street - Belfast - Main Street - Crumlin                      
+QSNULB 1021  20251128999999991111100 X106a33L01 LF              O
+QO7000000014291755   T1  
+QI70000000039617551755P   T0  
+QNp    pick up only                                                            
+QI70000000039817561756P   T0  
+QNp    pick up only                                                            
+QI70000000049617571757P   T0  
+QNp    pick up only                                                            
+QI70000000050217581758P   T0  
+QNp    pick up only                                                            
+QI70000000179017591759P   T0  
+QNp    pick up only                                                            
+QI70000000179118001800P   T0  
+QNp    pick up only                                                            
+QI70000000179318001800P   T0  
+QNp    pick up only                                                            
+QI70000000179418011801P   T0  
+QNp    pick up only                                                            
+QI70000000179718021802P   T0  
+QNp    pick up only                                                            
+QI70000000179918031803P   T0  
+QNp    pick up only                                                            
+QI70000000046618051805P   T1  
+QNp    pick up only                                                            
+QI70000000028218061806B   T0  
+QI70000000028618061806B   T0  
+QI70000000281318121812B   T0  
+QI70000000281418131813B   T0  
+QI70000000281018151815B   T0  
+QI70000000281518161816B   T1  
+QI70000000281618211821B   T0  
+QI70000000281718251825B   T1  
+QI70000000279818271827B   T1  
+QI70000000279918291829B   T1  
+QI70000000280018291829B   T0  
+QI70000000280118301830B   T0  
+QI70000000280318351835B   T1  
+QI70000001557518361836B   T0  
+QI70000000350918421842B   T0  
+QI70000000349018441844B   T0  
+QT7000000034941845   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1023  20251128999999991111100 X106 33D01 DD              O
+QO7000000014291855   T1  
+QI70000000039618551855P   T0  
+QNp    pick up only                                                            
+QI70000000039818561856P   T0  
+QNp    pick up only                                                            
+QI70000000049618571857P   T0  
+QNp    pick up only                                                            
+QI70000000050218581858P   T0  
+QNp    pick up only                                                            
+QI70000000179018591859P   T0  
+QNp    pick up only                                                            
+QI70000000179119001900P   T0  
+QNp    pick up only                                                            
+QI70000000179319001900P   T0  
+QNp    pick up only                                                            
+QI70000000179419011901P   T0  
+QNp    pick up only                                                            
+QI70000000179719021902P   T0  
+QNp    pick up only                                                            
+QI70000000179919031903P   T0  
+QNp    pick up only                                                            
+QI70000000046619051905P   T1  
+QNp    pick up only                                                            
+QI70000000028219061906B   T0  
+QI70000000028619061906B   T0  
+QI70000000281319121912B   T0  
+QI70000000281419131913B   T0  
+QI70000000281019151915B   T0  
+QI70000000281519161916B   T1  
+QI70000000281619211921B   T0  
+QI70000000281719251925B   T1  
+QI70000000281919271927B   T0  
+QI70000000280319331933B   T1  
+QI70000001557519341934B   T0  
+QI70000000350919381938B   T0  
+QI70000000349019391939B   T0  
+QT7000000034941940   T1  
+QDNULB 106aOQueen Street - Belfast - Main Street - Crumlin                      
+QSNULB 1025  20251128999999991111100 X106a33D01 DD              O
+QO7000000014292200   T1  
+QI70000000039622002200P   T0  
+QNp    pick up only                                                            
+QI70000000039822012201P   T0  
+QNp    pick up only                                                            
+QI70000000049622022202P   T0  
+QNp    pick up only                                                            
+QI70000000050222032203P   T0  
+QNp    pick up only                                                            
+QI70000000179022042204P   T0  
+QNp    pick up only                                                            
+QI70000000179122052205P   T0  
+QNp    pick up only                                                            
+QI70000000179322052205P   T0  
+QNp    pick up only                                                            
+QI70000000179422062206P   T0  
+QNp    pick up only                                                            
+QI70000000179722072207P   T0  
+QNp    pick up only                                                            
+QI70000000179922082208P   T0  
+QNp    pick up only                                                            
+QI70000000046622102210P   T1  
+QNp    pick up only                                                            
+QI70000000028222102210B   T0  
+QI70000000028622102210B   T0  
+QI70000000281322132213B   T0  
+QI70000000281422132213B   T0  
+QI70000000281022142214B   T0  
+QI70000000281522152215B   T1  
+QI70000000281622192219B   T0  
+QI70000000281722232223B   T1  
+QI70000000279822272227B   T1  
+QI70000000279922292229B   T1  
+QI70000000280022292229B   T0  
+QI70000000280122312231B   T0  
+QI70000000280322382238B   T1  
+QI70000001557522382238B   T0  
+QI70000000350922412241B   T0  
+QI70000000349022422242B   T0  
+QT7000000034942243   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 1027  20251128999999990000100 X106 33D01 DD              O
+QNF    Fridays Only                                                            
+QO7000000014292400   T1  
+QI70000000039624002400B   T0  
+QI70000000039824012401B   T0  
+QI70000000049624022402B   T0  
+QI70000000050224032403B   T0  
+QI70000000179024042404B   T0  
+QI70000000179124052405B   T0  
+QI70000000179324052405B   T0  
+QI70000000179424062406B   T0  
+QI70000000179724072407B   T0  
+QI70000000179924082408B   T0  
+QI70000000046624102410B   T1  
+QI70000000028224112411B   T0  
+QI70000000028624112411S   T0  
+QNs    Set Down Only                                                           
+QI70000000281324172417B   T0  
+QI70000000281424182418B   T0  
+QI70000000281024202420B   T0  
+QI70000000281524212421B   T1  
+QI70000000281624262426B   T0  
+QI70000000281724302430B   T1  
+QI70000000281924322432B   T0  
+QI70000000280324382438B   T1  
+QI70000001557524392439B   T0  
+QI70000000350924432443B   T0  
+QI70000000349024442444B   T0  
+QT7000000034942445   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1000  20251128999999991111100 X106 33L02 LF              I
+QO7000000034920630   T1  
+QI70000000349906300630B   T0  
+QI70000000351006310631B   T0  
+QI70000000351106310631B   T0  
+QI70000000351206310631B   T0  
+QI70000001557406350635B   T0  
+QI70000000351306350635B   T0  
+QI70000000280406360636B   T1  
+QI70000000280506400640B   T0  
+QI70000000280606420642B   T0  
+QI70000000281706450645B   T1  
+QI70000000280806470647B   T0  
+QI70000000280906510651B   T1  
+QI70000000281106530653B   T0  
+QI70000000281206540654B   T0  
+QI70000000027406590659B   T0  
+QI70000000028007000700B   T0  
+QI70000000045807000700S   T0  
+QNs    Set Down Only                                                           
+QI70000000046007010701S   T1  
+QNs    Set Down Only                                                           
+QI70000000050407020702S   T0  
+QNs    Set Down Only                                                           
+QI70000000050607030703S   T0  
+QNs    Set Down Only                                                           
+QI70000000051207040704S   T0  
+QNs    Set Down Only                                                           
+QI70000000051607040704S   T0  
+QNs    Set Down Only                                                           
+QI70000000052007050705S   T0  
+QNs    Set Down Only                                                           
+QI70000000052607060706S   T0  
+QNs    Set Down Only                                                           
+QI70000000052807070707S   T0  
+QNs    Set Down Only                                                           
+QI70000000053207070707S   T0  
+QNs    Set Down Only                                                           
+QI70000000053407080708S   T0  
+QNs    Set Down Only                                                           
+QI70000000142407090709S   T0  
+QNs    Set Down Only                                                           
+QT7000000014290710   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1002  20251128999999991111100SX106 33D04 DD              I
+QNSch  School terms only                                                       
+QO7000000034920730   T1  
+QI70000000349907300730B   T0  
+QI70000000351007310731B   T0  
+QI70000000351107310731B   T0  
+QI70000000351207310731B   T0  
+QI70000001557407350735B   T0  
+QI70000000351307350735B   T0  
+QI70000000280407360736B   T1  
+QI70000000280507410741B   T0  
+QI70000000280607430743B   T0  
+QI70000000281707460746B   T1  
+QI70000000280807480748B   T0  
+QI70000000280907530753B   T1  
+QI70000000281107560756B   T0  
+QI70000000281207570757B   T0  
+QI70000000027408040804B   T0  
+QI70000000028008050805B   T0  
+QI70000000045808060806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046008070807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050408080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050608100810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051208110811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051608120812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052008130813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052608150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052808150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053208160816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053408170817B   T0  
+QI70000000142408180818B   T0  
+QT7000000014290820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1004  20251128999999991111100HX106 33001 DD              I
+QNNSch School holidays only                                                    
+QO7000000034920730   T1  
+QI70000000349907300730B   T0  
+QI70000000351007310731B   T0  
+QI70000000351107310731B   T0  
+QI70000000351207310731B   T0  
+QI70000001557407350735B   T0  
+QI70000000351307350735B   T0  
+QI70000000280407360736B   T1  
+QI70000000280507410741B   T0  
+QI70000000280607430743B   T0  
+QI70000000281707460746B   T1  
+QI70000000280807480748B   T0  
+QI70000000280907530753B   T1  
+QI70000000281107560756B   T0  
+QI70000000281207570757B   T0  
+QI70000000027408040804B   T0  
+QI70000000028008050805B   T0  
+QI70000000045808060806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046008070807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050408080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050608100810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051208110811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051608120812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052008130813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052608150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052808150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053208160816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053408170817S   T0  
+QNs    Set Down Only                                                           
+QI70000000142408180818S   T0  
+QNs    Set Down Only                                                           
+QT7000000014290820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1006  20251128999999991111100 X106 33L01 LF              I
+QO7000000034920830   T1  
+QI70000000349908300830B   T0  
+QI70000000351008310831B   T0  
+QI70000000351108310831B   T0  
+QI70000000351208310831B   T0  
+QI70000001557408350835B   T0  
+QI70000000351308350835B   T0  
+QI70000000280408360836B   T1  
+QI70000000280508410841B   T0  
+QI70000000280608430843B   T0  
+QI70000000281708460846B   T1  
+QI70000000280808480848B   T0  
+QI70000000280908530853B   T1  
+QI70000000281108560856B   T0  
+QI70000000281208570857B   T0  
+QI70000000027409040904B   T0  
+QI70000000028009050905B   T0  
+QI70000000045809060906S   T0  
+QNs    Set Down Only                                                           
+QI70000000046009070907S   T1  
+QNs    Set Down Only                                                           
+QI70000000050409080908S   T0  
+QNs    Set Down Only                                                           
+QI70000000050609100910S   T0  
+QNs    Set Down Only                                                           
+QI70000000051209110911S   T0  
+QNs    Set Down Only                                                           
+QI70000000051609120912S   T0  
+QNs    Set Down Only                                                           
+QI70000000052009130913S   T0  
+QNs    Set Down Only                                                           
+QI70000000052609150915S   T0  
+QNs    Set Down Only                                                           
+QI70000000052809150915S   T0  
+QNs    Set Down Only                                                           
+QI70000000053209160916S   T0  
+QNs    Set Down Only                                                           
+QI70000000053409170917S   T0  
+QNs    Set Down Only                                                           
+QI70000000142409180918S   T0  
+QNs    Set Down Only                                                           
+QT7000000014290920   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1008  20251128999999991111100 X106 33D04 DD              I
+QO7000000034920930   T1  
+QI70000000349909300930B   T0  
+QI70000000351009310931B   T0  
+QI70000000351109310931B   T0  
+QI70000000351209310931B   T0  
+QI70000001557409350935B   T0  
+QI70000000351309350935B   T0  
+QI70000000280409360936B   T1  
+QI70000000280509410941B   T0  
+QI70000000280609430943B   T0  
+QI70000000281709460946B   T1  
+QI70000000280809480948B   T0  
+QI70000000280909530953B   T1  
+QI70000000281109560956B   T0  
+QI70000000281209570957B   T0  
+QI70000000027410041004B   T0  
+QI70000000028010051005B   T0  
+QI70000000045810061006S   T0  
+QNs    Set Down Only                                                           
+QI70000000046010071007S   T1  
+QNs    Set Down Only                                                           
+QI70000000050410081008S   T0  
+QNs    Set Down Only                                                           
+QI70000000050610101010S   T0  
+QNs    Set Down Only                                                           
+QI70000000051210111011S   T0  
+QNs    Set Down Only                                                           
+QI70000000051610121012S   T0  
+QNs    Set Down Only                                                           
+QI70000000052010131013S   T0  
+QNs    Set Down Only                                                           
+QI70000000052610151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000052810151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000053210161016S   T0  
+QNs    Set Down Only                                                           
+QI70000000053410171017S   T0  
+QNs    Set Down Only                                                           
+QI70000000142410181018S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291020   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1010  20251128999999991111100 X106 33D03 DD              I
+QO7000000034921130   T1  
+QI70000000349911301130B   T0  
+QI70000000351011311131B   T0  
+QI70000000351111311131B   T0  
+QI70000000351211311131B   T0  
+QI70000001557411351135B   T0  
+QI70000000351311351135B   T0  
+QI70000000280411361136B   T1  
+QI70000000280511411141B   T0  
+QI70000000280611431143B   T0  
+QI70000000281711461146B   T1  
+QI70000000280811481148B   T0  
+QI70000000280911531153B   T1  
+QI70000000281111561156B   T0  
+QI70000000281211571157B   T0  
+QI70000000027412041204B   T0  
+QI70000000028012051205B   T0  
+QI70000000045812061206S   T0  
+QNs    Set Down Only                                                           
+QI70000000046012071207S   T1  
+QNs    Set Down Only                                                           
+QI70000000050412081208S   T0  
+QNs    Set Down Only                                                           
+QI70000000050612101210S   T0  
+QNs    Set Down Only                                                           
+QI70000000051212111211S   T0  
+QNs    Set Down Only                                                           
+QI70000000051612121212S   T0  
+QNs    Set Down Only                                                           
+QI70000000052012131213S   T0  
+QNs    Set Down Only                                                           
+QI70000000052612151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000052812151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000053212161216S   T0  
+QNs    Set Down Only                                                           
+QI70000000053412171217S   T0  
+QNs    Set Down Only                                                           
+QI70000000142412181218S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291220   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1012  20251128999999991111100 X106 33L02 LF              I
+QO7000000034921330   T1  
+QI70000000349913301330B   T0  
+QI70000000351013311331B   T0  
+QI70000000351113311331B   T0  
+QI70000000351213311331B   T0  
+QI70000001557413351335B   T0  
+QI70000000351313351335B   T0  
+QI70000000280413361336B   T1  
+QI70000000280513411341B   T0  
+QI70000000280613431343B   T0  
+QI70000000281713461346B   T1  
+QI70000000280813481348B   T0  
+QI70000000280913531353B   T1  
+QI70000000281113561356B   T0  
+QI70000000281213571357B   T0  
+QI70000000027414041404B   T0  
+QI70000000028014051405B   T0  
+QI70000000045814061406S   T0  
+QNs    Set Down Only                                                           
+QI70000000046014071407S   T1  
+QNs    Set Down Only                                                           
+QI70000000050414081408S   T0  
+QNs    Set Down Only                                                           
+QI70000000050614101410S   T0  
+QNs    Set Down Only                                                           
+QI70000000051214111411S   T0  
+QNs    Set Down Only                                                           
+QI70000000051614121412S   T0  
+QNs    Set Down Only                                                           
+QI70000000052014131413S   T0  
+QNs    Set Down Only                                                           
+QI70000000052614151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000052814151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000053214161416S   T0  
+QNs    Set Down Only                                                           
+QI70000000053414171417S   T0  
+QNs    Set Down Only                                                           
+QI70000000142414181418S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291420   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1014  20251128999999991111100 X106 33D03 DD              I
+QO7000000034921430   T1  
+QI70000000349914301430B   T0  
+QI70000000351014311431B   T0  
+QI70000000351114311431B   T0  
+QI70000000351214311431B   T0  
+QI70000001557414351435B   T0  
+QI70000000351314351435B   T0  
+QI70000000280414361436B   T1  
+QI70000000280514411441B   T0  
+QI70000000280614431443B   T0  
+QI70000000281714461446B   T1  
+QI70000000280814481448B   T0  
+QI70000000280914531453B   T1  
+QI70000000281114561456B   T0  
+QI70000000281214571457B   T0  
+QI70000000027415041504B   T0  
+QI70000000028015051505B   T0  
+QI70000000045815061506S   T0  
+QNs    Set Down Only                                                           
+QI70000000046015071507S   T1  
+QNs    Set Down Only                                                           
+QI70000000050415081508S   T0  
+QNs    Set Down Only                                                           
+QI70000000050615101510S   T0  
+QNs    Set Down Only                                                           
+QI70000000051215111511S   T0  
+QNs    Set Down Only                                                           
+QI70000000051615121512S   T0  
+QNs    Set Down Only                                                           
+QI70000000052015131513S   T0  
+QNs    Set Down Only                                                           
+QI70000000052615151515S   T0  
+QNs    Set Down Only                                                           
+QI70000000052815151515S   T0  
+QNs    Set Down Only                                                           
+QI70000000053215161516S   T0  
+QNs    Set Down Only                                                           
+QI70000000053415171517S   T0  
+QNs    Set Down Only                                                           
+QI70000000142415181518S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291520   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1016  20251128999999991111100 X106 33D04 DD              I
+QO7000000034921530   T1  
+QI70000000349915301530B   T0  
+QI70000000351015311531B   T0  
+QI70000000351115311531B   T0  
+QI70000000351215311531B   T0  
+QI70000001557415351535B   T0  
+QI70000000351315351535B   T0  
+QI70000000280415361536B   T1  
+QI70000000280515411541B   T0  
+QI70000000280615431543B   T0  
+QI70000000281715461546B   T1  
+QI70000000280815481548B   T0  
+QI70000000280915531553B   T1  
+QI70000000281115561556B   T0  
+QI70000000281215571557B   T0  
+QI70000000027416041604B   T0  
+QI70000000028016051605B   T0  
+QI70000000045816061606S   T0  
+QNs    Set Down Only                                                           
+QI70000000046016071607S   T1  
+QNs    Set Down Only                                                           
+QI70000000050416081608S   T0  
+QNs    Set Down Only                                                           
+QI70000000050616101610S   T0  
+QNs    Set Down Only                                                           
+QI70000000051216111611S   T0  
+QNs    Set Down Only                                                           
+QI70000000051616121612S   T0  
+QNs    Set Down Only                                                           
+QI70000000052016131613S   T0  
+QNs    Set Down Only                                                           
+QI70000000052616151615S   T0  
+QNs    Set Down Only                                                           
+QI70000000052816151615S   T0  
+QNs    Set Down Only                                                           
+QI70000000053216161616S   T0  
+QNs    Set Down Only                                                           
+QI70000000053416171617S   T0  
+QNs    Set Down Only                                                           
+QI70000000142416181618S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291620   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1018  20251128999999991111100 X106 33D01 DD              I
+QO7000000034921605   T1  
+QI70000000349916051605B   T0  
+QI70000000351016061606B   T0  
+QI70000000351116061606B   T0  
+QI70000000351216061606B   T0  
+QI70000001557416101610B   T0  
+QI70000000351316101610B   T0  
+QI70000000280416111611B   T1  
+QI70000000280516161616B   T0  
+QI70000000280616181618B   T0  
+QI70000000281716211621B   T1  
+QI70000000280816231623B   T0  
+QI70000000280916281628B   T1  
+QI70000000281116311631B   T0  
+QI70000000281216321632B   T0  
+QI70000000027416391639B   T0  
+QI70000000028016401640B   T0  
+QI70000000045816411641S   T0  
+QNs    Set Down Only                                                           
+QI70000000046016421642S   T1  
+QNs    Set Down Only                                                           
+QI70000000050416431643S   T0  
+QNs    Set Down Only                                                           
+QI70000000050616451645S   T0  
+QNs    Set Down Only                                                           
+QI70000000051216461646S   T0  
+QNs    Set Down Only                                                           
+QI70000000051616471647S   T0  
+QNs    Set Down Only                                                           
+QI70000000052016481648S   T0  
+QNs    Set Down Only                                                           
+QI70000000052616501650S   T0  
+QNs    Set Down Only                                                           
+QI70000000052816501650S   T0  
+QNs    Set Down Only                                                           
+QI70000000053216511651S   T0  
+QNs    Set Down Only                                                           
+QI70000000053416521652S   T0  
+QNs    Set Down Only                                                           
+QI70000000142416531653S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291655   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1020  20251128999999991111100 X106 33S02 SH              I
+QO7000000034921630   T1  
+QI70000000349916301630B   T0  
+QI70000000351016311631B   T0  
+QI70000000351116311631B   T0  
+QI70000000351216311631B   T0  
+QI70000001557416351635B   T0  
+QI70000000351316351635B   T0  
+QI70000000280416361636B   T1  
+QI70000000280516411641B   T0  
+QI70000000280616431643B   T0  
+QI70000000281716461646B   T1  
+QI70000000280816481648B   T0  
+QI70000000280916531653B   T1  
+QI70000000281116561656B   T0  
+QI70000000281216571657B   T0  
+QI70000000027417041704B   T0  
+QI70000000028017051705B   T0  
+QI70000000045817061706S   T0  
+QNs    Set Down Only                                                           
+QI70000000046017071707S   T1  
+QNs    Set Down Only                                                           
+QI70000000050417081708S   T0  
+QNs    Set Down Only                                                           
+QI70000000050617101710S   T0  
+QNs    Set Down Only                                                           
+QI70000000051217111711S   T0  
+QNs    Set Down Only                                                           
+QI70000000051617121712S   T0  
+QNs    Set Down Only                                                           
+QI70000000052017131713S   T0  
+QNs    Set Down Only                                                           
+QI70000000052617151715S   T0  
+QNs    Set Down Only                                                           
+QI70000000052817151715S   T0  
+QNs    Set Down Only                                                           
+QI70000000053217161716S   T0  
+QNs    Set Down Only                                                           
+QI70000000053417171717S   T0  
+QNs    Set Down Only                                                           
+QI70000000142417181718S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291720   T1  
+QDNULB 106aICrumlin, Main Street - Belfast, Queen Street                        
+QSNULB 1022  20251128999999991111100 X106a33L01 LF              I
+QO7000000034921700   T1  
+QI70000000349917001700B   T0  
+QI70000000351017011701B   T0  
+QI70000000351117011701B   T0  
+QI70000000351217011701B   T0  
+QI70000001557417051705B   T0  
+QI70000000351317051705B   T0  
+QI70000000280417061706B   T1  
+QI70000000280517081708B   T0  
+QI70000000280617091709B   T0  
+QI70000000282117111711B   T1  
+QI70000000282217111711B   T1  
+QI70000000282317121712B   T0  
+QI70000000281717161716B   T1  
+QI70000000280917231723B   T1  
+QI70000000281117271727B   T0  
+QI70000000281217281728B   T0  
+QI70000000027417371737B   T0  
+QI70000000028017381738B   T0  
+QI70000000045817391739B   T0  
+QI70000000046017401740S   T1  
+QNs    Set Down Only                                                           
+QI70000000050417411741B   T0  
+QI70000000050617431743B   T0  
+QI70000000051217451745B   T0  
+QI70000000051617461746B   T0  
+QI70000000052017471747B   T0  
+QI70000000052617491749B   T0  
+QI70000000052817501750B   T0  
+QI70000000053217511751B   T0  
+QI70000000053417521752B   T0  
+QI70000000142417531753B   T0  
+QT7000000014291755   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 1024  20251128999999991111100 X106 33D01 DD              I
+QO7000000034921800   T1  
+QI70000000349918001800B   T0  
+QI70000000351018011801B   T0  
+QI70000000351118011801B   T0  
+QI70000000351218011801B   T0  
+QI70000001557418051805B   T0  
+QI70000000351318051805B   T0  
+QI70000000280418061806B   T1  
+QI70000000280518111811B   T0  
+QI70000000280618131813B   T0  
+QI70000000281718161816B   T1  
+QI70000000280818181818B   T0  
+QI70000000280918231823B   T1  
+QI70000000281118261826B   T0  
+QI70000000281218271827B   T0  
+QI70000000027418341834B   T0  
+QI70000000028018351835B   T0  
+QI70000000045818361836S   T0  
+QNs    Set Down Only                                                           
+QI70000000046018371837S   T1  
+QNs    Set Down Only                                                           
+QI70000000050418381838S   T0  
+QNs    Set Down Only                                                           
+QI70000000050618401840S   T0  
+QNs    Set Down Only                                                           
+QI70000000051218411841S   T0  
+QNs    Set Down Only                                                           
+QI70000000051618421842S   T0  
+QNs    Set Down Only                                                           
+QI70000000052018431843S   T0  
+QNs    Set Down Only                                                           
+QI70000000052618451845S   T0  
+QNs    Set Down Only                                                           
+QI70000000052818451845S   T0  
+QNs    Set Down Only                                                           
+QI70000000053218461846S   T0  
+QNs    Set Down Only                                                           
+QI70000000053418471847S   T0  
+QNs    Set Down Only                                                           
+QI70000000142418481848S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291850   T1  
+QDNULB 106aICrumlin, Main Street - Belfast, Queen Street                        
+QSNULB 1026  20251128999999991111100 X106a33D01 DD              I
+QO7000000034922030   T1  
+QI70000000349920302030B   T0  
+QI70000000351020312031B   T0  
+QI70000000351120312031B   T0  
+QI70000000351220312031B   T0  
+QI70000001557420352035B   T0  
+QI70000000351320352035B   T0  
+QI70000000280420362036B   T1  
+QI70000000280520382038B   T0  
+QI70000000280620392039B   T0  
+QI70000000282120412041B   T1  
+QI70000000282220412041B   T1  
+QI70000000282320422042B   T0  
+QI70000000281720462046B   T1  
+QI70000000280920532053B   T1  
+QI70000000281120572057B   T0  
+QI70000000281220582058B   T0  
+QI70000000027421072107B   T0  
+QI70000000028021082108B   T0  
+QI70000000045821092109B   T0  
+QI70000000046021102110S   T1  
+QNs    Set Down Only                                                           
+QI70000000050421112111B   T0  
+QI70000000050621132113B   T0  
+QI70000000051221152115B   T0  
+QI70000000051621162116B   T0  
+QI70000000052021172117B   T0  
+QI70000000052621192119B   T0  
+QI70000000052821202120B   T0  
+QI70000000053221212121B   T0  
+QI70000000053421222122B   T0  
+QI70000000142421232123B   T0  
+QT7000000014292125   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2001  20251128999999990000010 X106 33L01 LF              O
+QO7000000014290825   T1  
+QI70000000039608250825P   T0  
+QNp    pick up only                                                            
+QI70000000039808260826P   T0  
+QNp    pick up only                                                            
+QI70000000049608270827P   T0  
+QNp    pick up only                                                            
+QI70000000050208280828P   T0  
+QNp    pick up only                                                            
+QI70000000179008290829P   T0  
+QNp    pick up only                                                            
+QI70000000179108300830P   T0  
+QNp    pick up only                                                            
+QI70000000179308300830P   T0  
+QNp    pick up only                                                            
+QI70000000179408310831P   T0  
+QNp    pick up only                                                            
+QI70000000179708320832P   T0  
+QNp    pick up only                                                            
+QI70000000179908330833P   T0  
+QNp    pick up only                                                            
+QI70000000046608350835P   T1  
+QNp    pick up only                                                            
+QI70000000028208360836B   T0  
+QI70000000028608360836B   T0  
+QI70000000281308420842B   T0  
+QI70000000281408430843B   T0  
+QI70000000281008450845B   T0  
+QI70000000281508460846B   T1  
+QI70000000281608510851B   T0  
+QI70000000281708550855B   T1  
+QI70000000280108570857B   T0  
+QI70000000280208580858B   T0  
+QI70000000280309030903B   T1  
+QI70000001557509040904B   T0  
+QI70000000350909080908B   T0  
+QI70000000349009090909B   T0  
+QT7000000034940910   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2003  20251128999999990000010 X106 33L01 LF              O
+QO7000000014291025   T1  
+QI70000000039610251025P   T0  
+QNp    pick up only                                                            
+QI70000000039810261026P   T0  
+QNp    pick up only                                                            
+QI70000000049610271027P   T0  
+QNp    pick up only                                                            
+QI70000000050210281028P   T0  
+QNp    pick up only                                                            
+QI70000000179010291029P   T0  
+QNp    pick up only                                                            
+QI70000000179110301030P   T0  
+QNp    pick up only                                                            
+QI70000000179310301030P   T0  
+QNp    pick up only                                                            
+QI70000000179410311031P   T0  
+QNp    pick up only                                                            
+QI70000000179710321032P   T0  
+QNp    pick up only                                                            
+QI70000000179910331033P   T0  
+QNp    pick up only                                                            
+QI70000000046610351035P   T1  
+QNp    pick up only                                                            
+QI70000000028210361036B   T0  
+QI70000000028610361036B   T0  
+QI70000000281310421042B   T0  
+QI70000000281410431043B   T0  
+QI70000000281010451045B   T0  
+QI70000000281510461046B   T1  
+QI70000000281610511051B   T0  
+QI70000000281710551055B   T1  
+QI70000000280110571057B   T0  
+QI70000000280210581058B   T0  
+QI70000000280311031103B   T1  
+QI70000001557511041104B   T0  
+QI70000000350911081108B   T0  
+QI70000000349011091109B   T0  
+QT7000000034941110   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2005  20251128999999990000010 X106 33L01 LF              O
+QO7000000014291225   T1  
+QI70000000039612251225P   T0  
+QNp    pick up only                                                            
+QI70000000039812261226P   T0  
+QNp    pick up only                                                            
+QI70000000049612271227P   T0  
+QNp    pick up only                                                            
+QI70000000050212281228P   T0  
+QNp    pick up only                                                            
+QI70000000179012291229P   T0  
+QNp    pick up only                                                            
+QI70000000179112301230P   T0  
+QNp    pick up only                                                            
+QI70000000179312301230P   T0  
+QNp    pick up only                                                            
+QI70000000179412311231P   T0  
+QNp    pick up only                                                            
+QI70000000179712321232P   T0  
+QNp    pick up only                                                            
+QI70000000179912331233P   T0  
+QNp    pick up only                                                            
+QI70000000046612351235P   T1  
+QNp    pick up only                                                            
+QI70000000028212361236B   T0  
+QI70000000028612361236B   T0  
+QI70000000281312421242B   T0  
+QI70000000281412431243B   T0  
+QI70000000281012451245B   T0  
+QI70000000281512461246B   T1  
+QI70000000281612511251B   T0  
+QI70000000281712551255B   T1  
+QI70000000280112571257B   T0  
+QI70000000280212581258B   T0  
+QI70000000280313031303B   T1  
+QI70000001557513041304B   T0  
+QI70000000350913081308B   T0  
+QI70000000349013091309B   T0  
+QT7000000034941310   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2007  20251128999999990000010 X106 33L01 LF              O
+QO7000000014291425   T1  
+QI70000000039614251425P   T0  
+QNp    pick up only                                                            
+QI70000000039814261426P   T0  
+QNp    pick up only                                                            
+QI70000000049614271427P   T0  
+QNp    pick up only                                                            
+QI70000000050214281428P   T0  
+QNp    pick up only                                                            
+QI70000000179014291429P   T0  
+QNp    pick up only                                                            
+QI70000000179114301430P   T0  
+QNp    pick up only                                                            
+QI70000000179314301430P   T0  
+QNp    pick up only                                                            
+QI70000000179414311431P   T0  
+QNp    pick up only                                                            
+QI70000000179714321432P   T0  
+QNp    pick up only                                                            
+QI70000000179914331433P   T0  
+QNp    pick up only                                                            
+QI70000000046614351435P   T1  
+QNp    pick up only                                                            
+QI70000000028214361436B   T0  
+QI70000000028614361436B   T0  
+QI70000000281314421442B   T0  
+QI70000000281414431443B   T0  
+QI70000000281014451445B   T0  
+QI70000000281514461446B   T1  
+QI70000000281614511451B   T0  
+QI70000000281714551455B   T1  
+QI70000000280114571457B   T0  
+QI70000000280214581458B   T0  
+QI70000000280315031503B   T1  
+QI70000001557515041504B   T0  
+QI70000000350915081508B   T0  
+QI70000000349015091509B   T0  
+QT7000000034941510   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2009  20251128999999990000010 X106 33L01 LF              O
+QO7000000014291625   T1  
+QI70000000039616251625P   T0  
+QNp    pick up only                                                            
+QI70000000039816261626P   T0  
+QNp    pick up only                                                            
+QI70000000049616271627P   T0  
+QNp    pick up only                                                            
+QI70000000050216281628P   T0  
+QNp    pick up only                                                            
+QI70000000179016291629P   T0  
+QNp    pick up only                                                            
+QI70000000179116301630P   T0  
+QNp    pick up only                                                            
+QI70000000179316301630P   T0  
+QNp    pick up only                                                            
+QI70000000179416311631P   T0  
+QNp    pick up only                                                            
+QI70000000179716321632P   T0  
+QNp    pick up only                                                            
+QI70000000179916331633P   T0  
+QNp    pick up only                                                            
+QI70000000046616351635P   T1  
+QNp    pick up only                                                            
+QI70000000028216361636B   T0  
+QI70000000028616361636B   T0  
+QI70000000281316421642B   T0  
+QI70000000281416431643B   T0  
+QI70000000281016451645B   T0  
+QI70000000281516461646B   T1  
+QI70000000281616511651B   T0  
+QI70000000281716551655B   T1  
+QI70000000280116571657B   T0  
+QI70000000280216581658B   T0  
+QI70000000280317031703B   T1  
+QI70000001557517041704B   T0  
+QI70000000350917081708B   T0  
+QI70000000349017091709B   T0  
+QT7000000034941710   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2011  20251128999999990000010 X106 33L01 LF              O
+QO7000000014291825   T1  
+QI70000000039618251825P   T0  
+QNp    pick up only                                                            
+QI70000000039818261826P   T0  
+QNp    pick up only                                                            
+QI70000000049618271827P   T0  
+QNp    pick up only                                                            
+QI70000000050218281828P   T0  
+QNp    pick up only                                                            
+QI70000000179018291829P   T0  
+QNp    pick up only                                                            
+QI70000000179118301830P   T0  
+QNp    pick up only                                                            
+QI70000000179318301830P   T0  
+QNp    pick up only                                                            
+QI70000000179418311831P   T0  
+QNp    pick up only                                                            
+QI70000000179718321832P   T0  
+QNp    pick up only                                                            
+QI70000000179918331833P   T0  
+QNp    pick up only                                                            
+QI70000000046618351835P   T1  
+QNp    pick up only                                                            
+QI70000000028218361836B   T0  
+QI70000000028618361836B   T0  
+QI70000000281318421842B   T0  
+QI70000000281418431843B   T0  
+QI70000000281018451845B   T0  
+QI70000000281518461846B   T1  
+QI70000000281618511851B   T0  
+QI70000000281718551855B   T1  
+QI70000000280118571857B   T0  
+QI70000000280218581858B   T0  
+QI70000000280319031903B   T1  
+QI70000001557519041904B   T0  
+QI70000000350919081908B   T0  
+QI70000000349019091909B   T0  
+QT7000000034941910   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2013  20251128999999990000010 X106 33L01 LF              O
+QO7000000014292025   T1  
+QI70000000039620252025P   T0  
+QNp    pick up only                                                            
+QI70000000039820262026P   T0  
+QNp    pick up only                                                            
+QI70000000049620272027P   T0  
+QNp    pick up only                                                            
+QI70000000050220282028P   T0  
+QNp    pick up only                                                            
+QI70000000179020292029P   T0  
+QNp    pick up only                                                            
+QI70000000179120302030P   T0  
+QNp    pick up only                                                            
+QI70000000179320302030P   T0  
+QNp    pick up only                                                            
+QI70000000179420312031P   T0  
+QNp    pick up only                                                            
+QI70000000179720322032P   T0  
+QNp    pick up only                                                            
+QI70000000179920332033P   T0  
+QNp    pick up only                                                            
+QI70000000046620352035P   T1  
+QNp    pick up only                                                            
+QI70000000028220362036B   T0  
+QI70000000028620362036B   T0  
+QI70000000281320422042B   T0  
+QI70000000281420432043B   T0  
+QI70000000281020452045B   T0  
+QI70000000281520462046B   T1  
+QI70000000281620512051B   T0  
+QI70000000281720552055B   T1  
+QI70000000280120572057B   T0  
+QI70000000280220582058B   T0  
+QI70000000280321032103B   T1  
+QI70000001557521042104B   T0  
+QI70000000350921082108B   T0  
+QI70000000349021092109B   T0  
+QT7000000034942110   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 2015  20251128999999990000010 X106 33D01 DD              O
+QO7000000014292400   T1  
+QI70000000039624002400B   T0  
+QI70000000039824012401B   T0  
+QI70000000049624022402B   T0  
+QI70000000050224032403B   T0  
+QI70000000179024042404B   T0  
+QI70000000179124052405B   T0  
+QI70000000179324052405B   T0  
+QI70000000179424062406B   T0  
+QI70000000179724072407B   T0  
+QI70000000179924082408B   T0  
+QI70000000046624102410B   T1  
+QI70000000028224112411B   T0  
+QI70000000028624112411S   T0  
+QNs    Set Down Only                                                           
+QI70000000281324172417B   T0  
+QI70000000281424182418B   T0  
+QI70000000281024202420B   T0  
+QI70000000281524212421B   T1  
+QI70000000281624262426B   T0  
+QI70000000281724302430B   T1  
+QI70000000280124322432B   T0  
+QI70000000280224332433B   T0  
+QI70000000280324382438B   T1  
+QI70000001557524392439B   T0  
+QI70000000350924432443B   T0  
+QI70000000349024442444B   T0  
+QT7000000034942445   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2000  20251128999999990000010 X106 33L01 LF              I
+QO7000000034920730   T1  
+QI70000000349907300730B   T0  
+QI70000000351007310731B   T0  
+QI70000000351107310731B   T0  
+QI70000000351207310731B   T0  
+QI70000001557407350735B   T0  
+QI70000000351307350735B   T0  
+QI70000000280407360736B   T1  
+QI70000000280507410741B   T0  
+QI70000000280607430743B   T0  
+QI70000000280707460746B   T1  
+QI70000000280807480748B   T0  
+QI70000000280907530753B   T1  
+QI70000000281107560756B   T0  
+QI70000000281207570757B   T0  
+QI70000000027408040804B   T0  
+QI70000000028008050805B   T0  
+QI70000000045808060806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046008070807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050408080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050608100810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051208110811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051608120812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052008130813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052608150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052808150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053208160816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053408170817S   T0  
+QNs    Set Down Only                                                           
+QI70000000142408180818S   T0  
+QNs    Set Down Only                                                           
+QT7000000014290820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2002  20251128999999990000010 X106 33L01 LF              I
+QO7000000034920930   T1  
+QI70000000349909300930B   T0  
+QI70000000351009310931B   T0  
+QI70000000351109310931B   T0  
+QI70000000351209310931B   T0  
+QI70000001557409350935B   T0  
+QI70000000351309350935B   T0  
+QI70000000280409360936B   T1  
+QI70000000280509410941B   T0  
+QI70000000280609430943B   T0  
+QI70000000280709460946B   T1  
+QI70000000280809480948B   T0  
+QI70000000280909530953B   T1  
+QI70000000281109560956B   T0  
+QI70000000281209570957B   T0  
+QI70000000027410041004B   T0  
+QI70000000028010051005B   T0  
+QI70000000045810061006S   T0  
+QNs    Set Down Only                                                           
+QI70000000046010071007S   T1  
+QNs    Set Down Only                                                           
+QI70000000050410081008S   T0  
+QNs    Set Down Only                                                           
+QI70000000050610101010S   T0  
+QNs    Set Down Only                                                           
+QI70000000051210111011S   T0  
+QNs    Set Down Only                                                           
+QI70000000051610121012S   T0  
+QNs    Set Down Only                                                           
+QI70000000052010131013S   T0  
+QNs    Set Down Only                                                           
+QI70000000052610151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000052810151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000053210161016S   T0  
+QNs    Set Down Only                                                           
+QI70000000053410171017B   T0  
+QI70000000142410181018B   T0  
+QT7000000014291020   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2004  20251128999999990000010 X106 33L01 LF              I
+QO7000000034921130   T1  
+QI70000000349911301130B   T0  
+QI70000000351011311131B   T0  
+QI70000000351111311131B   T0  
+QI70000000351211311131B   T0  
+QI70000001557411351135B   T0  
+QI70000000351311351135B   T0  
+QI70000000280411361136B   T1  
+QI70000000280511411141B   T0  
+QI70000000280611431143B   T0  
+QI70000000280711461146B   T1  
+QI70000000280811481148B   T0  
+QI70000000280911531153B   T1  
+QI70000000281111561156B   T0  
+QI70000000281211571157B   T0  
+QI70000000027412041204B   T0  
+QI70000000028012051205B   T0  
+QI70000000045812061206S   T0  
+QNs    Set Down Only                                                           
+QI70000000046012071207S   T1  
+QNs    Set Down Only                                                           
+QI70000000050412081208S   T0  
+QNs    Set Down Only                                                           
+QI70000000050612101210S   T0  
+QNs    Set Down Only                                                           
+QI70000000051212111211S   T0  
+QNs    Set Down Only                                                           
+QI70000000051612121212S   T0  
+QNs    Set Down Only                                                           
+QI70000000052012131213S   T0  
+QNs    Set Down Only                                                           
+QI70000000052612151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000052812151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000053212161216S   T0  
+QNs    Set Down Only                                                           
+QI70000000053412171217S   T0  
+QNs    Set Down Only                                                           
+QI70000000142412181218S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291220   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2006  20251128999999990000010 X106 33L01 LF              I
+QO7000000034921330   T1  
+QI70000000349913301330B   T0  
+QI70000000351013311331B   T0  
+QI70000000351113311331B   T0  
+QI70000000351213311331B   T0  
+QI70000001557413351335B   T0  
+QI70000000351313351335B   T0  
+QI70000000280413361336B   T1  
+QI70000000280513411341B   T0  
+QI70000000280613431343B   T0  
+QI70000000280713461346B   T1  
+QI70000000280813481348B   T0  
+QI70000000280913531353B   T1  
+QI70000000281113561356B   T0  
+QI70000000281213571357B   T0  
+QI70000000027414041404B   T0  
+QI70000000028014051405B   T0  
+QI70000000045814061406S   T0  
+QNs    Set Down Only                                                           
+QI70000000046014071407S   T1  
+QNs    Set Down Only                                                           
+QI70000000050414081408S   T0  
+QNs    Set Down Only                                                           
+QI70000000050614101410S   T0  
+QNs    Set Down Only                                                           
+QI70000000051214111411S   T0  
+QNs    Set Down Only                                                           
+QI70000000051614121412S   T0  
+QNs    Set Down Only                                                           
+QI70000000052014131413S   T0  
+QNs    Set Down Only                                                           
+QI70000000052614151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000052814151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000053214161416S   T0  
+QNs    Set Down Only                                                           
+QI70000000053414171417S   T0  
+QNs    Set Down Only                                                           
+QI70000000142414181418S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291420   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2008  20251128999999990000010 X106 33L01 LF              I
+QO7000000034921530   T1  
+QI70000000349915301530B   T0  
+QI70000000351015311531B   T0  
+QI70000000351115311531B   T0  
+QI70000000351215311531B   T0  
+QI70000001557415351535B   T0  
+QI70000000351315351535B   T0  
+QI70000000280415361536B   T1  
+QI70000000280515411541B   T0  
+QI70000000280615431543B   T0  
+QI70000000280715461546B   T1  
+QI70000000280815481548B   T0  
+QI70000000280915531553B   T1  
+QI70000000281115561556B   T0  
+QI70000000281215571557B   T0  
+QI70000000027416041604B   T0  
+QI70000000028016051605B   T0  
+QI70000000045816061606S   T0  
+QNs    Set Down Only                                                           
+QI70000000046016071607S   T1  
+QNs    Set Down Only                                                           
+QI70000000050416081608S   T0  
+QNs    Set Down Only                                                           
+QI70000000050616101610S   T0  
+QNs    Set Down Only                                                           
+QI70000000051216111611S   T0  
+QNs    Set Down Only                                                           
+QI70000000051616121612S   T0  
+QNs    Set Down Only                                                           
+QI70000000052016131613S   T0  
+QNs    Set Down Only                                                           
+QI70000000052616151615S   T0  
+QNs    Set Down Only                                                           
+QI70000000052816151615S   T0  
+QNs    Set Down Only                                                           
+QI70000000053216161616S   T0  
+QNs    Set Down Only                                                           
+QI70000000053416171617S   T0  
+QNs    Set Down Only                                                           
+QI70000000142416181618S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291620   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2010  20251128999999990000010 X106 33L01 LF              I
+QO7000000034921730   T1  
+QI70000000349917301730B   T0  
+QI70000000351017311731B   T0  
+QI70000000351117311731B   T0  
+QI70000000351217311731B   T0  
+QI70000001557417351735B   T0  
+QI70000000351317351735B   T0  
+QI70000000280417361736B   T1  
+QI70000000280517411741B   T0  
+QI70000000280617431743B   T0  
+QI70000000280717461746B   T1  
+QI70000000280817481748B   T0  
+QI70000000280917531753B   T1  
+QI70000000281117561756B   T0  
+QI70000000281217571757B   T0  
+QI70000000027418041804B   T0  
+QI70000000028018051805B   T0  
+QI70000000045818061806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046018071807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050418081808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050618101810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051218111811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051618121812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052018131813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052618151815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052818151815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053218161816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053418171817S   T0  
+QNs    Set Down Only                                                           
+QI70000000142418181818S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre                    
+QSNULB 2012  20251128999999990000010 X106 33L01 LF              I
+QO7000000034921930   T1  
+QI70000000349919301930B   T0  
+QI70000000351019311931B   T0  
+QI70000000351119311931B   T0  
+QI70000000351219311931B   T0  
+QI70000001557419351935B   T0  
+QI70000000351319351935B   T0  
+QI70000000280419361936B   T1  
+QI70000000280519411941B   T0  
+QI70000000280619431943B   T0  
+QI70000000280719461946B   T1  
+QI70000000280819481948B   T0  
+QI70000000280919531953B   T1  
+QI70000000281119561956B   T0  
+QI70000000281219571957B   T0  
+QI70000000027420042004B   T0  
+QI70000000028020052005B   T0  
+QI70000000045820062006S   T0  
+QNs    Set Down Only                                                           
+QI70000000046020072007S   T1  
+QNs    Set Down Only                                                           
+QI70000000050420082008S   T0  
+QNs    Set Down Only                                                           
+QI70000000050620102010S   T0  
+QNs    Set Down Only                                                           
+QI70000000051220112011S   T0  
+QNs    Set Down Only                                                           
+QI70000000051620122012S   T0  
+QNs    Set Down Only                                                           
+QI70000000052020132013S   T0  
+QNs    Set Down Only                                                           
+QI70000000052620152015S   T0  
+QNs    Set Down Only                                                           
+QI70000000052820152015S   T0  
+QNs    Set Down Only                                                           
+QI70000000053220162016S   T0  
+QNs    Set Down Only                                                           
+QI70000000053420172017S   T0  
+QNs    Set Down Only                                                           
+QI70000000142420182018S   T0  
+QNs    Set Down Only                                                           
+QT7000000014292020   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3001  20251128999999990000001 X106 33D01 DD              O
+QO7000000014290825   T1  
+QI70000000039608250825P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039808260826P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049608270827P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050208280828P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179008290829P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179108300830P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179308300830P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179408310831P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179708320832P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179908330833P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046608350835P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028208360836B   T0  
+QI70000000028608360836B   T0  
+QI70000000281308420842B   T0  
+QI70000000281408430843B   T0  
+QI70000000281008460846B   T0  
+QI70000000281508470847B   T1  
+QI70000000281608510851B   T0  
+QI70000000281708540854B   T1  
+QI70000000281908560856B   T0  
+QI70000000280208580858B   T0  
+QI70000000280309040904B   T1  
+QI70000001557509040904B   T0  
+QI70000000350909080908B   T0  
+QI70000000349009090909B   T0  
+QT7000000034940910   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3003  20251128999999990000001 X106 33D01 DD              O
+QO7000000014291025   T1  
+QI70000000039610251025P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039810261026P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049610271027P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050210281028P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179010291029P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179110301030P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179310301030P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179410311031P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179710321032P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179910331033P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046610351035P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028210361036B   T0  
+QI70000000028610361036B   T0  
+QI70000000281310421042B   T0  
+QI70000000281410431043B   T0  
+QI70000000281010461046B   T0  
+QI70000000281510471047B   T1  
+QI70000000281610511051B   T0  
+QI70000000281710541054B   T1  
+QI70000000281910561056B   T0  
+QI70000000280210581058B   T0  
+QI70000000280311041104B   T1  
+QI70000001557511041104B   T0  
+QI70000000350911081108B   T0  
+QI70000000349011091109B   T0  
+QT7000000034941110   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3005  20251128999999990000001 X106 33D02 DD              O
+QO7000000014291225   T1  
+QI70000000039612251225P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039812261226P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049612271227P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050212281228P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179012291229P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179112301230P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179312301230P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179412311231P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179712321232P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179912331233P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046612351235P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028212361236B   T0  
+QI70000000028612361236B   T0  
+QI70000000281312421242B   T0  
+QI70000000281412431243B   T0  
+QI70000000281012461246B   T0  
+QI70000000281512471247B   T1  
+QI70000000281612511251B   T0  
+QI70000000281712541254B   T1  
+QI70000000281912561256B   T0  
+QI70000000280212581258B   T0  
+QI70000000280313041304B   T1  
+QI70000001557513041304B   T0  
+QI70000000350913081308B   T0  
+QI70000000349013091309B   T0  
+QT7000000034941310   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3007  20251128999999990000001 X106 33D02 DD              O
+QO7000000014291425   T1  
+QI70000000039614251425P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039814261426P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049614271427P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050214281428P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179014291429P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179114301430P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179314301430P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179414311431P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179714321432P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179914331433P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046614351435P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028214361436B   T0  
+QI70000000028614361436B   T0  
+QI70000000281314421442B   T0  
+QI70000000281414431443B   T0  
+QI70000000281014461446B   T0  
+QI70000000281514471447B   T1  
+QI70000000281614511451B   T0  
+QI70000000281714541454B   T1  
+QI70000000281914561456B   T0  
+QI70000000280214581458B   T0  
+QI70000000280315041504B   T1  
+QI70000001557515041504B   T0  
+QI70000000350915081508B   T0  
+QI70000000349015091509B   T0  
+QT7000000034941510   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3009  20251128999999990000001 X106 33D01 DD              O
+QO7000000014291525   T1  
+QI70000000039615251525P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039815261526P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049615271527P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050215281528P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179015291529P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179115301530P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179315301530P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179415311531P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179715321532P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179915331533P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046615351535P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028215361536B   T0  
+QI70000000028615361536B   T0  
+QI70000000281315421542B   T0  
+QI70000000281415431543B   T0  
+QI70000000281015461546B   T0  
+QI70000000281515471547B   T1  
+QI70000000281615511551B   T0  
+QI70000000281715541554B   T1  
+QI70000000281915561556B   T0  
+QI70000000280215581558B   T0  
+QI70000000280316041604B   T1  
+QI70000001557516041604B   T0  
+QI70000000350916081608B   T0  
+QI70000000349016091609B   T0  
+QT7000000034941610   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3011  20251128999999990000001 X106 33D01 DD              O
+QO7000000014291725   T1  
+QI70000000039617251725P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039817261726P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049617271727P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050217281728P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179017291729P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179117301730P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179317301730P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179417311731P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179717321732P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179917331733P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046617351735P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028217361736B   T0  
+QI70000000028617361736B   T0  
+QI70000000281317421742B   T0  
+QI70000000281417431743B   T0  
+QI70000000281017461746B   T0  
+QI70000000281517471747B   T1  
+QI70000000281617511751B   T0  
+QI70000000281717541754B   T1  
+QI70000000281917561756B   T0  
+QI70000000280217581758B   T0  
+QI70000000280318041804B   T1  
+QI70000001557518041804B   T0  
+QI70000000350918081808B   T0  
+QI70000000349018091809B   T0  
+QT7000000034941810   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3013  20251128999999990000001 X106 33D02 DD              O
+QO7000000014291825   T1  
+QI70000000039618251825P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039818261826P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049618271827P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050218281828P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179018291829P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179118301830P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179318301830P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179418311831P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179718321832P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179918331833P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046618351835P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028218361836B   T0  
+QI70000000028618361836B   T0  
+QI70000000281318421842B   T0  
+QI70000000281418431843B   T0  
+QI70000000281018461846B   T0  
+QI70000000281518471847B   T1  
+QI70000000281618511851B   T0  
+QI70000000281718541854B   T1  
+QI70000000281918561856B   T0  
+QI70000000280218581858B   T0  
+QI70000000280319041904B   T1  
+QI70000001557519041904B   T0  
+QI70000000350919081908B   T0  
+QI70000000349019091909B   T0  
+QT7000000034941910   T1  
+QDNULB 106 OBelfast - Crumlin, Main Street                                      
+QSNULB 3015  20251128999999990000001 X106 33D02 DD              O
+QO7000000014292025   T1  
+QI70000000039620252025P   T0  
+QNp    Pick Up Only                                                            
+QI70000000039820262026P   T0  
+QNp    Pick Up Only                                                            
+QI70000000049620272027P   T0  
+QNp    Pick Up Only                                                            
+QI70000000050220282028P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179020292029P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179120302030P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179320302030P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179420312031P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179720322032P   T0  
+QNp    Pick Up Only                                                            
+QI70000000179920332033P   T0  
+QNp    Pick Up Only                                                            
+QI70000000046620352035P   T1  
+QNp    Pick Up Only                                                            
+QI70000000028220362036B   T0  
+QI70000000028620362036B   T0  
+QI70000000281320422042B   T0  
+QI70000000281420432043B   T0  
+QI70000000281020462046B   T0  
+QI70000000281520472047B   T1  
+QI70000000281620512051B   T0  
+QI70000000281720542054B   T1  
+QI70000000281920562056B   T0  
+QI70000000280220582058B   T0  
+QI70000000280321042104B   T1  
+QI70000001557521042104B   T0  
+QI70000000350921082108B   T0  
+QI70000000349021092109B   T0  
+QT7000000034942110   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3000  20251128999999990000001 X106 33D01 DD              I
+QO7000000034920730   T1  
+QI70000000349907300730B   T0  
+QI70000000351007310731B   T0  
+QI70000000351107310731B   T0  
+QI70000000351207310731B   T0  
+QI70000001557407350735B   T0  
+QI70000000351307350735B   T0  
+QI70000000280407360736B   T1  
+QI70000000280507410741B   T0  
+QI70000000280607430743B   T0  
+QI70000000280707460746B   T1  
+QI70000000280807480748B   T0  
+QI70000000280907530753B   T1  
+QI70000000281107560756B   T0  
+QI70000000281207570757B   T0  
+QI70000000027408040804B   T0  
+QI70000000028008050805B   T0  
+QI70000000045808060806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046008070807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050408080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050608100810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051208110811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051608120812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052008130813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052608150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052808150815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053208160816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053408170817S   T0  
+QNs    Set Down Only                                                           
+QI70000000142408180818S   T0  
+QNs    Set Down Only                                                           
+QT7000000014290820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3002  20251128999999990000001 X106 33D01 DD              I
+QO7000000034920930   T1  
+QI70000000349909300930B   T0  
+QI70000000351009310931B   T0  
+QI70000000351109310931B   T0  
+QI70000000351209310931B   T0  
+QI70000001557409350935B   T0  
+QI70000000351309350935B   T0  
+QI70000000280409360936B   T1  
+QI70000000280509410941B   T0  
+QI70000000280609430943B   T0  
+QI70000000280709460946B   T1  
+QI70000000280809480948B   T0  
+QI70000000280909530953B   T1  
+QI70000000281109560956B   T0  
+QI70000000281209570957B   T0  
+QI70000000027410041004B   T0  
+QI70000000028010051005B   T0  
+QI70000000045810061006S   T0  
+QNs    Set Down Only                                                           
+QI70000000046010071007S   T1  
+QNs    Set Down Only                                                           
+QI70000000050410081008S   T0  
+QNs    Set Down Only                                                           
+QI70000000050610101010S   T0  
+QNs    Set Down Only                                                           
+QI70000000051210111011S   T0  
+QNs    Set Down Only                                                           
+QI70000000051610121012S   T0  
+QNs    Set Down Only                                                           
+QI70000000052010131013S   T0  
+QNs    Set Down Only                                                           
+QI70000000052610151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000052810151015S   T0  
+QNs    Set Down Only                                                           
+QI70000000053210161016S   T0  
+QNs    Set Down Only                                                           
+QI70000000053410171017S   T0  
+QNs    Set Down Only                                                           
+QI70000000142410181018S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291020   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3004  20251128999999990000001 X106 33D02 DD              I
+QO7000000034921130   T1  
+QI70000000349911301130B   T0  
+QI70000000351011311131B   T0  
+QI70000000351111311131B   T0  
+QI70000000351211311131B   T0  
+QI70000001557411351135B   T0  
+QI70000000351311351135B   T0  
+QI70000000280411361136B   T1  
+QI70000000280511411141B   T0  
+QI70000000280611431143B   T0  
+QI70000000280711461146B   T1  
+QI70000000280811481148B   T0  
+QI70000000280911531153B   T1  
+QI70000000281111561156B   T0  
+QI70000000281211571157B   T0  
+QI70000000027412041204B   T0  
+QI70000000028012051205B   T0  
+QI70000000045812061206S   T0  
+QNs    Set Down Only                                                           
+QI70000000046012071207S   T1  
+QNs    Set Down Only                                                           
+QI70000000050412081208S   T0  
+QNs    Set Down Only                                                           
+QI70000000050612101210S   T0  
+QNs    Set Down Only                                                           
+QI70000000051212111211S   T0  
+QNs    Set Down Only                                                           
+QI70000000051612121212S   T0  
+QNs    Set Down Only                                                           
+QI70000000052012131213S   T0  
+QNs    Set Down Only                                                           
+QI70000000052612151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000052812151215S   T0  
+QNs    Set Down Only                                                           
+QI70000000053212161216S   T0  
+QNs    Set Down Only                                                           
+QI70000000053412171217S   T0  
+QNs    Set Down Only                                                           
+QI70000000142412181218S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291220   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3006  20251128999999990000001 X106 33D02 DD              I
+QO7000000034921330   T1  
+QI70000000349913301330B   T0  
+QI70000000351013311331B   T0  
+QI70000000351113311331B   T0  
+QI70000000351213311331B   T0  
+QI70000001557413351335B   T0  
+QI70000000351313351335B   T0  
+QI70000000280413361336B   T1  
+QI70000000280513411341B   T0  
+QI70000000280613431343B   T0  
+QI70000000280713461346B   T1  
+QI70000000280813481348B   T0  
+QI70000000280913531353B   T1  
+QI70000000281113561356B   T0  
+QI70000000281213571357B   T0  
+QI70000000027414041404B   T0  
+QI70000000028014051405B   T0  
+QI70000000045814061406S   T0  
+QNs    Set Down Only                                                           
+QI70000000046014071407S   T1  
+QNs    Set Down Only                                                           
+QI70000000050414081408S   T0  
+QNs    Set Down Only                                                           
+QI70000000050614101410S   T0  
+QNs    Set Down Only                                                           
+QI70000000051214111411S   T0  
+QNs    Set Down Only                                                           
+QI70000000051614121412S   T0  
+QNs    Set Down Only                                                           
+QI70000000052014131413S   T0  
+QNs    Set Down Only                                                           
+QI70000000052614151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000052814151415S   T0  
+QNs    Set Down Only                                                           
+QI70000000053214161416S   T0  
+QNs    Set Down Only                                                           
+QI70000000053414171417S   T0  
+QNs    Set Down Only                                                           
+QI70000000142414181418S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291420   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3008  20251128999999990000001 X106 33D01 DD              I
+QO7000000034921430   T1  
+QI70000000349914301430B   T0  
+QI70000000351014311431B   T0  
+QI70000000351114311431B   T0  
+QI70000000351214311431B   T0  
+QI70000001557414351435B   T0  
+QI70000000351314351435B   T0  
+QI70000000280414361436B   T1  
+QI70000000280514411441B   T0  
+QI70000000280614431443B   T0  
+QI70000000280714461446B   T1  
+QI70000000280814481448B   T0  
+QI70000000280914531453B   T1  
+QI70000000281114561456B   T0  
+QI70000000281214571457B   T0  
+QI70000000027415041504B   T0  
+QI70000000028015051505B   T0  
+QI70000000045815061506S   T0  
+QNs    Set Down Only                                                           
+QI70000000046015071507S   T1  
+QNs    Set Down Only                                                           
+QI70000000050415081508S   T0  
+QNs    Set Down Only                                                           
+QI70000000050615101510S   T0  
+QNs    Set Down Only                                                           
+QI70000000051215111511S   T0  
+QNs    Set Down Only                                                           
+QI70000000051615121512S   T0  
+QNs    Set Down Only                                                           
+QI70000000052015131513S   T0  
+QNs    Set Down Only                                                           
+QI70000000052615151515S   T0  
+QNs    Set Down Only                                                           
+QI70000000052815151515S   T0  
+QNs    Set Down Only                                                           
+QI70000000053215161516S   T0  
+QNs    Set Down Only                                                           
+QI70000000053415171517S   T0  
+QNs    Set Down Only                                                           
+QI70000000142415181518S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291520   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3010  20251128999999990000001 X106 33D01 DD              I
+QO7000000034921630   T1  
+QI70000000349916301630B   T0  
+QI70000000351016311631B   T0  
+QI70000000351116311631B   T0  
+QI70000000351216311631B   T0  
+QI70000001557416351635B   T0  
+QI70000000351316351635B   T0  
+QI70000000280416361636B   T1  
+QI70000000280516411641B   T0  
+QI70000000280616431643B   T0  
+QI70000000280716461646B   T1  
+QI70000000280816481648B   T0  
+QI70000000280916531653B   T1  
+QI70000000281116561656B   T0  
+QI70000000281216571657B   T0  
+QI70000000027417041704B   T0  
+QI70000000028017051705B   T0  
+QI70000000045817061706S   T0  
+QNs    Set Down Only                                                           
+QI70000000046017071707S   T1  
+QNs    Set Down Only                                                           
+QI70000000050417081708S   T0  
+QNs    Set Down Only                                                           
+QI70000000050617101710S   T0  
+QNs    Set Down Only                                                           
+QI70000000051217111711S   T0  
+QNs    Set Down Only                                                           
+QI70000000051617121712S   T0  
+QNs    Set Down Only                                                           
+QI70000000052017131713S   T0  
+QNs    Set Down Only                                                           
+QI70000000052617151715S   T0  
+QNs    Set Down Only                                                           
+QI70000000052817151715S   T0  
+QNs    Set Down Only                                                           
+QI70000000053217161716S   T0  
+QNs    Set Down Only                                                           
+QI70000000053417171717S   T0  
+QNs    Set Down Only                                                           
+QI70000000142417181718S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291720   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3012  20251128999999990000001 X106 33D02 DD              I
+QO7000000034921730   T1  
+QI70000000349917301730B   T0  
+QI70000000351017311731B   T0  
+QI70000000351117311731B   T0  
+QI70000000351217311731B   T0  
+QI70000001557417351735B   T0  
+QI70000000351317351735B   T0  
+QI70000000280417361736B   T1  
+QI70000000280517411741B   T0  
+QI70000000280617431743B   T0  
+QI70000000280717461746B   T1  
+QI70000000280817481748B   T0  
+QI70000000280917531753B   T1  
+QI70000000281117561756B   T0  
+QI70000000281217571757B   T0  
+QI70000000027418041804B   T0  
+QI70000000028018051805B   T0  
+QI70000000045818061806S   T0  
+QNs    Set Down Only                                                           
+QI70000000046018071807S   T1  
+QNs    Set Down Only                                                           
+QI70000000050418081808S   T0  
+QNs    Set Down Only                                                           
+QI70000000050618101810S   T0  
+QNs    Set Down Only                                                           
+QI70000000051218111811S   T0  
+QNs    Set Down Only                                                           
+QI70000000051618121812S   T0  
+QNs    Set Down Only                                                           
+QI70000000052018131813S   T0  
+QNs    Set Down Only                                                           
+QI70000000052618151815S   T0  
+QNs    Set Down Only                                                           
+QI70000000052818151815S   T0  
+QNs    Set Down Only                                                           
+QI70000000053218161816S   T0  
+QNs    Set Down Only                                                           
+QI70000000053418171817S   T0  
+QNs    Set Down Only                                                           
+QI70000000142418181818S   T0  
+QNs    Set Down Only                                                           
+QT7000000014291820   T1  
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre                
+QSNULB 3014  20251128999999990000001 X106 33D02 DD              I
+QO7000000034921930   T1  
+QI70000000349919301930B   T0  
+QI70000000351019311931B   T0  
+QI70000000351119311931B   T0  
+QI70000000351219311931B   T0  
+QI70000001557419351935B   T0  
+QI70000000351319351935B   T0  
+QI70000000280419361936B   T1  
+QI70000000280519411941B   T0  
+QI70000000280619431943B   T0  
+QI70000000280719461946B   T1  
+QI70000000280819481948B   T0  
+QI70000000280919531953B   T1  
+QI70000000281119561956B   T0  
+QI70000000281219571957B   T0  
+QI70000000027420042004B   T0  
+QI70000000028020052005B   T0  
+QI70000000045820062006S   T0  
+QNs    Set Down Only                                                           
+QI70000000046020072007S   T1  
+QNs    Set Down Only                                                           
+QI70000000050420082008S   T0  
+QNs    Set Down Only                                                           
+QI70000000050620102010S   T0  
+QNs    Set Down Only                                                           
+QI70000000051220112011S   T0  
+QNs    Set Down Only                                                           
+QI70000000051620122012S   T0  
+QNs    Set Down Only                                                           
+QI70000000052020132013S   T0  
+QNs    Set Down Only                                                           
+QI70000000052620152015S   T0  
+QNs    Set Down Only                                                           
+QI70000000052820152015S   T0  
+QNs    Set Down Only                                                           
+QI70000000053220162016S   T0  
+QNs    Set Down Only                                                           
+QI70000000053420172017S   T0  
+QNs    Set Down Only                                                           
+QI70000000142420182018S   T0  
+QNs    Set Down Only                                                           
+QT7000000014292020   T1  
+QLN700000001429Queen Street                                      A0000001
+QBN700000001429333623  374241  Northern Ireland
+QLN700000000396Millfield                                         A0000001
+QBN700000000396333345  374323  Northern Ireland
+QLN700000000398Divis Tower                                       A0000001
+QBN700000000398333003  374391  Northern Ireland
+QLN700000000496Twin Spires                                       A0000001
+QBN700000000496332698  374275  Northern Ireland
+QLN700000000502Dunville Park                                     A0000001
+QBN700000000502332283  373988  Northern Ireland
+QLN700000001790Bostock House                                     A0000001
+QBN700000001790332133  373713  Northern Ireland
+QLN700000001791Childrens Hospital                                A0000001
+QBN700000001791331994  373571  Northern Ireland
+QLN700000001793Beechmount                                        A0000001
+QBN700000001793331809  373453  Northern Ireland
+QLN700000001794Beechview Park                                    A0000001
+QBN700000001794331450  373281  Northern Ireland
+QLN700000001797St Louise's                                       A0000001
+QBN700000001797331186  372829  Northern Ireland
+QLN700000001799Falls Park                                        A0000001
+QBN700000001799330825  372582  Northern Ireland
+QLN700000000466Kennedy Centre                                    A0000001
+QBN700000000466330684  372265  Northern Ireland
+QLN700000000282Os Kennedy Way Council Depot                      A0000001
+QBN700000000282330379  371972  Northern Ireland
+QLN700000000286Monagh By-Pass (Glen Road)                        A0000001
+QBN700000000286330007  372294  Northern Ireland
+QLN700000002813Hannahstown                                       A0000001
+QBN700000002813327295  372481  Northern Ireland
+QLN700000002814Glenmeen Close                                    A0000001
+QBN700000002814327005  372912  Northern Ireland
+QLN700000002810Wheelers Road                                     A0000001
+QBN700000002810325699  373447  Northern Ireland
+QLN700000002815Hairpin Bend                                      A0000001
+QBN700000002815325421  373197  Northern Ireland
+QLN700000002816Rusheyhill X Roads                                A0000001
+QBN700000002816323597  372067  Northern Ireland
+QLN700000002817Leathemstown X Roads                              A0000001
+QBN700000002817322070  372517  Northern Ireland
+QLN700000002819Wyebridge                                         A0000001
+QBN700000002819320359  372148  Northern Ireland
+QLN700000002798Tommys Cnr                                        A0000001
+QBN700000002798323409  369482  Northern Ireland
+QLN700000002799Stoney Bridge Court                               A0000001
+QBN700000002799321586  370358  Northern Ireland
+QLN700000002800Stoneyford X Roads                                A0000001
+QBN700000002800321357  370565  Northern Ireland
+QLN700000002801Wyebridge                                         A0000001
+QBN700000002801320322  372144  Northern Ireland
+QLN700000002803Glenavy War Memorial                              A0000001
+QBN700000002803315529  373144  Northern Ireland
+QLN700000015575Lyngrove Hill                                     A0000001
+QBN700000015575315325  373518  Northern Ireland
+QLN700000003509The Beeches                                       A0000001
+QBN700000003509314917  375529  Northern Ireland
+QLN700000003490Canning Grove                                     A0000001
+QBN700000003490314984  376129  Northern Ireland
+QLN700000003494Main Street                                       A0000001
+QBN700000003494315226  376185  Northern Ireland
+QLN700000003492Main Street                                       A0000001
+QBN700000003492315374  376154  Northern Ireland
+QLN700000003499Canning Grove                                     A0000001
+QBN700000003499314919  376088  Northern Ireland
+QLN700000003510Crumlin High School                               A0000001
+QBN700000003510314901  375875  Northern Ireland
+QLN700000003511Landgrave Manor                                   A0000001
+QBN700000003511314924  375685  Northern Ireland
+QLN700000003512The Beeches                                       A0000001
+QBN700000003512314933  375548  Northern Ireland
+QLN700000015574Lyngrove Hill                                     A0000001
+QBN700000015574315353  373519  Northern Ireland
+QLN700000003513Glenavy Service Station                           A0000001
+QBN700000003513315426  373374  Northern Ireland
+QLN700000002804Glenavy War Memorial                              A0000001
+QBN700000002804315509  373150  Northern Ireland
+QLN700000002805Fourscore X Roads                                 A0000001
+QBN700000002805319076  372803  Northern Ireland
+QLN700000002806Wyebridge                                         A0000001
+QBN700000002806320294  372181  Northern Ireland
+QLN700000002821Stonyford X Roads                                 A0000001
+QBN700000002821321345  370587  Northern Ireland
+QLN700000002822The Beeches Manor                                 A0000001
+QBN700000002822321598  370361  Northern Ireland
+QLN700000002823Tommys Cnr                                        A0000001
+QBN700000002823323533  369441  Northern Ireland
+QLN700000002808Rusheyhill X Roads                                A0000001
+QBN700000002808323632  372059  Northern Ireland
+QLN700000002809Hairpin Bend                                      A0000001
+QBN700000002809325604  373416  Northern Ireland
+QLN700000002811Glenmeen Close                                    A0000001
+QBN700000002811327006  372922  Northern Ireland
+QLN700000002812Hannahstown                                       A0000001
+QBN700000002812327299  372485  Northern Ireland
+QLN700000000274Monagh By-Pass (Glen Road)                        A0000001
+QBN700000000274330047  372293  Northern Ireland
+QLN700000000280Stop After Council Depot                          A0000001
+QBN700000000280330408  371959  Northern Ireland
+QLN700000000458Westwood Centre                                   A0000001
+QBN700000000458330674  371962  Northern Ireland
+QLN700000000460Kennedy Centre                                    A0000001
+QBN700000000460330637  372114  Northern Ireland
+QLN700000000504Falls Park                                        A0000001
+QBN700000000504330784  372574  Northern Ireland
+QLN700000000506Rossa House                                       A0000001
+QBN700000000506331180  372868  Northern Ireland
+QLN700000000512Beechview Park                                    A0000001
+QBN700000000512331423  373274  Northern Ireland
+QLN700000000516Beechmount                                        A0000001
+QBN700000000516331797  373471  Northern Ireland
+QLN700000000520Childrens Hospital                                A0000001
+QBN700000000520332032  373630  Northern Ireland
+QLN700000000526Falls Library                                     A0000001
+QBN700000000526332396  374156  Northern Ireland
+QLN700000000528Twin Spires                                       A0000001
+QBN700000000528332659  374268  Northern Ireland
+QLN700000000532Divis Tower                                       A0000001
+QBN700000000532332992  374404  Northern Ireland
+QLN700000000534Barrack Street                                    A0000001
+QBN700000000534333371  374345  Northern Ireland
+QLN700000001424King Street                                       A0000001
+QBN700000001424333524  374190  Northern Ireland
+QLN700000002802Fourscore X Roads                                 A0000001
+QBN700000002802319057  372805  Northern Ireland
+QLN700000002807Leatemstown X Roads                               A0000001
+QBN700000002807321940  372544  Northern Ireland
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      LOWFLOOR
+QVNDD      DOUBLE DECKER
+QVNSH      DEDICATED SCHOOL BUS
+QDNULB 106 OBelfast - Crumlin, Main Street
+QDNULB 106aOQueen Street - Belfast - Main Street - Crumlin
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa Buscentre
+QDNULB 106aICrumlin, Main Street - Belfast, Queen Street
+QDNULB 106 ICrumlin, Main Street - Belfast, Europa/GVS Buscentre

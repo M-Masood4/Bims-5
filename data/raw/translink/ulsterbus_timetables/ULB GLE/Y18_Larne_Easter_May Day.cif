@@ -1,0 +1,923 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260126123639
+QDNGLE 256aOBelfast, Laganside - Larne Bus Station                              TUAO256A
+QSNGLE 9001  20260406202605041100000 B256a21001 GL      TUAO256AO
+QNBH   Bank holidays                                                           
+QO7000000016490830   T1  
+QI70000000174608330833P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151808340834P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463109030903S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464809110911S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000465009150915S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465109170917S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000465309180918S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465509190919S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465709200920S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466009210921S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466109240924S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046630925   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256aOBelfast, Laganside - Larne Bus Station                              TUAO256A
+QSNGLE 9003  20260406202605041100000 B256a21002 GL      TUAO256AO
+QNBH   Bank holidays                                                           
+QO7000000016491100   T1  
+QI70000000174611031103P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151811041104P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463111331133S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464811411141S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000465011451145S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465111471147S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000465311481148S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465511491149S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465711501150S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466011511151S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466111541154S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046631155   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256 OBelfast, Laganside - Larne Bus Station                              TUAO256 
+QSNGLE 9005  20260406202605041100000 B256 21001 GL      TUAO256 O
+QNBH   Bank holidays                                                           
+QO7000000016491300   T1  
+QI70000000174613031303P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151813041304P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463113331333S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464813411341S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000496713441344S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000496913441344S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497213461346S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497313471347S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000497513471347S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497713481348S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465313491349S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465513501350S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465713511351S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466013521352S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466113541354S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046631355   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256 OBelfast, Laganside - Larne Bus Station                              TUAO256 
+QSNGLE 9007  20260406202605041100000 B256 21002 GL      TUAO256 O
+QNBH   Bank holidays                                                           
+QO7000000016491500   T1  
+QI70000000174615031503P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151815041504P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463115331533S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464815411541S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000496715441544S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000496915441544S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497215461546S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497315471547S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000497515471547S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497715481548S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465315491549S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465515501550S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465715511551S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466015521552S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466115541554S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046631555   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256 OBelfast, Laganside - Larne Bus Station                              TUAO256 
+QSNGLE 9009  20260406202605041100000 B256 21001 GL      TUAO256 O
+QNBH   Bank holidays                                                           
+QO7000000016491710   T1  
+QI70000000174617131713P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151817141714P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463117431743S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464817511751S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000496717541754S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000496917541754S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497217561756S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497317571757S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000497517571757S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497717581758S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465317591759S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465518001800S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465718011801S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466018021802S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466118041804S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046631805   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256 OBelfast, Laganside - Larne Bus Station                              TUAO256 
+QSNGLE 9011  20260406202605041100000 B256 21002 GL      TUAO256 O
+QNBH   Bank holidays                                                           
+QO7000000016492010   T1  
+QI70000000174620132013P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151820142014P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000463120432043S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000464820512051S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000496720542054S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000496920542054S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497220562056S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497320572057S   T1  
+QNs    SET DOWN ONLY                                                           
+QI70000000497520572057S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000497720582058S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465320592059S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465521002100S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000465721012101S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466021022102S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000466121042104S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000046632105   T1  
+QNs    SET DOWN ONLY                                                           
+QDNGLE 256 ILarne, Bus Station - Belfast, Laganside                             TUAO256 
+QSNGLE 9002  20260406202605041100000 B256 21001 GL      TUAO256 I
+QNBH   Bank holidays                                                           
+QO7000000046630730   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466607300730P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466807310731P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466907310731P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499407320732P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499807340734P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000499907340734P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500207350735P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500307360736P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000464807390739P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468807470747P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141708190819S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151508210821S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164708230823S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016480825   T1  
+QDNGLE 256 ILarne, Bus Station - Belfast, Laganside                             TUAO256 
+QSNGLE 9004  20260406202605041100000 B256 21002 GL      TUAO256 I
+QNBH   Bank holidays                                                           
+QO7000000046631000   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466610001000P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466810011001P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466910011001P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499410021002P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499810041004P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000499910041004P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500210051005P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500310061006P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000464810091009P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468810171017P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141710491049S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151510511051S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164710531053S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481055   T1  
+QDNGLE 256 ILarne, Bus Station - Belfast, Laganside                             TUAO256 
+QSNGLE 9006  20260406202605041100000 B256 21001 GL      TUAO256 I
+QNBH   Bank holidays                                                           
+QO7000000046631200   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466612001200P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466812011201P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466912011201P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499412021202P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000499812041204P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000499912041204P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500212051205P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000500312061206P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000464812091209P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468812171217P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141712491249S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151512511251S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164712531253S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481255   T1  
+QDNGLE 256aILarne, Bus Station - Belfast, Laganside                             TUAO256A
+QSNGLE 9008  20260406202605041100000 B256a21002 GL      TUAO256AI
+QNBH   Bank holidays                                                           
+QO7000000046631400   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466614011401P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466814011401P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466914021402P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467314041404P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467514051405P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000464814091409P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468814171417P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141714491449S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151514511451S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164714531453S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481455   T1  
+QDNGLE 256aILarne, Bus Station - Belfast, Laganside                             TUAO256A
+QSNGLE 9010  20260406202605041100000 B256a21001 GL      TUAO256AI
+QNBH   Bank holidays                                                           
+QO7000000046631600   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466616011601P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466816011601P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466916021602P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467316041604P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467516051605P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000464816091609P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468816171617P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141716491649S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151516511651S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164716531653S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481655   T1  
+QDNGLE 256aILarne, Bus Station - Belfast, Laganside                             TUAO256A
+QSNGLE 9012  20260406202605041100000 B256a21002 GL      TUAO256AI
+QNBH   Bank holidays                                                           
+QO7000000046631910   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000466619111911P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466819111911P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000466919121912P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467319141914P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000467519151915P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000464819191919P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000468819271927P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000141719591959S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151520012001S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164720032003S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016482005   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9001  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016490815   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174608170817P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151808180818P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471508240824B   T0  
+QI70000000471608260826B   T0  
+QI70000000471708270827B   T0  
+QI70000000471808280828B   T0  
+QI70000000471908290829B   T0  
+QI70000000472008290829B   T0  
+QI70000000472108310831B   T0  
+QI70000000472208320832B   T1  
+QI70000000476608320832B   T0  
+QI70000000477008370837B   T0  
+QI70000000477108380838B   T0  
+QI70000000477308410841B   T0  
+QI70000000583808420842B   T1  
+QI70000000583908440844B   T0  
+QI70000000584008470847B   T0  
+QI70000000584108470847B   T0  
+QI70000000584208480848B   T0  
+QI70000000584308490849B   T0  
+QI70000001519308500850B   T0  
+QI70000000461808520852B   T1  
+QT7000000046160855   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9003  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016491000   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174610021002P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151810031003P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471510091009B   T0  
+QI70000000471610111011B   T0  
+QI70000000471710121012B   T0  
+QI70000000471810131013B   T0  
+QI70000000471910141014B   T0  
+QI70000000472010141014B   T0  
+QI70000000472110161016B   T0  
+QI70000000472210171017B   T1  
+QI70000000476610171017B   T0  
+QI70000000477010221022B   T0  
+QI70000000477110231023B   T0  
+QI70000000477310261026B   T0  
+QI70000000583810271027B   T1  
+QI70000000583910291029B   T0  
+QI70000000584010321032B   T0  
+QI70000000584110321032B   T0  
+QI70000000584210331033B   T0  
+QI70000000584310341034B   T0  
+QI70000001519310351035B   T0  
+QI70000000461810371037B   T1  
+QT7000000046161040   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9005  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016491200   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174612021202P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151812031203P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471512091209B   T0  
+QI70000000471612111211B   T0  
+QI70000000471712121212B   T0  
+QI70000000471812131213B   T0  
+QI70000000471912141214B   T0  
+QI70000000472012141214B   T0  
+QI70000000472112161216B   T0  
+QI70000000472212171217B   T1  
+QI70000000476612171217B   T0  
+QI70000000477012221222B   T0  
+QI70000000477112231223B   T0  
+QI70000000477312261226B   T0  
+QI70000000583812271227B   T1  
+QI70000000583912291229B   T0  
+QI70000000584012321232B   T0  
+QI70000000584112321232B   T0  
+QI70000000584212331233B   T0  
+QI70000000584312341234B   T0  
+QI70000001519312351235B   T0  
+QI70000000461812371237B   T1  
+QT7000000046161240   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9007  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016491400   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174614021402P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151814031403P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471514091409B   T0  
+QI70000000471614111411B   T0  
+QI70000000471714121412B   T0  
+QI70000000471814131413B   T0  
+QI70000000471914141414B   T0  
+QI70000000472014141414B   T0  
+QI70000000472114161416B   T0  
+QI70000000472214171417B   T1  
+QI70000000476614171417B   T0  
+QI70000000477014221422B   T0  
+QI70000000477114231423B   T0  
+QI70000000477314261426B   T0  
+QI70000000583814271427B   T1  
+QI70000000583914291429B   T0  
+QI70000000584014321432B   T0  
+QI70000000584114321432B   T0  
+QI70000000584214331433B   T0  
+QI70000000584314341434B   T0  
+QI70000001519314351435B   T0  
+QI70000000461814371437B   T1  
+QT7000000046161440   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9009  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016491620   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174616221622P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151816231623P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471516291629B   T0  
+QI70000000471616311631B   T0  
+QI70000000471716321632B   T0  
+QI70000000471816331633B   T0  
+QI70000000471916341634B   T0  
+QI70000000472016341634B   T0  
+QI70000000472116361636B   T0  
+QI70000000472216371637B   T1  
+QI70000000476616371637B   T0  
+QI70000000477016421642B   T0  
+QI70000000477116431643B   T0  
+QI70000000477316461646B   T0  
+QI70000000583816471647B   T1  
+QI70000000583916491649B   T0  
+QI70000000584016521652B   T0  
+QI70000000584116521652B   T0  
+QI70000000584216531653B   T0  
+QI70000000584316541654B   T0  
+QI70000001519316551655B   T0  
+QI70000000461816571657B   T1  
+QT7000000046161700   T1  
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QSNULB 9011  20260406202605041100000 B653b23001 URBY    TUAO653BO
+QNBH   Bank holidays                                                           
+QO7000000016491830   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000174618321832P   T1  
+QNp    PICK UP ONLY                                                            
+QI70000000151818331833P   T0  
+QNp    PICK UP ONLY                                                            
+QI70000000471518391839B   T0  
+QI70000000471618411841B   T0  
+QI70000000471718421842B   T0  
+QI70000000471818431843B   T0  
+QI70000000471918441844B   T0  
+QI70000000472018441844B   T0  
+QI70000000472118461846B   T0  
+QI70000000472218471847B   T1  
+QI70000000476618471847B   T0  
+QI70000000477018521852B   T0  
+QI70000000477118531853B   T0  
+QI70000000477318561856B   T0  
+QI70000000583818571857B   T1  
+QI70000000583918591859B   T0  
+QI70000000584019021902B   T0  
+QI70000000584119021902B   T0  
+QI70000000584219031903B   T0  
+QI70000000584319041904B   T0  
+QI70000001519319051905B   T0  
+QI70000000461819071907B   T1  
+QT7000000046161910   T1  
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9002  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046160730   T1  
+QI70000000461807330733B   T1  
+QI70000001477507330733B   T0  
+QI70000001477707340734B   T0  
+QI70000000584507360736B   T0  
+QI70000001477907370737B   T0  
+QI70000000584607390739B   T0  
+QI70000000584707420742B   T0  
+QI70000000584807430743B   T1  
+QI70000000477207430743B   T0  
+QI70000000476007440744B   T0  
+QI70000000476107450745B   T0  
+QI70000000476207450745B   T0  
+QI70000000476507470747B   T0  
+QI70000000470307480748B   T1  
+QI70000000470407480748B   T0  
+QI70000000470607510751B   T0  
+QI70000000470707520752B   T0  
+QI70000000470807530753B   T0  
+QI70000000470907550755B   T0  
+QI70000000471007570757B   T0  
+QI70000000141708040804S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151508070807S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174808080808S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164708080808S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016480810   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9004  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046160910   T1  
+QI70000000461809130913B   T1  
+QI70000001477509130913B   T0  
+QI70000001477709140914B   T0  
+QI70000000584509160916B   T0  
+QI70000001477909170917B   T0  
+QI70000000584609190919B   T0  
+QI70000000584709220922B   T0  
+QI70000000584809230923B   T1  
+QI70000000477209230923B   T0  
+QI70000000476009240924B   T0  
+QI70000000476109250925B   T0  
+QI70000000476209250925B   T0  
+QI70000000476509270927B   T0  
+QI70000000470309280928B   T1  
+QI70000000470409280928B   T0  
+QI70000000470609310931B   T0  
+QI70000000470709320932B   T0  
+QI70000000470809330933B   T0  
+QI70000000470909350935B   T0  
+QI70000000471009370937B   T0  
+QI70000000141709440944S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151509470947S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174809480948S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164709480948S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016480950   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9006  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046161110   T1  
+QI70000000461811131113B   T1  
+QI70000001477511131113B   T0  
+QI70000001477711141114B   T0  
+QI70000000584511161116B   T0  
+QI70000001477911171117B   T0  
+QI70000000584611191119B   T0  
+QI70000000584711221122B   T0  
+QI70000000584811231123B   T1  
+QI70000000477211231123B   T0  
+QI70000000476011241124B   T0  
+QI70000000476111251125B   T0  
+QI70000000476211251125B   T0  
+QI70000000476511271127B   T0  
+QI70000000470311281128B   T1  
+QI70000000470411281128B   T0  
+QI70000000470611311131B   T0  
+QI70000000470711321132B   T0  
+QI70000000470811331133B   T0  
+QI70000000470911351135B   T0  
+QI70000000471011371137B   T0  
+QI70000000141711441144S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151511471147S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174811481148S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164711481148S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481150   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9008  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046161310   T1  
+QI70000000461813131313B   T1  
+QI70000001477513131313B   T0  
+QI70000001477713141314B   T0  
+QI70000000584513161316B   T0  
+QI70000001477913171317B   T0  
+QI70000000584613191319B   T0  
+QI70000000584713221322B   T0  
+QI70000000584813231323B   T1  
+QI70000000477213231323B   T0  
+QI70000000476013241324B   T0  
+QI70000000476113251325B   T0  
+QI70000000476213251325B   T0  
+QI70000000476513271327B   T0  
+QI70000000470313281328B   T1  
+QI70000000470413281328B   T0  
+QI70000000470613311331B   T0  
+QI70000000470713321332B   T0  
+QI70000000470813331333B   T0  
+QI70000000470913351335B   T0  
+QI70000000471013371337B   T0  
+QI70000000141713441344S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151513471347S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174813481348S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164713481348S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481350   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9010  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046161530   T1  
+QI70000000461815331533B   T1  
+QI70000001477515331533B   T0  
+QI70000001477715341534B   T0  
+QI70000000584515361536B   T0  
+QI70000001477915371537B   T0  
+QI70000000584615391539B   T0  
+QI70000000584715421542B   T0  
+QI70000000584815431543B   T1  
+QI70000000477215431543B   T0  
+QI70000000476015441544B   T0  
+QI70000000476115451545B   T0  
+QI70000000476215451545B   T0  
+QI70000000476515471547B   T0  
+QI70000000470315481548B   T1  
+QI70000000470415481548B   T0  
+QI70000000470615511551B   T0  
+QI70000000470715521552B   T0  
+QI70000000470815531553B   T0  
+QI70000000470915551555B   T0  
+QI70000000471015571557B   T0  
+QI70000000141716041604S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151516071607S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174816081608S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164716081608S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481610   T1  
+QNs    SET DOWN ONLY                                                           
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B
+QSNULB 9012  20260406202605041100000 B653b23001 URBY    TUAO653BI
+QNBH   Bank holidays                                                           
+QO7000000046161730   T1  
+QI70000000461817331733B   T1  
+QI70000001477517331733B   T0  
+QI70000001477717341734B   T0  
+QI70000000584517361736B   T0  
+QI70000001477917371737B   T0  
+QI70000000584617391739B   T0  
+QI70000000584717421742B   T0  
+QI70000000584817431743B   T1  
+QI70000000477217431743B   T0  
+QI70000000476017441744B   T0  
+QI70000000476117451745B   T0  
+QI70000000476217451745B   T0  
+QI70000000476517471747B   T0  
+QI70000000470317481748B   T1  
+QI70000000470417481748B   T0  
+QI70000000470617511751B   T0  
+QI70000000470717521752B   T0  
+QI70000000470817531753B   T0  
+QI70000000470917551755B   T0  
+QI70000000471017571757B   T0  
+QI70000000141718041804S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000151518071807S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000174818081808S   T0  
+QNs    SET DOWN ONLY                                                           
+QI70000000164718081808S   T0  
+QNs    SET DOWN ONLY                                                           
+QT7000000016481810   T1  
+QNs    SET DOWN ONLY                                                           
+QLN700000001649Laganside Bus Station                             N0000008
+QBN700000001649334258  374462  Belfast Laganside
+QLN700000001746Bridge Street                                     N0000008
+QBN700000001746333959  374397  Belfast Laganside
+QLN700000001518Ulster University Belfast                         N0000009
+QBN700000001518333838  374833  Belfast Metro Ops
+QLN700000004631Ballynure Main Road                               N0000004
+QBN700000004631331859  393714  Ballyclare
+QLN700000004648Millbrook Park & Ride                             N0000004
+QBN700000004648337554  401095  Ballyclare
+QLN700000004650Mill Brae                                         N0000004
+QBN700000004650338926  402499  Ballyclare
+QLN700000004967Linn Glen                                         N0000020
+QBN700000004967338743  402525  Larne
+QLN700000004969Fairway                                           N0000020
+QBN700000004969338649  402895  Larne
+QLN700000004972Linn Road Community Centre                        N0000020
+QBN700000004972338699  403651  Larne
+QLN700000004973Killyglen Road                                    N0000020
+QBN700000004973338746  403867  Larne
+QLN700000004975Greenland Cemetery                                N0000020
+QBN700000004975339082  403659  Larne
+QLN700000004977Larne Baptist Church                              N0000020
+QBN700000004977339212  403278  Larne
+QLN700000004651The Whins                                         N0000004
+QBN700000004651339166  402980  Ballyclare
+QLN700000004653Lisnamoyle                                        N0000020
+QBN700000004653339698  403284  Larne
+QLN700000004655Laharna Avenue                                    N0000020
+QBN700000004655339904  402942  Larne
+QLN700000004657Gardenmore Church                                 N0000020
+QBN700000004657340068  402724  Larne
+QLN700000004660Larne Methodist Church                            N0000020
+QBN700000004660340529  402713  Larne
+QLN700000004661Circular Road                                     N0000020
+QBN700000004661340413  402497  Larne
+QLN700000004663Larne Bus Station                                 N0000020
+QBN700000004663340076  402270  Larne
+QLN700000004666Princess Gardens                                  N0000020
+QBN700000004666340494  402772  Larne
+QLN700000004668Gardenmore Church                                 N0000020
+QBN700000004668340074  402716  Larne
+QLN700000004669Laharna Avenue                                    N0000020
+QBN700000004669339886  402951  Larne
+QLN700000004673The Whins                                         N0000020
+QBN700000004673339173  402975  Larne
+QLN700000004994Larne Baptist Church                              N0000020
+QBN700000004994339210  403236  Larne
+QLN700000004998Killyglen Road                                    N0000020
+QBN700000004998338752  403860  Larne
+QLN700000004999Linn Road Community Centre                        N0000020
+QBN700000004999338703  403669  Larne
+QLN700000005002Fairway                                           N0000020
+QBN700000005002338657  402891  Larne
+QLN700000005003Cedric Street                                     N0000020
+QBN700000005003338696  402645  Larne
+QLN700000004675Mill Brae                                         N0000020
+QBN700000004675338931  402495  Larne
+QLN700000004688Ballynure Main Road                               N0000020
+QBN700000004688331828  393641  Larne
+QLN700000001417Nelson Street Bus Lane                            N0000009
+QBN700000001417334395  375582  Belfast Metro Ops
+QLN700000001515Ulster University Belfast                         N0000009
+QBN700000001515333849  374819  Belfast Metro Ops
+QLN700000001647High Street                                       N0000009
+QBN700000001647334027  374408  Belfast Metro Ops
+QLN700000001648Laganside Bus Station                             N0000008
+QBN700000001648334307  374456  Belfast Laganside
+QLN700000004715Corrs Corner                                      N0000004
+QBN700000004715330795  384702  Ballyclare
+QLN700000004716Abbeycrete                                        N0000004
+QBN700000004716330213  385206  Ballyclare
+QLN700000004717Sallybush                                         N0000004
+QBN700000004717329865  385496  Ballyclare
+QLN700000004718Whitleys                                          N0000004
+QBN700000004718329440  385779  Ballyclare
+QLN700000004719420-426 Ballyclare Road                           N0000004
+QBN700000004719329251  386116  Ballyclare
+QLN700000004720Kingsmoss Road                                    N0000004
+QBN700000004720329100  386398  Ballyclare
+QLN700000004721Liester Park                                      N0000004
+QBN700000004721328861  386934  Ballyclare
+QLN700000004722Thompson Primary School                           N0000004
+QBN700000004722328713  387253  Ballyclare
+QLN700000004766Wesleydale                                        N0000004
+QBN700000004766328515  387393  Ballyclare
+QLN700000004770Ballypalady Road                                  N0000004
+QBN700000004770327016  388116  Ballyclare
+QLN700000004771Lindsays Corner                                   N0000004
+QBN700000004771326730  388535  Ballyclare
+QLN700000004773Station Road                                      N0000004
+QBN700000004773326174  389418  Ballyclare
+QLN700000005838Harmony Lodge                                     N0000004
+QBN700000005838326313  389587  Ballyclare
+QLN700000005839Thornditch                                        N0000004
+QBN700000005839326933  390145  Ballyclare
+QLN700000005840Ballyclare Cemetery                               N0000004
+QBN700000005840327570  390658  Ballyclare
+QLN700000005841The Cloughan                                      N0000004
+QBN700000005841327732  390730  Ballyclare
+QLN700000005842Clare Heights                                     N0000004
+QBN700000005842327932  390822  Ballyclare
+QLN700000005843Sacred Heart Church                               N0000004
+QBN700000005843328293  391013  Ballyclare
+QLN700000015193Ballyclare Secondary School                       N0000004
+QBN700000015193328513  391113  Ballyclare
+QLN700000004618The Square                                        N0000004
+QBN700000004618328689  391223  Ballyclare
+QLN700000004616Ballyclare Buscentre                              N0000004
+QBN700000004616329001  390828  Ballyclare
+QLN700000014775Ballyclare Secondary School                       N0000004
+QBN700000014775328601  391175  Ballyclare
+QLN700000014777Sacred Heart Church                               N0000004
+QBN700000014777328352  391019  Ballyclare
+QLN700000005845The Cloughan                                      N0000004
+QBN700000005845327730  390720  Ballyclare
+QLN700000014779Ballyclare Cemetery                               N0000004
+QBN700000014779327549  390630  Ballyclare
+QLN700000005846Thornditch                                        N0000004
+QBN700000005846326983  390161  Ballyclare
+QLN700000005847Harmony Lodge                                     N0000004
+QBN700000005847326363  389601  Ballyclare
+QLN700000005848Anderson Park                                     N0000004
+QBN700000005848326177  389519  Ballyclare
+QLN700000004772Doagh Cemetery                                    N0000004
+QBN700000004772326203  389306  Ballyclare
+QLN700000004760Lindsays Corner                                   N0000004
+QBN700000004760326743  388534  Ballyclare
+QLN70000000476167 - 73 The Longshot                              N0000004
+QBN700000004761326878  388298  Ballyclare
+QLN700000004762Ballypalady Road                                  N0000004
+QBN700000004762327005  388157  Ballyclare
+QLN700000004765Wesleydale                                        N0000004
+QBN700000004765328518  387398  Ballyclare
+QLN700000004703Thompson Primary School                           N0000004
+QBN700000004703328726  387242  Ballyclare
+QLN700000004704Liester Park                                      N0000004
+QBN700000004704328871  386945  Ballyclare
+QLN700000004706Ballyrobert Road                                  N0000004
+QBN700000004706329278  386090  Ballyclare
+QLN700000004707Whitleys                                          N0000004
+QBN700000004707329439  385806  Ballyclare
+QLN700000004708Sallybush                                         N0000004
+QBN700000004708329845  385521  Ballyclare
+QLN700000004709Abbeycrete                                        N0000004
+QBN700000004709330226  385206  Ballyclare
+QLN700000004710Corrs Corner                                      N0000004
+QBN700000004710330796  384718  Ballyclare
+QLN700000001418Dock Street                                       N0000009
+QBN700000001418334302  375358  Belfast Metro Ops
+QLN700000001748Lower Donegall Street                             N0000009
+QBN700000001748333922  374585  Belfast Metro Ops
+QPNGLE Goldline Express        Goldline Express
+QQ
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNGL      Gold Line
+QVNURBY    URBY
+QDNGLE 256aOBelfast, Laganside - Larne Bus Station                              TUAO256A
+QDNGLE 256 OBelfast, Laganside - Larne Bus Station                              TUAO256
+QDNGLE 256 ILarne, Bus Station - Belfast, Laganside                             TUAO256
+QDNGLE 256aILarne, Bus Station - Belfast, Laganside                             TUAO256A
+QDNULB 653bOBelfast,Laganside  - Ballyclare, Bus Station                        TUAO653B
+QDNULB 653bIBallyclare, Bus Station - Belfast, Laganside Buscentre              TUAO653B

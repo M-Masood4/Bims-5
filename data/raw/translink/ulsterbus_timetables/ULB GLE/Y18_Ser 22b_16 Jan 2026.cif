@@ -1,0 +1,470 @@
+ATCO-CIF0500Translink                       OMNITIMES       20260129154908
+QDNULB 22  OBelfast - Lisburn, Buscentre                                        
+QSNULB 1001  20260216999999991111100 X22        LF              O
+QO700000017128155025 T1  
+QNp    Pick up only                                                            
+QI70000000163015541554P   T0  
+QNp    Pick up only                                                            
+QI70000000097615551555P   T0  
+QNp    Pick up only                                                            
+QI70000000097715551555P   T0  
+QNp    Pick up only                                                            
+QI70000000097915561556P   T0  
+QNp    Pick up only                                                            
+QI70000000106915571557P   T0  
+QNp    Pick up only                                                            
+QI70000000107115571557P   T0  
+QNp    Pick up only                                                            
+QI70000000107315581558P   T0  
+QNp    Pick up only                                                            
+QI70000000107515591559P   T0  
+QNp    Pick up only                                                            
+QI70000000107716001600P   T0  
+QNp    Pick up only                                                            
+QI70000000107916001600P   T0  
+QNp    Pick up only                                                            
+QI70000000108116011601P   T0  
+QNp    Pick up only                                                            
+QI70000000108316011601P   T0  
+QNp    Pick up only                                                            
+QI70000000108516021602P   T0  
+QNp    Pick up only                                                            
+QI70000000108916031603P   T0  
+QNp    Pick up only                                                            
+QI70000000109116031603P   T0  
+QNp    Pick up only                                                            
+QI70000000109316031603P   T0  
+QNp    Pick up only                                                            
+QI70000001466616041604B   T0  
+QI70000001747216071607B   T0  
+QI70000001753216101610B   T1  
+QI70000001542616161616B   T1  
+QI70000001512316161616B   T0  
+QI70000001753316181618B   T1  
+QI70000000198716181618B   T0  
+QI70000000198816211621B   T0  
+QI70000000198916221622B   T0  
+QI70000000199016221622B   T0  
+QI70000000199116231623B   T0  
+QI70000000199216241624B   T0  
+QI70000000199316251625B   T0  
+QI70000000199416261626B   T0  
+QI70000000199516271627B   T0  
+QI70000000224616281628B   T0  
+QI70000000191616291629B   T0  
+QT7000000154351630   T1  
+QDNULB 22a OBelfast - Lisburn, Buscentre                                        
+QSNULB 1003  20260216999999991111100 X22a       MB              O
+QO700000017128175525 T1  
+QNp    Pick up only                                                            
+QI70000000163017581758P   T0  
+QNp    Pick up only                                                            
+QI70000000097617591759P   T0  
+QNp    Pick up only                                                            
+QI70000000097717591759P   T0  
+QNp    Pick up only                                                            
+QI70000000097918001800P   T0  
+QNp    Pick up only                                                            
+QI70000000106918011801P   T0  
+QNp    Pick up only                                                            
+QI70000000107118011801P   T0  
+QNp    Pick up only                                                            
+QI70000000107318011801P   T0  
+QNp    Pick up only                                                            
+QI70000000107518021802P   T0  
+QNp    Pick up only                                                            
+QI70000000107718031803P   T0  
+QNp    Pick up only                                                            
+QI70000000107918031803P   T0  
+QNp    Pick up only                                                            
+QI70000000108118041804P   T0  
+QNp    Pick up only                                                            
+QI70000000108318041804P   T0  
+QNp    Pick up only                                                            
+QI70000000108518041804P   T0  
+QNp    Pick up only                                                            
+QI70000000108918051805P   T0  
+QNp    Pick up only                                                            
+QI70000000109118051805P   T0  
+QNp    Pick up only                                                            
+QI70000000109318061806P   T0  
+QNp    Pick up only                                                            
+QI70000001466618061806B   T0  
+QI70000001466718071807B   T0  
+QI70000001466818101810B   T0  
+QI70000001542718131813B   T0  
+QI70000001543118151815B   T1  
+QI70000001543018171817B   T1  
+QI70000001543118191819B   T0  
+QI70000001542618211821B   T1  
+QI70000001512318211821B   T0  
+QI70000001753318231823B   T1  
+QI70000000198718231823B   T0  
+QI70000000198818261826B   T0  
+QI70000000198918271827B   T0  
+QI70000000199018271827B   T0  
+QI70000000199118281828B   T0  
+QI70000000199218291829B   T0  
+QI70000000199318301830B   T0  
+QI70000000199418311831B   T0  
+QI70000000199518321832B   T0  
+QI70000000224618331833B   T0  
+QI70000000191618341834B   T0  
+QT7000000154351835   T1  
+QDNULB 22b ILisburn Bus Satation - Belfast, Grand Central                       
+QSNULB 1002  20260216999999991111100 X22b       MB              I
+QO7000000034590700   T1  
+QI70000000189607020702B   T0  
+QI70000000282607030703B   T0  
+QI70000000282707030703B   T0  
+QI70000000285107030703B   T0  
+QI70000000282807040704B   T0  
+QI70000000282907050705B   T0  
+QI70000000283007050705B   T0  
+QI70000000283107060706B   T0  
+QI70000000283207070707B   T0  
+QI70000000283307070707B   T0  
+QI70000000283807080708B   T0  
+QI70000000283907100710B   T1  
+QI70000000284007100710B   T0  
+QI70000000194707110711B   T0  
+QI70000000194807130713B   T1  
+QI70000000196307150715B   T1  
+QI70000000195007180718B   T0  
+QI70000001753107230723B   T0  
+QI70000000198407250725B   T1  
+QI70000000198507250725B   T0  
+QI70000000224807270727B   T1  
+QI70000001512207290729B   T0  
+QI70000001542607320732B   T1  
+QI70000001542707350735B   T0  
+QI70000001543107370737B   T0  
+QI70000001543007450745B   T1  
+QI70000001543107480748B   T1  
+QI70000001468907540754B   T0  
+QI70000001464907540754B   T0  
+QI70000001465007560756B   T0  
+QI70000001466307560756B   T0  
+QI70000001466407580758B   T0  
+QI70000001466507590759B   T0  
+QI70000000116008000800S   T0  
+QNs    Set Down Only                                                           
+QI70000000116208000800S   T0  
+QNs    Set Down Only                                                           
+QI70000000116408010801S   T0  
+QNs    Set Down Only                                                           
+QI70000000116608020802S   T0  
+QNs    Set Down Only                                                           
+QI70000000116808030803S   T0  
+QNs    Set Down Only                                                           
+QI70000000117008040804S   T0  
+QNs    Set Down Only                                                           
+QI70000000117208040804S   T0  
+QNs    Set Down Only                                                           
+QI70000000117608050805S   T0  
+QNs    Set Down Only                                                           
+QI70000000117908060806S   T0  
+QNs    Set Down Only                                                           
+QI70000000118108070807S   T0  
+QNs    Set Down Only                                                           
+QI70000000118308080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000100908080808S   T0  
+QNs    Set Down Only                                                           
+QI70000000101308100810S   T0  
+QNs    Set Down Only                                                           
+QI70000000163108100810S   T0  
+QNs    Set Down Only                                                           
+QI70000001603608110811B   T0  
+QT700000017116081525 T1  
+QDNULB 522 OBelfast - Edenderry, Village                                        
+QSNULB 2001  20260216999999990000010 X522       MB              O
+QO700000017128092025 T1  
+QI70000000163009210921B   T0  
+QI70000000097609210921B   T0  
+QI70000000097709210921B   T0  
+QI70000000097909220922B   T1  
+QI70000000106909220922B   T0  
+QI70000000107109220922B   T0  
+QI70000000107309230923B   T0  
+QI70000000107509230923B   T0  
+QI70000000107709240924B   T0  
+QI70000000107909240924B   T0  
+QI70000000108109250925B   T0  
+QI70000000108309250925B   T0  
+QI70000000108509260926B   T0  
+QI70000000108909260926B   T0  
+QI70000000109109270927B   T0  
+QI70000000109309270927B   T0  
+QI70000001466609270927B   T0  
+QI70000001466709290929B   T0  
+QI70000001466809310931B   T0  
+QI70000001542709340934B   T0  
+QI70000001543109350935B   T0  
+QT7000000154300940   T1  
+QDNULB 522 OBelfast - Edenderry, Village                                        
+QSNULB 2003  20260216999999990000010 X522       MB              O
+QO700000017127162525 T1  
+QI70000000163016261626B   T0  
+QI70000000097616261626B   T0  
+QI70000000097716261626B   T0  
+QI70000000097916271627B   T1  
+QI70000000106916271627B   T0  
+QI70000000107116271627B   T0  
+QI70000000107316281628B   T0  
+QI70000000107516281628B   T0  
+QI70000000107716291629B   T0  
+QI70000000107916291629B   T0  
+QI70000000108116301630B   T0  
+QI70000000108316301630B   T0  
+QI70000000108516311631B   T0  
+QI70000000108916311631B   T0  
+QI70000000109116321632B   T0  
+QI70000000109316321632B   T0  
+QI70000001466616321632B   T0  
+QI70000001466716341634B   T0  
+QI70000001466816361636B   T0  
+QI70000001542716391639B   T0  
+QI70000001543116401640B   T0  
+QT7000000154301645   T1  
+QDNULB 522 IEdenderry, Village - Belfast                                        
+QSNULB 2002  20260216999999990000010 X522       MB              I
+QO7000000154300940   T1  
+QI70000001543109440944B   T0  
+QI70000001468909470947B   T0  
+QI70000001464909480948B   T0  
+QI70000001465009490949B   T0  
+QI70000001466309490949B   T0  
+QI70000001466409500950B   T0  
+QI70000001466509510951B   T0  
+QI70000000116009510951B   T0  
+QI70000000116209520952B   T0  
+QI70000000116409520952B   T0  
+QI70000000116609520952B   T0  
+QI70000000116809530953B   T0  
+QI70000000117009540954B   T0  
+QI70000000117209540954B   T0  
+QI70000000117409540954B   T0  
+QI70000000117609540954B   T0  
+QI70000000117909550955B   T0  
+QI70000000118109560956B   T0  
+QI70000000118309560956B   T0  
+QI70000000100909570957B   T1  
+QI70000000101109570957B   T0  
+QI70000000101309570957B   T0  
+QI70000000163109570957B   T0  
+QI70000001603609580958B   T0  
+QT700000017127100025 T1  
+QDNULB 522 IEdenderry, Village - Belfast                                        
+QSNULB 2004  20260216999999990000010 X522       MB              I
+QO7000000154301645   T1  
+QI70000001543116491649B   T0  
+QI70000001468916521652B   T0  
+QI70000001464916531653B   T0  
+QI70000001465016541654B   T0  
+QI70000001466316541654B   T0  
+QI70000001466416551655B   T0  
+QI70000001466516561656B   T0  
+QI70000000116016561656B   T0  
+QI70000000116216571657B   T0  
+QI70000000116416571657B   T0  
+QI70000000116616571657B   T0  
+QI70000000116816581658B   T0  
+QI70000000117016591659B   T0  
+QI70000000117216591659B   T0  
+QI70000000117416591659B   T0  
+QI70000000117616591659B   T0  
+QI70000000117917001700B   T0  
+QI70000000118117011701B   T0  
+QI70000000118317011701B   T0  
+QI70000000100917021702B   T1  
+QI70000000101117021702B   T0  
+QI70000000101317021702B   T0  
+QI70000000163117021702B   T0  
+QI70000001603617031703B   T0  
+QT700000017127170525 T1  
+QLN700000017127Grand Central Station Stand 25                    N0000007
+QBN700000017127333170  373685  Belfast Europa
+QLN700000017128Grand Central Station Stand 26
+QBN700000017128333168  373683  Belfast Europa
+QLN700000001630Dublin Road                                       N0000009
+QBN700000001630333678  373428  Belfast Metro Ops
+QLN700000000976Bradbury Place                                    N0000009
+QBN700000000976333573  373167  Belfast Metro Ops
+QLN700000000977Upper Crescent                                    N0000009
+QBN700000000977333498  372916  Belfast Metro Ops
+QLN700000000979Queen's University Belfast                        N0000009
+QBN700000000979333459  372585  Belfast Metro Ops
+QLN700000001069Eglantine Avenue                                  N0000009
+QBN700000001069333364  372284  Belfast Metro Ops
+QLN700000001071Chlorine Gardens                                  N0000009
+QBN700000001071333315  372129  Belfast Metro Ops
+QLN700000001073Sans Souci Park                                   N0000009
+QBN700000001073333160  371884  Belfast Metro Ops
+QLN700000001075Beechlands                                        N0000009
+QBN700000001075332990  371700  Belfast Metro Ops
+QLN700000001077Notting Hill                                      N0000009
+QBN700000001077332835  371364  Belfast Metro Ops
+QLN700000001079Cranmore Park                                     N0000009
+QBN700000001079332813  371137  Belfast Metro Ops
+QLN700000001081Osbourne                                          N0000009
+QBN700000001081332754  370855  Belfast Metro Ops
+QLN700000001083Bladon Drive                                      N0000009
+QBN700000001083332694  370739  Belfast Metro Ops
+QLN700000001085Myrtlefield Park                                  N0000009
+QBN700000001085332628  370547  Belfast Metro Ops
+QLN700000001089Balmoral Avenue                                   N0000009
+QBN700000001089332515  370200  Belfast Metro Ops
+QLN700000001091Mount Eden Park                                   N0000009
+QBN700000001091332462  369983  Belfast Metro Ops
+QLN700000001093Malone Hill Park                                  N0000009
+QBN700000001093332399  369867  Belfast Metro Ops
+QLN700000014666Malone Road Roundabout                            N0000008
+QBN700000014666332302  369636  Belfast Laganside
+QLN700000014667Shaws Bridge                                      N0000008
+QBN700000014667332769  368851  Belfast Laganside
+QLN700000014668Belvoir Park                                      N0000008
+QBN700000014668333900  368134  Belfast Laganside
+QLN700000015427Holy Trinity Church                               N0000007
+QBN700000015427332969  367240  Belfast Europa
+QLN700000017472Milltown Hall                                     N0000009
+QBN700000017472333127  368414  Belfast Metro Ops
+QLN700000017532Edenderry Village Entrance                        N0000022
+QBN700000017532333054  367764  Lisburn
+QLN700000015431Edenderry Village Entrance                        N0000007
+QBN700000015431333056  367799  Belfast Europa
+QLN700000015430Village                                           N0000007
+QBN700000015430332009  367711  Belfast Europa
+QLN700000015426Blacks Bridge                                     N0000007
+QBN700000015426332352  366373  Belfast Europa
+QLN700000015123Mill Road                                         N0000022
+QBN700000015123331648  366085  Lisburn
+QLN700000017533Ballyaughlis                                      N0000022
+QBN700000017533330912  365772  Lisburn
+QLN700000001987Ballyaughlis Lower                                N0000022
+QBN700000001987330755  365633  Lisburn
+QLN700000001988Glen Road                                         N0000022
+QBN700000001988329950  364699  Lisburn
+QLN700000001989Braniel Hall                                      N0000022
+QBN700000001989329582  364336  Lisburn
+QLN700000001990Braniel Hall Upper                                N0000022
+QBN700000001990329445  364288  Lisburn
+QLN700000001991Porters Row                                       N0000022
+QBN700000001991329015  364238  Lisburn
+QLN700000001992Hillhall Church                                   N0000022
+QBN700000001992328652  364159  Lisburn
+QLN700000001993Burnbrae                                          N0000022
+QBN700000001993328214  364030  Lisburn
+QLN700000001994Largymore Primary School                          N0000022
+QBN700000001994327813  364079  Lisburn
+QLN700000001995Mercer Street                                     N0000022
+QBN700000001995327471  364126  Lisburn
+QLN700000002246Sloan Street                                      N0000022
+QBN700000002246327317  364074  Lisburn
+QLN700000001916Linenhall Street                                  N0000022
+QBN700000001916326866  364160  Lisburn
+QLN700000015435Lisburn Bus Station                               N0000022
+QBN700000015435326498  364057  Lisburn
+QLN700000003459Lisburn Bus Station                               N0000022
+QBN700000003459326543  364082  Lisburn
+QLN700000001896Queens Road                                       N0000022
+QBN700000001896327163  364381  Lisburn
+QLN700000002826Millbrook Road                                    N0000022
+QBN700000002826327236  364605  Lisburn
+QLN7000000028278-16 Wesley Street                                N0000022
+QBN700000002827327243  364676  Lisburn
+QLN700000002851Wilson Street                                     N0000022
+QBN700000002851327394  364706  Lisburn
+QLN700000002828Barley Hill                                       N0000022
+QBN700000002828327571  364713  Lisburn
+QLN700000002829Spruce Street                                     N0000022
+QBN700000002829327734  364864  Lisburn
+QLN700000002830Lemington Place                                   N0000022
+QBN700000002830327823  364995  Lisburn
+QLN700000002831Delacherois Avenue                                N0000022
+QBN700000002831327765  365263  Lisburn
+QLN700000002832Mill Street                                       N0000022
+QBN700000002832327749  365407  Lisburn
+QLN700000002833Glenmore Cottages                                 N0000022
+QBN700000002833327846  365443  Lisburn
+QLN700000002838Hilden School                                     N0000022
+QBN700000002838328014  365456  Lisburn
+QLN700000002839Tullynacross Village                              N0000022
+QBN700000002839328416  365730  Lisburn
+QLN700000002840Green Lane                                        N0000022
+QBN700000002840328161  366141  Lisburn
+QLN700000001947Lambeg Road                                       N0000022
+QBN700000001947328267  366670  Lisburn
+QLN700000001948New Grosvenor Stadium                             N0000022
+QBN700000001948329221  366881  Lisburn
+QLN700000001963Sandyhill Park                                    N0000022
+QBN700000001963329663  366830  Lisburn
+QLN700000001950Drumbeg Cottages                                  N0000022
+QBN700000001950330007  366842  Lisburn
+QLN700000017531Thompsons Cottages                                N0000022
+QBN700000017531330517  366853  Lisburn
+QLN700000001984The Steadings                                     N0000022
+QBN700000001984330560  366705  Lisburn
+QLN700000001985Drumbeg Road                                      N0000022
+QBN700000001985330780  366308  Lisburn
+QLN700000002248Ballyaughlis Village                              N0000022
+QBN700000002248330973  365867  Lisburn
+QLN700000015122Mill Road                                         N0000022
+QBN700000015122331672  366104  Lisburn
+QLN700000014689Belvoir Park                                      N0000008
+QBN700000014689333881  368127  Belfast Laganside
+QLN700000014649Hydebank Junction                                 N0000009
+QBN700000014649333979  368333  Belfast Metro Ops
+QLN700000014650Milltown Hill                                     N0000009
+QBN700000014650333444  368514  Belfast Metro Ops
+QLN700000014663Milltown Road                                     N0000007
+QBN700000014663333145  368577  Belfast Europa
+QLN700000014664Shaws Bridge                                      N0000008
+QBN700000014664332680  368912  Belfast Laganside
+QLN700000014665Milltown Road (Malone House)                      N0000008
+QBN700000014665332262  369557  Belfast Laganside
+QLN700000001160Malone Hill Park                                  N0000009
+QBN700000001160332368  369828  Belfast Metro Ops
+QLN700000001162Mount Eden Park                                   N0000009
+QBN700000001162332458  370003  Belfast Metro Ops
+QLN700000001164Balmoral Avenue                                   N0000009
+QBN700000001164332540  370340  Belfast Metro Ops
+QLN700000001166Myrtlefield Park                                  N0000009
+QBN700000001166332590  370477  Belfast Metro Ops
+QLN700000001168Osbourne                                          N0000009
+QBN700000001168332734  370850  Belfast Metro Ops
+QLN700000001170Cranmore Park                                     N0000009
+QBN700000001170332795  371196  Belfast Metro Ops
+QLN700000001172Notting Hill                                      N0000009
+QBN700000001172332825  371371  Belfast Metro Ops
+QLN700000001176Adelaide Park                                     N0000009
+QBN700000001176332936  371645  Belfast Metro Ops
+QLN700000001179Windsor Avenue                                    N0000009
+QBN700000001179333204  371935  Belfast Metro Ops
+QLN700000001181Eglantine Avenue                                  N0000009
+QBN700000001181333334  372218  Belfast Metro Ops
+QLN700000001183Methodist College                                 N0000009
+QBN700000001183333398  372422  Belfast Metro Ops
+QLN700000001009Queen's University Belfast                        N0000009
+QBN700000001009333453  372682  Belfast Metro Ops
+QLN700000001013Bradbury Place                                    N0000009
+QBN700000001013333533  373116  Belfast Metro Ops
+QLN700000001631Albion Street                                     N0000009
+QBN700000001631333579  373358  Belfast Metro Ops
+QLN700000016036Naval Club                                        N0000009
+QBN700000016036333569  373510  Belfast Metro Ops
+QLN700000017116Grand Central Station Stand 14
+QBN700000017116333230  373722  Belfast Europa
+QLN700000001174Malone Road (Victoria College)                    N0000032
+QBN700000001174332866  371491  Ulsterbus
+QLN700000001011Upper Crescent                                    N0000009
+QBN700000001011333489  372963  Belfast Metro Ops
+QPNULB Ulsterbus               Ulsterbus
+QQ
+QVNLF      Low Floor
+QVNMB      Minibus
+QDNULB 22  OBelfast - Lisburn, Buscentre
+QDNULB 22a OBelfast - Lisburn, Buscentre
+QDNULB 22b ILisburn Bus Satation - Belfast, Grand Central
+QDNULB 522 OBelfast - Edenderry, Village
+QDNULB 522 IEdenderry, Village - Belfast

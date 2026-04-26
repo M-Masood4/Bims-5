@@ -1,0 +1,327 @@
+ATCO-CIF0500Translink                       OMNITIMES       20251205121221
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station              
+QSNGLE 1001  20260105999999991111100 X270 11G01 GL              O
+QO700000017119153517 T1  
+QI70000000678416001600B   T1  
+QI70000001493716151615B   T1  
+QI70000000705516271627B   T1  
+QI70000000829916341634B   T1  
+QI70000000830016351635S   T0  
+QNs    Set down only                                                           
+QI70000000830116361636S   T0  
+QNs    Set down only                                                           
+QI70000001498016371637S   T0  
+QNs    Set down only                                                           
+QI70000000823516401645B   T1  
+QI70000000820216501650B   T1  
+QI70000001596217031703B   T1  
+QI70000000821517051705B   T0  
+QT7000000158491715   T1  
+QDNGLE 270 ICavan, Bus Station - Belfast, Grand Central Station                 
+QSNGLE 1002  20260105999999991111100 X270 11G01 GL              I
+QO7000000158461220   T1  
+QI70000001584712501250B   T1  
+QI70000001584813001300B   T1  
+QI70000001584913151320B   T1  
+QI70000000821613291329B   T0  
+QI70000000821713321332B   T1  
+QI70000000823013451345B   T1  
+QI70000000823514001405B   T1  
+QI70000000826714051405P   T0  
+QNp    Pick up only                                                            
+QI70000000826814061406P   T0  
+QNp    Pick up only                                                            
+QI70000000826914071407P   T0  
+QNp    Pick up only                                                            
+QI70000000827014081408B   T1  
+QI70000000705614151415B   T1  
+QI70000000032714271427B   T1  
+QI70000000678414401440B   T1  
+QI70000000180115071507S   T0  
+QNs    Set down only                                                           
+QT700000017119151017 T1  
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station              
+QSNGLE 2001  20260105999999990000010 X270 11GL1 GL              O
+QNE    Serves all stops between Armagh & Monaghan                              
+QO700000017119153517 T1  
+QI70000000678416001600B   T1  
+QI70000001493716151615B   T1  
+QI70000000705516271627B   T1  
+QI70000000829916341634B   T1  
+QI70000000830016351635S   T0  
+QNs    Set down only                                                           
+QI70000000830116361636S   T0  
+QNs    Set down only                                                           
+QI70000001498016371637S   T0  
+QNs    Set down only                                                           
+QI70000000823516401645B   T1  
+QI70000001498416461646B   T0  
+QI70000000808816471647B   T0  
+QI70000000815516481648B   T0  
+QI70000000819916491649B   T0  
+QI70000000820116521652B   T0  
+QI70000000820216531653B   T1  
+QI70000000822916531653B   T0  
+QI70000000822816541654B   T0  
+QI70000000822716551655B   T0  
+QI70000000820616571657B   T0  
+QI70000000822516591659B   T0  
+QI70000000820817001700B   T0  
+QI70000000820917011701B   T0  
+QI70000000821017021702B   T0  
+QI70000000821117031703B   T0  
+QI70000000821217051705B   T0  
+QI70000000821317061706B   T0  
+QI70000001596217081708B   T1  
+QI70000000821517101710B   T0  
+QT7000000158491720   T1  
+QDNGLE 270 ICavan, Bus Station - Belfast, Grand Central Station                 
+QSNGLE 2002  20260105999999990000010 X270 11GL1 GL              I
+QNC    Serves all stops between Monaghan and Armagh.                           
+QO7000000158461220   T1  
+QI70000001584712501250B   T1  
+QI70000001584813001300B   T1  
+QI70000001584913151320B   T1  
+QI70000000821613291329B   T0  
+QI70000000821713321332B   T1  
+QI70000000821813321332B   T0  
+QI70000000821913331333B   T0  
+QI70000000822113351335B   T0  
+QI70000001707713351335B   T0  
+QI70000000822213361336B   T0  
+QI70000000822313371337B   T0  
+QI70000000822413381338B   T0  
+QI70000000822513391339B   T0  
+QI70000000822613401340B   T0  
+QI70000000820513421342B   T0  
+QI70000000820413431343B   T0  
+QI70000000820313441344B   T0  
+QI70000000823013451345B   T1  
+QI70000000823113451345B   T0  
+QI70000000823213481348B   T0  
+QI70000000823313491349B   T0  
+QI70000000823413501350B   T0  
+QI70000001497813501350B   T0  
+QI70000000812713521352B   T0  
+QI70000001496913531353B   T0  
+QI70000000823514001405B   T1  
+QI70000000826714051405P   T0  
+QNp    Pick up only                                                            
+QI70000000826814061406P   T0  
+QNp    Pick up only                                                            
+QI70000000826914071407P   T0  
+QNp    Pick up only                                                            
+QI70000000827014081408B   T1  
+QI70000000705614151415B   T1  
+QI70000000032714271427B   T1  
+QI70000000678414401440B   T1  
+QI70000000180115071507S   T0  
+QNs    Set down only                                                           
+QT700000017119151017 T1  
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station              
+QSNGLE 3001  20260105999999990000001 X270 11GL1 GL              O
+QO700000017119153517 T1  
+QI70000000678416001600B   T1  
+QI70000001493716151615B   T1  
+QI70000000705516301630B   T1  
+QI70000000829916361636B   T1  
+QI70000000830016361636S   T0  
+QNs    Set down only                                                           
+QI70000000830116371637S   T0  
+QNs    Set down only                                                           
+QI70000001498016381638S   T0  
+QNs    Set down only                                                           
+QI70000000823516401645B   T1  
+QI70000000820216501650B   T1  
+QI70000001596217031703B   T1  
+QI70000000821517051705B   T0  
+QT7000000158491715   T1  
+QDNGLE 270 IMonaghan, Bus Station - Belfast, Grand Central Station              
+QSNGLE 3002  20260105999999990000001 X270 11GL1 GL              I
+QE20250914202512120
+QE20260104202603270
+QE20260412202605290
+QNNU   Operates during University Holidays                                     
+QO7000000158491755   T1  
+QI70000000821618041804B   T0  
+QI70000000821718071807B   T1  
+QI70000000823018201820B   T1  
+QI70000000823518301835B   T1  
+QI70000000826718351835P   T0  
+QNp    Pick up only                                                            
+QI70000000826818361836P   T0  
+QNp    Pick up only                                                            
+QI70000000826918371837P   T0  
+QNp    Pick up only                                                            
+QI70000000827018381838B   T1  
+QI70000000705618451845B   T1  
+QI70000000032718571857B   T1  
+QI70000000678419101910B   T1  
+QI70000000180119321932S   T0  
+QNs    Set down only                                                           
+QT700000017119193517 T1  
+QDNGLE 270uIMonaghan, Bus Station - Ulster University Belfast                   
+QSNGLE 3004  20260105999999990000001 X270u11GL1 GL              I
+QE20250901202509120
+QE20251213202601030
+QE20260317202603170
+QE20260328202604110
+QE20260601202609130
+QNUN   University Terms Only                                                   
+QO7000000158491755   T1  
+QI70000000821618041804B   T0  
+QI70000000821718071807B   T1  
+QI70000000823018201820B   T1  
+QI70000000823518301835B   T1  
+QI70000000826718351835P   T0  
+QNp    Pick up only                                                            
+QI70000000826818361836P   T0  
+QNp    Pick up only                                                            
+QI70000000826918371837P   T0  
+QNp    Pick up only                                                            
+QI70000000827018381838B   T1  
+QI70000000705618451845B   T1  
+QI70000000032718571857B   T1  
+QI70000000678419101910B   T1  
+QI70000000117619361936S   T0  
+QNs    Set down only                                                           
+QI70000000100919401940S   T1  
+QNs    Set down only                                                           
+QI70000000163319451945S   T1  
+QNs    Set down only                                                           
+QT7000000015181955   T1  
+QLN700000017119Grand Central Station Stand 17                    A0000001
+QBN700000017119333217  373713  Northern Ireland
+QLN700000006784Loughview Park & Ride                             A0000001
+QBN700000006784306719  360553  Northern Ireland
+QLN700000014937Portadown Train Station [bus stop]                A0000001
+QBN700000014937300837  353871  Northern Ireland
+QLN700000007055Richill Village                                   A0000001
+QBN700000007055294178  347972  Northern Ireland
+QLN700000008299Elim Church                                       A0000001
+QBN700000008299289298  346380  Northern Ireland
+QLN700000008300Dillon Heights                                    A0000001
+QBN700000008300289015  346141  Northern Ireland
+QLN700000008301Dean's Bridge                                     A0000001
+QBN700000008301288601  345846  Northern Ireland
+QLN700000014980Tower Hill                                        A0000001
+QBN700000014980288189  345692  Northern Ireland
+QLN700000008235Armagh Bus Station                                A0000001
+QBN700000008235287550  345507  Northern Ireland
+QLN700000008202Hill Street                                       A0000001
+QBN700000008202285663  343556  Northern Ireland
+QLN700000015962Main Street                                       A0000001
+QBN700000015962275316  338820  Northern Ireland
+QLN700000008215Foyduff                                           A0000001
+QBN700000008215273926  336898  Northern Ireland
+QLN700000015849Monaghan Bus Station                              A0000001
+QBN700000015849267172  334179  Northern Ireland
+QLN700000015846Cavan Bus Station                                 A0000001
+QBN700000015846241813  304745  Northern Ireland
+QLN700000015847Jubilee Road                                      A0000001
+QBN700000015847250186  326107  Northern Ireland
+QLN700000015848Smithborough Village                              A0000001
+QBN700000015848259038  330752  Northern Ireland
+QLN700000008216Foyduff                                           A0000001
+QBN700000008216273944  336926  Northern Ireland
+QLN700000008217Main Street                                       A0000001
+QBN700000008217275269  338817  Northern Ireland
+QLN700000008230Hill Street                                       A0000001
+QBN700000008230285646  343560  Northern Ireland
+QLN700000008267Tower Hill                                        A0000001
+QBN700000008267288129  345694  Northern Ireland
+QLN700000008268Dean's Bridge                                     A0000001
+QBN700000008268288635  345880  Northern Ireland
+QLN700000008269Dillon Heights                                    A0000001
+QBN700000008269289012  346159  Northern Ireland
+QLN700000008270Elim Church                                       A0000001
+QBN700000008270289358  346483  Northern Ireland
+QLN700000007056Richill Village                                   A0000001
+QBN700000007056294187  347992  Northern Ireland
+QLN700000000327Portadown Train Station [bus stop]                A0000001
+QBN700000000327300894  353965  Northern Ireland
+QLN700000001801Belfast Grand Central Busway                      A0000001
+QBN700000001801332700  373424  Northern Ireland
+QLN700000014984Mall West                                         A0000001
+QBN700000014984287858  345152  Northern Ireland
+QLN700000008088Armagh City Hotel                                 A0000001
+QBN700000008088287696  344851  Northern Ireland
+QLN700000008155Christian Brothers Primary School                 A0000001
+QBN700000008155287267  344579  Northern Ireland
+QLN700000008199Cregagh Gardens                                   A0000001
+QBN700000008199287056  344187  Northern Ireland
+QLN700000008201Anne Street                                       A0000001
+QBN700000008201285880  343709  Northern Ireland
+QLN700000008229Magheraville Road                                 A0000001
+QBN700000008229285253  343040  Northern Ireland
+QLN700000008228Milford Cottages                                  A0000001
+QBN700000008228284983  342790  Northern Ireland
+QLN700000008227Goland Road                                       A0000001
+QBN700000008227283909  341901  Northern Ireland
+QLN700000008206Brootally Crossroads                              A0000001
+QBN700000008206282581  340586  Northern Ireland
+QLN700000008225Farnaloy Road                                     A0000001
+QBN700000008225281831  339681  Northern Ireland
+QLN700000008208Dernalea Road                                     A0000001
+QBN700000008208281095  339447  Northern Ireland
+QLN700000008209Long Nancy's                                      A0000001
+QBN700000008209280057  338946  Northern Ireland
+QLN700000008210Derryhaw Road                                     A0000001
+QBN700000008210278993  339291  Northern Ireland
+QLN700000008211Hamiltons Corner                                  A0000001
+QBN700000008211278049  339003  Northern Ireland
+QLN700000008212Sherry's Corner                                   A0000001
+QBN700000008212276779  338070  Northern Ireland
+QLN700000008213Rathtrillick Road                                 A0000001
+QBN700000008213275949  338450  Northern Ireland
+QLN700000008218Rathtrillick Road                                 A0000001
+QBN700000008218275931  338475  Northern Ireland
+QLN700000008219Sherry's Corner                                   A0000001
+QBN700000008219276810  338074  Northern Ireland
+QLN700000008221Monaghan Road                                     A0000001
+QBN700000008221277870  338953  Northern Ireland
+QLN700000017077Hamiltons Corner                                  A0000001
+QBN700000017077278061  339017  Northern Ireland
+QLN700000008222Derryhaw Road                                     A0000001
+QBN700000008222278994  339301  Northern Ireland
+QLN700000008223Long Nancy's                                      A0000001
+QBN700000008223280058  338954  Northern Ireland
+QLN700000008224Dernalea Road                                     A0000001
+QBN700000008224281152  339480  Northern Ireland
+QLN700000008226Brootally Crossroads                              A0000001
+QBN700000008226282665  340693  Northern Ireland
+QLN700000008205Goland Road                                       A0000001
+QBN700000008205283952  341947  Northern Ireland
+QLN700000008204Milford Cottages                                  A0000001
+QBN700000008204284927  342754  Northern Ireland
+QLN700000008203Magheraville Road                                 A0000001
+QBN700000008203285239  343053  Northern Ireland
+QLN700000008231Anne Street                                       A0000001
+QBN700000008231285864  343723  Northern Ireland
+QLN700000008232Cregagh Gardens                                   A0000001
+QBN700000008232287040  344195  Northern Ireland
+QLN700000008233Christian Brothers Primary School                 A0000001
+QBN700000008233287206  344455  Northern Ireland
+QLN700000008234Irish Street Bridge                               A0000001
+QBN700000008234287288  344665  Northern Ireland
+QLN700000014978St Malachy's Church                               A0000001
+QBN700000014978287344  344791  Northern Ireland
+QLN700000008127Health Centre                                     A0000001
+QBN700000008127287628  344838  Northern Ireland
+QLN700000014969Mall West                                         A0000001
+QBN700000014969287835  345151  Northern Ireland
+QLN700000001176Adelaide Park                                     A0000001
+QBN700000001176332936  371645  Northern Ireland
+QLN700000001009Queen's University Belfast                        A0000001
+QBN700000001009333453  372682  Northern Ireland
+QLN700000001633Great Northern Mall                               A0000001
+QBN700000001633333553  373735  Northern Ireland
+QLN700000001518Ulster University Belfast                         A0000001
+QBN700000001518333838  374833  Northern Ireland
+QPNGLE Goldline Express        Goldline Express
+QQ
+QVNGL      Goldline
+QDNGLE 270 OBelfast, Grand Central Station - Monaghan, Bus Station
+QDNGLE 270 ICavan, Bus Station - Belfast, Grand Central Station
+QDNGLE 270 IMonaghan, Bus Station - Belfast, Grand Central Station
+QDNGLE 270uIMonaghan, Bus Station - Ulster University Belfast
