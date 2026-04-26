@@ -5899,7 +5899,7 @@
         source: 'belfast-boundary',
         paint: {
           'fill-color': '#22c55e',
-          'fill-opacity': 0.34
+          'fill-opacity': 0.55
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
@@ -5911,8 +5911,8 @@
         source: 'belfast-boundary',
         paint: {
           'line-color': '#bef264',
-          'line-width': 1.6,
-          'line-opacity': 0.85
+          'line-width': 2.4,
+          'line-opacity': 0.95
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
