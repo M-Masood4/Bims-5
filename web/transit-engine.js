@@ -51,6 +51,7 @@
   let officialRouteFeatures = null;
   let officialRouteSummary = null;
   let events = [];
+  let baselineForecast = null;
   let loadPromise = null;
   let lastResult = null;
 
@@ -658,6 +659,7 @@
   }
 
   function scenarioMetricDelta(branch, year) {
+    if (baselineForecast && Array.isArray(baselineForecast.cells) && baselineForecast.cells.length) return 0;
     const scenario = branch && branch.scenarioResult;
     const row = scenario && scenario.timelineByYear && scenario.timelineByYear[String(year)];
     const chosen = selectedScenarioBranch(branch, year);
@@ -667,8 +669,58 @@
     return Number.isFinite(after) && Number.isFinite(before) ? after - before : 0;
   }
 
+  function baselineForecastCellsForYear(year) {
+    const y = clamp(Number(year) || 2036, 2026, 2036);
+    const cells = baselineForecast && Array.isArray(baselineForecast.cells) ? baselineForecast.cells : [];
+    return cells.map(cell => {
+      const row = cell.forecastByYear && cell.forecastByYear[String(y)];
+      const base = cell.baseline2025 || {};
+      if (!row || !cell.geometry) return null;
+      const services = Number(row.services);
+      const baseServices = Number(base.services);
+      const delta = Number.isFinite(services) && Number.isFinite(baseServices) ? services - baseServices : 0;
+      return {
+        type: 'Feature',
+        properties: {
+          cell_id: cell.cellId || cell.id,
+          services,
+          deltas: { services: delta },
+          intensity: clamp(Math.abs(delta) * 4 + Math.max(0, services) * 0.28, 0.035, 0.75),
+          confidence: cell.confidence || 'medium-high'
+        },
+        geometry: cell.geometry
+      };
+    }).filter(Boolean);
+  }
+
   function cellIndexForBranch(branch, year) {
-    return scenarioCellFeatures(branch, year).map(feature => {
+    const scenarioFeatures = scenarioCellFeatures(branch, year);
+    const baselineFeatures = baselineForecastCellsForYear(year);
+    let sourceFeatures = baselineFeatures.length ? baselineFeatures : scenarioFeatures;
+    if (baselineFeatures.length && scenarioFeatures.length) {
+      const byId = new Map(baselineFeatures.map(feature => [String((feature.properties || {}).cell_id || feature.id || ''), feature]));
+      scenarioFeatures.forEach(feature => {
+        const key = String((feature.properties || {}).cell_id || feature.id || '');
+        if (!key) return;
+        const base = byId.get(key);
+        if (!base) {
+          byId.set(key, feature);
+          return;
+        }
+        const baseProps = base.properties || {};
+        const featureProps = feature.properties || {};
+        const baseDelta = Number((baseProps.deltas || {}).services) || 0;
+        const scenarioDelta = Number((featureProps.deltas || {}).services) || 0;
+        byId.set(key, Object.assign({}, feature, {
+          properties: Object.assign({}, featureProps, {
+            deltas: Object.assign({}, featureProps.deltas || {}, { services: baseDelta + scenarioDelta }),
+            intensity: Math.max(Number(baseProps.intensity) || 0, Number(featureProps.intensity) || 0)
+          })
+        }));
+      });
+      sourceFeatures = Array.from(byId.values());
+    }
+    return sourceFeatures.map(feature => {
       const geometry = feature.geometry;
       const props = feature.properties || {};
       const ring = geometry && geometry.type === 'Polygon'
@@ -964,6 +1016,10 @@
     else map.on('load', ensureLayers);
   }
 
+  function setBaselineForecast(payload) {
+    baselineForecast = payload && Array.isArray(payload.cells) ? payload : null;
+  }
+
   function setBaseData(year) {
     if (!ensureLayers()) return false;
     const base = map.getSource(BASE_SOURCE);
@@ -1053,6 +1109,7 @@
     baseRouteFeatureCollection,
     forecastFeatureCollection,
     forecastRouteFeatureCollection,
+    setBaselineForecast,
     getStopsNear,
     clear,
     diagnostics

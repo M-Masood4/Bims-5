@@ -279,6 +279,67 @@ button { font-family: inherit; }
   outline-offset: 2px;
 }
 
+/* Mode banner — sits between toolbar and map. Single-line strip whose
+   color reflects historical vs simulation mode (T2.1). */
+.mode-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 24px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.18s, color 0.18s;
+}
+.mode-banner:hover { background: #e2e8f0; color: #0f172a; }
+.mode-banner-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+.mode-banner-label { flex: 1; }
+.mode-banner-jump {
+  color: var(--blue);
+  font-weight: 600;
+  opacity: 0.85;
+}
+.mode-banner.mode-simulation {
+  background: linear-gradient(90deg, #eff6ff, #dbeafe);
+  color: #1d4ed8;
+  border-bottom-color: #bfdbfe;
+}
+.mode-banner.mode-simulation:hover { background: #dbeafe; color: #1e3a8a; }
+.mode-banner.mode-simulation .mode-banner-jump { color: #475569; }
+.mode-banner:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+}
+
+/* Vertical marker between historical (≤2025) and simulation (≥2026)
+   on the timeline track (T2.1). The boundary sits halfway between
+   year 2025 and 2026, i.e. dot index 9.5 of 21 → 47.5% across. */
+.timeline-track::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 47.5%;
+  width: 0;
+  border-left: 2px dashed #94a3b8;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .toolbar-view-toggle {
   display: inline-flex;
   align-items: center;
@@ -458,27 +519,86 @@ button { font-family: inherit; }
   margin-top: 2px;
 }
 
-.plan-road-hint {
+/* T3.3: Road planning stepper — replaces the old single-line hint with a
+   3-step indicator (search · click A · click B) so the user can always see
+   exactly where they are in the workflow. */
+.plan-road-stepper {
   background: var(--blue-soft);
   border: 1px solid #bfdbfe;
-  border-radius: 8px;
-  padding: 7px 10px;
+  border-radius: 10px;
+  padding: 10px 12px;
   font-size: 11.5px;
   color: #1e40af;
-  display: flex;
-  align-items: center;
-  gap: 8px;
   box-shadow: var(--shadow);
   animation: rcPulseIn 220ms ease-out;
+  min-width: 280px;
 }
-.plan-road-step { flex: 1; line-height: 1.35; }
-.plan-road-cancel {
+.prs-steps {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.prs-steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  color: #93c5fd;
+  position: relative;
+}
+.prs-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: 50%;
+  width: 12px; height: 1px;
+  background: #c7d2fe;
+}
+.prs-steps li.active { color: var(--blue); }
+.prs-steps li.done { color: #1d4ed8; }
+.prs-steps li.pending { color: #94a3b8; }
+.prs-num {
   width: 18px; height: 18px;
-  border: none; background: transparent;
-  color: var(--blue); font-size: 16px; line-height: 1;
-  cursor: pointer; padding: 0;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #1e40af;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
-.plan-road-cancel:hover { color: var(--blue-2); }
+.prs-steps li.active .prs-num {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.22);
+}
+.prs-steps li.done .prs-num { background: #1d4ed8; color: #fff; }
+.prs-steps li.pending .prs-num { background: #e2e8f0; color: #94a3b8; }
+.prs-detail {
+  font-size: 11.5px;
+  color: #1e40af;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+.prs-cancel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #fff;
+  color: var(--blue);
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.prs-cancel:hover { background: #eff6ff; color: var(--blue-2); }
 
 @keyframes rcPulseIn {
   from { opacity: 0; transform: translateY(-2px); }
@@ -1240,6 +1360,159 @@ button { font-family: inherit; }
 
 .impact-title { margin-top: 12px; }
 .impact-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+
+/* Estimate / Forecast badge in the Impact Overview heading (T4.2). */
+.impact-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  cursor: help;
+}
+.impact-badge--forecast { background: #ecfdf5; color: #047857; }
+.impact-badge--estimate { background: #f1f5f9; color: #64748b; }
+
+/* Locked-branch picker (T2.3) — replaces the silent auto-switch when the
+   user attempts to edit while the active branch is read-only. */
+.locked-branch-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: lbp-fade-in 0.12s ease-out;
+}
+@keyframes lbp-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.locked-branch-picker {
+  width: min(420px, 92vw);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.35);
+  padding: 18px 18px 14px;
+  font-size: 13px;
+}
+.lbp-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+.lbp-head strong { font-size: 14px; color: var(--text); }
+.lbp-head span { font-size: 12px; color: var(--text-mute); }
+.lbp-options { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.lbp-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  color: var(--text);
+  transition: background-color 0.12s, border-color 0.12s;
+}
+.lbp-option:hover { background: #f8fafc; border-color: var(--border-3); }
+.lbp-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.lbp-name { flex: 1; font-weight: 600; }
+.lbp-count { font-size: 11px; color: var(--text-mute); }
+.lbp-foot { display: flex; justify-content: space-between; gap: 8px; }
+.lbp-new {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+}
+.lbp-new:hover { background: #1d4ed8; border-color: #1d4ed8; }
+.lbp-cancel {
+  padding: 9px 14px;
+  border: 1px solid var(--border-2);
+  background: #fff;
+  color: var(--text-dim);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+}
+.lbp-cancel:hover { background: #f5f5f5; color: var(--text); }
+
+/* Onboarding overlay (T3.1). Three steps with arrow-key navigation. */
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9100;
+  animation: lbp-fade-in 0.18s ease-out;
+}
+.onboarding-card {
+  width: min(440px, 92vw);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.4);
+  padding: 22px 22px 18px;
+}
+.onboarding-card h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: var(--text);
+}
+.onboarding-card p {
+  margin: 0 0 18px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.ob-progress { display: flex; gap: 6px; margin-bottom: 14px; }
+.ob-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  transition: background-color 0.15s, transform 0.15s;
+}
+.ob-dot.active { background: var(--blue); transform: scale(1.25); }
+.ob-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ob-skip {
+  background: none;
+  border: 0;
+  color: var(--text-mute);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.ob-skip:hover { color: var(--text); }
+.ob-nav { display: flex; gap: 8px; }
+.ob-back, .ob-next {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ob-back {
+  background: #fff;
+  border: 1px solid var(--border-2);
+  color: var(--text-dim);
+}
+.ob-back:hover { background: #f5f5f5; color: var(--text); }
+.ob-back:disabled { opacity: 0.4; cursor: not-allowed; }
+.ob-next {
+  background: var(--blue);
+  border: 0;
+  color: #fff;
+}
+.ob-next:hover { background: #1d4ed8; }
 .metric-card {
   background: #fff;
   border: 1px solid var(--border);
@@ -1380,6 +1653,20 @@ button { font-family: inherit; }
 .view-diff-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .view-diff-btn.road-compare-btn { background: var(--blue-soft); border-color: #bfdbfe; color: var(--blue); }
 .view-diff-btn.road-compare-btn:hover { background: #dbeafe; }
+
+/* T3.2: AI variations CTA. Distinct gradient so it reads as the AI feature
+   among the otherwise neutral footer buttons. */
+.ai-variations-btn {
+  background: linear-gradient(135deg, #ede9fe, #fae8ff);
+  border-color: #c4b5fd;
+  color: #6d28d9;
+}
+.ai-variations-btn:hover { background: linear-gradient(135deg, #ddd6fe, #f5d0fe); }
+.ai-variations-btn:disabled {
+  background: #f8fafc;
+  border-color: var(--border);
+  color: var(--text-mute);
+}
 .run-sim-btn {
   display: flex;
   align-items: center;
@@ -1638,6 +1925,94 @@ button { font-family: inherit; }
 }
 .compare-grid > .row-label { font-size: 12px; font-weight: 600; color: var(--text); padding: 8px 4px; }
 .compare-grid > .cell { padding: 8px 4px; font-variant-numeric: tabular-nums; border-top: 1px solid #f0f1f2; }
+/* Tied cells (T2.2): style as neutral so users see at a glance that all
+   columns agree on this metric. */
+.compare-grid > .tied-cell {
+  padding: 8px 4px;
+  border-top: 1px solid #f0f1f2;
+  color: var(--text-mute);
+  font-style: italic;
+}
+
+/* Source badge for each branch column header (Forecast vs Estimate). */
+.compare-src {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.compare-src--forecast { background: #ecfdf5; color: #047857; }
+.compare-src--estimate { background: #f1f5f9; color: #64748b; }
+
+/* Banner above the grid when no branch has a real forecast. */
+.compare-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text);
+}
+.compare-banner--estimate {
+  background: #fef3c7;
+  border-color: #fde68a;
+  color: #78350f;
+}
+.compare-banner-cta {
+  margin-left: auto;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.compare-banner-cta:hover { background: #1d4ed8; }
+
+/* Year quick-jump pills inside the compare modal (T2.2c). */
+.compare-year-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.compare-year-pills-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.compare-year-pill {
+  padding: 5px 10px;
+  border: 1px solid var(--border-2);
+  background: #fff;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.compare-year-pill:hover { color: var(--text); border-color: var(--border-3); }
+.compare-year-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
 
 .diff-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--text-mute); margin-bottom: 12px; }
 .diff-maps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
@@ -1774,6 +2149,35 @@ button { font-family: inherit; }
 }
 .toast.warn { background: rgba(180, 83, 9, 0.96); }
 .toast.error { background: rgba(185, 28, 28, 0.96); }
+.toast.info { background: rgba(30, 58, 138, 0.96); }
+.toast--with-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+}
+.toast-msg { line-height: 1.3; }
+.toast-action {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.toast-action:hover { background: rgba(255,255,255,0.32); }
+
+/* Undo button on the map controls (T3.4): visible only when there's something
+   to undo. Disabled state stays muted to keep the column quiet. */
+#undoBtn:disabled, #helpBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+#undoBtn:not(:disabled) { color: var(--blue); }
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(-50%) translateY(8px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }

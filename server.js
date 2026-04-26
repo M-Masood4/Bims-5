@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const childProcess = require("child_process");
 const scenarioStudio = require("./lib/scenario-studio");
+const { hashScenarioProof } = require("./lib/scenario-proof");
 
 const rootDir = __dirname;
 const webDir = path.join(rootDir, "web");
@@ -13,6 +14,7 @@ loadLocalEnv(path.join(rootDir, ".env.local"));
 
 let eventsCache = null;
 let eventsByYearSignal = null;
+const scenarioProofStore = new Map();
 function loadEventsCatalog() {
   if (eventsCache) return eventsCache;
   if (!fs.existsSync(eventsCatalogPath)) return null;
@@ -89,6 +91,44 @@ function readRequestBody(req, limitBytes = 64_000) {
   });
 }
 
+function normalizeScenarioProof(input) {
+  const proof = input && typeof input === "object" ? input : {};
+  const scenarioId = String(proof.scenarioId || proof.scenario_id || "").trim();
+  if (!scenarioId) {
+    const error = new Error("scenarioId is required");
+    error.statusCode = 422;
+    throw error;
+  }
+  if (proof.type !== "replay_belfast_scenario_commit") {
+    const error = new Error("proof.type must be replay_belfast_scenario_commit");
+    error.statusCode = 422;
+    throw error;
+  }
+  return {
+    type: "replay_belfast_scenario_commit",
+    version: String(proof.version || "1"),
+    scenarioId,
+    scenarioName: String(proof.scenarioName || proof.scenario_name || "Belfast scenario"),
+    city: "Belfast",
+    baseYear: Number(proof.baseYear || 2026),
+    targetYear: Number(proof.targetYear || 2036),
+    dataVersion: String(proof.dataVersion || "belfast_2016_2026_v1"),
+    engineVersion: String(proof.engineVersion || "sim_v0.3"),
+    agentVersion: String(proof.agentVersion || "agents_v0.2"),
+    createdAt: String(proof.createdAt || new Date().toISOString()),
+    interventions: Array.isArray(proof.interventions) ? proof.interventions.slice(0, 50) : [],
+    outputs: proof.outputs && typeof proof.outputs === "object" ? proof.outputs : {},
+    confidence: String(proof.confidence || "medium"),
+    agentSummary: proof.agentSummary ? String(proof.agentSummary).slice(0, 2400) : ""
+  };
+}
+
+function appBaseUrl(req) {
+  const configured = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL;
+  if (configured) return configured.replace(/\/+$/, "");
+  return `http://${req.headers.host || `localhost:${port}`}`;
+}
+
 function geminiKey() {
   return process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
@@ -136,6 +176,64 @@ function extractJsonFromText(text) {
 async function readJsonRequest(req, limitBytes = 512_000) {
   const raw = await readRequestBody(req, limitBytes);
   return raw ? JSON.parse(raw) : {};
+}
+
+async function handleScenarioProofPost(req, res, routeScenarioId = "") {
+  try {
+    const payload = await readJsonRequest(req, 700_000);
+    const incomingProof = payload.proof || payload;
+    if (routeScenarioId && incomingProof && typeof incomingProof === "object" && !incomingProof.scenarioId) {
+      incomingProof.scenarioId = routeScenarioId;
+    }
+    const proof = normalizeScenarioProof(incomingProof);
+    if (routeScenarioId && proof.scenarioId !== routeScenarioId) {
+      const error = new Error("Route scenario id does not match proof.scenarioId");
+      error.statusCode = 422;
+      throw error;
+    }
+    const hash = hashScenarioProof(proof);
+    const scenarioHash = `sha256:${hash}`;
+    const metadataUri = `${appBaseUrl(req)}/api/scenarios/${encodeURIComponent(proof.scenarioId)}/proof`;
+    scenarioProofStore.set(proof.scenarioId, {
+      proof,
+      scenarioHash,
+      hash,
+      metadataUri,
+      savedAt: new Date().toISOString()
+    });
+    sendJson(res, 200, {
+      ok: true,
+      proof,
+      hash,
+      scenarioHash,
+      metadataUri
+    });
+  } catch (error) {
+    sendJson(res, error.statusCode || 500, {
+      ok: false,
+      error: "Could not store scenario proof",
+      detail: error.message
+    });
+  }
+}
+
+function handleScenarioProofGet(req, res, scenarioId) {
+  const stored = scenarioProofStore.get(scenarioId);
+  if (!stored) {
+    sendJson(res, 404, {
+      ok: false,
+      error: "Scenario proof not found",
+      scenarioId
+    });
+    return;
+  }
+  sendJson(res, 200, {
+    ok: true,
+    scenarioHash: stored.scenarioHash,
+    metadataUri: stored.metadataUri,
+    savedAt: stored.savedAt,
+    proof: stored.proof
+  });
 }
 
 async function callGeminiJson({ agentName, prompt, temperature = 0.25, maxOutputTokens = 1400, responseJsonSchema = null }) {
@@ -1786,12 +1884,38 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "POST" && pathname === "/api/scenarios/proof") {
+    handleScenarioProofPost(req, res);
+    return;
+  }
+
+  const scenarioProofMatch = pathname.match(/^\/api\/scenarios\/([^/]+)\/proof$/);
+  if (req.method === "POST" && scenarioProofMatch) {
+    handleScenarioProofPost(req, res, decodeURIComponent(scenarioProofMatch[1]));
+    return;
+  }
+
+  if (req.method === "GET" && scenarioProofMatch) {
+    handleScenarioProofGet(req, res, decodeURIComponent(scenarioProofMatch[1]));
+    return;
+  }
+
   if (pathname === "/api/manifest" || pathname === "/api/replay-manifest.json") {
     try {
       sendJson(res, 200, loadManifest());
     } catch (error) {
       sendJson(res, 500, { error: "Could not load manifest", detail: error.message });
     }
+    return;
+  }
+
+  if (pathname === "/api/solana/config") {
+    sendJson(res, 200, {
+      cluster: process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet",
+      rpcUrl: process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.devnet.solana.com",
+      appUrl: appBaseUrl(req),
+      memoProgramId: "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+    });
     return;
   }
 

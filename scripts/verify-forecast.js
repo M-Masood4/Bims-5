@@ -98,6 +98,42 @@ for (const [year, row] of Object.entries(scenario.timelineByYear || {})) {
   }
 }
 
+const delayedScenario = scenarioStudio.runForecastScenario({
+  postcode: "BT7 1NN",
+  building: {
+    year: 2027,
+    config: {
+      size: "small",
+      buildingType: "apartments",
+      affordabilityMix: "affordable",
+      energyStandard: "standard",
+      parkingTransitAssumption: "balanced"
+    }
+  },
+  branches: {
+    scenario_variants: [{
+      branchName: "Delayed User Proposal",
+      objective: "user_proposal",
+      description: "Building starts in 2027.",
+      interventions: [{
+        type: "building",
+        year: 2027,
+        startYear: 2027
+      }],
+      assumptions: []
+    }]
+  },
+  startYear: 2026,
+  baselineYear: 2025,
+  horizonYear: 2036
+}, rootDir);
+
+const delayedBranch = (delayedScenario.scenarioBranches || []).find((branch) => branch.objective === "user_proposal");
+const delayed2026 = delayedBranch?.timelineByYear?.["2026"]?.diffFromBaseline || {};
+const delayedConcrete2027 = delayedBranch?.timelineByYear?.["2027"]?.concreteImpacts || {};
+assert(Math.abs(delayed2026.population || 0) < 0.0001, "A 2027 building must not change the 2026 forecast.");
+assert(Math.abs(delayedConcrete2027.traffic?.netDailyTrips || 0) > 0, "A 2027 building must affect the 2027 concrete forecast.");
+
 if (failures.length) {
   console.error("Forecast verification failed:");
   for (const failure of failures) console.error(`- ${failure}`);

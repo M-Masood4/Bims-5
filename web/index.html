@@ -88,6 +88,14 @@
       </div>
     </header>
 
+    <!-- Mode banner — shows whether the timeline is in Historical or Simulation
+         range. Click to jump to the other mode. (T2.1) -->
+    <button type="button" id="modeBanner" class="mode-banner mode-historical" aria-live="polite">
+      <span class="mode-banner-dot" aria-hidden="true"></span>
+      <span class="mode-banner-label">Historical Replay · 2016–2025</span>
+      <span class="mode-banner-jump" id="modeBannerJump">Jump to Simulation →</span>
+    </button>
+
     <!-- Map area -->
     <div class="map-wrapper">
       <div id="map" aria-label="Belfast map"></div>
@@ -108,9 +116,17 @@
         </form>
         <div class="map-search-status" id="mapSearchStatus" hidden></div>
         <ul class="map-search-suggest" id="mapSearchSuggest" hidden></ul>
-        <div class="plan-road-hint" id="planRoadHint" hidden>
-          <span class="plan-road-step" id="planRoadStep">Click two glowing junctions to plan a road</span>
-          <button type="button" class="plan-road-cancel" id="planRoadCancel" title="Clear junctions">&times;</button>
+        <!-- T3.3: Road planning stepper. Replaces the small one-line hint
+             with a 3-step workflow (search postcode → click junction A →
+             click junction B) so the user can always see where they are. -->
+        <div class="plan-road-stepper" id="planRoadHint" hidden role="status" aria-live="polite">
+          <ol class="prs-steps">
+            <li data-prs-step="1"><span class="prs-num">1</span><span class="prs-text">Search a postcode</span></li>
+            <li data-prs-step="2"><span class="prs-num">2</span><span class="prs-text">Click junction A</span></li>
+            <li data-prs-step="3"><span class="prs-num">3</span><span class="prs-text">Click junction B</span></li>
+          </ol>
+          <div class="prs-detail" id="planRoadStep">Click two glowing junctions to plan a road</div>
+          <button type="button" class="prs-cancel" id="planRoadCancel" title="Cancel road placement">Cancel</button>
         </div>
       </div>
 
@@ -139,6 +155,12 @@
         </button>
         <button class="map-ctrl-btn" type="button" data-view="3D" title="3D view">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </button>
+        <button class="map-ctrl-btn" id="undoBtn" type="button" title="Nothing to undo" disabled aria-label="Undo">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M4 9h11a5 5 0 0 1 0 10h-4"/></svg>
+        </button>
+        <button class="map-ctrl-btn" id="helpBtn" type="button" title="Show product tour" aria-label="Help and tour">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </button>
         <button class="map-ctrl-btn" id="collapseBtn" type="button" title="Collapse panels">
           <svg id="collapseIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -261,6 +283,12 @@
       <button class="view-diff-btn" id="compareBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
         Compare Branches
+      </button>
+      <!-- T3.2: AI variations promoted out of the right-click context menu. -->
+      <button class="view-diff-btn ai-variations-btn" id="plannerVariationsBtn" type="button" disabled
+        title="Add an item to this branch first, then generate four AI alternatives">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"/><path d="M19 16l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
+        AI: 4 Variations
       </button>
       <button class="run-sim-btn" id="runBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5V3z"/></svg>
@@ -421,6 +449,8 @@
 <script src="/traffic-sim.js"></script>
 <script src="/transit-engine.js"></script>
 <script src="/map-ux.js"></script>
+<script src="/solana-web3.min.js"></script>
+<script src="/solana-scenario-commit.js"></script>
 <script src="/dashboard.js"></script>
 </body>
 </html>

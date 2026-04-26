@@ -310,7 +310,22 @@
     if (!target) return null;
     const objective = branch.forecastObjective || objectiveForBranch(branch);
     const branchRow = (target.branches || []).find(b => b.objective === objective) || (target.branches || [])[0];
-    return branchRow ? branchRow.metrics : target.baseline;
+    if (!branchRow) return target.baseline;
+    const cityBaseline = baselineForecastMetrics(year);
+    const diff = branchRow.diffFromBaseline || {};
+    const totalCells = state.baselineForecast && Array.isArray(state.baselineForecast.cells)
+      ? state.baselineForecast.cells.length
+      : 0;
+    const affectedCells = Array.isArray(result.contextCellIds) ? result.contextCellIds.length : 0;
+    if (!cityBaseline || !totalCells || !affectedCells) return branchRow.metrics;
+    const weight = clamp(affectedCells / totalCells, 0, 1);
+    const citywide = Object.assign({}, cityBaseline);
+    Object.keys(diff).forEach(metric => {
+      const base = Number(citywide[metric]);
+      const delta = Number(diff[metric]);
+      if (Number.isFinite(base) && Number.isFinite(delta)) citywide[metric] = clamp(base + delta * weight, 0, 1.5);
+    });
+    return citywide;
   }
 
   function baselineDisplayMetrics(year) {
@@ -472,6 +487,12 @@
       'rcFlowBefore', 'rcFlowAfter', 'rcFlowDelta', 'rcFlowArrow',
       'rcUsage', 'roadCompareSummary',
       'planRoadHint', 'planRoadStep', 'planRoadCancel',
+      // T2.1 mode banner
+      'modeBanner', 'modeBannerJump',
+      // T3.4 / T3.1 toolbar undo + help buttons
+      'undoBtn', 'helpBtn',
+      // T3.2 planner-variations CTA
+      'plannerVariationsBtn',
       // New light-theme layout
       'leftSidebarTitle', 'leftSidebarSubtitle', 'leftSidebarFilter', 'leftSidebarList', 'selectedEventSummary',
       'timelineYears', 'timelineDots', 'timelineFilled'
@@ -525,6 +546,7 @@
       const res = await fetch('/data/mode-a/baseline_2025_forecast.json');
       if (!res.ok) throw new Error('forecast fetch ' + res.status);
       state.baselineForecast = await res.json();
+      syncTransitForecastData();
     } catch (e) {
       console.warn('forecast fetch failed', e);
     }
@@ -645,6 +667,7 @@
       // Public transport engine: paints Belfast OSM stops and forecast deltas.
       if (window.TransitEngine && typeof window.TransitEngine.init === 'function') {
         window.TransitEngine.init({ map: state.map });
+        syncTransitForecastData();
         if (typeof window.TransitEngine.preload === 'function') {
           window.TransitEngine.preload('/api/layers/2026/source-ni-transport-stops-osm')
             .then(() => { refreshTransitLayer(); });
@@ -1032,7 +1055,7 @@
     const item = {
       id: 'item-' + (state.nextItemId++),
       type: 'building',
-      year: START_YEAR,
+      year: clamp(state.year || START_YEAR, START_YEAR, FINAL_YEAR),
       createdAt: new Date().toISOString(),
       lng: resolved.location.lng,
       lat: resolved.location.lat,
@@ -1054,23 +1077,117 @@
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     triggerEpicentrePulse(item);
+    pushUndo({
+      type: 'add',
+      label: 'Add ' + item.label + ' at ' + item.postcode,
+      do: () => {
+        const b = state.branches.find(x => x.id === branch.id);
+        if (!b) return;
+        b.items = b.items.filter(it => it.id !== item.id);
+        b.scenarioResult = null;
+        b.scenarioStaged = true;
+        afterChange();
+      }
+    });
     toast('Staged ' + item.label + ' at ' + item.postcode + '. Click Run Simulation to calculate the forecast.');
   }
 
   function ensureEditableBranch() {
-    let branch = activeBranch();
-    if (branch && !branch.locked) return branch;
-    branch = state.branches.find(b => !b.locked);
-    if (!branch) {
-      createBranch('New Scenario', '#22c55e', 'baseline');
-      branch = activeBranch();
-    } else {
-      state.activeBranchId = branch.id;
-      renderBranches();
-      renderActiveInfo();
-      renderMapSubtitle();
+    const current = activeBranch();
+    if (current && !current.locked) return current;
+    // T2.3: stop silently switching the active branch out from under the
+    // user. Surface a one-shot prompt that lets them pick which branch the
+    // edit should land on (or create a new one). Returning null aborts the
+    // current edit; the prompt promises to retry it on the user's choice.
+    showEditableBranchPicker();
+    return null;
+  }
+
+  // Re-entrancy guard so a click storm only opens one picker.
+  let __editableBranchPickerOpen = false;
+  // The most recent edit attempt that was blocked because the active branch
+  // was locked. Replayed when the user picks a target branch.
+  let __pendingLockedEdit = null;
+  function rememberLockedEdit(fn, label) {
+    __pendingLockedEdit = { fn: fn, label: label || 'edit', queuedAt: Date.now() };
+  }
+  function replayLockedEdit() {
+    const pending = __pendingLockedEdit;
+    __pendingLockedEdit = null;
+    if (!pending) return;
+    if (Date.now() - pending.queuedAt > 30000) return; // stale
+    try { pending.fn(); } catch (e) { console.warn('replayLockedEdit failed', e); }
+  }
+
+  function showEditableBranchPicker() {
+    if (__editableBranchPickerOpen) return;
+    const unlocked = state.branches.filter(b => !b.locked);
+    // No unlocked branch exists at all — creating one is the only choice.
+    if (!unlocked.length) {
+      __editableBranchPickerOpen = true;
+      const created = createBranch('New Scenario', '#22c55e', activeBranch() ? activeBranch().id : 'baseline');
+      __editableBranchPickerOpen = false;
+      toast('Created scenario branch "' + created.name + '" — Baseline is read-only.', 'info');
+      replayLockedEdit();
+      return;
     }
-    return branch;
+    __editableBranchPickerOpen = true;
+    const lockedName = (activeBranch() && activeBranch().name) || 'Baseline';
+    const optionsHtml = unlocked.map(b =>
+      '<button type="button" class="lbp-option" data-branch-id="' + escapeHtml(b.id) + '">' +
+        '<span class="lbp-dot" style="background:' + (b.color || '#3b82f6') + '"></span>' +
+        '<span class="lbp-name">' + escapeHtml(b.name || 'Branch') + '</span>' +
+        '<span class="lbp-count">' + ((b.items || []).length) + ' item' + ((b.items || []).length === 1 ? '' : 's') + '</span>' +
+      '</button>'
+    ).join('');
+    const overlay = document.createElement('div');
+    overlay.className = 'locked-branch-picker-overlay';
+    overlay.innerHTML =
+      '<div class="locked-branch-picker" role="dialog" aria-modal="true" aria-label="Choose a branch to edit">' +
+        '<div class="lbp-head">' +
+          '<strong>' + escapeHtml(lockedName) + ' is read-only</strong>' +
+          '<span>Pick a branch to receive this change, or create a new one.</span>' +
+        '</div>' +
+        '<div class="lbp-options">' + optionsHtml + '</div>' +
+        '<div class="lbp-foot">' +
+          '<button type="button" class="lbp-new" id="lbpNewBtn">+ New branch from ' + escapeHtml(lockedName) + '</button>' +
+          '<button type="button" class="lbp-cancel" id="lbpCancelBtn">Cancel</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    const cleanup = () => {
+      overlay.remove();
+      __editableBranchPickerOpen = false;
+      __pendingLockedEdit = null;
+    };
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) cleanup(); });
+    document.addEventListener('keydown', function escClose(e) {
+      if (e.key === 'Escape') { cleanup(); document.removeEventListener('keydown', escClose); }
+    });
+    overlay.querySelectorAll('.lbp-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-branch-id');
+        const target = state.branches.find(b => b.id === id);
+        if (!target) { cleanup(); return; }
+        state.activeBranchId = target.id;
+        renderBranches();
+        renderActiveInfo();
+        renderMapSubtitle();
+        toast('Switched to ' + target.name + '.', 'info');
+        overlay.remove();
+        __editableBranchPickerOpen = false;
+        replayLockedEdit();
+      });
+    });
+    overlay.querySelector('#lbpNewBtn').addEventListener('click', () => {
+      const parentId = activeBranch() ? activeBranch().id : 'baseline';
+      const created = createBranch('New Scenario', '#22c55e', parentId);
+      overlay.remove();
+      __editableBranchPickerOpen = false;
+      toast('Created branch "' + created.name + '". Edit is now safe to retry.', 'info');
+      replayLockedEdit();
+    });
+    overlay.querySelector('#lbpCancelBtn').addEventListener('click', cleanup);
   }
 
   function locationLabel(lng, lat) {
@@ -1109,7 +1226,7 @@
     const item = {
       id: 'item-' + (state.nextItemId++),
       type: 'building',
-      year: START_YEAR,
+      year: clamp(state.year || START_YEAR, START_YEAR, FINAL_YEAR),
       createdAt: new Date().toISOString(),
       lng,
       lat,
@@ -1131,19 +1248,35 @@
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     triggerEpicentrePulse(item);
-    toast('Staged ' + item.label + ' at ' + locationLabel(lng, lat) + '. Click Run Simulation to calculate the forecast.');
+    pushUndo({
+      type: 'add',
+      label: 'Add ' + item.label,
+      do: () => {
+        const b = state.branches.find(x => x.id === branch.id);
+        if (!b) return;
+        b.items = b.items.filter(it => it.id !== item.id);
+        b.scenarioResult = null;
+        b.scenarioStaged = true;
+        afterChange();
+      }
+    });
+    toast('Staged ' + item.label + ' at ' + branchItemDetail(item) + '. Click Run Simulation to calculate the forecast.');
   }
 
   function addItemAt(type, lng, lat) {
     const branch = ensureEditableBranch();
-    if (!branch || branch.locked) return;
+    if (!branch || branch.locked) {
+      // T2.3: queue this same edit so the user's pick in the picker can
+      // replay it without forcing them to re-click the map.
+      rememberLockedEdit(() => addItemAt(type, lng, lat), 'add ' + type);
+      return;
+    }
     if (type === 'building') {
       if (state.selectedPostcode && state.selectedPostcode.canPlace) {
-        addBuildingAtSelectedPostcode(branch);
+        return addBuildingAtSelectedPostcode(branch);
       } else {
-        addBuildingAtMapPoint(branch, lng, lat);
+        return addBuildingAtMapPoint(branch, lng, lat);
       }
-      return;
     }
     const item = {
       id: 'item-' + (state.nextItemId++),
@@ -1178,6 +1311,19 @@
     closeWorkspaceSplit();
     afterChange();
     if (item.type === 'building') triggerEpicentrePulse(item);
+    // T3.4: register an undo entry for this addition.
+    pushUndo({
+      type: 'add',
+      label: 'Add ' + (item.label || type),
+      do: () => {
+        const b = state.branches.find(x => x.id === branch.id);
+        if (!b) return;
+        b.items = b.items.filter(it => it.id !== item.id);
+        b.scenarioResult = null;
+        b.scenarioStaged = true;
+        afterChange();
+      }
+    });
     toast('Added ' + (item.label || type) + ' to ' + branch.name);
   }
 
@@ -1202,7 +1348,9 @@
           existingBuildingId: building.existingBuildingId,
           existingBuildingName: building.existingBuildingName,
           config: building.buildingConfig || buildingConfigForPreset(building.preset),
-          delivery: { startYear: START_YEAR, completionYear: FINAL_YEAR }
+          year: building.year || START_YEAR,
+          startYear: building.year || START_YEAR,
+          delivery: { startYear: building.year || START_YEAR, completionYear: FINAL_YEAR }
         },
         branch: {
           id: branch.id,
@@ -1394,6 +1542,9 @@
         existingBuildingId: item.existingBuildingId,
         existingBuildingName: item.existingBuildingName,
         config: item.buildingConfig || buildingConfigForExisting(item),
+        year: item.year || START_YEAR,
+        startYear: item.year || START_YEAR,
+        delivery: { startYear: item.year || START_YEAR, completionYear: FINAL_YEAR },
         rationale: 'Existing city building selected for removal in the active branch.'
       };
     }
@@ -1404,6 +1555,9 @@
         location: { lng: item.lng, lat: item.lat },
         postcode: item.postcode,
         config: item.buildingConfig || buildingConfigForPreset(item.preset),
+        year: item.year || START_YEAR,
+        startYear: item.year || START_YEAR,
+        delivery: { startYear: item.year || START_YEAR, completionYear: FINAL_YEAR },
         rationale: 'Additional staged building in the active branch.'
       };
     }
@@ -1471,6 +1625,9 @@
       existingBuildingId: building.existingBuildingId,
       existingBuildingName: building.existingBuildingName,
       config: building.buildingConfig || buildingConfigForExisting(building),
+      year: building.year || START_YEAR,
+      startYear: building.year || START_YEAR,
+      delivery: { startYear: building.year || START_YEAR, completionYear: FINAL_YEAR },
       rationale: 'Runs exactly the existing-building removal selected on the map.'
     };
     const location = intervention.location;
@@ -1505,13 +1662,32 @@
     const branch = activeBranch();
     if (branch.locked) { toast('Baseline is locked.', 'warn'); return; }
     const before = branch.items.length;
+    const idx = branch.items.findIndex(it => it.id === itemId);
+    if (idx < 0) return;
+    const removed = branch.items[idx];
     branch.items = branch.items.filter(it => it.id !== itemId);
     if (branch.items.length !== before) {
       branch.scenarioResult = null;
       branch.scenarioStaged = true;
       if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
       afterChange();
-      toast('Item removed', 'warn');
+      // T3.4 + T3.5: instead of a silent "Item removed" toast, give the
+      // user an inline Undo for ~5s. Captures the branch + insert position
+      // so the item lands back exactly where it was.
+      pushUndo({
+        type: 'remove',
+        label: branchItemTitle(removed),
+        do: () => {
+          const b = state.branches.find(x => x.id === branch.id);
+          if (!b) return;
+          if (b.items.some(x => x.id === removed.id)) return;
+          b.items.splice(Math.min(idx, b.items.length), 0, removed);
+          b.scenarioResult = null;
+          b.scenarioStaged = true;
+          afterChange();
+        }
+      });
+      toastWithAction('Removed ' + branchItemTitle(removed) + '.', 'Undo', () => undoLast(), { kind: 'warn' });
     }
   }
 
@@ -2065,12 +2241,44 @@
     }
   }
 
+  // T2.1: throttle the mode-transition toast so a quick scrub or play-through
+  // doesn't spam the user. Only fires once per ~3s and never fires on the
+  // first mode set during init (when state.mode goes from null → mode).
+  let __lastModeToastAt = 0;
+  function maybeFireModeToast(prevMode, nextMode) {
+    if (!prevMode) return; // initial assignment
+    const now = Date.now();
+    if (now - __lastModeToastAt < 3000) return;
+    __lastModeToastAt = now;
+    if (nextMode === 'simulation') {
+      toast('Switched to Simulation. Edits in 2026–2036 only affect this branch.', 'info');
+    } else {
+      toast('Back in Historical Replay (2016–2025). Editing tools are paused.', 'info');
+    }
+  }
+
+  function renderModeBanner() {
+    if (!els.modeBanner) return;
+    const sim = isSimYear(state.year);
+    els.modeBanner.classList.toggle('mode-simulation', sim);
+    els.modeBanner.classList.toggle('mode-historical', !sim);
+    const label = els.modeBanner.querySelector('.mode-banner-label');
+    if (label) label.textContent = sim ? 'Simulation · 2026–2036' : 'Historical Replay · 2016–2025';
+    if (els.modeBannerJump) {
+      els.modeBannerJump.textContent = sim ? '← Back to Historical' : 'Jump to Simulation →';
+    }
+    els.modeBanner.title = sim
+      ? 'Click to jump back to the 2025 baseline year'
+      : 'Click to jump to 2026 and start designing your scenario';
+  }
+
   function setYear(y) {
     state.year = y;
     state.activeEventId = null;
     // Auto-mode: 2025 is the baseline. 2026 onward is the forecast simulation.
     const desiredMode = y <= BASE_YEAR ? 'historical' : 'simulation';
     if (desiredMode !== state.mode) {
+      const prevMode = state.mode;
       state.mode = desiredMode;
       if (desiredMode === 'historical') {
         state.activeTool = null;
@@ -2083,6 +2291,8 @@
       renderModify();
       renderBranches();
       renderActiveInfo();
+      renderModeBanner();
+      maybeFireModeToast(prevMode, desiredMode);
       if (state.mapLoaded) renderHistoricalMapLayers();
     }
     renderTimelineBar();
@@ -2278,7 +2488,15 @@
     const branch = activeBranch();
     const target = state.year;
     const isHistorical = !isSimYear(target);
-    els.impactTitle.textContent = 'Impact Overview (' + target + ')';
+    // T4.2: distinguish proxy heuristic estimates from real AI forecasts.
+    const hasForecast = !!(branch && branch.scenarioResult && branch.scenarioResult.timelineByYear && branch.scenarioResult.timelineByYear[String(target)]);
+    const badgeClass = hasForecast ? 'impact-badge impact-badge--forecast' : 'impact-badge impact-badge--estimate';
+    const badgeLabel = hasForecast ? 'Forecast' : 'Estimate';
+    const badgeTitle = hasForecast
+      ? 'Real AI forecast values from the most recent simulation run.'
+      : 'Quick proxy estimate from the impact heuristic. Run Simulation for a real forecast.';
+    els.impactTitle.innerHTML = 'Impact Overview (' + target + ')' +
+      ' <span class="' + badgeClass + '" title="' + escapeHtml(badgeTitle) + '">' + badgeLabel + '</span>';
 
     let metricsAtTarget;
     if (isHistorical && state.historicalMetrics && state.historicalMetrics[String(target)]) {
@@ -2867,6 +3085,7 @@
     renderItemsOnMap();
     toast('Created branch "' + name + '"');
     saveState();
+    return newBranch;
   }
 
   function defaultForkBranchName(branch, commit) {
@@ -3567,29 +3786,162 @@
 
   // ---------- COMPARE MODAL ----------
 
+  // T3.1: First-run guided tour. Three slides explaining the timeline,
+  // branches, and Run Simulation. Persists "seen" in localStorage. The "?"
+  // button in the map controls re-launches it via { force: true }.
+  const ONBOARDING_STEPS = [
+    {
+      title: 'Welcome to Belfast 2016–2036',
+      body: 'Scrub the timeline at the bottom to see real planning history (2016–2025) or jump to 2026+ to design your own scenario.',
+    },
+    {
+      title: 'Branches let you compare futures',
+      body: 'Three seed branches (Green Belfast Vision, Transport First, High Density Growth) start empty. Use “+ New” in the right sidebar to create your own. The Baseline is read-only.',
+    },
+    {
+      title: 'Place changes, then run a forecast',
+      body: 'In simulation years, use the toolbar to add buildings, roads, parks, or transformers. Click “Run Simulation” for the AI forecast — or “AI: 4 Variations” to generate planner alternatives.',
+    },
+  ];
+  function showOnboardingTour(opts) {
+    opts = opts || {};
+    // Don't double-show.
+    if (document.querySelector('.onboarding-overlay')) return;
+    let step = 0;
+    const overlay = document.createElement('div');
+    overlay.className = 'onboarding-overlay';
+    overlay.innerHTML =
+      '<div class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="obTitle">' +
+        '<div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>' +
+        '<h3 id="obTitle"></h3>' +
+        '<p id="obBody"></p>' +
+        '<div class="ob-actions">' +
+          '<button type="button" class="ob-skip" id="obSkipBtn">Skip</button>' +
+          '<div class="ob-nav">' +
+            '<button type="button" class="ob-back" id="obBackBtn">Back</button>' +
+            '<button type="button" class="ob-next" id="obNextBtn">Next</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    const titleEl = overlay.querySelector('#obTitle');
+    const bodyEl = overlay.querySelector('#obBody');
+    const dotEls = overlay.querySelectorAll('.ob-dot');
+    const backBtn = overlay.querySelector('#obBackBtn');
+    const nextBtn = overlay.querySelector('#obNextBtn');
+    const skipBtn = overlay.querySelector('#obSkipBtn');
+    function render() {
+      const s = ONBOARDING_STEPS[step];
+      titleEl.textContent = s.title;
+      bodyEl.textContent = s.body;
+      dotEls.forEach((d, i) => d.classList.toggle('active', i === step));
+      backBtn.disabled = step === 0;
+      nextBtn.textContent = step === ONBOARDING_STEPS.length - 1 ? 'Got it' : 'Next';
+    }
+    function dismiss(markSeen) {
+      overlay.remove();
+      document.removeEventListener('keydown', onKey);
+      if (markSeen) {
+        try { localStorage.setItem('belfastOnboardingV1Done', '1'); } catch (e) {}
+      }
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') dismiss(true);
+      else if (e.key === 'ArrowRight' || e.key === 'Enter') nextBtn.click();
+      else if (e.key === 'ArrowLeft') backBtn.click();
+    }
+    backBtn.addEventListener('click', () => { if (step > 0) { step--; render(); } });
+    nextBtn.addEventListener('click', () => {
+      if (step < ONBOARDING_STEPS.length - 1) { step++; render(); }
+      else dismiss(true);
+    });
+    skipBtn.addEventListener('click', () => dismiss(true));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) dismiss(true); });
+    document.addEventListener('keydown', onKey);
+    render();
+  }
+
+  // T3.4: a single undo store shared across removeItem (toast Undo button),
+  // map-ux's Cmd/Ctrl+Z, and the toolbar Undo button. Each entry has a
+  // `label` (used in the toast) and a `do` thunk that reverses the action.
+  // Capped at 20 actions so we don't bloat memory.
+  const __undoStack = [];
+  function pushUndo(entry) {
+    if (!entry || typeof entry.do !== 'function') return;
+    __undoStack.push(entry);
+    if (__undoStack.length > 20) __undoStack.shift();
+    refreshUndoButton();
+  }
+  function undoLast() {
+    const entry = __undoStack.pop();
+    if (!entry) {
+      toast('Nothing to undo.', 'warn');
+      refreshUndoButton();
+      return;
+    }
+    try { entry.do(); } catch (e) { console.warn('undo failed', e); }
+    refreshUndoButton();
+    toast('Undone: ' + (entry.label || 'last action'));
+  }
+  function refreshUndoButton() {
+    if (!els.undoBtn) return;
+    els.undoBtn.disabled = __undoStack.length === 0;
+    els.undoBtn.title = __undoStack.length
+      ? 'Undo: ' + (__undoStack[__undoStack.length - 1].label || 'last action') + ' (Ctrl/Cmd+Z)'
+      : 'Nothing to undo';
+    els.undoBtn.setAttribute('aria-label', els.undoBtn.title);
+  }
+
+  // T2.2: target year for the compare modal — drives the year-pill selector.
+  // Persisted in module scope so the user's pick survives between opens.
+  let __compareTargetYear = null;
+
   function openCompareModal() {
     if (!els.compareModal || !els.compareBody) return;
-    const target = isSimYear(state.year) ? state.year : FINAL_YEAR;
-    els.compareYear.textContent = target;
-    const scenario = activeBranch().scenarioResult;
-    if (scenario && scenario.timelineByYear && scenario.timelineByYear[String(target)]) {
-      renderScenarioCompareModal(scenario, target);
-      els.compareModal.hidden = false;
+    if (!__compareTargetYear || !isSimYear(__compareTargetYear)) {
+      __compareTargetYear = isSimYear(state.year) ? state.year : FINAL_YEAR;
+    }
+    els.compareModal.hidden = false;
+    renderCompareModalBody();
+  }
+
+  function renderCompareModalBody() {
+    if (!els.compareModal || !els.compareBody) return;
+    const target = __compareTargetYear;
+    if (els.compareYear) els.compareYear.textContent = target;
+    const activeScenario = activeBranch().scenarioResult;
+    if (activeScenario && activeScenario.timelineByYear && activeScenario.timelineByYear[String(target)]) {
+      renderScenarioCompareModal(activeScenario, target);
       return;
     }
     const branches = state.branches;
     if (branches.length < 2) {
-      els.compareBody.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-mute)">Create a second branch to compare.</div>';
-      els.compareModal.hidden = false;
+      els.compareBody.innerHTML = compareYearPillsHTML(target) +
+        '<div style="text-align:center;padding:24px;color:var(--text-mute)">Create a second branch to compare.</div>';
+      attachCompareYearPills();
       return;
     }
+
+    // T2.2: count how many branches actually have a forecast — the rest will
+    // show proxy estimates (a heuristic, not the AI scenario).
+    const branchesWithSim = branches.filter(b => !!b.scenarioResult).length;
+    const allEstimates = branchesWithSim === 0;
 
     // Per branch metrics at target year
     const perBranch = branches.map(b => ({ branch: b, metrics: metricsForBranchYear(b, target) }));
 
-    // Identify winners per metric (taking goodDirection into account)
+    // Identify winners per metric, but treat ties (within an epsilon) as "no winner".
     const winnersByMetric = {};
     METRICS.forEach(m => {
+      const values = perBranch.map(p => p.metrics[m.id]);
+      const max = Math.max.apply(null, values);
+      const min = Math.min.apply(null, values);
+      // Use 0.1% of the range as the tie tolerance, with a small absolute floor.
+      const tol = Math.max(Math.abs(max - min) * 0.001, 1e-6);
+      if (Math.abs(max - min) <= tol) {
+        winnersByMetric[m.id] = '__tie__';
+        return;
+      }
       let best = perBranch[0];
       perBranch.forEach(p => {
         const cur = p.metrics[m.id];
@@ -3600,12 +3952,30 @@
     });
 
     // Build grid
+    let html = compareYearPillsHTML(target);
+    if (allEstimates) {
+      html += '<div class="compare-banner compare-banner--estimate">' +
+        '<strong>Showing proxy estimates.</strong> ' +
+        'Run a simulation in any branch to see real differences across columns.' +
+        '<button type="button" class="compare-banner-cta" id="compareRunSimCta">Run Simulation</button>' +
+      '</div>';
+    } else if (branchesWithSim < branches.length) {
+      html += '<div class="compare-banner">' +
+        '<strong>' + branchesWithSim + ' of ' + branches.length + ' branches have a forecast.</strong> ' +
+        'Branches without one show proxy estimates.' +
+      '</div>';
+    }
+
     const cols = ['180px'].concat(branches.map(() => 'minmax(140px, 1fr)')).join(' ');
-    let html = '<div class="compare-grid" style="grid-template-columns:' + cols + '">';
+    html += '<div class="compare-grid" style="grid-template-columns:' + cols + '">';
     html += '<div class="head">Metric</div>';
     branches.forEach((b, i) => {
       const last = i === branches.length - 1 ? ' last-col' : '';
-      html += '<div class="head' + last + '"><span class="branch-dot" style="background:' + b.color + ';color:' + b.color + ';width:7px;height:7px"></span>' + escapeHtml(truncate(b.name, 22)) + '</div>';
+      const sourceBadge = b.scenarioResult
+        ? '<span class="compare-src compare-src--forecast" title="AI forecast">Forecast</span>'
+        : '<span class="compare-src compare-src--estimate" title="Proxy estimate (no simulation run)">Est.</span>';
+      html += '<div class="head' + last + '"><span class="branch-dot" style="background:' + b.color + ';color:' + b.color + ';width:7px;height:7px"></span>' +
+        escapeHtml(truncate(b.name, 22)) + sourceBadge + '</div>';
     });
     METRICS.forEach(m => {
       html += '<div class="row-label">' + m.label + '</div>';
@@ -3613,29 +3983,76 @@
         const last = i === branches.length - 1 ? ' last-col' : '';
         const val = perBranch[i].metrics[m.id];
         const before = m.baseline;
-        const isWin = winnersByMetric[m.id] === b.id;
-        const cls = isWin ? ' winning' : '';
+        const winnerId = winnersByMetric[m.id];
+        const isTie = winnerId === '__tie__';
+        const isWin = !isTie && winnerId === b.id;
         const valStr = fmtMetricValue(m, val);
         const deltaStr = fmtDeltaLabel(m, before, val);
-        html += '<div class="' + (isWin ? 'winning' : 'neutral-cell') + last + '"><div>' + valStr + '</div>' +
+        const cellClass = isWin ? 'winning' : (isTie ? 'tied-cell' : 'neutral-cell');
+        html += '<div class="' + cellClass + last + '"><div>' + valStr + '</div>' +
           '<div style="font-size:10px;color:var(--text-mute);margin-top:2px">' + deltaStr + '</div></div>';
       });
     });
     html += '</div>';
 
-    // Headline summary
-    const winnerCounts = {};
-    Object.values(winnersByMetric).forEach(bid => { winnerCounts[bid] = (winnerCounts[bid] || 0) + 1; });
-    let topBranch = null, topCount = -1;
-    Object.keys(winnerCounts).forEach(bid => {
-      if (winnerCounts[bid] > topCount) { topCount = winnerCounts[bid]; topBranch = state.branches.find(b => b.id === bid); }
-    });
-    if (topBranch) {
-      html += '<div class="compare-summary"><strong>' + escapeHtml(topBranch.name) + '</strong> wins on ' + topCount + ' of ' + METRICS.length + ' indicators by ' + target + '. Items in this branch: ' + topBranch.items.length + '.</div>';
+    // T2.2: headline summary now respects ties. If every metric is tied, say
+    // so explicitly instead of falsely declaring a winner.
+    const tiedCount = METRICS.filter(m => winnersByMetric[m.id] === '__tie__').length;
+    if (tiedCount === METRICS.length) {
+      html += '<div class="compare-summary">All ' + METRICS.length + ' indicators are tied across branches at ' + target + '. ' +
+        'Add changes to a branch or run a simulation to see meaningful differences.</div>';
+    } else {
+      const winnerCounts = {};
+      Object.entries(winnersByMetric).forEach(([_, bid]) => {
+        if (bid === '__tie__') return;
+        winnerCounts[bid] = (winnerCounts[bid] || 0) + 1;
+      });
+      let topBranch = null, topCount = -1;
+      Object.keys(winnerCounts).forEach(bid => {
+        if (winnerCounts[bid] > topCount) { topCount = winnerCounts[bid]; topBranch = state.branches.find(b => b.id === bid); }
+      });
+      if (topBranch && topCount > 0) {
+        const tiedSuffix = tiedCount > 0 ? ' (' + tiedCount + ' tied)' : '';
+        html += '<div class="compare-summary"><strong>' + escapeHtml(topBranch.name) + '</strong> leads on ' +
+          topCount + ' of ' + (METRICS.length - tiedCount) + ' decided indicators by ' + target + tiedSuffix + '. ' +
+          'Items in this branch: ' + topBranch.items.length + '.</div>';
+      }
     }
 
     els.compareBody.innerHTML = html;
-    els.compareModal.hidden = false;
+    attachCompareYearPills();
+    const cta = document.getElementById('compareRunSimCta');
+    if (cta) cta.addEventListener('click', () => {
+      els.compareModal.hidden = true;
+      // Focus the run button so the user sees where to go next.
+      if (els.runBtn) {
+        els.runBtn.classList.add('attention-pulse');
+        setTimeout(() => els.runBtn.classList.remove('attention-pulse'), 1600);
+        els.runBtn.scrollIntoView({ block: 'nearest' });
+      }
+    });
+  }
+
+  function compareYearPillsHTML(target) {
+    const years = [START_YEAR, START_YEAR + 5, FINAL_YEAR]; // 2026, 2031, 2036
+    const seen = new Set();
+    const pills = years.filter(y => { if (seen.has(y)) return false; seen.add(y); return true; }).map(y => {
+      const active = y === target ? ' active' : '';
+      return '<button type="button" class="compare-year-pill' + active + '" data-compare-year="' + y + '">' + y + '</button>';
+    }).join('');
+    return '<div class="compare-year-pills" role="tablist" aria-label="Compare year">' +
+      '<span class="compare-year-pills-label">Year</span>' + pills + '</div>';
+  }
+
+  function attachCompareYearPills() {
+    document.querySelectorAll('#compareBody .compare-year-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const y = Number(btn.getAttribute('data-compare-year'));
+        if (!isFinite(y)) return;
+        __compareTargetYear = y;
+        renderCompareModalBody();
+      });
+    });
   }
 
   function renderScenarioCompareModal(scenario, target) {
@@ -3976,6 +4393,25 @@
     if (!els.planRoadHint) return;
     els.planRoadHint.hidden = false;
     if (els.planRoadStep) els.planRoadStep.textContent = text;
+    // T3.3: re-compute the stepper highlight from current state so callers
+    // don't have to manually pass step numbers.
+    refreshRoadStepper();
+  }
+
+  // T3.3: paint the 3-step indicator inside #planRoadHint based on the
+  // current planner state. Step 1 = waiting for postcode, step 2 = first
+  // junction pick, step 3 = second junction pick.
+  function refreshRoadStepper() {
+    if (!els.planRoadHint) return;
+    let active = 1;
+    if (roadPlanner.armed && roadPlanner.pickedIds && roadPlanner.pickedIds.length === 0) active = 2;
+    if (roadPlanner.armed && roadPlanner.pickedIds && roadPlanner.pickedIds.length >= 1) active = 3;
+    els.planRoadHint.querySelectorAll('[data-prs-step]').forEach(li => {
+      const n = Number(li.getAttribute('data-prs-step'));
+      li.classList.toggle('done', n < active);
+      li.classList.toggle('active', n === active);
+      li.classList.toggle('pending', n > active);
+    });
   }
 
   // Called by the postcode search flow once we've zoomed to a location.
@@ -4389,7 +4825,15 @@
 
   function attachRoadCompare() {
     if (els.planRoadCancel) {
-      els.planRoadCancel.addEventListener('click', clearRoadPlanner);
+      // T3.3: Cancel exits the entire road workflow — clears picks, hides
+      // the stepper, and deactivates the Road tool so the user is back to a
+      // neutral select state. Re-activating the tool starts over.
+      els.planRoadCancel.addEventListener('click', () => {
+        clearRoadPlanner();
+        state.activeTool = null;
+        state.pendingRoadStart = null;
+        renderModify();
+      });
     }
   }
 
@@ -4663,6 +5107,32 @@
     toastTimer = setTimeout(() => { els.toast.hidden = true; }, 2400);
   }
 
+  // T3.4 / T3.5: a richer toast with an inline action button (e.g. "Undo").
+  function toastWithAction(msg, actionLabel, onAction, opts) {
+    if (!els.toast) return;
+    const kind = (opts && opts.kind) || '';
+    const ttlMs = (opts && opts.ttlMs) || 5500;
+    els.toast.className = 'toast toast--with-action' + (kind ? ' ' + kind : '');
+    els.toast.innerHTML = '<span class="toast-msg"></span>' +
+      '<button type="button" class="toast-action">' + escapeHtml(actionLabel) + '</button>';
+    els.toast.querySelector('.toast-msg').textContent = msg;
+    els.toast.hidden = false;
+    if (toastTimer) clearTimeout(toastTimer);
+    let dismissed = false;
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      els.toast.hidden = true;
+      els.toast.innerHTML = '';
+      els.toast.className = 'toast';
+    };
+    els.toast.querySelector('.toast-action').addEventListener('click', () => {
+      dismiss();
+      try { onAction(); } catch (e) { console.warn('toast action failed', e); }
+    });
+    toastTimer = setTimeout(dismiss, ttlMs);
+  }
+
   // ---------- TOP NAV / BOTTOM NAV ----------
 
   function attachTopNav() {
@@ -4729,7 +5199,23 @@
     renderLeftSidebar();
     refreshTransitLayer();
     updateScenarioDiffButton();
+    refreshPlannerVariationsBtn();
     saveState();
+  }
+
+  // T3.2: enable/disable the AI-variations CTA based on whether the active
+  // branch has at least one item to seed the alternate plans from.
+  function refreshPlannerVariationsBtn() {
+    if (!els.plannerVariationsBtn) return;
+    const branch = activeBranch();
+    const items = (branch && branch.items) || [];
+    const ready = !branch?.locked && items.length > 0;
+    els.plannerVariationsBtn.disabled = !ready;
+    els.plannerVariationsBtn.title = ready
+      ? 'Generate four AI alternatives that re-plan ' + (branch.name || 'this branch') + ' for Traffic, Jobs, Electricity, and Public Transit objectives.'
+      : (branch?.locked
+          ? 'Switch to a non-baseline branch first.'
+          : 'Add an item to this branch first, then generate four AI alternatives.');
   }
 
   // ---------- POSTCODE SEARCH (local postcode resolver) ----------
@@ -4865,7 +5351,7 @@
   // HISTORICAL MODE
   // ================================================================
 
-  function isHistoricalMode() { return state.mode === 'historical'; }
+  function isHistoricalMode() { return !isSimYear(state.year); }
 
   function setMode(mode) {
     state.mode = mode;
@@ -4874,6 +5360,7 @@
       state.activeTool = null;
       state.pendingRoadStart = null;
     } else {
+      if (state.year <= BASE_YEAR) state.year = START_YEAR;
       state.activeEventId = null;
     }
     renderYearLists();
@@ -4950,7 +5437,8 @@
   }
 
   async function loadGridYear(year) {
-    if (year < 2016 || year > 2026) return null; // grids only exist for historical years
+    if (year > 2026 && year <= FINAL_YEAR) return futureForecastGrid(year);
+    if (year < 2016 || year > 2026) return null; // on-disk grids only exist for historical/current years
     if (state.gridCache[year]) return state.gridCache[year];
     try {
       const res = await fetch('/data/mode-a/grid_' + year + '.geojson');
@@ -4961,6 +5449,64 @@
     } catch (e) {
       return null;
     }
+  }
+
+  function syncTransitForecastData() {
+    const engine = window.PublicTransportEngine || window.TransitEngine;
+    if (engine && typeof engine.setBaselineForecast === 'function' && state.baselineForecast) {
+      engine.setBaselineForecast(state.baselineForecast);
+    }
+  }
+
+  function forecastValueForCell(cell, year) {
+    if (!cell) return {};
+    if (year <= BASE_YEAR) return cell.baseline2025 || {};
+    const rows = cell.forecastByYear || {};
+    return rows[String(year)] || rows[String(FINAL_YEAR)] || cell.baseline2025 || {};
+  }
+
+  function previousForecastValueForCell(cell, year) {
+    if (!cell) return {};
+    if (year <= START_YEAR) return cell.baseline2025 || {};
+    return forecastValueForCell(cell, year - 1);
+  }
+
+  function futureForecastGrid(year) {
+    const y = clamp(Number(year) || START_YEAR, START_YEAR, FINAL_YEAR);
+    const key = 'forecast-' + y;
+    if (state.gridCache[key]) return state.gridCache[key];
+    const cells = state.baselineForecast && Array.isArray(state.baselineForecast.cells)
+      ? state.baselineForecast.cells
+      : [];
+    if (!cells.length) return null;
+    const features = cells.map((cell, index) => {
+      const current = forecastValueForCell(cell, y);
+      const previous = previousForecastValueForCell(cell, y);
+      const id = cell.cellId || cell.id || ('forecast-cell-' + index);
+      const props = Object.assign({}, current, {
+        cell_id: id,
+        cellId: id,
+        forecastYear: y,
+        baselineYear: BASE_YEAR,
+        buildings: Number(current.population || 0),
+        traffic_delta_previous: round(Number(current.traffic || 0) - Number(previous.traffic || 0), 4),
+        jobs_delta_previous: round(Number(current.jobs || 0) - Number(previous.jobs || 0), 4),
+        electricity_delta_previous: round(Number(current.electricity || 0) - Number(previous.electricity || 0), 4),
+        services_delta_previous: round(Number(current.services || 0) - Number(previous.services || 0), 4),
+        buildings_delta_previous: round(Number(current.population || 0) - Number(previous.population || 0), 4),
+        confidence: cell.confidence || 'medium',
+        evidence: cell.evidence || [],
+        baseline: cell.baseline2025 || {}
+      });
+      return {
+        type: 'Feature',
+        id,
+        properties: props,
+        geometry: cell.geometry
+      };
+    }).filter(feature => feature.geometry);
+    state.gridCache[key] = { type: 'FeatureCollection', features: features };
+    return state.gridCache[key];
   }
 
   async function loadContextLayer(layerId) {
@@ -5360,6 +5906,7 @@
   // Cache for per-year electricity asset data
   const electricityCache = {};
   async function loadElectricityYear(year) {
+    if (year > 2026 && year <= FINAL_YEAR) return loadFutureElectricityYear(year);
     if (year < 2016 || year > 2026) return null;
     if (electricityCache[year]) return electricityCache[year];
     try {
@@ -5374,6 +5921,52 @@
     } catch (e) {
       return null;
     }
+  }
+
+  function nearestForecastGridFeature(coord, grid) {
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    if (!coord || !features.length) return null;
+    let best = null;
+    let bestKm = Infinity;
+    features.forEach(feature => {
+      const centre = polygonCentroid(feature.geometry);
+      if (!centre) return;
+      const km = coordDistKm(coord, centre);
+      if (km < bestKm) {
+        best = feature;
+        bestKm = km;
+      }
+    });
+    return best;
+  }
+
+  async function loadFutureElectricityYear(year) {
+    const y = clamp(Number(year) || START_YEAR, START_YEAR, FINAL_YEAR);
+    const key = 'forecast-' + y;
+    if (electricityCache[key]) return electricityCache[key];
+    const base = await loadElectricityYear(2026);
+    const grid = futureForecastGrid(y);
+    if (!base || !grid) return null;
+    const features = (base.features || []).map((feature, index) => {
+      const coord = pointOrCentroid(feature.geometry);
+      const cell = nearestForecastGridFeature(coord, grid);
+      const props = Object.assign({}, feature.properties || {});
+      const electricity = Number(cell && cell.properties && cell.properties.electricity);
+      const baseline = Number(cell && cell.properties && cell.properties.baseline && cell.properties.baseline.electricity);
+      const loadPct = Number.isFinite(electricity)
+        ? clamp(38 + electricity * 62, 18, 100)
+        : Number(props.grid_load_pct || 58);
+      const basePct = Number.isFinite(baseline) ? clamp(38 + baseline * 62, 18, 100) : Number(props.grid_load_pct || loadPct);
+      props.grid_load_pct = Math.round(loadPct);
+      props.headroom_pct = Math.max(0, Math.round(100 - loadPct));
+      props.forecast_delta_pct = Math.round((loadPct - basePct) * 10) / 10;
+      props.status = loadPct >= 88 ? 'Forecast constraint' : loadPct >= 74 ? 'Forecast watch' : 'Forecast headroom';
+      props.forecastYear = y;
+      props.cell_id = (cell && cell.properties && cell.properties.cell_id) || props.cell_id || ('electricity-' + index);
+      return Object.assign({}, feature, { properties: props });
+    });
+    electricityCache[key] = { type: 'FeatureCollection', features };
+    return electricityCache[key];
   }
 
   async function renderHistoricalMapLayers() {
@@ -5392,6 +5985,17 @@
     await refreshHistoricalCells();
     refreshHistoricalEvents();
     refreshHighlightedCells();
+  }
+
+  async function renderSimulationMapLayers() {
+    if (!state.mapLoaded || isHistoricalMode()) return;
+    ensureHistoricalSourcesAndLayers();
+    setHistoricalLayerVisibility(true);
+    const lens = lensDef(state.lens);
+    showContextForLens(lens);
+    await refreshHistoricalCells();
+    if (state.map.getSource('hist-events')) state.map.getSource('hist-events').setData({ type: 'FeatureCollection', features: [] });
+    if (state.map.getSource('hist-highlight')) state.map.getSource('hist-highlight').setData({ type: 'FeatureCollection', features: [] });
   }
 
   function cityBuildingFilter() {
@@ -5530,7 +6134,7 @@
     return {
       id: 'item-' + (state.nextItemId++),
       type: 'building_removal',
-      year: START_YEAR,
+      year: clamp(state.year || START_YEAR, START_YEAR, FINAL_YEAR),
       createdAt: new Date().toISOString(),
       lng: Number(coord[0]),
       lat: Number(coord[1]),
@@ -5549,7 +6153,11 @@
 
   function stageExistingBuildingRemoval(feature) {
     const branch = ensureEditableBranch();
-    if (!branch || branch.locked) return;
+    if (!branch || branch.locked) {
+      // T2.3: replay the removal once the user picks a writable branch.
+      rememberLockedEdit(() => stageExistingBuildingRemoval(feature), 'remove building');
+      return;
+    }
     const item = existingBuildingItemFromFeature(feature);
     if (!item) return;
     if ((branch.items || []).some(existing => existing.type === 'building_removal' && existing.existingBuildingId === item.existingBuildingId)) {
@@ -5566,7 +6174,28 @@
     if (state.year < START_YEAR) setYear(START_YEAR);
     afterChange();
     syncCityBuildingHeightContext();
-    toast('Staged removal of ' + (item.existingBuildingName || 'existing building') + '. Click Run Simulation to calculate the forecast.');
+    // T3.4 + T3.5: register undo and surface a stronger Undo toast for
+    // city-building removals (they affect the baseline footprint visible to
+    // every viewer of this branch).
+    pushUndo({
+      type: 'remove-city',
+      label: 'Remove ' + (item.existingBuildingName || 'existing building'),
+      do: () => {
+        const b = state.branches.find(x => x.id === branch.id);
+        if (!b) return;
+        b.items = b.items.filter(it => it.id !== item.id);
+        b.scenarioResult = null;
+        b.scenarioStaged = true;
+        afterChange();
+        syncCityBuildingHeightContext();
+      }
+    });
+    toastWithAction(
+      'Staged removal of ' + (item.existingBuildingName || 'existing building') + '. Run Simulation to forecast the impact.',
+      'Undo',
+      () => undoLast(),
+      { ttlMs: 6000 }
+    );
   }
 
   function openExistingBuildingModal(feature) {
@@ -5610,7 +6239,7 @@
     const isJobs = id === 'jobs';
     // Jobs keeps the smooth point heatmap. Public Transit is handled by the
     // route/stop overlay in transit-engine.js so it reads like a network map.
-    const useHeatmap = isJobs;
+    const useHeatmap = isJobs || (isSimYear(state.year) && id === 'services');
 
     // Water always on as soft base.
     map.setLayoutProperty('ctx-water-fill', 'visibility', 'visible');
@@ -8345,6 +8974,7 @@
       const centre = polygonCentroid(feature.geometry);
       if (!centre) return;
       const diff = scenarioImpactDelta(feature, metricId);
+      if (Math.abs(diff) < 0.00005) return;
       const props = feature.properties || {};
       const baseIntensity = Math.abs(diff);
       const modelIntensity = Number(props.intensity) || 0;
@@ -8369,6 +8999,81 @@
       points,
       polarityFavourable: polarityN > 0 ? polaritySum / polarityN >= 0 : true,
       confidence: (features[0] && features[0].properties && features[0].properties.confidence) || 'medium'
+    };
+  }
+
+  function baselineForecastImpactHeatmap(year, metricId) {
+    const grid = futureForecastGrid(year);
+    const features = grid && Array.isArray(grid.features) ? grid.features : [];
+    if (!features.length) return null;
+    const def = impactMetricDef(metricId);
+    const source = impactMetricSource(metricId);
+    const points = [];
+    let polaritySum = 0;
+    let polarityN = 0;
+    features.forEach((feature, index) => {
+      const centre = polygonCentroid(feature.geometry);
+      if (!centre) return;
+      const props = feature.properties || {};
+      const value = Number(props[source]);
+      const base = Number(props.baseline && props.baseline[source]);
+      if (!Number.isFinite(value)) return;
+      const delta = Number.isFinite(base) ? value - base : 0;
+      const stress = def.goodDir === 'up' ? value : (1 - value);
+      const intensity = clamp(0.08 + Math.abs(delta) * 3.2 + Math.max(0, value) * 0.58, 0.05, 0.82);
+      const favourable = Math.abs(delta) < 0.00005
+        ? true
+        : (def.goodDir === 'up' ? delta > 0 : delta < 0);
+      polaritySum += favourable ? 1 : -1;
+      polarityN += 1;
+      points.push({
+        type: 'Feature',
+        properties: {
+          id: 'baseline-forecast-' + metricId + '-' + (props.cell_id || index),
+          intensity,
+          delta,
+          value,
+          metric: metricId,
+          polarity: favourable ? 1 : -1,
+          baselineForecast: 1,
+          stress
+        },
+        geometry: { type: 'Point', coordinates: centre }
+      });
+    });
+    return {
+      points,
+      polarityFavourable: polarityN > 0 ? polaritySum / polarityN >= 0 : true,
+      confidence: 'medium-high'
+    };
+  }
+
+  function mergeImpactHeatmaps(baselineHeatmap, scenarioHeatmap) {
+    const basePoints = baselineHeatmap && Array.isArray(baselineHeatmap.points) ? baselineHeatmap.points : [];
+    const scenarioPoints = scenarioHeatmap && Array.isArray(scenarioHeatmap.points) ? scenarioHeatmap.points : [];
+    if (!basePoints.length && !scenarioPoints.length) return null;
+    const points = basePoints.concat(scenarioPoints.map((point, index) => {
+      const props = point.properties || {};
+      return Object.assign({}, point, {
+        properties: Object.assign({}, props, {
+          id: props.id || ('scenario-forecast-' + index),
+          baselineForecast: 0,
+          intensity: clamp((Number(props.intensity) || 0.1) * 1.18, 0.08, 1)
+        })
+      });
+    }));
+    let polaritySum = 0;
+    let polarityN = 0;
+    points.forEach(point => {
+      const polarity = Number(point.properties && point.properties.polarity);
+      if (!Number.isFinite(polarity)) return;
+      polaritySum += polarity;
+      polarityN += 1;
+    });
+    return {
+      points,
+      polarityFavourable: polarityN > 0 ? polaritySum / polarityN >= 0 : true,
+      confidence: (scenarioHeatmap && scenarioHeatmap.confidence) || (baselineHeatmap && baselineHeatmap.confidence) || 'medium'
     };
   }
 
@@ -8434,7 +9139,9 @@
       });
     }
 
-    (branch && branch.items || []).forEach(item => {
+    (branch && branch.items || [])
+      .filter(item => (Number(item.year) || START_YEAR) <= year)
+      .forEach(item => {
       let coord = null;
       if (item.type === 'road') {
         const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
@@ -8485,7 +9192,7 @@
   function impactEpicentreFeatures(branch, metricId) {
     if (!branch) return [];
     const def = impactMetricDef(metricId);
-    return (branch.items || []).map(item => {
+    return (branch.items || []).filter(item => (Number(item.year) || START_YEAR) <= state.year).map(item => {
       let coord = null;
       if (item.type === 'road') {
         const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
@@ -8541,6 +9248,8 @@
     }
     const metric = state.impactMetric;
     const scenarioHeatmap = scenarioImpactHeatmap(branch, state.year, metric);
+    const baselineHeatmap = baselineForecastImpactHeatmap(state.year, metric);
+    const forecastHeatmap = mergeImpactHeatmaps(baselineHeatmap, scenarioHeatmap);
     if (metric !== 'traffic' && window.TrafficSim && typeof window.TrafficSim.clearAgentSwarmOverlay === 'function') {
       window.TrafficSim.clearAgentSwarmOverlay();
       if (congestionLegendEl) congestionLegendEl.style.display = 'none';
@@ -8554,7 +9263,7 @@
       refreshFutureTrafficSwarm(branch, scenarioHeatmap);
       return;
     }
-    if (scenarioHeatmap) {
+    if (forecastHeatmap) {
       if (metric === 'electricity') {
         if (state.map.getSource('impact-ripples')) {
           state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
@@ -8562,7 +9271,7 @@
         if (state.map.getSource('impact-points')) {
           state.map.getSource('impact-points').setData({
             type: 'FeatureCollection',
-            features: scenarioHeatmap.points.map(p => {
+            features: forecastHeatmap.points.map(p => {
               const polarity = p.properties && Number(p.properties.polarity);
               const intensity = clamp(Number(p.properties && p.properties.intensity) || 0.2, 0.08, 1);
               return Object.assign({}, p, {
@@ -8575,11 +9284,11 @@
           });
         }
       } else if (state.map.getLayer('impact-heatmap')) {
-        state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), scenarioHeatmap.polarityFavourable));
+        state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), forecastHeatmap.polarityFavourable));
         if (state.map.getSource('impact-points')) {
           state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
         }
-        state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: scenarioHeatmap.points });
+        state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: forecastHeatmap.points });
       }
       state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: impactEpicentreFeatures(branch, metric) });
       return;
@@ -8757,6 +9466,43 @@
     if (els.scenarioDiffBtn) els.scenarioDiffBtn.addEventListener('click', openScenarioDiffModal);
     if (els.splitCloseBtn) els.splitCloseBtn.addEventListener('click', closeWorkspaceSplit);
     if (els.collapseBtn) els.collapseBtn.addEventListener('click', toggleBottomCollapse);
+    if (els.modeBanner) {
+      els.modeBanner.addEventListener('click', () => {
+        // Jump to the boundary year of the OTHER mode (T2.1).
+        setYear(isHistoricalMode() ? START_YEAR : BASE_YEAR);
+      });
+    }
+    if (els.undoBtn) {
+      els.undoBtn.addEventListener('click', undoLast);
+      refreshUndoButton();
+    }
+    if (els.helpBtn) {
+      els.helpBtn.addEventListener('click', () => showOnboardingTour({ force: true }));
+    }
+    if (els.plannerVariationsBtn) {
+      els.plannerVariationsBtn.addEventListener('click', () => {
+        const branch = activeBranch();
+        const items = (branch && branch.items) || [];
+        if (!items.length || branch.locked) return;
+        // Seed from the latest non-removal item (the user's most recent edit).
+        const seed = items.slice().reverse().find(it => it.type !== 'building_removal') || items[items.length - 1];
+        createPlannerVariationsFromNode({ branchId: branch.id, itemId: seed && seed.id });
+      });
+      refreshPlannerVariationsBtn();
+    }
+    // Global Cmd/Ctrl+Z → undoLast (T3.4). Skips when typing in an input.
+    document.addEventListener('keydown', (e) => {
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable)) return;
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        undoLast();
+      }
+    });
+    renderModeBanner();
+    // Suppress mode-transition toasts during the first few seconds so a
+    // page reload restoring saved state doesn't fire one (T2.1).
+    __lastModeToastAt = Date.now();
     attachPostcodeSearch();
     attachTrafficSim();
     attachRoadCompare();
@@ -8845,6 +9591,16 @@
       }
       syncCityBuildingHeightContext();
     }
+
+    // T3.1: first-run guided tour. Skip if the user has already dismissed it
+    // (or if e2e tests are running with the bypass flag in localStorage).
+    try {
+      const seen = localStorage.getItem('belfastOnboardingV1Done') === '1';
+      if (!seen) {
+        // Defer one tick so the map starts loading underneath the overlay.
+        setTimeout(() => showOnboardingTour({ force: false }), 600);
+      }
+    } catch (e) { /* localStorage may be unavailable */ }
 
     // Expose for debugging / smoke tests
     window.BelfastDashboard = {

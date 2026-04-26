@@ -413,12 +413,16 @@ def build_manifest(root: Path) -> dict[str, Any]:
     generated_layer = build_buildings_layer(root)
     vector_layers = []
     source_artifacts = []
-    vector_source_paths = list(sorted((root / "data/2026").glob("*.geojson")))
-    vector_source_paths += list(sorted((root / "data/derived/2026").glob("belfast_ni_*_osm_2026.geojson")))
-    for path in vector_source_paths:
+    for path in sorted((root / "data/2026").glob("*")):
+        if not path.is_file() or path.name == "source_manifest_2026.json":
+            continue
         if path.name == "exportbuildings.geojson":
             source_artifacts.append(source_artifact(root, path, 2026, "Raw full building export", "source-available-heavy"))
-            continue
+        elif path.suffix.lower() in {".geojson", ".json"}:
+            source_artifacts.append(source_artifact(root, path, 2026, path.stem.replace("_", " ").title(), "source-available-raw"))
+
+    vector_source_paths = list(sorted((root / "data/derived/2026").glob("belfast_ni_*_osm_2026.geojson")))
+    for path in vector_source_paths:
         if path.name == "belfast_ni_buildings_3d_core.geojson":
             continue
         layer = vector_layer_from_path(root, path)
