@@ -120,15 +120,15 @@
 
   function activityStatement(stats) {
     if (stats.buildingType === "mixed_use") {
-      return "This building adds residents, local jobs and neighbourhood services, creating a more balanced activity pattern than a single-use block.";
+      return "Mixed-use inputs are staged for deterministic scenario testing.";
     }
     if (stats.buildingType === "office") {
-      return "This building adds jobs and commuter flow, increasing daytime movement and electricity demand while improving economic opportunity.";
+      return "Office-led inputs are staged for deterministic scenario testing.";
     }
     if (stats.buildingType === "community") {
-      return "This building adds service value and public access, with lower population growth but stronger fairness and local support benefits.";
+      return "Community-service inputs are staged for deterministic scenario testing.";
     }
-    return "This building adds new residents and housing capacity, increasing demand on roads, transit, schools, shops, services and electricity.";
+    return "Residential inputs are staged for deterministic scenario testing.";
   }
 
   function firstOrderCopy(signal, stats, value) {
@@ -789,7 +789,7 @@
       ${renderSelectedImpact(branch)}
       <div class="agent-note">
         <strong>Mobility view <span>Trade-off</span></strong>
-        <span>${escapeHtml(branch?.diffFromBaseline?.mobilityStrain > 0 ? "This building adds demand to nearby corridors. Pairing it with transport support improves the branch." : "Mobility pressure is contained by the selected branch assumptions.")}</span>
+        <span>${escapeHtml(branch?.diffFromBaseline?.mobilityStrain > 0 ? "Nearby corridor demand increases under this branch. Pairing it with transport support improves the branch." : "Mobility pressure is contained by the selected branch assumptions.")}</span>
       </div>
       <div class="agent-note">
         <strong>Fairness view <span>Inclusion</span></strong>

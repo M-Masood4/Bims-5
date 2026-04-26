@@ -1256,8 +1256,9 @@
     els.scenarioDiffBtn.hidden = !ready;
     if (ready) {
       const year = scenarioDiffYear();
+      const actionLabel = isBuildingRemovalItem(building) ? 'after-removal' : 'with-building';
       els.scenarioDiffBtn.textContent = 'View Diff';
-      els.scenarioDiffBtn.title = 'Open no-build vs with-building 3D diff for ' + (building.postcode || 'selected map point') + ' in ' + year;
+      els.scenarioDiffBtn.title = 'Open no-build vs ' + actionLabel + ' 3D diff for ' + (building.postcode || 'selected map point') + ' in ' + year;
     }
   }
 
@@ -4335,6 +4336,9 @@
           const error = await response.json();
           detail = error.detail || error.error || detail;
         } catch (_) {}
+        if (response.status === 404 && detail === 'Not found') {
+          detail = 'PDF export API is not available in the running server. Restart the local server and try again.';
+        }
         throw new Error(detail);
       }
       const blob = await response.blob();
@@ -6524,8 +6528,9 @@
     closeWorkspaceSplitMaps();
     setView('3D');
     if (els.diffModal) els.diffModal.hidden = true;
+    const afterLabel = isBuildingRemovalItem(focusItem) ? 'After removal ' : 'With build ';
     if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + year;
-    if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + year;
+    if (els.splitYearAfter) els.splitYearAfter.textContent = afterLabel + year;
     if (els.splitTitle) els.splitTitle.textContent = 'Before / After: ' + scenarioDiffFocusLabel(focusItem);
 
     const branchName = scenarioBranch ? (scenarioBranch.name || scenarioBranch.branchName || 'Selected branch') : branch.name;
@@ -6621,6 +6626,10 @@
     return !!item && (item.type === 'building' || item.type === 'building_removal');
   }
 
+  function isBuildingRemovalItem(item) {
+    return !!item && (item.type === 'building_removal' || item.interventionType === 'building_removal' || item.removal === true);
+  }
+
   function scenarioDiffSummaryHTML(beforeFc, afterFc, scenario, scenarioBranch, branch, building, year) {
     const lens = currentScenarioDiffLens();
     const summary = scenarioDiffMetricSummary(beforeFc, afterFc, lens);
@@ -6635,7 +6644,7 @@
     let direction = summary.flat ? 'keeps ' + lens.label.toLowerCase() + ' broadly steady'
       : (summary.favourable ? 'improves ' : 'worsens ') + lens.label.toLowerCase() + ' by ' + Math.abs(summary.deltaPts).toFixed(Math.abs(summary.deltaPts) < 1 ? 2 : 1) + ' pts';
     if (lens.id === 'traffic' && concrete && concrete.traffic) {
-      direction = (trafficTrips >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(trafficTrips), 0).replace(/^[+]/, '') + ' daily trips and reroutes local road pressure';
+      direction = (trafficTrips >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(trafficTrips), 0).replace(/^[+]/, '') + (trafficTrips >= 0 ? ' daily trips and reroutes local road pressure' : ' daily trips and eases local road pressure');
     } else if (lens.id === 'jobs' && concrete && concrete.jobs) {
       direction = (Number(concrete.jobs.netJobsEstimate) >= 0 ? 'adds ' : 'removes ') + fmtConcreteSigned(Math.abs(Number(concrete.jobs.netJobsEstimate) || 0), 0).replace(/^[+]/, '') + ' jobs and shows nearby service-access pressure';
     } else if (lens.id === 'electricity' && concrete && concrete.electricity) {
@@ -6666,8 +6675,9 @@
     if (!ctx || !els.splitSummary) return;
     const branch = state.branches.find(b => b.id === ctx.branchId) || activeBranch();
     els.splitSummary.innerHTML = scenarioDiffSummaryHTML(ctx.beforeFc, ctx.afterFc, ctx.scenario, ctx.scenarioBranch, branch, ctx.building, ctx.year);
+    const afterLabel = isBuildingRemovalItem(ctx.building) ? 'After removal ' : 'With build ';
     if (els.splitYearBefore) els.splitYearBefore.textContent = 'No-build ' + ctx.year;
-    if (els.splitYearAfter) els.splitYearAfter.textContent = 'With build ' + ctx.year;
+    if (els.splitYearAfter) els.splitYearAfter.textContent = afterLabel + ctx.year;
   }
 
   async function refreshWorkspaceSplit() {
@@ -6819,6 +6829,25 @@
   function scenarioTrafficDiffDemandPoints(grid, building, year, side, concrete) {
     const center = [Number(building.lng), Number(building.lat)];
     let points = baselineTrafficForecastDemandPoints(year, { centre: center, radiusKm: 2.35, limit: 70 });
+    const isRemoval = isBuildingRemovalItem(building);
+    const signedTrips = concrete && concrete.traffic ? Number(concrete.traffic.netDailyTrips) || 0 : 0;
+    if (side === 'after' && isRemoval) {
+      points = points.map(point => {
+        const coord = point.geometry && point.geometry.coordinates;
+        if (!Array.isArray(coord)) return point;
+        const distKm = coordDistKm(coord, center);
+        if (!Number.isFinite(distKm) || distKm > 1.35) return point;
+        const props = point.properties || {};
+        const relief = clamp(1 - distKm / 1.35, 0, 1);
+        return Object.assign({}, point, {
+          properties: Object.assign({}, props, {
+            intensity: clamp((Number(props.intensity) || 0.2) * (1 - 0.55 * relief), 0.03, 1),
+            delta: Math.min(Number(props.delta) || 0, -0.01 * relief),
+            polarity: 1
+          })
+        });
+      });
+    }
     const trafficLens = SCENARIO_DIFF_LENSES.find(l => l.id === 'traffic') || currentScenarioDiffLens();
     const features = grid && Array.isArray(grid.features) ? grid.features : [];
     features.forEach((feature, i) => {
@@ -6842,12 +6871,12 @@
     });
 
     if (side === 'after') {
-      const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+      const trips = isRemoval ? Math.min(0, signedTrips) : Math.max(0, signedTrips);
       const sitePoint = pointFeatureFromCoord(center, {
-        id: 'scenario-building-trip-demand',
-        intensity: clamp(0.68 + trips / 6500, 0.68, 1),
+        id: isRemoval ? 'scenario-building-trip-relief' : 'scenario-building-trip-demand',
+        intensity: isRemoval ? clamp(0.52 + Math.abs(trips) / 7200, 0.52, 0.88) : clamp(0.68 + trips / 6500, 0.68, 1),
         delta: trips,
-        polarity: -1,
+        polarity: isRemoval ? 1 : -1,
         active: 1
       });
       if (sitePoint) points.unshift(sitePoint);
@@ -6871,14 +6900,15 @@
     const branch = activeBranch();
     const concrete = side === 'after' ? concreteImpactsForBranchYear(branch, year) : null;
     const demand = scenarioTrafficDiffDemandPoints(grid, building, year, side, concrete);
-    const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+    const signedTrips = concrete && concrete.traffic ? Number(concrete.traffic.netDailyTrips) || 0 : 0;
+    const demandAdjustment = signedTrips >= 0 ? signedTrips / 34 : signedTrips / 70;
     const result = window.TrafficSim.runAgentSwarm({
       branch: side === 'after' ? branch : null,
       demandPoints: demand,
       centre: [Number(building.lng), Number(building.lat)],
       radiusKm: 2.55,
       density: side === 'after'
-        ? clamp(185 + demand.length * 2.2 + trips / 34, 210, 560)
+        ? clamp(185 + demand.length * 2.2 + demandAdjustment, 120, 560)
         : clamp(145 + demand.length * 1.8, 150, 350),
       durationSeconds: 8,
       seed: (year * 2654435761 + (side === 'after' ? 911 : 433) + demand.length * 17) >>> 0,
@@ -8135,15 +8165,16 @@
         const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
         const loc = locationFromCoords(path);
         if (loc) coord = [loc.lng, loc.lat];
-      } else if (item.type === 'building' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      } else if ((item.type === 'building' || isBuildingRemovalItem(item)) && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
         coord = [Number(item.lng), Number(item.lat)];
       }
       if (!coord) return;
       const isRoad = item.type === 'road';
+      const isRemoval = isBuildingRemovalItem(item);
       const feature = pointFeatureFromCoord(coord, {
         id: item.id,
-        intensity: isRoad ? 0.9 : 0.72,
-        polarity: isRoad ? 1 : -1,
+        intensity: isRoad ? 0.9 : (isRemoval ? 0.62 : 0.72),
+        polarity: (isRoad || isRemoval) ? 1 : -1,
         active: 1
       });
       if (feature) points.push(feature);
@@ -8158,13 +8189,14 @@
     const demand = futureTrafficDemandPoints(branch, state.year, scenarioHeatmap);
     const centre = focusCoordForTraffic(branch, demand);
     const concrete = concreteImpactsForBranchYear(branch, state.year);
-    const trips = concrete && concrete.traffic ? Math.max(0, Number(concrete.traffic.netDailyTrips) || 0) : 0;
+    const signedTrips = concrete && concrete.traffic ? Number(concrete.traffic.netDailyTrips) || 0 : 0;
+    const demandAdjustment = signedTrips >= 0 ? signedTrips / 80 : signedTrips / 140;
     const result = window.TrafficSim.runAgentSwarm({
       branch: branch,
       demandPoints: demand,
       centre: centre,
       radiusKm: demand.length ? 2.35 : 1.6,
-      density: clamp(150 + demand.length * 3 + trips / 80, 140, 520),
+      density: clamp(150 + demand.length * 3 + demandAdjustment, 100, 520),
       durationSeconds: 9,
       seed: (state.year * 1103515245 + demand.length * 313) >>> 0,
       maxSegments: 2200,
