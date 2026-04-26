@@ -25,7 +25,7 @@
     building: 'Click any valid Belfast map point to place a building',
     road: 'Click two points on the map to place a road',
     park: 'Click on the map to place a park',
-    infrastructure: 'Click on the map to place infrastructure',
+    infrastructure: 'Click on the map to place a transformer',
     remove: 'Click any item you placed to remove it'
   };
 
@@ -173,7 +173,7 @@
   const PLANNING_ENGINES = [
     { id: 'traffic', label: 'Traffic', color: '#fb923c', objective: 'traffic_mitigation' },
     { id: 'jobs', label: 'Jobs', color: '#a855f7', objective: 'jobs_optimised' },
-    { id: 'electricity', label: 'Electricity', color: '#06b6d4', objective: 'balanced' },
+    { id: 'electricity', label: 'Transformer', color: '#06b6d4', objective: 'balanced' },
     { id: 'services', label: 'Public Transit', color: '#22c55e', objective: 'traffic_mitigation' }
   ];
 
@@ -978,7 +978,11 @@
       item.label = 'Park';
     } else if (type === 'infrastructure') {
       item.color = '#f59e0b';
-      item.label = 'Infrastructure';
+      item.label = 'Transformer';
+      item.assetClass = 'secondary';
+      item.capacityKva = 500;
+      item.voltageKv = 11;
+      item.serviceRadiusM = 650;
     }
     branch.items.push(item);
     branch.scenarioResult = null;
@@ -1214,9 +1218,13 @@
         type: 'transformer',
         label: item.label || 'Transformer',
         location: { lng: item.lng, lat: item.lat },
-        radiusM: 650,
+        assetClass: item.assetClass || 'secondary',
+        capacityKva: item.capacityKva || 500,
+        voltageKv: item.voltageKv || 11,
+        serviceRadiusM: item.serviceRadiusM || item.radiusM || 650,
+        radiusM: item.serviceRadiusM || item.radiusM || 650,
         year: item.year || START_YEAR,
-        rationale: 'User-staged transformer included in electricity and services planning.'
+        rationale: 'User-staged transformer included in electricity headroom and jobs screening.'
       };
     }
     if (item.type === 'park') {
@@ -1698,7 +1706,7 @@
         title = 'Added Park';
       } else if (it.type === 'infrastructure') {
         icon = '⚡'; tint = '#fff5eb';
-        title = 'Added Infrastructure';
+        title = 'Added Transformer';
       }
       entries.push({
         icon: icon, tint: tint,
@@ -2283,7 +2291,7 @@
     if (item.type === 'building') return 'Building - ' + (item.label || capitalise(item.preset || 'building'));
     if (item.type === 'road') return item.label || 'Road segment';
     if (item.type === 'park') return 'Park';
-    if (item.type === 'infrastructure') return 'Electricity infrastructure';
+    if (item.type === 'infrastructure') return 'Transformer';
     return capitalise(item.type || 'addition');
   }
 
@@ -2603,8 +2611,12 @@
         lng: p[0],
         lat: p[1],
         color: engine.color,
-        label: 'Grid reinforcement node',
+        label: 'Transformer node',
         plannerEngine: engine.id,
+        assetClass: 'secondary',
+        capacityKva: 500,
+        voltageKv: 11,
+        serviceRadiusM: 800,
         radiusM: 800
       };
     }
