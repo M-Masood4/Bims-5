@@ -6687,7 +6687,6 @@
     // Animated lens particles — appear/disappear at jobs, electricity and
     // public-transit anchor points. Mirrors the "live city" feel of the
     // traffic swarm but for the slower-moving infrastructure metrics.
-    window.__particleTrace = (window.__particleTrace || []).concat({ at: Date.now(), lens: id });
     if (id === 'jobs' || id === 'electricity' || id === 'services') {
       startLensParticleAnimation(id);
     } else {
@@ -6995,7 +6994,6 @@
       }
       return true;
     } catch (e) {
-      window.__particleStart = (window.__particleStart || []).concat({ ensureError: e.message });
       return false;
     }
   }
@@ -7071,17 +7069,14 @@
   }
 
   function startLensParticleAnimation(lensId) {
-    window.__particleStart = (window.__particleStart || []).concat({ at: Date.now(), lensId, hasMap: !!state.map });
     if (!state.map) return;
     if (!ensureLensParticleLayers()) {
-      window.__particleStart.push({ at: Date.now(), lensId, ensureFailed: true });
       state.map.once && state.map.once('styledata', () => startLensParticleAnimation(lensId));
       return;
     }
     const cfg = LENS_PARTICLE_CONFIG[lensId];
     if (!cfg) { stopLensParticleAnimation(); return; }
     const anchors = lensParticleAnchors(lensId);
-    window.__particleStart.push({ at: Date.now(), lensId, anchors: anchors.length });
     if (!anchors.length) {
       // No anchors yet — clear any leftover and try again after a short delay
       const src = state.map.getSource(LENS_PARTICLE_SOURCE);
