@@ -274,18 +274,20 @@
   }
 
   function metricGoodDirection(metric) {
-    // 'up' = higher is better (jobs, transit, opportunity, economy, population, air, fairness)
-    // 'down' = lower is better (traffic, housing pressure)
-    if (metric === 'traffic' || metric === 'housing') return 'down';
+    // 'up' = higher is better (jobs, transit, opportunity, economy, population, air, fairness, services, buildings supply)
+    // 'down' = lower is better (traffic, housing pressure, electricity load)
+    if (metric === 'traffic' || metric === 'housing' || metric === 'electricity') return 'down';
     return 'up';
   }
 
   function signalForMetric(metric) {
+    // Accept both the historical-lens ids and the older predictor ids so
+    // either side of the studio can drive the forecast model.
     if (metric === 'traffic') return 'traffic';
     if (metric === 'jobs' || metric === 'economy') return 'jobs';
-    if (metric === 'transit' || metric === 'opportunity' || metric === 'fairness') return 'services';
-    if (metric === 'housing' || metric === 'population') return 'buildings';
-    if (metric === 'air') return 'electricity';
+    if (metric === 'services' || metric === 'transit' || metric === 'opportunity' || metric === 'fairness') return 'services';
+    if (metric === 'buildings' || metric === 'housing' || metric === 'population') return 'buildings';
+    if (metric === 'electricity' || metric === 'air') return 'electricity';
     return 'traffic';
   }
 

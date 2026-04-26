@@ -141,7 +141,7 @@
     activeEventId: null,            // commit/event id when one is selected
     eventsForYearCache: null,       // cached events for current year+lens
     // Predicted-impact ripple visualisation
-    impactMetric: 'traffic',        // which predicted metric to visualise on the map
+    impactMetric: 'traffic',        // which forecast metric the map paints; kept in lock-step with state.lens
     impactLayersAdded: false,
     lastPlacedItemId: null,         // for similar-events overlay focus
     predictorReady: false,
@@ -362,6 +362,11 @@
       if (data.lens && LENSES.find(l => l.id === data.lens)) state.lens = data.lens;
       if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
+
+      // Migration: older sessions stored impactMetric ids like 'transit' or
+      // 'opportunity' that no longer exist in IMPACT_METRICS. Always start
+      // the impactMetric in lock-step with the lens.
+      state.impactMetric = state.lens;
     } catch (_) {}
   }
 
@@ -2919,18 +2924,29 @@
     if (!LENSES.find(l => l.id === lensId)) return;
     state.lens = lensId;
     state.activeEventId = null;
+    // Sim/future view also keys off the lens — flipping to "Jobs" should
+    // recolour the forecast ripples to the jobs prediction, not just paint
+    // the historical lens. Both halves of the studio now share the same
+    // active metric.
+    state.impactMetric = lensId;
     renderLensTabs();
     renderModify();
     renderBranches();
     renderImpact();
     renderCompareSection();
-    if (state.mapLoaded) renderHistoricalMapLayers();
+    if (state.mapLoaded) {
+      if (isHistoricalMode()) renderHistoricalMapLayers();
+      else { updateImpactRipples(); updateImpactLensUI(); }
+    }
     saveState();
   }
 
   function renderLensTabs() {
     if (!els.lensTabs) return;
-    if (!isHistoricalMode()) { els.lensTabs.hidden = true; return; }
+    // Lens tabs live in BOTH historical and simulation modes — the model
+    // forecasts change in all five lenses (traffic, jobs, electricity,
+    // buildings, services), so users should be able to flip between them
+    // on the future map just like they can on the historical map.
     els.lensTabs.hidden = false;
     els.lensTabs.innerHTML = LENSES.map(l => {
       const active = l.id === state.lens ? ' active' : '';
@@ -4311,11 +4327,16 @@
   //   - Driven by /web/impact-predictor.js (window.BelfastPredictor).
   // ================================================================
 
+  // Forecast/simulation impact metrics are kept in lock-step with the
+  // historical LENSES (traffic, jobs, electricity, buildings, services) —
+  // the model simulates change in all five, so the user can flip between
+  // any of them on the future map just like they can on the historical map.
   const IMPACT_METRICS = [
     { id: 'traffic',     label: 'Traffic',     color: '#fb923c', goodDir: 'down' },
     { id: 'jobs',        label: 'Jobs',        color: '#a855f7', goodDir: 'up' },
-    { id: 'transit',     label: 'Transit',     color: '#22d3ee', goodDir: 'up' },
-    { id: 'opportunity', label: 'Opportunity', color: '#22c55e', goodDir: 'up' }
+    { id: 'electricity', label: 'Electricity', color: '#06b6d4', goodDir: 'down' },
+    { id: 'buildings',   label: 'Buildings',   color: '#3b82f6', goodDir: 'up' },
+    { id: 'services',    label: 'Services',    color: '#22c55e', goodDir: 'up' }
   ];
 
   function impactMetricDef(id) { return IMPACT_METRICS.find(m => m.id === id) || IMPACT_METRICS[0]; }
@@ -4485,7 +4506,12 @@
       }).join('');
       els.impactLensTabs.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('click', () => {
-          state.impactMetric = btn.getAttribute('data-metric');
+          const id = btn.getAttribute('data-metric');
+          state.impactMetric = id;
+          // Keep the top-of-map lens tabs in sync with the in-map impact
+          // tabs — they're two views into the same active metric.
+          if (LENSES.find(l => l.id === id)) state.lens = id;
+          renderLensTabs();
           updateImpactRipples();
           updateImpactLensUI();
         });
