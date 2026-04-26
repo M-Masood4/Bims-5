@@ -460,7 +460,7 @@
       'mapSubtitle', 'mapOverlay', 'cursorHint', 'cursorHintText',
       'activeBranchTag', 'tagDot', 'tagName', 'tagYear',
       'tlPrev', 'tlPlay', 'tlPlayIcon', 'tlNext', 'tlYearNow', 'tlTrack', 'tlProgress', 'tlThumb', 'tlMarks',
-      'impactTitle', 'impactStack',
+      'impactTitle', 'impactStack', 'scenarioIntegrityHost',
       'newBranchBtn', 'branchSelect', 'branchList',
       'tlBranchName', 'branchTimelineSvg',
       'runBtn', 'runBtnLabel', 'compareBtn', 'activeBranchName', 'activeYearLabel', 'exportBtn',
@@ -2526,10 +2526,16 @@
     }
 
     const concrete = concreteImpactsForBranchYear(branch, target);
+    const integrityHTML = scenarioIntegrityCardHTML(branch, target, metricsAtTarget);
     els.impactStack.innerHTML =
       METRICS.map(m => metricCardHTML(m, branch, target, metricsAtTarget)).join('') +
       concreteImpactPanelHTML(concrete) +
-      scenarioIntegrityCardHTML(branch, target, metricsAtTarget);
+      integrityHTML;
+    if (els.scenarioIntegrityHost) {
+      const hasScenario = !!scenarioResultForBranch(branch);
+      els.scenarioIntegrityHost.hidden = !hasScenario;
+      els.scenarioIntegrityHost.innerHTML = hasScenario ? integrityHTML : '';
+    }
     attachScenarioIntegrityEvents();
   }
 
@@ -2710,18 +2716,21 @@
   }
 
   function attachScenarioIntegrityEvents() {
-    if (!els.impactStack) return;
-    const publishBtn = els.impactStack.querySelector('[data-solana-publish]');
-    if (publishBtn) publishBtn.addEventListener('click', () => publishScenarioCommit(publishBtn));
-    els.impactStack.querySelectorAll('[data-solana-copy]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const text = btn.getAttribute('data-solana-copy') || '';
-        try {
-          await navigator.clipboard.writeText(text);
-          toast('Scenario hash copied');
-        } catch (_) {
-          toast('Could not copy hash from this browser', 'warn');
-        }
+    const hosts = [els.impactStack, els.scenarioIntegrityHost].filter(Boolean);
+    hosts.forEach(host => {
+      host.querySelectorAll('[data-solana-publish]').forEach(btn => {
+        btn.addEventListener('click', () => publishScenarioCommit(btn));
+      });
+      host.querySelectorAll('[data-solana-copy]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const text = btn.getAttribute('data-solana-copy') || '';
+          try {
+            await navigator.clipboard.writeText(text);
+            toast('Scenario hash copied');
+          } catch (_) {
+            toast('Could not copy hash from this browser', 'warn');
+          }
+        });
       });
     });
   }
@@ -5870,8 +5879,47 @@
     if (!state.map.getSource('buildability-areas')) {
       state.map.addSource('buildability-areas', { type: 'geojson', data: empty });
     }
-    // Brighter green for higher buildabilityScore — the user can see at a
-    // glance which cells are best fits for the active preset.
+    // Continuous Belfast boundary — one big green polygon for the whole
+    // city. The grid cells render on top as a subtle score overlay.
+    if (!state.map.getSource('belfast-boundary')) {
+      state.map.addSource('belfast-boundary', { type: 'geojson', data: empty });
+      fetch('/api/belfast-boundary')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data && state.map.getSource('belfast-boundary')) {
+            state.map.getSource('belfast-boundary').setData(data);
+          }
+        })
+        .catch(() => {});
+    }
+    if (!state.map.getLayer('belfast-boundary-fill')) {
+      state.map.addLayer({
+        id: 'belfast-boundary-fill',
+        type: 'fill',
+        source: 'belfast-boundary',
+        paint: {
+          'fill-color': '#22c55e',
+          'fill-opacity': 0.34
+        },
+        layout: { visibility: 'none' }
+      }, findFirstSymbolLayer());
+    }
+    if (!state.map.getLayer('belfast-boundary-line')) {
+      state.map.addLayer({
+        id: 'belfast-boundary-line',
+        type: 'line',
+        source: 'belfast-boundary',
+        paint: {
+          'line-color': '#bef264',
+          'line-width': 1.6,
+          'line-opacity': 0.85
+        },
+        layout: { visibility: 'none' }
+      }, findFirstSymbolLayer());
+    }
+    // Per-cell score overlay rides on top of the city-wide green so the
+    // user can see which spots score higher. Toned down so it reads as
+    // accent rather than the primary green.
     if (!state.map.getLayer('buildability-areas-fill')) {
       state.map.addLayer({
         id: 'buildability-areas-fill',
@@ -5881,17 +5929,18 @@
           'fill-color': [
             'interpolate', ['linear'],
             ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-            0.0, '#166534',
-            0.5, '#22c55e',
+            0.0, '#14532d',
+            0.4, '#16a34a',
+            0.7, '#22c55e',
             1.0, '#bef264'
           ],
           'fill-opacity': [
-            'case',
-            ['==', ['get', 'buildable'], true],
-            ['interpolate', ['linear'],
-              ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-              0.0, 0.18, 0.5, 0.42, 1.0, 0.62],
-            0.0
+            'interpolate', ['linear'],
+            ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+            0.0, 0.06,
+            0.4, 0.14,
+            0.7, 0.24,
+            1.0, 0.36
           ]
         },
         layout: { visibility: 'none' }
@@ -5904,20 +5953,13 @@
         source: 'buildability-areas',
         paint: {
           'fill-extrusion-color': [
-            'case',
-            ['==', ['get', 'buildable'], true],
-            ['rgba', 34, 197, 94,
-              ['interpolate', ['linear'],
-                ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-                0.0, 0.20, 0.5, 0.45, 1.0, 0.65]
-            ],
-            ['rgba', 0, 0, 0, 0]
+            'rgba', 34, 197, 94,
+            ['interpolate', ['linear'],
+              ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+              0.0, 0.22, 0.4, 0.40, 0.7, 0.52, 1.0, 0.65]
           ],
           'fill-extrusion-height': [
-            'case',
-            ['==', ['get', 'buildable'], true],
-            ['+', 6, ['*', 36, ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0]]],
-            0
+            '+', 4, ['*', 38, ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0]]
           ],
           'fill-extrusion-base': 0,
           'fill-extrusion-opacity': 1
@@ -5932,8 +5974,8 @@
         source: 'buildability-areas',
         paint: {
           'line-color': '#bbf7d0',
-          'line-width': 0.9,
-          'line-opacity': ['case', ['==', ['get', 'buildable'], true], 0.72, 0]
+          'line-width': 0.7,
+          'line-opacity': 0.42
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
@@ -5974,10 +6016,7 @@
       }
       state.buildabilityLoaded = true;
       state.buildabilityPostcodeKey = key;
-      const postcodeLabel = focus && (focus.postcode || focus.normalizedPostcode || focus.input);
-      if (postcodeLabel) {
-        showSearchStatus(postcodeLabel + ' selected - ' + (json.buildableCount || 0) + ' possible build areas highlighted');
-      }
+      // No postcode-relative status message — the overlay is always city-wide.
     } catch (error) {
       console.warn('buildability overlay failed', error);
     } finally {
@@ -5994,12 +6033,21 @@
     }
     const visible = state.mode === 'simulation' && isSimYear(state.year) && Boolean(state.buildabilityFocus || state.activeTool === 'building');
     const show3d = visible && state.view === '3D';
-    ['buildability-areas-fill', 'buildability-areas-line', 'buildability-areas-3d'].forEach(id => {
+    [
+      'belfast-boundary-fill',
+      'belfast-boundary-line',
+      'buildability-areas-fill',
+      'buildability-areas-line',
+      'buildability-areas-3d'
+    ].forEach(id => {
       if (!state.map.getLayer(id)) return;
       const layerVisible = id === 'buildability-areas-3d' ? show3d : visible;
       state.map.setLayoutProperty(id, 'visibility', layerVisible ? 'visible' : 'none');
     });
-    if (visible) loadBuildabilityAreas(state.buildabilityFocus || state.selectedPostcode);
+    // Always load CITY-WIDE buildable areas — postcode selection no longer
+    // narrows the overlay. The whole of Belfast is highlighted, the user
+    // zooms in and clicks any green spot.
+    if (visible) loadBuildabilityAreas(null);
     refreshBuildabilityLegend(visible);
   }
 
@@ -6011,7 +6059,7 @@
     const presetId = state.activeBuildingPreset || 'residential';
     const presetDef = (PRESETS && PRESETS.building) ? PRESETS.building.find(p => p.id === presetId) : null;
     const label = presetDef ? presetDef.label : capitalise(String(presetId).replace('_', ' '));
-    if (els.buildabilityLegendLabel) els.buildabilityLegendLabel.textContent = 'Sites buildable for ' + label;
+    if (els.buildabilityLegendLabel) els.buildabilityLegendLabel.textContent = 'Buildable areas for ' + label + ' across Belfast';
     if (els.buildabilityLegendSwatch && presetDef && presetDef.color) {
       els.buildabilityLegendSwatch.style.background = presetDef.color;
     }

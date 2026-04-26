@@ -1626,6 +1626,11 @@ button { font-family: inherit; }
   font-size: 10.5px;
   line-height: 1.35;
 }
+.scenario-integrity-host {
+  margin: 12px 16px 0;
+  display: block;
+}
+.scenario-integrity-host[hidden] { display: none; }
 .scenario-integrity-card {
   background: #fff;
   border: 1px solid var(--border);

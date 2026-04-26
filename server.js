@@ -1382,7 +1382,9 @@ async function handleValidatePlacement(req, res) {
       requireResolvedPostcode: Boolean(payload.requireResolvedPostcode || payload.require_resolved_postcode)
     }, rootDir);
     const siteContext = scenarioStudio.getSiteContext({ ...payload, validation }, rootDir);
-    sendJson(res, validation.status === "invalid" ? 422 : 200, {
+    // The endpoint reports validation findings but always returns 200 — the
+    // UI treats placement as user-driven and never blocks on validation.
+    sendJson(res, 200, {
       ...validation,
       siteContext
     });
@@ -1425,6 +1427,24 @@ function distanceKm(a, b) {
   const rLat2 = lat2 * toRad;
   const h = Math.sin(dLat / 2) ** 2 + Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLng / 2) ** 2;
   return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
+// Belfast administrative boundary — used by the city-wide buildable overlay
+// to paint one continuous green polygon instead of the underlying grid.
+const belfastBoundaryPath = path.join(rootDir, "data", "2026", "belfastboudnary2026.geojson");
+let belfastBoundaryCache = null;
+function readBelfastBoundary() {
+  if (belfastBoundaryCache) return belfastBoundaryCache;
+  try {
+    belfastBoundaryCache = JSON.parse(fs.readFileSync(belfastBoundaryPath, "utf8"));
+  } catch (_) {
+    belfastBoundaryCache = { type: "FeatureCollection", features: [] };
+  }
+  return belfastBoundaryCache;
+}
+
+function handleBelfastBoundary(_req, res) {
+  sendJson(res, 200, readBelfastBoundary());
 }
 
 async function handleBuildableAreas(req, res) {
@@ -1631,16 +1651,10 @@ async function handleScenarioStudioRun(req, res) {
     }, rootDir);
     siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
 
-    if (validation.status === "invalid") {
-      sendJson(res, 422, {
-        ok: false,
-        geminiRequired: true,
-        error: "Placement is invalid",
-        validation,
-        siteContext
-      });
-      return;
-    }
+    // Validation warnings (water overlap, existing-building overlap, etc.) are
+    // surfaced in the response payload so the UI can flag them, but they
+    // never block the scenario from running — the user picks the spot,
+    // the model reports the consequences.
 
     const useGemini = Boolean(geminiKey());
     if (!useGemini) {
@@ -1856,6 +1870,11 @@ const server = http.createServer((req, res) => {
 
   if ((req.method === "POST" || req.method === "GET") && pathname === "/api/building/buildable-areas") {
     handleBuildableAreas(req, res);
+    return;
+  }
+
+  if (req.method === "GET" && pathname === "/api/belfast-boundary") {
+    handleBelfastBoundary(req, res);
     return;
   }
 
