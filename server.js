@@ -851,13 +851,16 @@ async function handleScenarioStudioRun(req, res) {
       completionYear: payload.horizonYear || 2036,
       requireResolvedPostcode: useResolvedPostcode
     }, rootDir);
+    const isRemovalScenario = building.type === "building_removal" || building.removal === true;
     validation = scenarioStudio.validatePlacement({
       location: building.location,
       geometry: building.geometry,
       config: building.config,
       postcode: useResolvedPostcode ? resolvedPostcode.postcode : null,
       resolvedPostcode: useResolvedPostcode ? resolvedPostcode : null,
-      requireResolvedPostcode: useResolvedPostcode
+      requireResolvedPostcode: useResolvedPostcode,
+      allowExistingBuildingOverlap: isRemovalScenario,
+      allowRoadProximity: isRemovalScenario
     }, rootDir);
     siteContext = scenarioStudio.getSiteContext({ location: building.location, geometry: building.geometry, config: building.config, validation }, rootDir);
 
@@ -939,14 +942,14 @@ async function handleScenarioStudioRun(req, res) {
     const specialistAgents = Array.isArray(specialistGemini.json.agents) ? specialistGemini.json.agents : null;
     if (!specialistAgents?.length) throw new Error("Specialist agents response must include an agents array.");
 
-    const variantGemini = await callGeminiJson({
+    const variantGemini = isRemovalScenario ? null : await callGeminiJson({
       agentName: "Scenario Variant Agent",
       temperature: 0.35,
       maxOutputTokens: 4000,
       responseJsonSchema: SCENARIO_VARIANTS_SCHEMA,
       prompt: variantPrompt(building, siteContext, specialistAgents)
     });
-    const variants = scenarioStudio.sanitizeScenarioVariants(variantGemini.json, building, rootDir, { strict: true });
+    const variants = scenarioStudio.sanitizeScenarioVariants(isRemovalScenario ? (payload.branches || payload.variants) : variantGemini.json, building, rootDir, { strict: !isRemovalScenario });
     const forecast = scenarioStudio.runForecastScenario({
       ...payload,
       scenarioId: payload.scenarioId || payload.scenario_id || "housing_growth",
