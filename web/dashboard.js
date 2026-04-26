@@ -29,7 +29,7 @@
     '</svg>';
 
   const TOOL_LABELS = {
-    building: 'Click any valid Belfast map point to place a building',
+    building: 'Green areas show buildable sites — zoom in and click any green spot',
     road: 'Click two points on the map to place a road',
     park: 'Click on the map to place a park',
     infrastructure: 'Click on the map to place a transformer',
@@ -2399,15 +2399,11 @@
     if (els.modifySub) {
       if (state.activeTool) {
         els.modifySub.textContent = state.activeTool === 'building'
-          ? (state.selectedPostcode
-            ? 'Building will be placed at ' + (state.selectedPostcode.postcode || state.selectedPostcode.normalizedPostcode)
-            : 'Click any valid Belfast map point to place a building')
+          ? 'Green areas across Belfast show buildable sites — zoom in and click any green spot'
           : (TOOL_LABELS[state.activeTool] || 'Click on the map to place');
         els.modifySub.style.color = 'var(--blue-2)';
       } else {
-        els.modifySub.textContent = state.selectedPostcode
-          ? 'Ready at ' + (state.selectedPostcode.postcode || state.selectedPostcode.normalizedPostcode)
-          : 'Choose Building, then click any valid Belfast map point';
+        els.modifySub.textContent = 'Choose Building to see all buildable sites in Belfast';
         els.modifySub.style.color = '';
       }
     }
@@ -5874,34 +5870,55 @@
     if (!state.map.getSource('buildability-areas')) {
       state.map.addSource('buildability-areas', { type: 'geojson', data: empty });
     }
+    // Brighter green for higher buildabilityScore — the user can see at a
+    // glance which cells are best fits for the active preset.
     if (!state.map.getLayer('buildability-areas-fill')) {
       state.map.addLayer({
         id: 'buildability-areas-fill',
         type: 'fill',
         source: 'buildability-areas',
         paint: {
-          'fill-color': '#22c55e',
-          'fill-opacity': ['coalesce', ['get', '__buildableOpacity'], 0.0]
+          'fill-color': [
+            'interpolate', ['linear'],
+            ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+            0.0, '#166534',
+            0.5, '#22c55e',
+            1.0, '#bef264'
+          ],
+          'fill-opacity': [
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['interpolate', ['linear'],
+              ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+              0.0, 0.18, 0.5, 0.42, 1.0, 0.62],
+            0.0
+          ]
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
     }
     if (!state.map.getLayer('buildability-areas-3d')) {
-      // T5.2: Mapbox GL doesn't accept data expressions on
-      // `fill-extrusion-opacity`; baking the per-feature alpha into the
-      // RGBA fill colour is the standard workaround and silences the
-      // "data expressions not supported" console spam.
       state.map.addLayer({
         id: 'buildability-areas-3d',
         type: 'fill-extrusion',
         source: 'buildability-areas',
         paint: {
           'fill-extrusion-color': [
-            'rgba',
-            34, 197, 94,
-            ['coalesce', ['get', '__buildableOpacity3d'], 0.0]
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['rgba', 34, 197, 94,
+              ['interpolate', ['linear'],
+                ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+                0.0, 0.20, 0.5, 0.45, 1.0, 0.65]
+            ],
+            ['rgba', 0, 0, 0, 0]
           ],
-          'fill-extrusion-height': ['case', ['==', ['get', 'buildable'], true], ['coalesce', ['get', '__buildableHeight'], 18], 0],
+          'fill-extrusion-height': [
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['+', 6, ['*', 36, ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0]]],
+            0
+          ],
           'fill-extrusion-base': 0,
           'fill-extrusion-opacity': 1
         },
@@ -6629,10 +6646,10 @@
       if (map.getLayer(L)) map.setLayoutProperty(L, 'visibility', isElec ? 'visible' : 'none');
     });
 
-    // Jobs use service anchors plus nearby transport stops. Public Transit
-    // keeps context circles hidden; transit-engine.js draws the compact stops.
-    map.setLayoutProperty('ctx-services-circle', 'visibility', isJobs ? 'visible' : 'none');
-    map.setLayoutProperty('ctx-transport-circle', 'visibility', isJobs ? 'visible' : 'none');
+    // Jobs is rendered as a heatmap only — POI dots stay hidden so the lens
+    // reads cleanly without per-frame jitter from anchor/transport markers.
+    map.setLayoutProperty('ctx-services-circle', 'visibility', 'none');
+    map.setLayoutProperty('ctx-transport-circle', 'visibility', 'none');
 
     // Smooth heatmap for jobs; traffic uses road-link swarm lines.
     map.setLayoutProperty('lens-heatmap', 'visibility', useHeatmap ? 'visible' : 'none');
