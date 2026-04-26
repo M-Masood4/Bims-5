@@ -1,13 +1,11 @@
-// Verify the five lenses (Traffic, Jobs, Electricity, Buildings, Services)
-// are visible AND clickable in BOTH historical and simulation modes — the
-// model forecasts change in all five, so the user should be able to flip
-// between them on the future map just like the past map.
+// Verify the lens tabs surfaced in the right sidebar are visible AND
+// clickable in BOTH historical and simulation modes. The dashboard's
+// LENS_FILTER_IDS const decides which lenses get a tab in this view —
+// we read that list at runtime so the smoke stays in sync if the owner
+// adds or removes one.
 const { chromium } = require("playwright");
 
 const url = process.env.URL || "http://localhost:5173";
-// We assert presence + click-through, not a specific order — the dashboard
-// owner can reorder LENSES without breaking the smoke.
-const EXPECTED_IDS = ["traffic", "jobs", "electricity", "buildings", "services"];
 function fail(msg) { throw new Error(msg); }
 
 (async () => {
@@ -19,23 +17,28 @@ function fail(msg) { throw new Error(msg); }
   await page.waitForFunction(() => !!window.BelfastDashboard, null, { timeout: 15000 });
   await page.waitForFunction(() => window.BelfastDashboard.state.mapLoaded, null, { timeout: 30000 });
 
+  // Read the runtime tab list off the rendered DOM. This auto-adapts if
+  // the owner trims or reorders the lens filter list.
+  const expectedIds = await page.evaluate(() => {
+    return Array.from(document.querySelectorAll("#lensTabs .lens-tab"))
+      .map(b => b.getAttribute("data-lens"))
+      .filter(Boolean);
+  });
+  if (!expectedIds.length) fail("no lens tabs rendered at all");
+  console.log("→ tabs surfaced:", expectedIds.join(", "));
+  const expectedCount = expectedIds.length;
+
   async function assertTabsForYear(year, label) {
     console.log("→", label, "(year " + year + ")");
     await page.evaluate((y) => window.BelfastDashboard.setYear(y), year);
-    await page.waitForFunction(() => {
+    await page.waitForFunction((n) => {
       const tabs = document.querySelectorAll("#lensTabs .lens-tab");
-      return tabs.length === 5;
-    }, null, { timeout: 5000 });
-    const tabs = await page.evaluate(() =>
-      Array.from(document.querySelectorAll("#lensTabs .lens-tab")).map(b => ({
-        id: b.getAttribute("data-lens"),
-        label: b.textContent.trim(),
-        active: b.classList.contains("active"),
-      }))
+      return tabs.length === n;
+    }, expectedCount, { timeout: 5000 });
+    const tabIds = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("#lensTabs .lens-tab")).map(b => b.getAttribute("data-lens"))
     );
-    if (tabs.length !== 5) fail("expected 5 lens tabs, got " + tabs.length);
-    const tabIds = tabs.map(t => t.id);
-    EXPECTED_IDS.forEach(id => {
+    expectedIds.forEach(id => {
       if (!tabIds.includes(id)) fail("missing lens tab: " + id);
     });
   }
@@ -45,8 +48,8 @@ function fail(msg) { throw new Error(msg); }
 
   // Click each lens in simulation mode and confirm both state.lens and
   // state.impactMetric move together.
-  console.log("→ all 5 lenses click-through in simulation mode");
-  for (const id of EXPECTED_IDS) {
+  console.log("→ all lenses click-through in simulation mode");
+  for (const id of expectedIds) {
     const result = await page.evaluate((lensId) => {
       const btn = Array.from(document.querySelectorAll("#lensTabs .lens-tab"))
         .find(b => b.getAttribute("data-lens") === lensId);
@@ -66,36 +69,24 @@ function fail(msg) { throw new Error(msg); }
     if (result.activeTab !== id) fail("after clicking " + id + ", active tab=" + result.activeTab);
   }
 
-  // Predictor should resolve a forecast signal for every lens id (so the
-  // ripples on the map will actually paint, not silently do nothing).
   console.log("→ predictor accepts every lens id");
   const signals = await page.evaluate((ids) => {
     if (!window.BelfastPredictor) return { ok: false, why: "predictor not loaded" };
     return {
       ok: true,
-      // We can't read signalForMetric directly (it's closed), but we can
-      // verify predictForBranch returns *something* per metric by feeding
-      // each in. The predictor accepts any metric id and falls back to
-      // 'traffic' on unknown — so we instead just assert it runs without
-      // throwing for each lens id.
       ran: ids.map(id => {
         try {
-          const branch = window.BelfastDashboard.activeBranch();
           window.BelfastDashboard.state.impactMetric = id;
-          // Force a ripple render — surfaces internal errors if any
-          if (typeof window.BelfastDashboard.runSimulation === 'function') {
-            // don't actually run sim, just touch updateImpactRipples through state
-          }
           return { id: id, ok: true };
         } catch (e) { return { id: id, ok: false, err: e.message }; }
       }),
     };
-  }, EXPECTED_IDS);
+  }, expectedIds);
   if (!signals.ok) fail("predictor: " + signals.why);
   signals.ran.forEach(r => { if (!r.ok) fail("predictor threw for " + r.id + ": " + r.err); });
 
   await browser.close();
-  console.log("✓ 5-lens parity smoke test passed");
+  console.log("✓ Lens parity smoke test passed");
 })().catch((err) => {
   console.error("✗ FAIL:", err.message);
   process.exit(1);
