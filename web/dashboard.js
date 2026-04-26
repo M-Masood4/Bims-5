@@ -432,7 +432,7 @@
       'trafficSimSection', 'trafficSimToggle', 'trafficSimToggleLabel',
       'trafficSimDensity', 'trafficSimDensityVal', 'trafficSimSpeed', 'trafficSimSpeedVal',
       'trafficSimStats', 'trafficSimVehicles', 'trafficSimSpeedStat', 'trafficSimCongested',
-      'roadCompareBtn', 'roadCompareModal', 'roadCompareName',
+      'roadCompareModal', 'roadCompareName',
       'roadCompareProgress', 'roadCompareProgressFill', 'roadCompareProgressLabel',
       'roadCompareResult', 'roadCompareMapBefore', 'roadCompareMapAfter',
       'rcSpeedBefore', 'rcSpeedAfter', 'rcSpeedDelta', 'rcSpeedArrow',
@@ -3336,9 +3336,6 @@
   }
 
   function attachRoadCompare() {
-    if (els.roadCompareBtn) {
-      els.roadCompareBtn.addEventListener('click', runRoadComparison);
-    }
     if (els.planRoadCancel) {
       els.planRoadCancel.addEventListener('click', clearRoadPlanner);
     }
@@ -3668,10 +3665,8 @@
 
   function renderLensTabs() {
     if (!els.lensTabs) return;
-    // Lens tabs live in BOTH historical and simulation modes — the model
-    // forecasts change in all five lenses (traffic, jobs, electricity,
-    // buildings, services), so users should be able to flip between them
-    // on the future map just like they can on the historical map.
+    // Lens filters live in both modes. Buildings is the implicit default;
+    // clicking an active filter again returns the view to Buildings.
     els.lensTabs.hidden = false;
     els.lensTabs.innerHTML = LENS_FILTER_IDS.map(id => lensDef(id)).map(l => {
       const active = l.id === state.lens ? ' active' : '';

@@ -99,13 +99,20 @@ function fail(msg) { throw new Error(msg); }
   }
   console.log("  branch now has", placeResult.roads, "road(s)");
 
-  // Click via JS — the button may be below the fold at this viewport.
-  console.log("→ trigger runRoadComparison via Plan New Road button");
+  // Trigger through the user-facing flow: Road tool + Run Simulation.
+  console.log("→ trigger road comparison through Run Simulation");
   const triggered = await page.evaluate(() => {
-    const btn = document.getElementById("roadCompareBtn");
-    if (!btn) return { ok: false, reason: "button not found" };
-    btn.click();
-    return { ok: true };
+    if (document.getElementById("roadCompareBtn")) {
+      return { ok: false, reason: "legacy Plan New Road button still exists" };
+    }
+    const roadBtn = Array.from(document.querySelectorAll(".tool-btn, .modify-btn"))
+      .find(b => b.getAttribute("data-tool") === "road");
+    const runBtn = document.getElementById("runBtn");
+    if (!roadBtn) return { ok: false, reason: "road tool not found" };
+    if (!runBtn) return { ok: false, reason: "run button not found" };
+    if (window.BelfastDashboard.state.activeTool !== "road") roadBtn.click();
+    runBtn.click();
+    return { ok: true, activeTool: window.BelfastDashboard.state.activeTool };
   });
   if (!triggered.ok) fail("could not trigger comparison: " + triggered.reason);
 

@@ -576,14 +576,6 @@ button { font-family: inherit; }
   line-height: 1.2;
   color: var(--text);
 }
-.workspace-split-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-mute);
-}
 .workspace-split-close {
   width: 30px;
   height: 30px;
