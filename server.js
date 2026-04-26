@@ -1447,11 +1447,21 @@ function handleBelfastBoundary(_req, res) {
   sendJson(res, 200, readBelfastBoundary());
 }
 
+// City-wide buildable-areas response is a pure function of (preset → config).
+// Each request used to re-validate all 308 grid cells, taking 30-45 seconds
+// — cache by config-hash so subsequent calls return in <5ms.
+const buildableAreasCache = new Map();
+function buildableAreasCacheKey(config) {
+  return JSON.stringify({
+    s: config.size, b: config.buildingType, a: config.affordabilityMix,
+    f: config.floors, ft: config.footprintSqm, e: config.energyStandard,
+    p: config.parkingTransitAssumption, m: config.mitigation
+  });
+}
+
 async function handleBuildableAreas(req, res) {
   try {
     const payload = req.method === "POST" ? await readJsonRequest(req) : {};
-    const gridPath = path.join(webDir, "data", "mode-a", "grid_2026.geojson");
-    const grid = JSON.parse(fs.readFileSync(gridPath, "utf8"));
     const config = scenarioStudio.deriveBuildingStats(payload.config || payload.building_config || {});
     const rawLocation = payload.location || {};
     const focus = Number.isFinite(Number(rawLocation.lng)) && Number.isFinite(Number(rawLocation.lat))
@@ -1461,6 +1471,19 @@ async function handleBuildableAreas(req, res) {
     const radiusKm = focus
       ? Math.max(0.25, Math.min(4, Number.isFinite(requestedRadiusKm) ? requestedRadiusKm : 1.15))
       : null;
+
+    // Fast path: city-wide (no focus / radius) — serve from cache.
+    if (!focus && radiusKm == null) {
+      const key = buildableAreasCacheKey(config);
+      const cached = buildableAreasCache.get(key);
+      if (cached) {
+        sendJson(res, 200, cached);
+        return;
+      }
+    }
+
+    const gridPath = path.join(webDir, "data", "mode-a", "grid_2026.geojson");
+    const grid = JSON.parse(fs.readFileSync(gridPath, "utf8"));
     const features = (grid.features || []).map((feature) => {
       const center = featureCenter(feature);
       const distanceFromFocusKm = focus && center ? distanceKm(focus, center) : null;
@@ -1502,7 +1525,7 @@ async function handleBuildableAreas(req, res) {
         }
       };
     }).filter(Boolean);
-    sendJson(res, 200, {
+    const responseBody = {
       ok: true,
       preset: payload.preset || null,
       postcode: payload.postcode || null,
@@ -1510,7 +1533,11 @@ async function handleBuildableAreas(req, res) {
       count: features.length,
       buildableCount: features.filter((feature) => feature.properties.buildable).length,
       areas: { type: "FeatureCollection", features }
-    });
+    };
+    if (!focus && radiusKm == null) {
+      buildableAreasCache.set(buildableAreasCacheKey(config), responseBody);
+    }
+    sendJson(res, 200, responseBody);
   } catch (error) {
     sendJson(res, 500, { error: "Could not calculate buildable areas", detail: error.message });
   }
@@ -2047,4 +2074,74 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, () => {
   console.log(`Belfast replay UI/API running at http://localhost:${port}`);
+  // Pre-warm the buildable-areas cache for the four building presets so the
+  // first click on the Buildings tool returns instantly instead of stalling
+  // the page for 30-50 seconds while validatePlacement runs over 308 cells.
+  setImmediate(() => {
+    const presets = ["residential", "commercial", "industrial", "mixed_use"];
+    const presetConfigs = {
+      residential: { size: "medium", buildingType: "apartments", affordabilityMix: "affordable", floors: 8, footprintSqm: 1500 },
+      commercial:  { size: "medium", buildingType: "office",     affordabilityMix: "market",     floors: 8, footprintSqm: 1500 },
+      industrial:  { size: "large",  buildingType: "office",     affordabilityMix: "market",     floors: 4, footprintSqm: 3500 },
+      mixed_use:   { size: "medium", buildingType: "mixed_use",  affordabilityMix: "affordable", floors: 8, footprintSqm: 1500 }
+    };
+    presets.forEach((preset) => {
+      try {
+        const config = scenarioStudio.deriveBuildingStats({
+          ...presetConfigs[preset],
+          energyStandard: "net_zero_ready",
+          parkingTransitAssumption: "transit_first",
+          mitigation: { green: preset === "mixed_use", mobility: true, energy: true }
+        });
+        const key = buildableAreasCacheKey(config);
+        if (buildableAreasCache.has(key)) return;
+        const gridPath = path.join(webDir, "data", "mode-a", "grid_2026.geojson");
+        const grid = JSON.parse(fs.readFileSync(gridPath, "utf8"));
+        const features = (grid.features || []).map((feature) => {
+          const center = featureCenter(feature);
+          let validation = { status: "invalid", warnings: [], buildabilityScore: 0 };
+          if (center) {
+            validation = scenarioStudio.validatePlacement({
+              location: center, config, requireResolvedPostcode: false
+            }, rootDir);
+          }
+          const props = feature.properties || {};
+          const planningCandidate =
+            Number(props.green_cover || 0) < 0.62 &&
+            Number(props.buildings || 0) < 0.72 &&
+            Number(props.traffic_pressure || 0) < 0.6 &&
+            (Number(props.development_pressure || 0) > 0.12 ||
+              Number(props.planning_intensity || 0) > 0.09 ||
+              Number(props.transit_access || 0) > 0.22);
+          const buildable = validation.status !== "invalid" && planningCandidate;
+          const score = Number(validation.buildabilityScore || 0.55);
+          return {
+            ...feature,
+            properties: {
+              ...props, buildable,
+              buildabilityStatus: validation.status,
+              buildabilityScore: validation.buildabilityScore || 0,
+              buildabilityWarnings: validation.warnings || [],
+              distanceFromFocusKm: null,
+              __buildableOpacity: buildable ? Math.max(0.18, Math.min(0.48, 0.18 + score * 0.26)) : 0,
+              __buildableHeight: buildable ? Math.max(8, Math.min(48, 8 + score * 30)) : 0,
+              __buildableOpacity3d: buildable ? Math.max(0.22, Math.min(0.55, 0.22 + score * 0.26)) : 0
+            }
+          };
+        });
+        buildableAreasCache.set(key, {
+          ok: true,
+          preset,
+          postcode: null,
+          radiusKm: null,
+          count: features.length,
+          buildableCount: features.filter((f) => f.properties.buildable).length,
+          areas: { type: "FeatureCollection", features }
+        });
+      } catch (error) {
+        console.warn(`Failed to pre-warm buildable areas for ${preset}:`, error.message);
+      }
+    });
+    console.log(`Pre-warmed buildable-areas cache for ${buildableAreasCache.size} presets`);
+  });
 });

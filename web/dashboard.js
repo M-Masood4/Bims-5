@@ -29,7 +29,7 @@
     '</svg>';
 
   const TOOL_LABELS = {
-    building: 'Green areas show buildable sites — zoom in and click any green spot',
+    building: 'Click on the map to place a building',
     road: 'Click two points on the map to place a road',
     park: 'Click on the map to place a park',
     infrastructure: 'Click on the map to place a transformer',
@@ -2398,18 +2398,17 @@
     if (els.presetSection) els.presetSection.hidden = !showPresets;
     if (els.modifySub) {
       if (state.activeTool) {
-        els.modifySub.textContent = state.activeTool === 'building'
-          ? 'Green areas across Belfast show buildable sites — zoom in and click any green spot'
-          : (TOOL_LABELS[state.activeTool] || 'Click on the map to place');
+        els.modifySub.textContent = TOOL_LABELS[state.activeTool] || 'Click on the map to place';
         els.modifySub.style.color = 'var(--blue-2)';
       } else {
-        els.modifySub.textContent = 'Choose Building to see all buildable sites in Belfast';
+        els.modifySub.textContent = '';
         els.modifySub.style.color = '';
       }
     }
-    // Show cursor hint
+    // Show cursor hint — suppressed for the Buildings tool since the green
+    // city-wide overlay already communicates "click anywhere to place".
     if (els.cursorHint) {
-      const wantsHint = !!state.activeTool && isSimYear(state.year);
+      const wantsHint = !!state.activeTool && state.activeTool !== 'building' && isSimYear(state.year);
       els.cursorHint.hidden = !wantsHint;
       if (wantsHint && els.cursorHintText) {
         els.cursorHintText.textContent =
@@ -2533,8 +2532,10 @@
       integrityHTML;
     if (els.scenarioIntegrityHost) {
       const hasScenario = !!scenarioResultForBranch(branch);
-      els.scenarioIntegrityHost.hidden = !hasScenario;
-      els.scenarioIntegrityHost.innerHTML = hasScenario ? integrityHTML : '';
+      const hasSolanaProof = !!(branch && branch.solana && branch.solana.signature && branch.solana.scenarioHash);
+      const show = hasScenario || hasSolanaProof;
+      els.scenarioIntegrityHost.hidden = !show;
+      els.scenarioIntegrityHost.innerHTML = show ? integrityHTML : '';
     }
     attachScenarioIntegrityEvents();
   }
@@ -2672,8 +2673,8 @@
     const versions = solanaCommitVersions();
     const scenario = scenarioResultForBranch(branch);
     const solana = branch && branch.solana ? branch.solana : null;
-    const verified = Boolean(scenario && solana && solana.signature && solana.scenarioHash);
-    const confidence = scenario ? scenarioConfidenceLabel(branch) : 'Run simulation first';
+    const verified = Boolean(solana && solana.signature && solana.scenarioHash);
+    const confidence = scenario ? scenarioConfidenceLabel(branch) : (verified ? 'Verified scenario' : 'Run simulation first');
     const statusClass = verified ? 'verified' : 'draft';
     const statusLabel = verified ? 'Verified on Solana' : 'Draft';
     const disabled = scenario ? '' : ' disabled';
@@ -5879,47 +5880,9 @@
     if (!state.map.getSource('buildability-areas')) {
       state.map.addSource('buildability-areas', { type: 'geojson', data: empty });
     }
-    // Continuous Belfast boundary — one big green polygon for the whole
-    // city. The grid cells render on top as a subtle score overlay.
-    if (!state.map.getSource('belfast-boundary')) {
-      state.map.addSource('belfast-boundary', { type: 'geojson', data: empty });
-      fetch('/api/belfast-boundary')
-        .then(r => r.ok ? r.json() : null)
-        .then(data => {
-          if (data && state.map.getSource('belfast-boundary')) {
-            state.map.getSource('belfast-boundary').setData(data);
-          }
-        })
-        .catch(() => {});
-    }
-    if (!state.map.getLayer('belfast-boundary-fill')) {
-      state.map.addLayer({
-        id: 'belfast-boundary-fill',
-        type: 'fill',
-        source: 'belfast-boundary',
-        paint: {
-          'fill-color': '#22c55e',
-          'fill-opacity': 0.55
-        },
-        layout: { visibility: 'none' }
-      }, findFirstSymbolLayer());
-    }
-    if (!state.map.getLayer('belfast-boundary-line')) {
-      state.map.addLayer({
-        id: 'belfast-boundary-line',
-        type: 'line',
-        source: 'belfast-boundary',
-        paint: {
-          'line-color': '#bef264',
-          'line-width': 2.4,
-          'line-opacity': 0.95
-        },
-        layout: { visibility: 'none' }
-      }, findFirstSymbolLayer());
-    }
-    // Per-cell score overlay rides on top of the city-wide green so the
-    // user can see which spots score higher. Toned down so it reads as
-    // accent rather than the primary green.
+    // Per-cell green grid — only the cells the API marks `buildable: true`
+    // get coloured, brightness scaling with buildabilityScore. The user
+    // clicks any green cell to drop a building there.
     if (!state.map.getLayer('buildability-areas-fill')) {
       state.map.addLayer({
         id: 'buildability-areas-fill',
@@ -5929,18 +5892,17 @@
           'fill-color': [
             'interpolate', ['linear'],
             ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-            0.0, '#14532d',
-            0.4, '#16a34a',
-            0.7, '#22c55e',
+            0.0, '#166534',
+            0.5, '#22c55e',
             1.0, '#bef264'
           ],
           'fill-opacity': [
-            'interpolate', ['linear'],
-            ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-            0.0, 0.06,
-            0.4, 0.14,
-            0.7, 0.24,
-            1.0, 0.36
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['interpolate', ['linear'],
+              ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+              0.0, 0.32, 0.5, 0.50, 1.0, 0.68],
+            0.0
           ]
         },
         layout: { visibility: 'none' }
@@ -5953,13 +5915,20 @@
         source: 'buildability-areas',
         paint: {
           'fill-extrusion-color': [
-            'rgba', 34, 197, 94,
-            ['interpolate', ['linear'],
-              ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
-              0.0, 0.22, 0.4, 0.40, 0.7, 0.52, 1.0, 0.65]
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['rgba', 34, 197, 94,
+              ['interpolate', ['linear'],
+                ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0],
+                0.0, 0.30, 0.5, 0.50, 1.0, 0.68]
+            ],
+            ['rgba', 0, 0, 0, 0]
           ],
           'fill-extrusion-height': [
-            '+', 4, ['*', 38, ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0]]
+            'case',
+            ['==', ['get', 'buildable'], true],
+            ['+', 6, ['*', 36, ['coalesce', ['to-number', ['get', 'buildabilityScore']], 0]]],
+            0
           ],
           'fill-extrusion-base': 0,
           'fill-extrusion-opacity': 1
@@ -5974,8 +5943,8 @@
         source: 'buildability-areas',
         paint: {
           'line-color': '#bbf7d0',
-          'line-width': 0.7,
-          'line-opacity': 0.42
+          'line-width': 0.9,
+          'line-opacity': ['case', ['==', ['get', 'buildable'], true], 0.72, 0]
         },
         layout: { visibility: 'none' }
       }, findFirstSymbolLayer());
@@ -5991,36 +5960,38 @@
   }
 
   async function loadBuildabilityAreas(focus) {
-    const key = buildabilityKey(focus);
+    const key = buildabilityKey(focus) + '|' + (state.activeBuildingPreset || '');
     if (state.buildabilityLoaded && state.buildabilityPostcodeKey === key) return;
-    if (state.buildabilityLoading || !state.map) return;
+    if (!state.map) return;
+    // Use a per-call request id so a second click doesn't get blocked by a
+    // stuck `loading` flag from a prior call that never resolved.
+    const requestId = (state._buildabilityRequestId || 0) + 1;
+    state._buildabilityRequestId = requestId;
     state.buildabilityLoading = true;
     try {
       const config = buildingConfigForPreset(state.activeBuildingPreset);
-      const location = focus && focus.location ? focus.location : null;
-      const radiusKm = focus ? 2.6 : null;
       const res = await fetch('/api/building/buildable-areas?preset=' + encodeURIComponent(state.activeBuildingPreset), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           config,
-          postcode: focus ? (focus.postcode || focus.normalizedPostcode || focus.input) : null,
-          location,
-          radiusKm
+          postcode: null,
+          location: null,
+          radiusKm: null
         })
       });
       const json = await res.json().catch(() => null);
+      if (state._buildabilityRequestId !== requestId) return; // stale
       if (!res.ok || !json || !json.areas) throw new Error((json && (json.detail || json.error)) || 'buildability fetch failed');
       if (state.map.getSource('buildability-areas')) {
         state.map.getSource('buildability-areas').setData(json.areas);
       }
       state.buildabilityLoaded = true;
       state.buildabilityPostcodeKey = key;
-      // No postcode-relative status message — the overlay is always city-wide.
     } catch (error) {
       console.warn('buildability overlay failed', error);
     } finally {
-      state.buildabilityLoading = false;
+      if (state._buildabilityRequestId === requestId) state.buildabilityLoading = false;
     }
   }
 
@@ -6034,8 +6005,6 @@
     const visible = state.mode === 'simulation' && isSimYear(state.year) && Boolean(state.buildabilityFocus || state.activeTool === 'building');
     const show3d = visible && state.view === '3D';
     [
-      'belfast-boundary-fill',
-      'belfast-boundary-line',
       'buildability-areas-fill',
       'buildability-areas-line',
       'buildability-areas-3d'
@@ -6053,17 +6022,10 @@
 
   // T4.3: keep the on-map legend in sync with the buildability overlay so the
   // user knows what the green shading means and which preset it scores for.
-  function refreshBuildabilityLegend(visible) {
+  function refreshBuildabilityLegend(_visible) {
+    // Legend is suppressed — the continuous green boundary speaks for itself.
     if (!els.buildabilityLegend) return;
-    if (!visible) { els.buildabilityLegend.hidden = true; return; }
-    const presetId = state.activeBuildingPreset || 'residential';
-    const presetDef = (PRESETS && PRESETS.building) ? PRESETS.building.find(p => p.id === presetId) : null;
-    const label = presetDef ? presetDef.label : capitalise(String(presetId).replace('_', ' '));
-    if (els.buildabilityLegendLabel) els.buildabilityLegendLabel.textContent = 'Buildable areas for ' + label + ' across Belfast';
-    if (els.buildabilityLegendSwatch && presetDef && presetDef.color) {
-      els.buildabilityLegendSwatch.style.background = presetDef.color;
-    }
-    els.buildabilityLegend.hidden = false;
+    els.buildabilityLegend.hidden = true;
   }
 
   function ensureHistoricalSourcesAndLayers() {
