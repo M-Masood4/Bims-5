@@ -668,6 +668,67 @@ async function handleValidatePlacement(req, res) {
   }
 }
 
+function featureCenter(feature) {
+  const coords = [];
+  function visit(value) {
+    if (!Array.isArray(value)) return;
+    if (value.length >= 2 && typeof value[0] === "number" && typeof value[1] === "number") {
+      coords.push(value);
+      return;
+    }
+    value.forEach(visit);
+  }
+  visit(feature && feature.geometry && feature.geometry.coordinates);
+  if (!coords.length) return null;
+  const sum = coords.reduce((acc, coord) => {
+    acc[0] += Number(coord[0]) || 0;
+    acc[1] += Number(coord[1]) || 0;
+    return acc;
+  }, [0, 0]);
+  return { lng: sum[0] / coords.length, lat: sum[1] / coords.length };
+}
+
+async function handleBuildableAreas(req, res) {
+  try {
+    const payload = req.method === "POST" ? await readJsonRequest(req) : {};
+    const gridPath = path.join(webDir, "data", "mode-a", "grid_2026.geojson");
+    const grid = JSON.parse(fs.readFileSync(gridPath, "utf8"));
+    const config = scenarioStudio.deriveBuildingStats(payload.config || payload.building_config || {});
+    const features = (grid.features || []).map((feature) => {
+      const center = featureCenter(feature);
+      let validation = { status: "invalid", warnings: ["Could not resolve grid-cell centre"], buildabilityScore: 0 };
+      if (center) {
+        validation = scenarioStudio.validatePlacement({
+          location: center,
+          config,
+          requireResolvedPostcode: false
+        }, rootDir);
+      }
+      const buildable = validation.status !== "invalid";
+      return {
+        ...feature,
+        properties: {
+          ...(feature.properties || {}),
+          buildable,
+          buildabilityStatus: validation.status,
+          buildabilityScore: validation.buildabilityScore || 0,
+          buildabilityWarnings: validation.warnings || [],
+          __buildableOpacity: buildable ? Math.max(0.18, Math.min(0.48, 0.18 + Number(validation.buildabilityScore || 0.55) * 0.26)) : 0
+        }
+      };
+    });
+    sendJson(res, 200, {
+      ok: true,
+      preset: payload.preset || null,
+      count: features.length,
+      buildableCount: features.filter((feature) => feature.properties.buildable).length,
+      areas: { type: "FeatureCollection", features }
+    });
+  } catch (error) {
+    sendJson(res, 500, { error: "Could not calculate buildable areas", detail: error.message });
+  }
+}
+
 function handleResolvePostcode(req, res, requestUrl) {
   try {
     const postcode = requestUrl.searchParams.get("postcode") || requestUrl.searchParams.get("q") || "";
@@ -1020,6 +1081,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && pathname === "/api/building/validate-placement") {
     handleValidatePlacement(req, res);
+    return;
+  }
+
+  if ((req.method === "POST" || req.method === "GET") && pathname === "/api/building/buildable-areas") {
+    handleBuildableAreas(req, res);
     return;
   }
 

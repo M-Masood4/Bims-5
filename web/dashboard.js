@@ -32,7 +32,7 @@
     road: 'Click two points on the map to place a road',
     park: 'Click on the map to place a park',
     infrastructure: 'Click on the map to place a transformer',
-    remove: 'Click any item you placed to remove it'
+    remove: 'Click a staged item or existing city building to remove it'
   };
 
   // Metric definitions (the five surfaced in the impact panel)
@@ -152,7 +152,10 @@
     lastPlacedItemId: null,         // for similar-events overlay focus
     predictorReady: false,
     selectedPostcode: null,
-    lastScenarioResult: null
+    lastScenarioResult: null,
+    buildabilityLoaded: false,
+    buildabilityLoading: false,
+    cityBuildingSelectionAttached: false
   };
 
   // Lens definitions (the 5 historical signals)
@@ -805,7 +808,7 @@
       id: 'items-buildings-circle',
       type: 'circle',
       source: 'items-points',
-      filter: ['==', ['get', 'type'], 'building'],
+      filter: ['match', ['get', 'type'], ['building', 'building_removal'], true, false],
       paint: {
         'circle-radius': 7,
         'circle-color': ['get', 'color'],
@@ -944,6 +947,29 @@
       energyStandard: 'net_zero_ready',
       parkingTransitAssumption: 'transit_first',
       mitigation: { green: preset === 'mixed_use', mobility: true, energy: true }
+    };
+  }
+
+  function buildingConfigForExisting(itemOrProps) {
+    const props = itemOrProps && itemOrProps.properties ? itemOrProps.properties : (itemOrProps || {});
+    const footprint = Number(props.footprint_area_m2 || props.footprintSqm || props.footprint_sqm) || 900;
+    const height = Number(props.replay_height_m || props.height || 0);
+    const floors = Math.max(1, Math.round(height ? height / 3.8 : Number(props.floors || props['building:levels'] || 6)));
+    const buildingTag = String(props.building || '').toLowerCase();
+    const buildingType = /office|commercial|retail|hotel/.test(buildingTag)
+      ? 'office'
+      : /industrial|manufacture|warehouse/.test(buildingTag)
+        ? 'office'
+        : 'apartments';
+    return {
+      size: 'custom',
+      buildingType,
+      affordabilityMix: 'market',
+      floors,
+      footprintSqm: Math.max(120, Math.round(footprint)),
+      energyStandard: 'standard',
+      parkingTransitAssumption: 'balanced',
+      mitigation: { green: false, mobility: false, energy: false }
     };
   }
 
@@ -1109,6 +1135,7 @@
     const building = item || selectedScenarioBuilding(branch);
     if (!building) return null;
     if (branch._scenarioPending) return branch._scenarioPending;
+    const removalScenario = building.type === 'building_removal';
     branch._scenarioPending = fetch('/api/scenario-studio/run', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -1116,8 +1143,14 @@
         postcode: building.postcode,
         building: {
           id: building.id,
+          type: removalScenario ? 'building_removal' : 'building',
+          interventionType: removalScenario ? 'building_removal' : 'building',
+          removal: removalScenario,
           postcode: building.postcode,
           location: { lng: building.lng, lat: building.lat },
+          geometry: building.geometry,
+          existingBuildingId: building.existingBuildingId,
+          existingBuildingName: building.existingBuildingName,
           config: building.buildingConfig || buildingConfigForPreset(building.preset),
           delivery: { startYear: START_YEAR, completionYear: FINAL_YEAR }
         },
@@ -1126,6 +1159,7 @@
           name: branch.name,
           objective: objectiveForBranch(branch)
         },
+        branches: removalScenario ? removalScenarioBranches(building) : undefined,
         interventions: scenarioInterventionsForBranch(branch, building),
         startYear: START_YEAR,
         baselineYear: BASE_YEAR,
@@ -1163,9 +1197,15 @@
       it.type === 'building' &&
       (it.postcode || (Number.isFinite(Number(it.lng)) && Number.isFinite(Number(it.lat))))
     );
-    if (!buildings.length) return null;
+    const removals = (branch.items || []).filter(it =>
+      it.type === 'building_removal' &&
+      Number.isFinite(Number(it.lng)) &&
+      Number.isFinite(Number(it.lat))
+    );
+    if (!buildings.length && !removals.length) return null;
     const latest = buildings.find(it => it.id === state.lastPlacedItemId);
-    return latest || buildings[buildings.length - 1];
+    const latestRemoval = removals.find(it => it.id === state.lastPlacedItemId);
+    return latest || latestRemoval || buildings[buildings.length - 1] || removals[removals.length - 1];
   }
 
   function scenarioResultForBranch(branch) {
@@ -1293,6 +1333,18 @@
 
   function scenarioInterventionFromItem(item, primaryBuilding) {
     if (!item || item.id === primaryBuilding.id) return null;
+    if (item.type === 'building_removal' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      return {
+        id: item.id,
+        type: 'building_removal',
+        location: { lng: item.lng, lat: item.lat },
+        geometry: item.geometry,
+        existingBuildingId: item.existingBuildingId,
+        existingBuildingName: item.existingBuildingName,
+        config: item.buildingConfig || buildingConfigForExisting(item),
+        rationale: 'Existing city building selected for removal in the active branch.'
+      };
+    }
     if (item.type === 'building' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
       return {
         id: item.id,
@@ -1356,6 +1408,45 @@
     return (branch.items || [])
       .map(item => scenarioInterventionFromItem(item, primaryBuilding))
       .filter(Boolean);
+  }
+
+  function removalScenarioBranches(building) {
+    const intervention = {
+      id: building.id,
+      type: 'building_removal',
+      location: { lng: building.lng, lat: building.lat },
+      geometry: building.geometry,
+      existingBuildingId: building.existingBuildingId,
+      existingBuildingName: building.existingBuildingName,
+      config: building.buildingConfig || buildingConfigForExisting(building),
+      rationale: 'Runs exactly the existing-building removal selected on the map.'
+    };
+    const location = intervention.location;
+    return {
+      scenario_variants: [
+        {
+          branchName: 'Selected Building Removed',
+          objective: 'user_proposal',
+          description: 'Removes the selected existing city building and compares the 2036 branch against the no-build forecast.',
+          interventions: [intervention],
+          assumptions: ['Removal is modelled as reduced activity, trips and electricity demand around the selected footprint.']
+        },
+        {
+          branchName: 'Green Reuse After Removal',
+          objective: 'green_mitigation',
+          description: 'Tests whether the cleared site becomes local green mitigation.',
+          interventions: [intervention, { type: 'green_corridor', location, radiusM: 520, bufferRadiusM: 520, rationale: 'Reuses the cleared footprint for environmental benefit.' }],
+          assumptions: ['Green reuse reduces exposure and improves green score around the site.']
+        },
+        {
+          branchName: 'Access Rebalanced After Removal',
+          objective: 'traffic_mitigation',
+          description: 'Pairs the removal with a local mobility-access rebalance.',
+          interventions: [intervention, { type: 'mobility_corridor', mode: 'transit_first', location, radiusM: 650, rationale: 'Tests lower trip pressure plus better access around the cleared site.' }],
+          assumptions: ['Mobility effects are deterministic proxies over nearby forecast cells.']
+        }
+      ]
+    };
   }
 
   function removeItem(itemId) {
@@ -1431,13 +1522,13 @@
           geometry: { type: 'Point', coordinates: [it.lng, it.lat] }
         });
 
-        if (it.type === 'building') {
-          // Build a small square footprint for 3D extrusion
-          const sizeM = 30; // ~30m square footprint
-          const ring = squareRing(it.lng, it.lat, sizeM);
+        if (it.type === 'building' || it.type === 'building_removal') {
+          const ring = Array.isArray(it.footprint) && it.footprint.length
+            ? it.footprint
+            : squareRing(it.lng, it.lat, it.type === 'building_removal' ? 34 : 30);
           buildings3d.features.push({
             type: 'Feature',
-            properties: { id: it.id, color: it.color, height: it.height || 30 },
+            properties: { id: it.id, color: it.color, height: it.type === 'building_removal' ? 4 : (it.height || 30) },
             geometry: { type: 'Polygon', coordinates: [ring] }
           });
         }
@@ -2042,6 +2133,8 @@
       els.mapCanvas.classList.toggle('placing', !!state.activeTool && state.activeTool !== 'remove');
       els.mapCanvas.classList.toggle('removing', state.activeTool === 'remove');
     }
+    updateBuildabilityOverlay();
+    syncCityBuildingHeightContext();
     updateRunButtonLabel();
     renderPresets();
     // Re-arm the toolbar buttons for HTML5 drag-and-drop onto the map.
@@ -2064,7 +2157,9 @@
     els.presetGrid.querySelectorAll('.preset-btn').forEach(b => {
       b.addEventListener('click', () => {
         state.activeBuildingPreset = b.getAttribute('data-preset');
+        state.buildabilityLoaded = false;
         renderPresets();
+        updateBuildabilityOverlay();
       });
     });
   }
@@ -2418,6 +2513,7 @@
   function branchItemTitle(item) {
     if (!item) return 'Addition';
     if (item.type === 'building') return 'Building - ' + (item.label || capitalise(item.preset || 'building'));
+    if (item.type === 'building_removal') return 'Delete - ' + (item.existingBuildingName || item.label || 'Existing building');
     if (item.type === 'road') return item.label || 'Road segment';
     if (item.type === 'park') return 'Park';
     if (item.type === 'infrastructure') return 'Transformer';
@@ -2430,6 +2526,10 @@
     if (item.type === 'building') {
       const place = item.postcode || (Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'map point');
       return year + ' - ' + place;
+    }
+    if (item.type === 'building_removal') {
+      const place = Number.isFinite(Number(item.lng)) ? locationLabel(item.lng, item.lat) : 'mapped footprint';
+      return year + ' - remove existing footprint at ' + place;
     }
     if (item.type === 'road') {
       const segments = Array.isArray(item.path) ? Math.max(1, item.path.length - 1) : 1;
@@ -3074,7 +3174,11 @@
   function openInspectModal(item) {
     if (!els.inspectModal || !els.inspectBody) return;
     const branch = state.branches.find(b => b.items.find(i => i.id === item.id));
-    const presetLabel = item.type === 'building' ? capitalise((item.preset || 'residential').replace('_', ' ')) : capitalise(item.type);
+    const presetLabel = item.type === 'building'
+      ? capitalise((item.preset || 'residential').replace('_', ' '))
+      : item.type === 'building_removal'
+        ? 'Building removal'
+        : capitalise(item.type);
     els.inspectTitle.textContent = (item.label || presetLabel);
 
     // Compute marginal impact: branch metrics with item vs without
@@ -3293,7 +3397,7 @@
     renderImpact();
     updateImpactRipples();
     updateImpactLensUI();
-    clearImpactVisualization({ clearTraffic: true, clearTransit: true });
+    refreshTransitLayer();
     const populationMetric = METRICS.find(m => m.id === 'population');
     const popDelta = metrics.population - (populationMetric ? populationMetric.baseline : 0);
     branch.lastSimulationWorkspace = {
@@ -3333,7 +3437,7 @@
     }
     const building = selectedScenarioBuilding(branch);
     if (!building) {
-      toast('Add a building on a valid Belfast map point before running the forecast.', 'warn');
+      toast('Add a building or select an existing city building to delete before running the forecast.', 'warn');
       return;
     }
     state.isRunningSim = true;
@@ -4310,6 +4414,72 @@
     }
   }
 
+  function ensureBuildabilityLayers() {
+    if (!state.map || !state.mapLoaded) return false;
+    const empty = { type: 'FeatureCollection', features: [] };
+    if (!state.map.getSource('buildability-areas')) {
+      state.map.addSource('buildability-areas', { type: 'geojson', data: empty });
+    }
+    if (!state.map.getLayer('buildability-areas-fill')) {
+      state.map.addLayer({
+        id: 'buildability-areas-fill',
+        type: 'fill',
+        source: 'buildability-areas',
+        paint: {
+          'fill-color': '#22c55e',
+          'fill-opacity': ['coalesce', ['get', '__buildableOpacity'], 0.0]
+        },
+        layout: { visibility: 'none' }
+      }, findFirstSymbolLayer());
+    }
+    if (!state.map.getLayer('buildability-areas-line')) {
+      state.map.addLayer({
+        id: 'buildability-areas-line',
+        type: 'line',
+        source: 'buildability-areas',
+        paint: {
+          'line-color': '#bbf7d0',
+          'line-width': 0.9,
+          'line-opacity': ['case', ['==', ['get', 'buildable'], true], 0.72, 0]
+        },
+        layout: { visibility: 'none' }
+      }, findFirstSymbolLayer());
+    }
+    return true;
+  }
+
+  async function loadBuildabilityAreas() {
+    if (state.buildabilityLoaded || state.buildabilityLoading || !state.map) return;
+    state.buildabilityLoading = true;
+    try {
+      const config = buildingConfigForPreset(state.activeBuildingPreset);
+      const res = await fetch('/api/building/buildable-areas?preset=' + encodeURIComponent(state.activeBuildingPreset), {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ config })
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json || !json.areas) throw new Error((json && (json.detail || json.error)) || 'buildability fetch failed');
+      if (state.map.getSource('buildability-areas')) {
+        state.map.getSource('buildability-areas').setData(json.areas);
+      }
+      state.buildabilityLoaded = true;
+    } catch (error) {
+      console.warn('buildability overlay failed', error);
+    } finally {
+      state.buildabilityLoading = false;
+    }
+  }
+
+  function updateBuildabilityOverlay() {
+    if (!ensureBuildabilityLayers()) return;
+    const visible = state.mode === 'simulation' && state.activeTool === 'building' && isSimYear(state.year);
+    ['buildability-areas-fill', 'buildability-areas-line'].forEach(id => {
+      if (state.map.getLayer(id)) state.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+    });
+    if (visible) loadBuildabilityAreas();
+  }
+
   function ensureHistoricalSourcesAndLayers() {
     if (state.contextLayersAdded) return;
     state.contextLayersAdded = true;
@@ -4544,6 +4714,7 @@
     });
     state.map.on('mouseenter', 'hist-events-circle', () => { state.map.getCanvas().style.cursor = 'pointer'; });
     state.map.on('mouseleave', 'hist-events-circle', () => { state.map.getCanvas().style.cursor = ''; });
+    attachCityBuildingSelectionHandlers();
   }
 
   function findFirstSymbolLayer() {
@@ -4615,7 +4786,16 @@
   }
 
   function cityBuildingFilter() {
-    return ['<=', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year];
+    const base = ['<=', ['coalesce', ['to-number', ['get', 'replay_first_visible_year']], 2016], state.year];
+    const removed = removedExistingBuildingIds();
+    if (!removed.length) return base;
+    return ['all', base, ['!', ['in', ['to-string', ['get', 'source_id']], ['literal', removed]]]];
+  }
+
+  function removedExistingBuildingIds(branch) {
+    return ((branch || activeBranch()).items || [])
+      .filter(item => item.type === 'building_removal' && item.existingBuildingId)
+      .map(item => String(item.existingBuildingId));
   }
 
   function cityBuildingColorExpression(focused) {
@@ -4667,10 +4847,19 @@
 
   function syncCityBuildingHeightContext() {
     if (!state.mapLoaded || !state.map) return;
+    const shouldShow2dSelection = state.mode === 'simulation' && (state.activeTool === 'remove' || !state.activeTool);
     if (state.view !== '3D') {
+      ensureHistoricalSourcesAndLayers();
+      if (state.map.getLayer('ctx-buildings-fill')) {
+        state.map.setFilter('ctx-buildings-fill', cityBuildingFilter());
+        state.map.setPaintProperty('ctx-buildings-fill', 'fill-color', cityBuildingColorExpression(false));
+        state.map.setPaintProperty('ctx-buildings-fill', 'fill-opacity', shouldShow2dSelection ? 0.28 : 0.65);
+        state.map.setLayoutProperty('ctx-buildings-fill', 'visibility', shouldShow2dSelection ? 'visible' : 'none');
+      }
       if (state.map.getLayer('ctx-buildings-3d')) {
         state.map.setLayoutProperty('ctx-buildings-3d', 'visibility', 'none');
       }
+      if (shouldShow2dSelection) loadCityBuildingContext();
       return;
     }
     ensureHistoricalSourcesAndLayers();
@@ -4683,6 +4872,123 @@
       state.map.setLayoutProperty('ctx-buildings-3d', 'visibility', 'visible');
     }
     loadCityBuildingContext();
+  }
+
+  function attachCityBuildingSelectionHandlers() {
+    if (state.cityBuildingSelectionAttached || !state.map) return;
+    state.cityBuildingSelectionAttached = true;
+    ['ctx-buildings-fill', 'ctx-buildings-3d'].forEach(layerId => {
+      state.map.on('click', layerId, (e) => {
+        if (state.activeTool && state.activeTool !== 'remove') return;
+        if (!e.features || !e.features.length) return;
+        const feature = e.features[0];
+        if (state.activeTool === 'remove') {
+          stageExistingBuildingRemoval(feature);
+        } else {
+          openExistingBuildingModal(feature);
+        }
+        if (e.originalEvent && typeof e.originalEvent.stopPropagation === 'function') e.originalEvent.stopPropagation();
+        e.preventDefault && e.preventDefault();
+      });
+      state.map.on('mouseenter', layerId, () => {
+        if (state.activeTool && state.activeTool !== 'remove') return;
+        state.map.getCanvas().style.cursor = state.activeTool === 'remove' ? 'not-allowed' : 'pointer';
+      });
+      state.map.on('mouseleave', layerId, () => {
+        if (!state.activeTool || state.activeTool === 'remove') state.map.getCanvas().style.cursor = '';
+      });
+    });
+  }
+
+  function footprintRingFromGeometry(geometry) {
+    if (!geometry) return null;
+    if (geometry.type === 'Polygon' && Array.isArray(geometry.coordinates) && Array.isArray(geometry.coordinates[0])) {
+      return geometry.coordinates[0];
+    }
+    if (geometry.type === 'MultiPolygon' && Array.isArray(geometry.coordinates) && geometry.coordinates[0] && geometry.coordinates[0][0]) {
+      return geometry.coordinates[0][0];
+    }
+    return null;
+  }
+
+  function existingBuildingItemFromFeature(feature) {
+    const props = feature.properties || {};
+    const coord = pointOrCentroid(feature.geometry);
+    if (!coord) return null;
+    const sourceId = String(props.source_id || props.id || props.osm_id || uid('existing-building'));
+    const name = props.name || props.building || 'Existing building';
+    const config = buildingConfigForExisting(props);
+    return {
+      id: 'item-' + (state.nextItemId++),
+      type: 'building_removal',
+      year: START_YEAR,
+      lng: Number(coord[0]),
+      lat: Number(coord[1]),
+      location: { lng: Number(coord[0]), lat: Number(coord[1]) },
+      geometry: feature.geometry,
+      footprint: footprintRingFromGeometry(feature.geometry),
+      existingBuildingId: sourceId,
+      existingBuildingName: name,
+      preset: 'removal',
+      buildingConfig: config,
+      color: '#ef4444',
+      label: 'Remove ' + String(name).slice(0, 42),
+      height: 4
+    };
+  }
+
+  function stageExistingBuildingRemoval(feature) {
+    const branch = ensureEditableBranch();
+    if (!branch || branch.locked) return;
+    const item = existingBuildingItemFromFeature(feature);
+    if (!item) return;
+    if ((branch.items || []).some(existing => existing.type === 'building_removal' && existing.existingBuildingId === item.existingBuildingId)) {
+      toast('That building is already staged for removal in this branch.', 'warn');
+      return;
+    }
+    branch.items.push(item);
+    branch.forecastObjective = objectiveForBranch(branch);
+    branch.scenarioResult = null;
+    branch.scenarioStaged = true;
+    if (state.lastScenarioResult && state.activeBranchId === branch.id) state.lastScenarioResult = null;
+    state.lastPlacedItemId = item.id;
+    closeWorkspaceSplit();
+    if (state.year < START_YEAR) setYear(START_YEAR);
+    afterChange();
+    syncCityBuildingHeightContext();
+    toast('Staged removal of ' + (item.existingBuildingName || 'existing building') + '. Click Run Simulation to calculate the forecast.');
+  }
+
+  function openExistingBuildingModal(feature) {
+    const props = feature.properties || {};
+    const name = props.name || props.building || 'Existing building';
+    const sourceId = props.source_id || props.id || '';
+    const config = buildingConfigForExisting(props);
+    openModalCustom(String(name).slice(0, 80), function (body, close) {
+      body.innerHTML = '' +
+        '<div class="inspect-row"><span class="k">Source</span><span class="v">' + escapeHtml(sourceId || 'mapped footprint') + '</span></div>' +
+        '<div class="inspect-row"><span class="k">Footprint</span><span class="v">' + escapeHtml(String(config.footprintSqm)) + ' sqm</span></div>' +
+        '<div class="inspect-row"><span class="k">Estimated floors</span><span class="v">' + escapeHtml(String(config.floors)) + '</span></div>' +
+        '<div class="inspect-row"><span class="k">Replay visible from</span><span class="v">' + escapeHtml(props.replay_first_visible_year || 'baseline') + '</span></div>' +
+        '<div class="inspect-actions">' +
+          '<button data-act="zoom" type="button">Zoom on map</button>' +
+          '<button data-act="remove-existing" class="danger" type="button">Delete from scenario</button>' +
+        '</div>';
+      body.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const act = btn.getAttribute('data-act');
+          if (act === 'zoom') {
+            const coord = pointOrCentroid(feature.geometry);
+            if (coord && state.map) state.map.flyTo({ center: coord, zoom: 16, pitch: state.view === '3D' ? 62 : 0, duration: 750 });
+            close();
+          }
+          if (act === 'remove-existing') {
+            stageExistingBuildingRemoval(feature);
+            close();
+          }
+        });
+      });
+    });
   }
 
   function showContextForLens(lens) {
@@ -5380,6 +5686,7 @@
     }
     if (els.mapCanvas) els.mapCanvas.classList.remove('placing', 'removing');
     if (els.cursorHint) els.cursorHint.hidden = true;
+    updateBuildabilityOverlay();
   }
 
   function renderHistoricalBranchesPanel() {
@@ -5633,7 +5940,7 @@
       updateTransitImpactCard(null);
       return;
     }
-    if (state.mode === 'simulation' && (state.isRunningSim || scenarioResultForBranch(activeBranch()))) {
+    if (state.mode === 'simulation' && state.isRunningSim) {
       engine.clear();
       updateTransitImpactCard(null);
       return;
@@ -7558,7 +7865,7 @@
       clearImpactVisualization({ clearTraffic: true, clearTransit: true });
       return;
     }
-    if (state.isRunningSim || branch._scenarioPending || scenarioResultForBranch(branch)) {
+    if (state.isRunningSim || branch._scenarioPending) {
       clearImpactVisualization({ clearTraffic: true, clearTransit: true });
       return;
     }
