@@ -1,0 +1,44 @@
+{
+  "active_plan": "/Users/james/Documents/Hackathons/Bims-5/.sisyphus/plans/rebuild-failure-unblock.md",
+  "started_at": "2026-04-26T06:35:47.491Z",
+  "session_ids": [
+    "ses_237875483ffeIvIpOrn5Hw79M0",
+    "ses_2377647afffelYTvH5KWX0FQV2",
+    "ses_237763874ffe2QE24RxzvzPGIb",
+    "ses_237762834ffeujIf73dkjbuKFs",
+    "ses_2377611d6ffe2PcbWVzZfnoJSB",
+    "ses_23775e737ffes1g2USXaDfDD4R",
+    "ses_23775e5ddffeIh1Dlxy117htV6"
+  ],
+  "session_origins": {
+    "ses_237875483ffeIvIpOrn5Hw79M0": "direct",
+    "ses_2377647afffelYTvH5KWX0FQV2": "appended",
+    "ses_237763874ffe2QE24RxzvzPGIb": "appended",
+    "ses_237762834ffeujIf73dkjbuKFs": "appended",
+    "ses_2377611d6ffe2PcbWVzZfnoJSB": "appended",
+    "ses_23775e737ffes1g2USXaDfDD4R": "appended",
+    "ses_23775e5ddffeIh1Dlxy117htV6": "appended"
+  },
+  "plan_name": "rebuild-failure-unblock",
+  "agent": "atlas",
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "Add `pdf-lib` as a Bun-managed runtime dependency",
+      "session_id": "ses_2377baaedffemu1ZoXIeRwvyqx",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-26T06:42:02.550Z"
+    },
+    "final-wave:f1": {
+      "task_key": "final-wave:f1",
+      "task_label": "F1",
+      "task_title": "Plan Compliance Audit — oracle",
+      "session_id": "ses_23775e5ddffeIh1Dlxy117htV6",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-26T06:48:12.888Z"
+    }
+  }
+}
