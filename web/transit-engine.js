@@ -456,11 +456,7 @@
         type: 'circle',
         source: BASE_SOURCE,
         paint: {
-          'circle-radius': [
-            '+',
-            ['interpolate', ['linear'], ['zoom'], 10, 1.1, 14, 2.0, 17, 2.8],
-            ['interpolate', ['linear'], ['get', 'servingLineCount'], 0, 0, 24, 0.8, 80, 2.4]
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.2, 14, 2.5, 17, 4.2],
           'circle-color': ['get', 'routeColor'],
           'circle-stroke-color': '#ffffff',
           'circle-stroke-width': 0.6,
