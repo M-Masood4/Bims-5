@@ -121,7 +121,7 @@
     activeTool: null, // building | road | park | infrastructure | remove
     activeBuildingPreset: 'residential',
     pendingRoadStart: null, // for two-click road placement
-    historicalMetrics: null, // { 2016: { traffic, jobs, electricity, buildings, services }, ... }
+    historicalMetrics: null, // { 2016: { traffic, jobs, electricity, buildings, services/public transit }, ... }
     summaryData: null,
     baselineForecast: null,
     manifest: null,
@@ -134,7 +134,7 @@
     persistEnabled: true,
     bottomCollapsed: false,
     // Historical mode
-    lens: 'buildings',              // traffic | jobs | electricity | buildings | services
+    lens: 'buildings',              // traffic | jobs | electricity | buildings | services (public transit)
     gridCache: {},                  // year -> grid GeoJSON
     contextLayersAdded: false,
     contextLayersData: {},          // layerId -> geojson
@@ -155,7 +155,7 @@
     { id: 'jobs',        label: 'Jobs',        color: '#a855f7', goodDirection: 'up',   valueProp: 'jobs',        deltaProp: 'jobs_delta_previous',        contextLayer: null },
     { id: 'buildings',   label: 'Buildings',   color: '#3b82f6', goodDirection: 'up',   valueProp: 'buildings',   deltaProp: 'buildings_delta_previous',   contextLayer: 'belfast-ni-buildings-3d' },
     { id: 'electricity', label: 'Electricity', color: '#06b6d4', goodDirection: 'down', valueProp: 'electricity', deltaProp: 'electricity_delta_previous', contextLayer: 'source-ni-power-grid-osm' },
-    { id: 'services',    label: 'Transit',     color: '#22c55e', goodDirection: 'up',   valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: 'transit-stops-circle' }
+    { id: 'services',    label: 'Public Transit', color: '#22c55e', goodDirection: 'up', valueProp: 'services',    deltaProp: 'services_delta_previous',    contextLayer: 'pt-stop-core' }
   ];
 
   function lensDef(id) { return LENSES.find(l => l.id === id) || LENSES.find(l => l.id === DEFAULT_LENS) || LENSES[0]; }
@@ -165,10 +165,17 @@
     { id: 'jobs', label: 'Jobs', source: 'jobs', color: '#a855f7', goodDirection: 'up' },
     { id: 'buildings', label: 'Buildings', source: 'population', color: '#3b82f6', goodDirection: 'up' },
     { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDirection: 'down' },
-    { id: 'services', label: 'Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
+    { id: 'services', label: 'Public Transit', source: 'services', color: '#22c55e', goodDirection: 'up' }
   ];
   const DEFAULT_LENS = 'buildings';
   const LENS_FILTER_IDS = ['traffic', 'jobs', 'electricity', 'services'];
+  const BELFAST_CENTER = [-5.9301, 54.5973];
+  const PLANNING_ENGINES = [
+    { id: 'traffic', label: 'Traffic', color: '#fb923c', objective: 'traffic_mitigation' },
+    { id: 'jobs', label: 'Jobs', color: '#a855f7', objective: 'jobs_optimised' },
+    { id: 'electricity', label: 'Electricity', color: '#06b6d4', objective: 'balanced' },
+    { id: 'services', label: 'Public Transit', color: '#22c55e', objective: 'traffic_mitigation' }
+  ];
 
   const els = {};
 
@@ -225,6 +232,7 @@
     if (type === 'simulation') return '#22c55e';
     if (type === 'diff') return '#3b82f6';
     if (type === 'road') return '#22d3ee';
+    if (type === 'planner') return '#a855f7';
     return '#64748b';
   }
 
@@ -305,6 +313,8 @@
 
   function objectiveForBranch(branch) {
     if (!branch) return 'user_proposal';
+    const plannerEngine = PLANNING_ENGINES.find(engine => engine.id === branch.plannerEngine);
+    if (plannerEngine && plannerEngine.objective) return plannerEngine.objective;
     if (branch.id === 'green') return 'green_mitigation';
     if (branch.id === 'transport') return 'traffic_mitigation';
     if (branch.id === 'density') return 'user_proposal';
@@ -393,8 +403,9 @@
       if (data.activeBuildingPreset) state.activeBuildingPreset = data.activeBuildingPreset;
       if (Number.isFinite(data.nextItemId)) state.nextItemId = data.nextItemId;
       if (typeof data.bottomCollapsed === 'boolean') state.bottomCollapsed = data.bottomCollapsed;
-      // Migration: old saves used 'services' for the now-renamed Transit lens.
-      const lens = data.lens === 'services' ? 'transit' : data.lens;
+      // Migration: old saves may have used 'transit'; the trained forecast
+      // still stores the public transport/access signal as 'services'.
+      const lens = data.lens === 'transit' ? 'services' : data.lens;
       if (lens && LENSES.find(l => l.id === lens)) state.lens = lens;
       if (data.selectedPostcode && data.selectedPostcode.canPlace) state.selectedPostcode = data.selectedPostcode;
       // Don't restore active tool — fresh start each session
@@ -449,7 +460,7 @@
     ids.forEach(id => { els[id] = document.getElementById(id); });
     els.mapCanvas = document.querySelector('.map-wrapper') || document.querySelector('.map-canvas');
     els.modifyButtons = els.modifyList ? els.modifyList.querySelectorAll('.tool-btn, .modify-btn') : [];
-    els.viewToggleButtons = els.viewToggle ? els.viewToggle.querySelectorAll('button') : [];
+    els.viewToggleButtons = document.querySelectorAll('.map-ctrl-btn[data-view], .toolbar-view-btn[data-view]');
     els.bottomTabs = document.querySelectorAll('.bn-btn');
     els.topTabs = els.topNav ? els.topNav.querySelectorAll('.nav-btn') : [];
   }
@@ -558,8 +569,7 @@
       if (window.MapUX && typeof window.MapUX.init === 'function') {
         window.MapUX.init({ map: state.map });
       }
-      // Transit engine — paints the 1k+ OSM transit stops network and
-      // forecasts per-stop access deltas when the user adds roads/buildings.
+      // Public transport engine: paints Belfast OSM stops and forecast deltas.
       if (window.TransitEngine && typeof window.TransitEngine.init === 'function') {
         window.TransitEngine.init({ map: state.map });
         if (typeof window.TransitEngine.preload === 'function') {
@@ -1133,7 +1143,7 @@
 
   function scenarioInterventionFromItem(item, primaryBuilding) {
     if (!item || item.id === primaryBuilding.id) return null;
-    if (item.type === 'building' && item.postcode) {
+    if (item.type === 'building' && Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
       return {
         id: item.id,
         type: 'building',
@@ -1156,7 +1166,7 @@
         start: path[0],
         end: path[path.length - 1],
         location: locationFromCoords(path),
-        mode: 'road_capacity',
+        mode: item.plannerMode || 'road_capacity',
         radiusM: 850,
         year: item.year || START_YEAR,
         rationale: 'User-staged road included in the full forecast run.'
@@ -1882,7 +1892,7 @@
           '<small>' + fmtConcreteSigned(electricity.annualMwhChange, 1) + ' MWh/yr, ' + fmtConcreteSigned(electricity.transformerReliefKw, 0) + ' kW relief</small>' +
         '</div>' +
         '<div class="concrete-impact-row">' +
-          '<span>Services</span>' +
+          '<span>Public Transit</span>' +
           '<strong>' + fmtConcreteSigned(services.netServiceDemand, 0) + ' people-eq</strong>' +
           '<small>' + fmtConcreteSigned(services.serviceCapacityEquivalent, 0) + ' capacity-eq</small>' +
         '</div>' +
@@ -1995,12 +2005,18 @@
       });
       el.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        nodeMenuTarget = { branchId: branch.id, itemId: itemId };
-        if (els.nodeMenu) {
-          els.nodeMenu.style.left = e.clientX + 'px';
-          els.nodeMenu.style.top = e.clientY + 'px';
-          els.nodeMenu.hidden = false;
-        }
+        openNodeContextMenu({ branchId: branch.id, itemId: itemId }, e);
+      });
+    });
+    els.branchList.querySelectorAll('[data-log-id]').forEach(el => {
+      const logId = el.getAttribute('data-log-id');
+      el.addEventListener('click', () => {
+        const log = (activeBranch().activityLog || []).find(entry => entry.id === logId);
+        if (log) setYear(log.year || START_YEAR);
+      });
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        openNodeContextMenu({ branchId: branch.id, logId: logId }, e);
       });
     });
     renderActiveInfo();
@@ -2013,23 +2029,32 @@
       detail: branch.locked ? 'No planned changes' : 'Branched from ' + parentBranchName(branch),
       color: branch.color || '#3b82f6'
     }];
-    (branch.items || [])
-      .slice()
-      .sort((a, b) => (a.year || START_YEAR) - (b.year || START_YEAR))
-      .forEach(item => rows.push({
+    const additions = [];
+    (branch.items || []).forEach((item, index) => additions.push({
+      sortYear: item.year || START_YEAR,
+      sortTime: item.createdAt || '',
+      sortRank: index * 2,
+      row: {
         title: branchItemTitle(item),
         detail: branchItemDetail(item),
         color: item.color || branch.color || '#3b82f6',
         item
-      }));
-    (branch.activityLog || [])
-      .slice()
-      .sort((a, b) => (a.year || START_YEAR) - (b.year || START_YEAR) || String(a.createdAt || '').localeCompare(String(b.createdAt || '')))
-      .forEach(log => rows.push({
+      }
+    }));
+    (branch.activityLog || []).forEach((log, index) => additions.push({
+      sortYear: log.year || START_YEAR,
+      sortTime: log.createdAt || '',
+      sortRank: index * 2 + 1,
+      row: {
         title: log.title || 'Activity',
         detail: (log.year ? ('Year ' + log.year + (log.detail ? ' - ' : '')) : '') + (log.detail || ''),
-        color: activityColor(log.type)
-      }));
+        color: (log.data && log.data.color) || activityColor(log.type),
+        log
+      }
+    }));
+    additions
+      .sort((a, b) => (a.sortYear - b.sortYear) || String(a.sortTime).localeCompare(String(b.sortTime)) || (a.sortRank - b.sortRank))
+      .forEach(entry => rows.push(entry.row));
     if (branch.scenarioResult && !(branch.activityLog || []).some(log => log.type === 'simulation')) {
       rows.push({
         title: 'Simulation run',
@@ -2042,8 +2067,10 @@
 
   function branchLineHTML(rows) {
     return '<div class="branch-line">' + rows.map(row => {
-      const clickable = row.item ? ' is-clickable' : '';
-      const itemAttr = row.item ? ' data-item-id="' + escapeHtml(row.item.id) + '" role="button" tabindex="0"' : '';
+      const clickable = (row.item || row.log) ? ' is-clickable' : '';
+      const itemAttr = row.item
+        ? ' data-item-id="' + escapeHtml(row.item.id) + '" role="button" tabindex="0"'
+        : (row.log ? ' data-log-id="' + escapeHtml(row.log.id) + '" role="button" tabindex="0"' : '');
       return '<div class="branch-line-item' + clickable + '"' + itemAttr + '>' +
         '<span class="branch-line-dot" style="--branch-line-color:' + escapeHtml(row.color || '#3b82f6') + '"></span>' +
         '<div class="branch-line-card">' +
@@ -2257,6 +2284,221 @@
     saveState();
   }
 
+  // ---------- PLANNER VARIATION ENGINES ----------
+
+  function planningEngineDef(id) {
+    return PLANNING_ENGINES.find(engine => engine.id === id) || PLANNING_ENGINES[0];
+  }
+
+  function offsetCoord(coord, eastM, northM) {
+    const base = Array.isArray(coord) ? coord : BELFAST_CENTER;
+    const lat = Number(base[1]) || BELFAST_CENTER[1];
+    const lng = Number(base[0]) || BELFAST_CENTER[0];
+    const metersPerDegLng = Math.max(1, 111320 * Math.cos(lat * Math.PI / 180));
+    return [
+      lng + Number(eastM || 0) / metersPerDegLng,
+      lat + Number(northM || 0) / 111320
+    ];
+  }
+
+  function itemCentroid(item) {
+    if (!item) return null;
+    if (item.type === 'road') {
+      const path = Array.isArray(item.path) && item.path.length >= 2 ? item.path : [item.start, item.end].filter(Array.isArray);
+      const loc = locationFromCoords(path);
+      return loc ? [loc.lng, loc.lat] : null;
+    }
+    if (Number.isFinite(Number(item.lng)) && Number.isFinite(Number(item.lat))) {
+      return [Number(item.lng), Number(item.lat)];
+    }
+    return null;
+  }
+
+  function chronologicalBranchItems(branch) {
+    return (branch && branch.items || []).map((item, index) => ({ item, index }))
+      .sort((a, b) => ((a.item.year || START_YEAR) - (b.item.year || START_YEAR)) || (a.index - b.index));
+  }
+
+  function commitContextForTarget(branch, target) {
+    const safeTarget = target || {};
+    const items = chronologicalBranchItems(branch);
+    const itemRow = safeTarget.itemId ? items.find(row => row.item.id === safeTarget.itemId) : null;
+    const log = safeTarget.logId && branch ? (branch.activityLog || []).find(entry => entry.id === safeTarget.logId) : null;
+    const fallbackItem = items.length ? items[items.length - 1].item : null;
+    const sourceItem = itemRow ? itemRow.item : fallbackItem;
+    const coord = itemCentroid(sourceItem) || BELFAST_CENTER;
+    const year = clamp(Number((itemRow && itemRow.item.year) || (log && log.year) || state.year || START_YEAR), START_YEAR, FINAL_YEAR);
+    return {
+      year,
+      coord,
+      title: itemRow ? branchItemTitle(itemRow.item) : (log ? (log.title || 'Activity') : 'Current branch'),
+      itemId: itemRow && itemRow.item.id,
+      logId: log && log.id
+    };
+  }
+
+  function snapshotItemsForCommit(branch, target) {
+    const items = chronologicalBranchItems(branch);
+    if (!items.length) return [];
+    const safeTarget = target || {};
+    if (safeTarget.itemId) {
+      const idx = items.findIndex(row => row.item.id === safeTarget.itemId);
+      return (idx >= 0 ? items.slice(0, idx + 1) : items).map(row => row.item);
+    }
+    if (safeTarget.logId) {
+      const log = branch && (branch.activityLog || []).find(entry => entry.id === safeTarget.logId);
+      const cutoffYear = log ? (log.year || START_YEAR) : FINAL_YEAR;
+      return items.filter(row => (row.item.year || START_YEAR) <= cutoffYear).map(row => row.item);
+    }
+    return items.map(row => row.item);
+  }
+
+  function cloneItemsWithFreshIds(items) {
+    return clone(items || []).map(item => {
+      item.id = 'item-' + (state.nextItemId++);
+      return item;
+    });
+  }
+
+  function plannerItemForEngine(engine, commit) {
+    const c = commit && commit.coord ? commit.coord : BELFAST_CENTER;
+    const year = commit && commit.year ? commit.year : START_YEAR;
+    if (engine.id === 'traffic') {
+      const path = [
+        offsetCoord(c, -440, -160),
+        offsetCoord(c, -120, -40),
+        offsetCoord(c, 170, 55),
+        offsetCoord(c, 460, 155)
+      ];
+      return {
+        type: 'road',
+        year,
+        start: path[0],
+        end: path[path.length - 1],
+        path,
+        color: engine.color,
+        label: 'Traffic relief corridor',
+        plannerEngine: engine.id,
+        plannerMode: 'road_capacity'
+      };
+    }
+    if (engine.id === 'jobs') {
+      const p = offsetCoord(c, 165, 95);
+      return {
+        type: 'building',
+        year,
+        lng: p[0],
+        lat: p[1],
+        location: { lng: p[0], lat: p[1] },
+        preset: 'commercial',
+        buildingConfig: Object.assign({}, buildingConfigForPreset('commercial'), {
+          buildingType: 'office',
+          floors: 10,
+          footprintSqm: 2200,
+          employmentFocus: 'city_centre_jobs_hub'
+        }),
+        color: engine.color,
+        label: 'Jobs hub',
+        height: 68,
+        plannerEngine: engine.id
+      };
+    }
+    if (engine.id === 'electricity') {
+      const p = offsetCoord(c, -180, 130);
+      return {
+        type: 'infrastructure',
+        year,
+        lng: p[0],
+        lat: p[1],
+        color: engine.color,
+        label: 'Grid reinforcement node',
+        plannerEngine: engine.id,
+        radiusM: 800
+      };
+    }
+    const path = [
+      offsetCoord(c, -210, -390),
+      offsetCoord(c, -80, -120),
+      offsetCoord(c, 95, 140),
+      offsetCoord(c, 230, 420)
+    ];
+    return {
+      type: 'road',
+      year,
+      start: path[0],
+      end: path[path.length - 1],
+      path,
+      color: engine.color,
+      label: 'Public transit priority corridor',
+      plannerEngine: engine.id,
+      plannerMode: 'transit_priority'
+    };
+  }
+
+  function createPlannerVariationBranch(sourceBranch, target, engineId) {
+    const branch = sourceBranch || activeBranch();
+    if (!branch) return null;
+    const engine = planningEngineDef(engineId);
+    const commit = commitContextForTarget(branch, target);
+    const items = cloneItemsWithFreshIds(snapshotItemsForCommit(branch, target));
+    const planned = plannerItemForEngine(engine, commit);
+    planned.id = 'item-' + (state.nextItemId++);
+    items.push(planned);
+    const newBranch = {
+      id: uid('br'),
+      name: engine.label + ' variation',
+      color: engine.color,
+      parentId: branch.id,
+      plannerEngine: engine.id,
+      forecastObjective: engine.objective,
+      items,
+      scenarioResult: null,
+      scenarioStaged: true,
+      activityLog: []
+    };
+    state.branches.push(newBranch);
+    state.activeBranchId = newBranch.id;
+    recordBranchActivity(
+      newBranch,
+      'planner',
+      engine.label + ' planner branch',
+      'Branched from ' + commit.title + '. Powered by Gemini planning context; deterministic engine added ' + (planned.label || planned.type) + '.',
+      commit.year,
+      {
+        engine: engine.id,
+        sourceBranchId: branch.id,
+        sourceItemId: commit.itemId || null,
+        sourceLogId: commit.logId || null,
+        addedItemId: planned.id,
+        color: engine.color,
+        poweredBy: 'gemini'
+      }
+    );
+    return newBranch;
+  }
+
+  function createPlannerVariationsFromNode(target, engineId) {
+    const branch = state.branches.find(x => x.id === (target && target.branchId)) || activeBranch();
+    if (!branch) return;
+    const engines = engineId ? [planningEngineDef(engineId)] : PLANNING_ENGINES;
+    const created = [];
+    engines.forEach(engine => {
+      const b = createPlannerVariationBranch(branch, target, engine.id);
+      if (b) created.push(b);
+    });
+    renderBranchSelect();
+    renderBranches();
+    renderImpact();
+    renderItemsOnMap();
+    renderLeftSidebar();
+    updateScenarioDiffButton();
+    saveState();
+    if (created.length) {
+      const label = created.length === 1 ? created[0].name : (created.length + ' planner variations');
+      toast('Created ' + label + ' from branch history');
+    }
+  }
+
   // ---------- BRANCH CTX MENU ----------
 
   let menuTarget = null;
@@ -2294,6 +2536,19 @@
   // ---------- BRANCH TIMELINE SVG ----------
 
   let nodeMenuTarget = null;
+
+  function openNodeContextMenu(target, event) {
+    if (!els.nodeMenu || !target) return;
+    nodeMenuTarget = target;
+    const isItem = Boolean(target.itemId);
+    const inspectBtn = els.nodeMenu.querySelector('[data-act="inspect"]');
+    const deleteBtn = els.nodeMenu.querySelector('[data-act="delete"]');
+    if (inspectBtn) inspectBtn.hidden = !isItem;
+    if (deleteBtn) deleteBtn.hidden = !isItem;
+    els.nodeMenu.style.left = (event.clientX) + 'px';
+    els.nodeMenu.style.top = (event.clientY) + 'px';
+    els.nodeMenu.hidden = false;
+  }
 
   function renderBranchTimeline() {
     if (!els.branchTimelineSvg) return;
@@ -2405,12 +2660,7 @@
         e.preventDefault();
         const itemId = g.getAttribute('data-item-id');
         const branchId = g.getAttribute('data-branch-id');
-        nodeMenuTarget = { branchId: branchId, itemId: itemId };
-        if (els.nodeMenu) {
-          els.nodeMenu.style.left = (e.clientX) + 'px';
-          els.nodeMenu.style.top = (e.clientY) + 'px';
-          els.nodeMenu.hidden = false;
-        }
+        openNodeContextMenu({ branchId: branchId, itemId: itemId }, e);
       });
     });
 
@@ -2453,10 +2703,21 @@
         if (!nodeMenuTarget) { closeMenus(); return; }
         const branch = state.branches.find(x => x.id === nodeMenuTarget.branchId);
         const item = branch ? branch.items.find(i => i.id === nodeMenuTarget.itemId) : null;
-        if (!item) { closeMenus(); return; }
-        if (act === 'inspect') openInspectModal(item);
-        if (act === 'goto') setYear(item.year);
+        const log = branch ? (branch.activityLog || []).find(entry => entry.id === nodeMenuTarget.logId) : null;
+        if (act === 'branch-variations') {
+          createPlannerVariationsFromNode(nodeMenuTarget);
+          closeMenus();
+          return;
+        }
+        if (act && act.indexOf('branch-') === 0) {
+          createPlannerVariationsFromNode(nodeMenuTarget, act.replace('branch-', ''));
+          closeMenus();
+          return;
+        }
+        if (act === 'inspect' && item) openInspectModal(item);
+        if (act === 'goto') setYear((item && item.year) || (log && log.year) || START_YEAR);
         if (act === 'delete') {
+          if (!item) { closeMenus(); return; }
           if (branch.locked) { toast('Baseline is locked', 'warn'); }
           else {
             branch.items = branch.items.filter(i => i.id !== item.id);
@@ -2631,7 +2892,7 @@
       { id: 'jobs', label: 'Jobs', goodDirection: 'up' },
       { id: 'economy', label: 'Economy', goodDirection: 'up' },
       { id: 'housingPressure', label: 'Housing Pressure', goodDirection: 'down' },
-      { id: 'services', label: 'Services', goodDirection: 'up' },
+      { id: 'services', label: 'Public Transit', goodDirection: 'up' },
       { id: 'electricity', label: 'Electricity Load', goodDirection: 'down' },
       { id: 'environmentAir', label: 'Air / Exposure', goodDirection: 'down' },
       { id: 'greenScore', label: 'Green Score', goodDirection: 'up' },
@@ -4030,9 +4291,9 @@
     const isTraffic = id === 'traffic';
     const isElec = id === 'electricity';
     const isJobs = id === 'jobs';
-    const isServices = id === 'services';
+    const isPublicTransit = id === 'services';
     // The three "metric heatmap" lenses use the smooth Mapbox heatmap.
-    const useHeatmap = isTraffic || isJobs || isServices;
+    const useHeatmap = isTraffic || isJobs || isPublicTransit;
 
     // Water always on as soft base.
     map.setLayoutProperty('ctx-water-fill', 'visibility', 'visible');
@@ -4067,16 +4328,16 @@
       if (map.getLayer(L)) map.setLayoutProperty(L, 'visibility', isElec ? 'visible' : 'none');
     });
 
-    // Jobs/Services: services anchors as point context underneath the heatmap
-    map.setLayoutProperty('ctx-services-circle', 'visibility', (isJobs || isServices) ? 'visible' : 'none');
-    map.setLayoutProperty('ctx-transport-circle', 'visibility', isJobs ? 'visible' : 'none');
+    // Jobs use service anchors; public transit uses the real OSM stop points.
+    map.setLayoutProperty('ctx-services-circle', 'visibility', isJobs ? 'visible' : 'none');
+    map.setLayoutProperty('ctx-transport-circle', 'visibility', (isJobs || isPublicTransit) ? 'visible' : 'none');
 
-    // Smooth heatmap for traffic/jobs/services; off otherwise.
+    // Smooth heatmap for traffic/jobs/public transit; off otherwise.
     map.setLayoutProperty('lens-heatmap', 'visibility', useHeatmap ? 'visible' : 'none');
     if (useHeatmap) {
       // Color ramp per lens. The first stop has alpha so areas outside the
       // cell coverage (water, off-extent) stay transparent; everywhere inside
-      // the city renders a graded green→red (traffic) or low→high (jobs/services).
+      // the city renders a graded traffic, jobs, or public-transit surface.
       const ramps = {
         traffic:  ['interpolate', ['linear'], ['heatmap-density'],
           0,   'rgba(0,0,0,0)',
@@ -4116,8 +4377,8 @@
       'source-ni-roads-osm':           isTraffic,
       'source-ni-power-grid-osm':      isElec,
       'source-ni-water-osm':           true,
-      'source-ni-services-osm':        isJobs || isServices,
-      'source-ni-transport-stops-osm': isJobs
+      'source-ni-services-osm':        isJobs,
+      'source-ni-transport-stops-osm': isJobs || isPublicTransit
     };
     Object.keys(wantsByLayer).forEach(layerId => {
       if (!wantsByLayer[layerId]) return;
@@ -4140,8 +4401,8 @@
   // hotspots) instead of a single huge gradient blob.
   //
   //   traffic  → all geocoded traffic events for the year
-  //   jobs     → job events + transport stops + services POIs (proxy for job access)
-  //   services → service events + service POIs
+  //   jobs     -> job events + transport stops + services POIs (proxy for job access)
+  //   services -> public-transit events + real Belfast OSM transport stops
   async function refreshCellsHeatmapPoints(lens) {
     if (!state.map || !state.map.getSource('cells-points')) return;
     const features = [];
@@ -4156,8 +4417,8 @@
       }
     });
 
-    // 2) For services + jobs lenses, also fold in real POIs as low-weight context points
-    if (id === 'services' || id === 'jobs') {
+    // 2) Jobs get civic/service POIs as low-weight employment anchors.
+    if (id === 'jobs') {
       const services = await loadContextLayer('source-ni-services-osm');
       if (services && services.features) {
         services.features.forEach(f => {
@@ -4166,12 +4427,12 @@
         });
       }
     }
-    if (id === 'jobs') {
+    if (id === 'jobs' || id === 'services') {
       const transport = await loadContextLayer('source-ni-transport-stops-osm');
       if (transport && transport.features) {
         transport.features.forEach(f => {
           const c = pointOrCentroid(f.geometry);
-          if (c) features.push({ type: 'Feature', properties: { w: 0.7 }, geometry: { type: 'Point', coordinates: c } });
+          if (c) features.push({ type: 'Feature', properties: { w: id === 'services' ? 1.0 : 0.7 }, geometry: { type: 'Point', coordinates: c } });
         });
       }
     }
@@ -4491,7 +4752,7 @@
     if (id === 'jobs') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
     if (id === 'electricity') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
     if (id === 'buildings') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22V12h6v10"/></svg>';
-    if (id === 'services') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11H5a2 2 0 0 0-2 2v7h6"/><path d="M15 11h4a2 2 0 0 1 2 2v7h-6"/><circle cx="12" cy="7" r="3"/></svg>';
+    if (id === 'services') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 17h12"/><path d="M6 17v3"/><path d="M18 17v3"/><rect x="4" y="4" width="16" height="13" rx="2"/><path d="M4 10h16"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></svg>';
     return '';
   }
 
@@ -4628,32 +4889,42 @@
     state.workspaceSplitContext = null;
   }
 
-  // ---- Transit lens orchestration ---------------------------------------
-  // Paints the transit network on the map when the active lens is 'transit',
-  // and overlays per-stop forecast deltas when the user is in a sim year
-  // and has placed roads/buildings on the active branch.
+  // ---- Public transport lens orchestration -----------------------------
+  // Paints the Belfast public transport stop network when the active lens is
+  // public transit, and overlays per-stop forecast deltas after simulation.
   function refreshTransitLayer() {
-    if (!window.TransitEngine || !window.TransitEngine.isLoaded || !window.TransitEngine.isLoaded()) return;
-    // The lens kept its internal 'services' id for data continuity but is
-    // displayed as "Transit". Either id arms the transit layer.
+    const engine = window.PublicTransportEngine || window.TransitEngine;
+    if (!engine || !engine.isLoaded) return;
+    if (!engine.isLoaded()) {
+      if (typeof engine.preload === 'function' && !state._publicTransportLoadQueued) {
+        state._publicTransportLoadQueued = true;
+        engine.preload().then(() => {
+          state._publicTransportLoadQueued = false;
+          refreshTransitLayer();
+        });
+      }
+      return;
+    }
+    // The lens keeps the internal 'services' id for forecast-model
+    // compatibility, but the UI exposes it as Public Transit.
     const isTransit = state.lens === 'transit' || state.lens === 'services';
     if (!isTransit) {
-      window.TransitEngine.clear();
+      engine.clear();
       updateTransitImpactCard(null);
       return;
     }
     const yr = state.year;
     if (yr < START_YEAR) {
-      window.TransitEngine.showForYear(yr);
+      engine.showForYear(yr);
       updateTransitImpactCard(null);
     } else {
       const branch = activeBranch();
-      const result = window.TransitEngine.showForecast({ branch: branch, year: yr });
+      const result = engine.showForecast({ branch: branch, year: yr });
       updateTransitImpactCard(result);
     }
   }
 
-  // Pin a small "Transit access · network impact" card at the top of the
+  // Pin a small "Public transport access" card at the top of the
   // impact stack so the forecast summary text shows up next to the chart.
   function updateTransitImpactCard(result) {
     const host = els.impactStack;
@@ -4667,12 +4938,82 @@
     const verdictClass = net > 0.3 ? 'up' : net < -0.3 ? 'down' : 'neutral';
     const html =
       '<div class="metric-card" data-card="transit-summary">' +
-        '<div><div class="name">Transit access</div>' +
+        '<div><div class="name">Public transport access</div>' +
           '<div class="val">' + (s.affectedStops || 0) + ' stops</div></div>' +
         '<div class="delta ' + verdictClass + '">' + escapeHtml(verdict) + '</div>' +
       '</div>';
     if (card) card.outerHTML = html;
     else host.insertAdjacentHTML('afterbegin', html);
+  }
+
+  async function addPublicTransportDiffLayers(map, side, year, branch, refLayerId) {
+    if (!map || currentScenarioDiffLens().id !== 'services') return;
+    const engine = window.PublicTransportEngine || window.TransitEngine;
+    if (!engine || typeof engine.preload !== 'function') return;
+    await engine.preload();
+    const base = typeof engine.baseFeatureCollection === 'function'
+      ? engine.baseFeatureCollection(year)
+      : { type: 'FeatureCollection', features: [] };
+    const forecast = side === 'after' && typeof engine.forecastFeatureCollection === 'function'
+      ? engine.forecastFeatureCollection(branch || activeBranch(), year)
+      : { type: 'FeatureCollection', features: [] };
+    map.addSource('pt-diff-base', { type: 'geojson', data: base });
+    map.addSource('pt-diff-forecast', { type: 'geojson', data: forecast });
+    map.addLayer({
+      id: 'pt-diff-base-heat',
+      type: 'heatmap',
+      source: 'pt-diff-base',
+      paint: {
+        'heatmap-weight': ['get', 'weight'],
+        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.22, 15, 0.55],
+        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 16, 15, 38],
+        'heatmap-opacity': 0.22,
+        'heatmap-color': [
+          'interpolate', ['linear'], ['heatmap-density'],
+          0, 'rgba(0,0,0,0)',
+          0.25, 'rgba(34,197,94,0.25)',
+          0.7, 'rgba(6,182,212,0.36)',
+          1, 'rgba(250,204,21,0.46)'
+        ]
+      }
+    }, refLayerId);
+    map.addLayer({
+      id: 'pt-diff-base-core',
+      type: 'circle',
+      source: 'pt-diff-base',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 16, 4.6],
+        'circle-color': ['get', 'color'],
+        'circle-stroke-color': '#ffffff',
+        'circle-stroke-width': 0.8,
+        'circle-opacity': 0.86
+      }
+    }, refLayerId);
+    if (side === 'after') {
+      map.addLayer({
+        id: 'pt-diff-forecast-halo',
+        type: 'circle',
+        source: 'pt-diff-forecast',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 7, 1, 24],
+          'circle-color': ['get', 'deltaColor'],
+          'circle-opacity': 0.34,
+          'circle-blur': 0.45
+        }
+      }, refLayerId);
+      map.addLayer({
+        id: 'pt-diff-forecast-core',
+        type: 'circle',
+        source: 'pt-diff-forecast',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 2.4, 1, 7.6],
+          'circle-color': ['get', 'deltaColor'],
+          'circle-stroke-color': '#0f172a',
+          'circle-stroke-width': 1,
+          'circle-opacity': 0.95
+        }
+      }, refLayerId);
+    }
   }
 
   async function openScenarioDiffModal() {
@@ -4799,7 +5140,7 @@
     if (concrete && concrete.traffic) concreteBits.push('Traffic ' + fmtConcreteSigned(concrete.traffic.netDailyTrips, 0) + ' daily trips');
     if (concrete && concrete.jobs) concreteBits.push('Jobs ' + fmtConcreteSigned(concrete.jobs.netJobsEstimate, 0));
     if (concrete && concrete.electricity) concreteBits.push('Electricity ' + fmtConcreteSigned(concrete.electricity.peakKwChange, 0) + ' kW peak');
-    if (concrete && concrete.services) concreteBits.push('Services ' + fmtConcreteSigned(concrete.services.netServiceDemand, 0) + ' people-eq');
+    if (concrete && concrete.services) concreteBits.push('Public Transit ' + fmtConcreteSigned(concrete.services.netServiceDemand, 0) + ' people-eq');
     return '<div class="ai-summary" style="--lens-color:' + lens.color + '">' +
       '<div class="ai-summary-head"><strong>AI summary</strong><span>Powered by Gemini</span></div>' +
       '<p>The before/after diff for <strong>' + escapeHtml(postcode) + '</strong> in <strong>' + year + '</strong> shows ' + escapeHtml(branchName) + ' ' + direction + ' in the current <strong>' + escapeHtml(lens.label) + '</strong> view.</p>' +
@@ -4903,7 +5244,7 @@
       '<span>Traffic ' + fmtConcreteSigned(impact.traffic.netDailyTrips, 0) + ' daily trips</span>' +
       '<span>Jobs ' + fmtConcreteSigned(impact.jobs.netJobsEstimate, 0) + '</span>' +
       '<span>Electricity ' + fmtConcreteSigned(impact.electricity.peakKwChange, 0) + ' kW peak</span>' +
-      '<span>Services ' + fmtConcreteSigned(impact.services.netServiceDemand, 0) + ' people-eq</span>' +
+      '<span>Public Transit ' + fmtConcreteSigned(impact.services.netServiceDemand, 0) + ' people-eq</span>' +
       '</div>';
   }
 
@@ -4975,7 +5316,7 @@
     if (mapStore) mapStore[side] = map;
 
     return new Promise(resolve => {
-      map.on('load', () => {
+      map.on('load', async () => {
         const activeLens = currentScenarioDiffLens();
         const features = (grid && grid.features) ? grid.features.map(f => {
           const props = f.properties || {};
@@ -5058,6 +5399,7 @@
             }
           }, refLayerId);
         }
+        await addPublicTransportDiffLayers(map, side, year, activeBranch(), refLayerId);
         requestAnimationFrame(() => {
           try { map.resize(); } catch (_) {}
           resolve(map);
@@ -5388,7 +5730,7 @@
     { id: 'jobs',        label: 'Jobs',        source: 'jobs',        color: '#a855f7', goodDir: 'up' },
     { id: 'buildings',   label: 'Buildings',   source: 'population',  color: '#3b82f6', goodDir: 'up' },
     { id: 'electricity', label: 'Electricity', source: 'electricity', color: '#06b6d4', goodDir: 'down' },
-    { id: 'services',    label: 'Transit',     source: 'services',    color: '#22c55e', goodDir: 'up' }
+    { id: 'services',    label: 'Public Transit', source: 'services', color: '#22c55e', goodDir: 'up' }
   ];
 
   function impactMetricDef(id) {
@@ -5405,6 +5747,9 @@
 
     if (!state.map.getSource('impact-ripples')) {
       state.map.addSource('impact-ripples', { type: 'geojson', data: empty });
+    }
+    if (!state.map.getSource('impact-points')) {
+      state.map.addSource('impact-points', { type: 'geojson', data: empty });
     }
 
     // Heatmap layer — Mapbox heatmap renders points with radius/intensity
@@ -5447,6 +5792,33 @@
     // Per-building epicentre pulses — small bright dots that pulse on placement
     if (!state.map.getSource('impact-epicentres')) {
       state.map.addSource('impact-epicentres', { type: 'geojson', data: empty });
+    }
+    if (!state.map.getLayer('impact-points-glow')) {
+      state.map.addLayer({
+        id: 'impact-points-glow',
+        type: 'circle',
+        source: 'impact-points',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['get', 'intensity'], 0, 8, 1, 28],
+          'circle-color': ['get', 'color'],
+          'circle-opacity': 0.26,
+          'circle-blur': 0.55
+        }
+      });
+    }
+    if (!state.map.getLayer('impact-points-core')) {
+      state.map.addLayer({
+        id: 'impact-points-core',
+        type: 'circle',
+        source: 'impact-points',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['get', 'intensity'], 0, 3, 1, 9],
+          'circle-color': ['get', 'color'],
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 1.1,
+          'circle-opacity': 0.9
+        }
+      });
     }
     if (!state.map.getLayer('impact-epicentres-glow')) {
       state.map.addLayer({
@@ -5584,28 +5956,53 @@
     if (!branch) return;
     if (state.mode !== 'simulation') {
       if (state.map.getSource('impact-ripples')) state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
       if (state.map.getSource('impact-epicentres')) state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
       return;
     }
     const metric = state.impactMetric;
     const scenarioHeatmap = scenarioImpactHeatmap(branch, state.year, metric);
     if (scenarioHeatmap) {
-      if (state.map.getLayer('impact-heatmap')) {
+      if (metric === 'electricity') {
+        if (state.map.getSource('impact-ripples')) {
+          state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+        }
+        if (state.map.getSource('impact-points')) {
+          state.map.getSource('impact-points').setData({
+            type: 'FeatureCollection',
+            features: scenarioHeatmap.points.map(p => {
+              const polarity = p.properties && Number(p.properties.polarity);
+              const intensity = clamp(Number(p.properties && p.properties.intensity) || 0.2, 0.08, 1);
+              return Object.assign({}, p, {
+                properties: Object.assign({}, p.properties, {
+                  intensity,
+                  color: polarity >= 0 ? '#22c55e' : '#ef4444'
+                })
+              });
+            })
+          });
+        }
+      } else if (state.map.getLayer('impact-heatmap')) {
         state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), scenarioHeatmap.polarityFavourable));
+        if (state.map.getSource('impact-points')) {
+          state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
+        }
+        state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: scenarioHeatmap.points });
       }
-      state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: scenarioHeatmap.points });
       state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: impactEpicentreFeatures(branch, metric) });
       return;
     }
 
     if (!window.BelfastPredictor) {
       state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
       state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
       return;
     }
     const buildings = branch.items.filter(it => it.type === 'building' && it.year <= state.year);
     if (!buildings.length) {
       state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: [] });
+      if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
       state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: [] });
       return;
     }
@@ -5639,6 +6036,7 @@
       state.map.setPaintProperty('impact-heatmap', 'heatmap-color', metricRamp(metricColor(metric), polarityFavourable));
     }
     state.map.getSource('impact-ripples').setData({ type: 'FeatureCollection', features: allPts });
+    if (state.map.getSource('impact-points')) state.map.getSource('impact-points').setData({ type: 'FeatureCollection', features: [] });
     state.map.getSource('impact-epicentres').setData({ type: 'FeatureCollection', features: epicentres });
   }
 

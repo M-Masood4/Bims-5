@@ -245,7 +245,7 @@ button { font-family: inherit; }
 .toolbar-right {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   margin-left: auto;
 }
 .icon-btn {
@@ -266,9 +266,36 @@ button { font-family: inherit; }
 .icon-btn.icon-only { padding: 6px; }
 .icon-btn:focus-visible, .nav-btn:focus-visible, .new-branch-btn:focus-visible,
 .view-diff-btn:focus-visible, .run-sim-btn:focus-visible, .lens-tab:focus-visible,
-.branch-card:focus-visible {
+.toolbar-view-btn:focus-visible, .branch-card:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
+}
+
+.toolbar-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  background: #fff;
+}
+.toolbar-view-btn {
+  min-width: 36px;
+  height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-mute);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.toolbar-view-btn:hover { color: var(--text); }
+.toolbar-view-btn.active {
+  background: var(--blue-soft);
+  color: var(--blue);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.18);
 }
 
 /* Keyboard shortcut hint chip — discoverable but unobtrusive */
@@ -805,22 +832,22 @@ button { font-family: inherit; }
   overflow: hidden;
 }
 .right-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  align-items: center;
   gap: 6px;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
+  min-width: 0;
 }
 .lens-tab {
   min-width: 0;
-  padding: 7px 6px;
+  height: 34px;
+  padding: 0 10px;
   text-align: center;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-mute);
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 7px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s;
   display: inline-flex;
@@ -1357,6 +1384,11 @@ button { font-family: inherit; }
 .ctx-menu button:hover { background: #f5f6f8; }
 .ctx-menu button.danger { color: var(--red); }
 .ctx-menu button.danger:hover { background: #fef2f2; }
+.ctx-menu-separator {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 3px;
+}
 
 .toast {
   position: fixed;

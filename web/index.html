@@ -24,7 +24,7 @@
       <option value="jobs">Jobs</option>
       <option value="electricity">Electricity</option>
       <option value="buildings">Buildings</option>
-      <option value="services">Transit</option>
+      <option value="services">Public Transit</option>
     </select>
     <div id="leftSidebarList" class="events-list"></div>
   </aside>
@@ -78,6 +78,11 @@
       </div>
 
       <div class="toolbar-right">
+        <div class="toolbar-view-toggle" role="group" aria-label="Map view">
+          <button class="toolbar-view-btn active" type="button" data-view="2D" title="2D map" aria-label="2D map">2D</button>
+          <button class="toolbar-view-btn" type="button" data-view="3D" title="3D view" aria-label="3D view">3D</button>
+        </div>
+        <div id="lensTabs" class="right-tabs" role="tablist" aria-label="Forecast filters"></div>
         <button class="icon-btn" id="exportBtn" type="button" title="Export">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span>Export</span>
@@ -196,8 +201,6 @@
 
   <!-- ========== RIGHT SIDEBAR ========== -->
   <aside class="right-sidebar">
-    <div id="lensTabs" class="right-tabs" role="tablist"></div>
-
     <div class="right-content">
       <div id="modifySub" hidden></div>
 
@@ -281,6 +284,13 @@
 <div id="nodeMenu" class="ctx-menu" hidden>
   <button data-act="inspect">Inspect</button>
   <button data-act="goto">Go to year</button>
+  <div class="ctx-menu-separator"></div>
+  <button data-act="branch-variations">Create 4 planner variations</button>
+  <button data-act="branch-traffic">Traffic variation</button>
+  <button data-act="branch-jobs">Jobs variation</button>
+  <button data-act="branch-electricity">Electricity variation</button>
+  <button data-act="branch-services">Public Transit variation</button>
+  <div class="ctx-menu-separator"></div>
   <button data-act="delete" class="danger">Delete item</button>
 </div>
 
